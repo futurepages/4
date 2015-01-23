@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1"
+         metadata-complete="true"
+        >
+
+    <!--a tag a seguir <absolute-ordering /> juntamente com o atributo metadata-complete=true na tag <web-app>
+    é utilizado para que classes anotadas como Servlet não sejam escaneadas.-->
+    <absolute-ordering />
+
+	<!-- <web-app id="WebApp_ID" version="2.4" -->
+	<!-- 	xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" -->
+	<!-- 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"> -->
+	<display-name>EMPRESA-DEDICADA APP</display-name>
+
+	<context-param>
+		<description>Vaadin production Mode</description>
+		<param-name>productionMode</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<servlet>
+		<servlet-name>EDServlet</servlet-name>
+		<servlet-class>com.empresadedicada.EDServlet</servlet-class>
+		<init-param>
+			<param-name>UI</param-name>
+			<param-value>com.empresadedicada.EDUI</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EDServlet</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+
+    <!-- Listeners -->
+    <listener>
+        <description>Futurepages2 Application Listener</description>
+        <listener-class>org.futurepages.core.ApplicationListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.futurepages.core.session.SessionListener</listener-class>
+    </listener>
+</web-app>

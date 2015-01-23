@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<app-params-configuration>
+
+    <param name="PRETTY_URL"			    value="true"/>
+    <param name="GLOBAL_HEAD_TITLE"         value="Poder Judiciário do Estado do Piauí"/>
+
+    <param name="PAGE_ENCODING"				value="UTF-8"/>
+    <param name="RELEASE"					value="2015.01"/>
+
+    <param name="DEV_MODE"            value="on"/>
+    <param name="QUARTZ_MODE"         value="off"/>
+
+	<!--<param name="SCHEMA_GENERATION_TYPE"   value="export"/>-->
+	<!--<param name="INSTALL_MODE"             value="on"/>-->
+
+    <!--<param name="SCHEMA_GENERATION_TYPE"   value="none"/>-->
+    <!--<param name="INSTALL_MODE"             value="off"/>-->
+
+    <!--<param name="SCHEMA_GENERATION_TYPE"   value="update_beans"/>-->
+
+
+
+    <!--#################################-->
+    <!--PARA USO FUTURO-->
+    <!--#################################-->
+
+    <!--<param name="START_CONSEQUENCE"					value="sistema/"/>-->
+
+    <!--SOMENTE EM PRODUÇÃO-->
+    <!--<param name="ADMIN_LOGIN_TIMEOUT" value="20"/>-->
+    <!--<param name="AUTO_REDIRECT_DOMAIN"		value="127.0.0.1:8085"/>-->
+    <!--<param name="MINIFY_RESOURCE_MODE"        value="both"/> -->
+
+    <!--<param name="LOGIN_URL_REDIRECT"		value="/sistema/Login"/>-->
+	<!--<param name="DEBUG_MODE"		        value="on"/>-->
+
+
+    <!--<param name="UPLOADS_REAL_PATH"   value="E:\wamp\www\intranet_uploads"/>-->
+    <!--<param name="UPLOADS_URL_PATH"    value="http://localhost/intranet_uploads"/>-->
+    <!--<param name="APP_HOST"            value="http://localhost:8085/intranet"/>-->
+
+    <!--<param name="EMAIL_DEFAULT_PORT"       value="25"/>-->
+    <!--<param name="EMAIL_SSL_CONNECTION"     value="false"/>-->
+
+    <!--<param name="EMAIL_ACTIVE"        value="false"/>-->
+    <!--<param name="EMAIL_CHARSET"       value="ISO_8859_1"/>-->
+    <!--<param name="EMAIL_HOST_NAME"     value="10.254.3.10"/>-->
+    <!--<param name="EMAIL_USER_NAME"     value="site@tjpi.jus.br"/>-->
+    <!--<param name="EMAIL_USER_PASSWORD" value="123456"/>-->
+    <!--<param name="EMAIL_FROM"          value="site@tjpi.jus.br"/>-->
+    <!--<param name="EMAIL_FROM_NAME"     value="Intranet (Base de Testes)"/>-->
+
+    <!--<param name="CONNECT_EXTERNAL_MODULES"   value="true" />-->
+</app-params-configuration>
