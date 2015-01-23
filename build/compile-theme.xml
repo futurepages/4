@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<project basedir="." default="run" xmlns:ivy="antlib:org.apache.ivy.ant" name="VAADIN: Compile Themes">
+
+	<loadproperties srcfile="build.properties"/>
+
+	<ivy:cachepath pathid="ivy.deps.default" conf="default" />
+
+	<path id="classpath">
+		<fileset dir="${webroot}/WEB-INF/lib" erroronmissingdir="no">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${libraries}" erroronmissingdir="no">
+			<include name="*.jar"/>
+		</fileset>
+		<path refid="ivy.deps.default"/>
+	</path>
+
+	<target name="-compile-theme-1" if="theme.name">
+		<mkdir dir="${webroot}/VAADIN/themes/${theme.name}"/>
+		<java classname="com.vaadin.sass.SassCompiler" failonerror="yes" fork="yes">
+			<classpath refid="classpath"/>
+			<jvmarg value="-Djava.awt.headless=true"/>
+			<arg value="${theme.dir}/${theme.name}/styles.scss"/>
+			<arg value="${webroot}/VAADIN/themes/${theme.name}/styles.css"/>
+		</java>
+	</target>
+
+	<target name="-compile-theme-2" unless="theme.name">
+		<echo message="theme.name is not set - skipping theme compilation"/>
+	</target>
+	<target name="run" depends="-compile-theme-1, -compile-theme-2">
+		<!-- the dependencies do all the work here -->
+	</target>
+</project>
