@@ -1,0 +1,863 @@
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+
+
+
+
+
+
+
+<title>Tribunal de Justiça do Piauí</title>
+<meta http-equiv="Content-Encoding" content="gzip,compress"/>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<meta http-equiv="Accept-Encoding" content="gzip,deflate"/>
+<link rel="alternate" type="application/rss+xml"
+      title="Últimas Notícias - Tribunal de Justiça do Piauí"
+      href="/tjpi/uploads/rss/noticias.xml"/>
+<link rel="stylesheet" type="text/css" href="http://www.tjpi.jus.br/site/template/style.css" media="all"/>
+
+<link rel="shortcut icon" href="http://www.tjpi.jus.br/site/template/imgs/icons/favincon.ico"/>
+	<script type="text/javascript" language="JavaScript" src="/site/dyntags/inputDate/inputDate.js" ></script>
+	<script type="text/javascript" language="JavaScript" src="/site/dyntags/inputDate/inputDateConfig.js" ></script>
+	<link  href="/site/dyntags/inputDate/inputDate.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="http://www.tjpi.jus.br/site/scripts/commons.js"></script>
+<script src="http://www.tjpi.jus.br/site/scripts/jquery.js" type="text/javascript"></script>
+
+
+
+    	<script type="text/javascript" language="JavaScript" src="/site/dyntags/inputMoney/inputMoney.js" ></script>
+
+    	<script type="text/javascript" language="JavaScript" src="/site/dyntags/inputMask/inputMask.js" ></script>
+
+    	<script type="text/javascript" language="JavaScript" src="/site/dyntags/tabPanel/tabpane.js" ></script>
+	<link  href="/site/dyntags/tabPanel/webFx/tab.css" type="text/css" rel="stylesheet" />
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        configInputHints('defaultText');
+    });
+</script>
+
+
+    </head>
+    <body>
+        <div class="page">
+
+            <div class="head">
+
+                <a href="http://www.tjpi.jus.br/site/Init.mtw"><img src="http://www.tjpi.jus.br/site/init/imgs/head_default.jpg" align="center" width="720" height="70"/></a>
+            </div>
+            <div class="topbar">
+
+
+
+<div class="tbleft">
+
+    <form id="diarioInitForm" style="display:inline" action="http://www.tjpi.jus.br/site/modules/diario/Init.download.mtw" method="post">
+        <a href="http://www.tjpi.jus.br/site/modules/diario/Init.mtw">Diário da Justiça</a>
+        <style>
+            #dataDiario-button{
+                position: relative;
+                top: -1px;
+            }
+        </style>
+
+
+        <input type="text" name="dataDiario" style="text-align:center;" size="10" id="dataDiario" title="Informe a data do cadastro" value="04/05/2010" maxlenght="10" />&nbsp;<img id="dataDiario-button" align="absmiddle" height="16" width="16" style="cursor:pointer" src="/site/dyntags/inputDate/inputDate.png" onclick="return showCalendar('dataDiario','dd/mm/y')" title="Escolha a data de publicação" value="04/05/2010" />
+		<script type="text/javascript">inputDateMask(document.getElementById("dataDiario"),"99/99/9999");</script>
+
+		<img alt="" src="http://www.tjpi.jus.br/site/template/imgs/icons/refresh_small.gif" onclick="jQuery('#diarioInitForm').submit()" style="position:relative; top:2px;cursor:pointer"/>
+    </form>
+</div>
+
+<div class="tbcenter">
+<form method="post" action="http://www.tjpi.jus.br/site/modules/noticias/Noticia.list.mtw">
+    <img src="http://www.tjpi.jus.br/site/template/imgs/icons/find.gif"  />
+
+    <input name="buscaNoticia" hint="Buscar em Notícias" class="defaultText" type="text" style="width:106px"/>
+    <input type="submit" value="ok" class="button"/>
+
+</form>
+</div>
+
+<div id="topbar_icons" class="tbright">
+    <form name="fprint" method="post" target="_blank" action="http://www.tjpi.jus.br/site/modules/print/Print.mtw">
+
+        <a href="http://www.tjpi.jus.br/site/modules/rss/Init.page"><img  title="RSS" src="http://www.tjpi.jus.br/site/template/imgs/icons/rss_logo.gif" width="18" height="18" align="absmiddle"/></a>
+        &nbsp;
+        &nbsp;
+
+        <a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.programas.mtw"><img  title="Programas Úteis" src="http://www.tjpi.jus.br/site/template/imgs/icons/exe.gif" width="18" height="18" align="absmiddle"/></a>
+        &nbsp;
+        &nbsp;
+        <a href="http://www.tjpi.jus.br/site/modules/ouvidoria/Init.mtw?destino=23" title="Contato"><img alt="" src="http://www.tjpi.jus.br/site/template/imgs/icons/mailto.gif" width="18" height="18" align="absmiddle"/></a>
+        &nbsp;
+        &nbsp;
+        <input type="hidden" name="content"/>
+        <a href="javascript:printpdf()" title="Impressão de PDF"><img alt="" src="http://www.tjpi.jus.br/site/template/imgs/icons/print.gif" width="18" height="18" align="absmiddle"/></a>
+        &nbsp;
+
+    </form>
+</div>
+
+
+
+            </div>
+
+            <div class="main">
+                <div class="menu">
+
+
+
+
+
+
+
+<div class="mtwClearFix">
+            <h2>Principal</h2>
+            <ul id="menuPrincipal" class="MM">
+                <li><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.mtw?id=84">Presidência</a></li>
+
+
+                <li>
+                    <a href="javascript:void(0)">Corregedoria</a>
+                    <ul>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.mtw?id=80">Corregedor</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.mtw?id=78">Estrutura</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/legislacao/Lei.provimentos.mtw">Provimentos</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.comarcas.mtw">Comarcas</a></li>
+
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.mtw?id=79">Contatos</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="http://www.tjpi.jus.br/site/modules/ouvidoria/Init.cartilhaMenu.mtw">Ouvidoria</a>
+                    <ul>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/ouvidoria/Init.mtw?destino=23">Manifestação</a></li>
+
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/ouvidoria/ConsultaManifestacao.mtw?destinoId=23">Consulta</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/ouvidoria/Init.page.mtw?id=221">Ouvidor Geral</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/ouvidoria/Init.page.mtw?id=222">Criação</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/ouvidoria/Init.page.mtw?id=223">Objetivos</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/ouvidoria/Init.page.mtw?id=224">Missão</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/ouvidoria/Init.page.mtw?id=225">Cartilha</a></li>
+
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/ouvidoria/Init.page.mtw?id=226">Estrutura</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/ouvidoria/Init.page.mtw?id=358">Resolução</a></li>
+                    </ul>
+                </li>
+                <li><a href="http://www.tjpi.jus.br/site/modules/diario/Init.mtw">Diário da Justiça</a></li>
+                <li><a href="http://www.tjpi.jus.br/site/modules/legislacao/Lei.list.mtw">Legislação</a></li>
+                <li><a href="http://www.tjpi.jus.br/site/modules/plantao/Init.mtw">Plantão Judiciário</a></li>
+
+                <li><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.juizados.mtw">Juizados Especiais</a></li>
+                <li><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.mtw?id=515">Transparência</a></li>
+                <li>
+                    <a href="javascript:void(0)">Imprensa</a>
+                    <ul>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/galleries/Gallery.publicList.mtw">Banco de Imagens</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.midia.mtw">Banco de Mídia</a></li>
+
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.clipping.mtw">Clipping</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.desembargadores.mtw">Desembargadores</a></li>
+                        <li class="SM"> <a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.entrevistas.mtw">Entrevistas</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/noticias/Noticia.list.mtw">Notícias</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.pagesOfType.mtw?id=147">Vídeos</a></li>
+
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+
+<div class="mtwClearFix">
+            <h2>Informações</h2>
+            <ul id="menuInfo" class="MM">
+                <li><a href="http://www.tjpi.jus.br/site/modules/etjpi/Composicao.mtw">Composição</a></li>
+
+                <li><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.comarcas.mtw">Comarcas</a></li>
+                <li><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.mtw?id=36">Contatos</a></li>
+                <li><a href="http://www.tjpi.jus.br/site/modules/ouvidoria/Fermojupi.mtw">Fermojupi</a></li>
+                <li><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.mtw?id=34">História</a></li>
+                <li><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.licitacao.mtw">Licitações</a></li>
+                <li><a href="http://www.tjpi.jus.br/site/modules/etjpi/Pauta.sessoes.mtw">Sessões</a></li>
+
+            </ul>
+</div>
+<div class="mtwClearFix">
+            <h2>Serviços</h2>
+            <ul id="menuServ" class="MM">
+                <li><a href="http://www.tjpi.jus.br/site/modules/themis/Init.mtw" title="Consulta Processual 1ª Instância">Themis PG</a></li>
+                <li><a href="http://www.tjpi.jus.br/themisweb/" title="Processo Eletrônico da 1ª Instância" target="_blank">Themis Web	</a></li>
+                <li><a href="http://www.tjpi.jus.br/e-tjpi/" title="Sistema de Processo Eletrônico 2ª Instância" target="_blank">Sistema e-TJPI</a></li>
+
+                <li><a href="http://www.tjpi.jus.br/projudi/" title="Sistema Processual (JECCs)">Sistema CNJ</a></li>
+                <li><a href="http://www.tjpi.jus.br/site/modules/prec/Init.mtw">Precatórios</a></li>
+                <li><a href="http://www.tjpi.jus.br/site/modules/plantao/Init.contadoria.mtw" title="Tabela de Correção Monetária">Correção Monetária</a></li>
+                <li>
+                    <a href="http://www.tjpi.jus.br/site/modules/manuais/Manual.list.mtw">SEAD</a>
+                    <ul>
+                     <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/contracheque/servidor.page">Acesso Restrito</a></li>
+
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/manuais/Manual.list.mtw?tipoManualId=8">Convênios</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/manuais/Manual.list.mtw?tipoManualId=7">Fichas Cadastrais</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/manuais/Manual.list.mtw?tipoManualId=1">Instruções</a></li>
+						<li class="SM"><a href="http://www.tjpi.jus.br/site/modules/manuais/Manual.list.mtw?tipoManualId=3">Legislação</a></li>
+						<li class="SM"><a href="http://www.tjpi.jus.br/site/modules/manuais/Manual.list.mtw?tipoManualId=2">Orientações</a></li>
+						<li class="SM"><a href="http://www.tjpi.jus.br/site/modules/manuais/Manual.list.mtw?tipoManualId=9">Relatórios</a></li>
+
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/manuais/Manual.list.mtw?tipoManualId=4">Requerimentos</a></li>
+                        <li class="SM"><a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.mtw?id=88">Setor Médico</a></li>
+                    </ul>
+                </li>
+            </ul>
+</div>
+<br/>
+<a href="http://www.tjpi.jus.br/site/modules/htmlcontent/Page.mtw?id=370" title="Justiça Itinerante"><img title="Justiça Itinerante" alt="" src="http://www.tjpi.jus.br/site/init/imgs/ji_m.gif" /></a>
+<br/>
+<br/>
+<a href="http://www.colegiodepresidentes.jus.br/" title="Colégio Permanente de Presidentes de Tribunais de Justiça" target="_blank"><img title="Colégio Permanente de Presidentes de Tribunais de Justiça"  alt="" src="http://www.tjpi.jus.br/site/init/imgs/colegio_permanente.gif" border="0"/></a>
+
+<br/>
+<br/>
+<a href="http://www.amapi.org.br/" title="Associação dos Magistrados do Piauí" target="_blank"><img alt="" title="Associação dos Magistrados do Piauí" src="http://www.tjpi.jus.br/site/init/imgs/amapi_esq.gif" border="0"/></a>
+<br/>
+<br/>
+<a href="http://www.cenajus.org/" title="Centro Nacional de Cultura da Justiça" target="_blank"><img alt="" title="Centro Nacional de Cultura da Justiça" src="http://www.tjpi.jus.br/site/init/imgs/cenajus.gif" border="0"/></a>
+
+
+                </div>
+                <div id="theContent" class="default_body">
+
+
+
+
+
+
+
+<h1>Avisos de Licitações do Poder Judiciário do Estado do Piauí</h1>
+
+
+    <div class="paginator"><img src="http://www.tjpi.jus.br/site/template/themes/site/pagination/i_previouspage_disable.gif" width="10" height="10" ><b>1</b> <a href="Page.licitacao.mtw?pNum=2" >2</a> <a href="Page.licitacao.mtw?pNum=3" >3</a> <a href="Page.licitacao.mtw?pNum=4" >4</a>  ... <a href="Page.licitacao.mtw?pNum=22" >22</a> <a href="Page.licitacao.mtw?pNum=23" >23</a> <a href="Page.licitacao.mtw?pNum=24" >24</a> <a href="Page.licitacao.mtw?pNum=2" ><img src="http://www.tjpi.jus.br/site/template/themes/site/pagination/i_nextpage.gif" ></a> </div>
+
+
+        <table align="center" style="width:100%;margin-left:auto; margin-right:auto;" border="0" cellpadding="0" cellspacing="0" class="box2"><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/no.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/n.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/ne.gif"></td></tr><tr>   <td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/o.gif"></td>   <td bgcolor="#FFFFFF">
+
+            <h2>TOMADA DE PREÇOS Nº 01/2010</h2>
+            <p style="margin-left: 8px; margin-right:8px; margin-top: 8px; margin-bottom:8px">
+            <p align="center">&nbsp;<font face="Verdana, sans-serif"><font style="font-size: 13pt" size="3"><strong>TOMADA DE PRE&Ccedil;OS N&ordm; 01/2010</strong></font></font></p>
+
+<p class="western" style="margin-bottom: 0cm">&nbsp;</p>
+<h6 class="western" style="margin: 0cm 0.03cm 0cm 0.05cm" align="justify"><font face="Verdana, sans-serif"><font size="2"><strong>Objeto: </strong></font></font><font face="Verdana, sans-serif"><font size="2"><span>Contrata&ccedil;&atilde;o d</span></font></font><font face="Verdana, sans-serif"><font size="2"><strong>e Empresa para fornecimento de passagens a&eacute;reas para o Tribunal de Justi&ccedil;a do Piau&iacute;.</strong></font></font></h6>
+<h6 class="western" style="margin: 0cm 0.03cm 0cm 0.05cm" align="justify"><font color="#000000"><font face="Verdana, sans-serif"><font size="2"><strong>Fonte dos Recursos: </strong></font></font></font><font color="#000000"><font face="Verdana, sans-serif"><font size="2"><span><span style="background: #ffffff">Dota&ccedil;&atilde;o Or&ccedil;ament&aacute;ria: 3390-33; Unidade Or&ccedil;ament&aacute;ria 04101, Classifica&ccedil;&atilde;o Funcional 02061042362 &ndash; SECOF</span></span></font></font></font></h6>
+
+<h6 class="western" style="margin: 0cm 0.03cm 0cm 0.05cm" align="justify"><font color="#000000"><font face="Verdana, sans-serif"><font size="2"><strong>Abertura dos envelopes: </strong></font></font></font><font face="Verdana, sans-serif"><font size="2"><span>&agrave;s </span></font></font><font face="Verdana, sans-serif"><font size="2"><strong>9:00h (nove) horas</strong></font></font><font face="Verdana, sans-serif"><font size="2"><span>, do dia </span></font></font><font face="Verdana, sans-serif"><font size="2"><strong>26</strong></font></font><font face="Verdana, sans-serif"><font size="2"><strong>.05.2010</strong></font></font><font face="Verdana, sans-serif"><font size="2"><span>.</span></font></font></h6>
+<h6 class="western" style="margin: 0cm 0.03cm 0cm 0.05cm" align="justify"><font face="Verdana, sans-serif"><font size="2"><span style="text-decoration: none"><strong>Edital dispon&iacute;vel: </strong></span></font></font><font face="Verdana, sans-serif"><font size="2"><span style="text-decoration: none"><span>a partir de 04</span></span></font></font><font face="Verdana, sans-serif"><font size="2"><span style="text-decoration: none"><strong>.05.2010</strong></span></font></font><font face="Verdana, sans-serif"><font size="2"><span>.</span></font></font></h6>
+<h6 class="western" style="margin: 0cm 0.03cm 0cm 0.05cm" align="justify"><font face="Verdana, sans-serif"><font size="2">Endere&ccedil;o Eletr&ocirc;nico:</font></font><font face="Verdana, sans-serif"><font size="2"><span> </span></font></font><a href="http://www.licitacoes-e.com.br/"><font face="Verdana, sans-serif"><font color="#0000ff" size="2"><span><strong><u>www.tjpi.jus.br.</u></strong></span></font></font></a></h6>
+
+<h6 class="western" style="margin: 0cm 0.03cm 0cm 0.05cm" align="justify"><font face="Verdana, sans-serif"><font size="2">Refer&ecirc;ncia de tempo</font></font><font face="Verdana, sans-serif"><font size="2"><span>: hor&aacute;rio de Bras&iacute;lia.</span></font></font></h6>
+<h6 class="western" style="margin: 0cm 0.03cm 0cm 0.05cm" align="justify"><font face="Verdana, sans-serif"><font size="2">Informa&ccedil;&otilde;es:</font></font><font face="Verdana, sans-serif"><font size="2"><span> </span></font></font><a href="mailto:cpl@tjpi.jus.br"><font face="Verdana, sans-serif"><font color="#0000ff" size="2"><span><strong><u>cpl@tjpi.jus.br,</u></strong></span></font></font></a><font face="Verdana, sans-serif"><font size="2"><span> Fone: (86) 3215-4440 / 3216-7450 ou na Sala da Central de Licita&ccedil;&otilde;es e Contratos, localizada na Pra&ccedil;a Des. Edgard Nogueira, s/n, Centro C&iacute;vico, CEP 64000-830, Teresina-PI, no hor&aacute;rio das 7h &agrave;s 14h.</span></font></font></h6>
+
+<p class="western" style="margin-bottom: 0cm" align="justify">&nbsp;</p>
+<p class="western" style="margin-bottom: 0cm" align="justify"><font face="Verdana, sans-serif"><font size="2">Teresina (PI), 03 de maio de 2010.</font></font></p>
+<p class="western" style="margin-bottom: 0cm; margin-left: 3.81cm; margin-right: 3.21cm" align="center">&nbsp;</p>
+<p class="western" style="margin-bottom: 0cm; margin-left: 3.81cm; margin-right: 3.21cm" align="center">&nbsp;</p>
+<p class="western" style="margin-bottom: 0cm; margin-right: 3.21cm" align="center"><font face="Verdana, sans-serif"><font size="2">Marinalva de Santana Ribeiro</font></font></p>
+<p class="western" style="margin-bottom: 0cm; margin-right: 3.21cm" align="center"><font face="Verdana, sans-serif"><font size="2">Presidente da CPL-01 </font></font></p>
+
+            <div style="text-align:right; margin-right: 8px">
+                <span style=" font-style:italic">postado em 04/05/2010 - 14:18</span>
+            </div>
+            <div class="linha"></div>
+
+            </td><td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/e.gif"></td></tr><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/so.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/s.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/se.gif"></td></tr></table>
+
+        <table align="center" style="width:100%;margin-left:auto; margin-right:auto;" border="0" cellpadding="0" cellspacing="0" class="box2"><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/no.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/n.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/ne.gif"></td></tr><tr>   <td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/o.gif"></td>   <td bgcolor="#FFFFFF">
+
+            <h2>AVISO DE LICITAÇÃO</h2>
+            <p style="margin-left: 8px; margin-right:8px; margin-top: 8px; margin-bottom:8px">
+
+            <p>AVISO DE LICITA&Ccedil;&Atilde;O <br />
+<br />
+PREG&Atilde;O ELETR&Ocirc;NICO N&ordm; 08/2010 <br />
+(PROCESSO N&ordm; 145/09) <br />
+<br />
+O Estado do Piau&iacute;, atrav&eacute;s da CORREGEDORIA GERAL DO TRIBUNAL DE JUSTI&Ccedil;A DO ESTADO DO PIAU&Iacute; torna p&uacute;blico para conhecimento dos interessados que no dia 18 (dezoito) de maio de 2010, &agrave;s 09 (nove) horas (hora de Bras&iacute;lia), no pr&eacute;dio anexo do Pal&aacute;cio da Justi&ccedil;a, 1&ordm; andar, na Central de Licita&ccedil;&otilde;es e Contratos, far&aacute; realizar licita&ccedil;&atilde;o na modalidade PREG&Atilde;O ELETR&Ocirc;NICO, do tipo MENOR PRE&Ccedil;O POR LOTE, regido pela Lei n&ordm; 10.520, de 17 de julho de 2002, Decreto n&ordm; 3.555/2000, alterado pelos Decretos n&ordm;s 3.693/2000, 5.450/2005 e 5.504/2005, Lei Complementar n&ordm; 123, de 14 de dezembro de 2006, Decreto n&ordm; 6.204, de 05 de setembro de 2007, Lei n&ordm; 8.078, de 11 de setembro de 1990 (C&oacute;digo de Defesa do Consumidor), pela Resolu&ccedil;&atilde;o N&ordm; 04/2003, de 01 de julho de 2003 e, subsidiariamente, pela Lei n&ordm; 8.666/93 e altera&ccedil;&otilde;es posteriores e sob as condi&ccedil;&otilde;es estabelecidas neste ato convocat&oacute;rio e Anexos I &ndash; Especifica&ccedil;&atilde;o dos Objetos, II &ndash;Modelo das Declara&ccedil;&otilde;es, III &ndash; Minuta do Contrato e IV &ndash; Minuta da Ordem de Fornecimento. <br />
+
+<br />
+1. DO OBJETO <br />
+<br />
+O presente Preg&atilde;o Eletr&ocirc;nico tem por objeto a aquisi&ccedil;&atilde;o de Material Permanente, discriminado no Anexo I (Termo de Refer&ecirc;ncia) do Instrumento Convocat&oacute;rio, que dever&aacute; ser minuciosamente observado pelos licitantes quando da elabora&ccedil;&atilde;o de suas propostas de pre&ccedil;os. <br />
+<br />
+2. DAS CONDI&Ccedil;&Otilde;ES PARA PARTICIPA&Ccedil;&Atilde;O <br />
+
+<br />
+Poder&atilde;o participar do processo, empresas do ramo de comercializa&ccedil;&atilde;o do material objeto da presente licita&ccedil;&atilde;o, desde que atendam todas as demais exig&ecirc;ncias contidas neste edital e seus anexos e que estejam previamente credenciados perante o Banco do Brasil S.A. em qualquer ag&ecirc;ncia sediada no pa&iacute;s. <br />
+<br />
+3. DA RETIRADA DO EDITAL <br />
+<br />
+O edital encontra-se dispon&iacute;vel no site www.licitacoes-e.com.br op&ccedil;&atilde;o &ldquo;Acesso Identificado&rdquo;, Pesquisa Avan&ccedil;ada, Modalidade: Preg&atilde;o, Comprador: Tribunal de Justi&ccedil;a do Estado do Piau&iacute;, Situa&ccedil;&atilde;o: Publicada; no site do TJ: www.tjpi.jus.br, no link &ldquo;Licita&ccedil;&otilde;es&rdquo;, bem como poder&aacute; ser retirado, na sala da Central de Licita&ccedil;&otilde;es e Contratos, localizada na Pra&ccedil;a Des. Edgard Nogueira, s/n, Centro C&iacute;vico, CEP 64000-830, Teresina/PI, no hor&aacute;rio das 7:30 &agrave;s 13:30 horas. <br />
+
+<br />
+Teresina, 03 de maio de 2010. <br />
+<br />
+Hailton Alves da Silva <br />
+Pregoeiro</p>
+
+                 <img src="http://www.tjpi.jus.br/site/template/imgs/filetypes/pdf_16.gif"/>
+                 <a target="_blank" href="/tjpi/uploads/htmlcontent/528.pdf">
+                     <span style="font-size: 12px"><b>PREGÃO 08/2010</b></span>
+                 </a>
+
+
+            <div style="text-align:right; margin-right: 8px">
+                <span style=" font-style:italic">postado em 03/05/2010 - 12:23</span>
+            </div>
+            <div class="linha"></div>
+            </td><td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/e.gif"></td></tr><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/so.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/s.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/se.gif"></td></tr></table>
+
+        <table align="center" style="width:100%;margin-left:auto; margin-right:auto;" border="0" cellpadding="0" cellspacing="0" class="box2"><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/no.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/n.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/ne.gif"></td></tr><tr>   <td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/o.gif"></td>   <td bgcolor="#FFFFFF">
+
+
+            <h2>AVISO PREGÃO ELETRÔNICO Nº 07/2010</h2>
+            <p style="margin-left: 8px; margin-right:8px; margin-top: 8px; margin-bottom:8px">
+            <p>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="Word.Document" name="ProgId">
+<meta content="Microsoft Word 11" name="Generator">
+<meta content="Microsoft Word 11" name="Originator">
+<link href="file:///C:\Users\Ailton\AppData\Local\Temp\msohtml1\01\clip_filelist.xml" rel="File-List" />    </meta>
+</meta>
+</meta>
+</meta>
+</p>
+
+<!--[if gte mso 9]><xml>
+<w:WordDocument>
+<w:View>Normal</w:View>
+<w:Zoom>0</w:Zoom>
+<w:HyphenationZone>21</w:HyphenationZone>
+<w:PunctuationKerning />
+<w:ValidateAgainstSchemas />
+<w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+<w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+<w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+<w:Compatibility>
+<w:BreakWrappedTables />
+<w:SnapToGridInCell />
+<w:WrapTextWithPunct />
+<w:UseAsianBreakRules />
+<w:DontGrowAutofit />
+</w:Compatibility>
+<w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+</w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+</w:LatentStyles>
+</xml><![endif]-->
+<p><style type="text/css">
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Lucida Sans Unicode";
+	panose-1:2 11 6 2 3 5 4 2 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-2147476737 14699 0 0 191 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:none;
+	mso-hyphenate:none;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Lucida Sans Unicode";
+	mso-font-kerning:.5pt;
+	mso-fareast-language:#00FF;}
+p.heading1, li.heading1, div.heading1
+	{mso-style-name:"heading 1";
+	mso-style-parent:"";
+	mso-style-next:Normal;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:none;
+	mso-hyphenate:none;
+	text-autospace:ideograph-numeric;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Lucida Sans Unicode";
+	mso-font-kerning:.5pt;
+	mso-fareast-language:#00FF;}
+@page Section1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 3.0cm 70.85pt 3.0cm;
+	mso-header-margin:36.0pt;
+	mso-footer-margin:36.0pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style></p>
+<!--[if gte mso 10]>
+<style>
+/* Style Definitions */
+table.MsoNormalTable
+{mso-style-name:"Tabela normal";
+mso-tstyle-rowband-size:0;
+mso-tstyle-colband-size:0;
+mso-style-noshow:yes;
+mso-style-parent:"";
+mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+mso-para-margin:0cm;
+mso-para-margin-bottom:.0001pt;
+mso-pagination:widow-orphan;
+font-size:10.0pt;
+font-family:"Times New Roman";
+mso-ansi-language:#0400;
+mso-fareast-language:#0400;
+mso-bidi-language:#0400;}
+</style>
+<![endif]-->
+<p align="center" style="text-align: center;" class="heading1"><span style="font-family: Arial; color: black;">AVISO<o:p></o:p></span></p>
+<p align="center" style="text-align: center;" class="heading1"><span style="font-family: Arial; color: black;">PREG&Atilde;O ELETR&Ocirc;NICO N&ordm; 07/2010<o:p></o:p></span></p>
+<p align="center" style="text-align: center;" class="MsoNormal"><span style="font-family: Arial; color: black;">PROCESSO N&ordm; 049/2010<o:p></o:p></span></p>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-family: Arial; color: black;"><o:p>&nbsp;</o:p></span></p>
+
+<p style="text-align: justify;" class="MsoNormal"><span style="font-family: Arial; color: black;">O TRIBUNAL DE JUSTI&Ccedil;A DO ESTADO DO PIAU&Iacute; torna p&uacute;blico para conhecimento dos interessados que no dia 13 de maio de 2010, &agrave;s 9:00 horas (hora de Bras&iacute;lia), no pr&eacute;dio anexo do Pal&aacute;cio da Justi&ccedil;a, 1&ordm; andar, na Central de Licita&ccedil;&otilde;es e Contratos, far&aacute; realizar licita&ccedil;&atilde;o na modalidade PREG&Atilde;O ELETR&Ocirc;NICO, do tipo <span style="">MENOR PRE&Ccedil;O POR LOTE</span> regido pela Lei n&ordm; 10.520, de 17 de julho de 2002, Decreto n&ordm; 3.555/2000, alterado pelos Decretos n&ordm;s 3.693/2000, 5.450/2005 e 5.504/2005, Lei Complementar n&ordm; 123, de 14 de dezembro de 2006, Decreto 6.204, de 05 de setembro de 2007, Lei n&ordm; 8.078, de 11 de setembro de 1990 (C&oacute;digo de Defesa do Consumidor), pela Resolu&ccedil;&atilde;o N&ordm; 04/2003, de 01 de julho de 2003 e, subsidiariamente, pela Lei n&ordm; 8.666/93 e altera&ccedil;&otilde;es posteriores e sob as condi&ccedil;&otilde;es estabelecidas neste ato convocat&oacute;rio e Anexos I &ndash; Especifica&ccedil;&atilde;o do Objeto, II &ndash; Modelos de Declara&ccedil;&atilde;o e III<span style="">&nbsp; </span>&ndash; Minuta do Contrato.<o:p></o:p></span></p>
+
+<p style="text-align: justify;" class="MsoNormal"><strong><span style="font-family: Arial; color: black;"><o:p>&nbsp;</o:p></span></strong></p>
+<p style="margin-left: 18pt; text-align: justify; text-indent: -18pt;" class="MsoNormal"><span style="font-family: Arial; color: black;">1.<span style="">&nbsp;&nbsp; </span>DO OBJETO<o:p></o:p></span></p>
+<p style="margin: 12pt 0cm; text-align: justify;" class="MsoNormal"><span style="font-family: Arial; color: black;">O presente Preg&atilde;o Eletr&ocirc;nico tem por objeto aquisi&ccedil;&atilde;o de <span style="">material de consumo para o Almoxarifado da Presid&ecirc;ncia do Tribunal de Justi&ccedil;a do Estado do Piau&iacute;</span>, especificados no Anexo I do Instrumento Convocat&oacute;rio que dever&aacute; ser minuciosamente <span style="">observado pelos licitantes quando da elabora&ccedil;&atilde;o de suas propostas.<o:p></o:p></span></span></p>
+
+<p style="margin-left: 18pt; text-align: justify; text-indent: -18pt;" class="MsoNormal"><span style="font-family: Arial; color: black;">2.<span style="">&nbsp; </span>DA RETIRADA<o:p></o:p></span></p>
+<p style="margin: 12pt 0cm; text-align: justify;" class="MsoNormal"><span style="font-family: Arial; color: black;">Poder&atilde;o participar do processo os interessados que atenderem a todas as exig&ecirc;ncias contidas no edital e seus anexos e que estejam previamente credenciados perante o Banco do Brasil S.A. em qualquer ag&ecirc;ncia sediada no Pa&iacute;s.<o:p></o:p></span></p>
+<p style="margin: 12pt 0cm; text-align: justify;" class="MsoNormal"><span style="font-family: Arial; color: black;">3.<span style="">&nbsp; </span>DA RETIRADA DO EDITAL<o:p></o:p></span></p>
+<p style="margin: 12pt 0cm; text-align: justify;" class="MsoNormal"><span style="font-family: Arial; color: black;">O edital encontra-se dispon&iacute;vel no site www.licitacoes-e.com.br op&ccedil;&atilde;o &ldquo;Acesso Identificado&rdquo;, Pesquisa Avan&ccedil;ada, Modalidade: Preg&atilde;o, Comprador: Tribunal de Justi&ccedil;a do Estado do Piau&iacute;, Situa&ccedil;&atilde;o: Publicada; no site do TJ: <a href="../../../../"><span style="color: black; text-decoration: none;">www.tjpi.jus.br</span></a>, no link &ldquo;Licita&ccedil;&otilde;es&rdquo;, bem como poder&aacute; ser retirado, na sala da Central de Licita&ccedil;&otilde;es e Contratos, localizada na Pra&ccedil;a Des. Edgard Nogueira, s/n, Centro C&iacute;vico, CEP 64000-830, Teresina/PI, no hor&aacute;rio das 7:30 &agrave;s 13:30 horas.<o:p></o:p></span></p>
+
+<p style="margin: 12pt 0cm; text-align: justify;" class="MsoNormal"><span style="font-family: Arial; color: black;">Teresina, 29 de abril de 2010.<o:p></o:p></span></p>
+<p style="margin: 12pt 0cm; text-align: justify;" class="MsoNormal"><span style="font-family: Arial; color: black;">Hailton Alves da Silva<o:p></o:p></span></p>
+<p style="margin: 12pt 0cm; text-align: justify;" class="MsoNormal"><span style="font-family: Arial; color: black;">Pregoeiro<o:p></o:p></span></p>
+
+                 <img src="http://www.tjpi.jus.br/site/template/imgs/filetypes/pdf_16.gif"/>
+                 <a target="_blank" href="/tjpi/uploads/htmlcontent/526.pdf">
+                     <span style="font-size: 12px"><b>PREGÃO ELETRÔNICO Nº</b></span>
+                 </a>
+
+            <div style="text-align:right; margin-right: 8px">
+
+                <span style=" font-style:italic">postado em 30/04/2010 - 09:56</span>
+            </div>
+            <div class="linha"></div>
+            </td><td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/e.gif"></td></tr><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/so.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/s.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/se.gif"></td></tr></table>
+
+        <table align="center" style="width:100%;margin-left:auto; margin-right:auto;" border="0" cellpadding="0" cellspacing="0" class="box2"><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/no.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/n.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/ne.gif"></td></tr><tr>   <td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/o.gif"></td>   <td bgcolor="#FFFFFF">
+
+
+            <h2>Resultado Classificatório - Convite nº 04/2010</h2>
+            <p style="margin-left: 8px; margin-right:8px; margin-top: 8px; margin-bottom:8px">
+            <p><font face="Arial, sans-serif"><strong>PROCESSO N&ordm; 57/10</strong></font></p>
+<p class="western" style="margin-bottom: 0cm" align="left"><font face="Arial, sans-serif"><strong>CONVITE N&ordm; 04/10</strong></font></p>
+<p class="western" style="margin-bottom: 0cm" align="center"><br />
+<font face="Arial, sans-serif"><u><strong>RESULTADO CLASSIFICAT&Oacute;RIO</strong></u></font></p>
+
+<p class="western" style="margin-bottom: 0cm" align="center">&nbsp;</p>
+<p class="western" style="margin-bottom: 0cm" align="justify"><font face="Arial, sans-serif">De conformidade com a ata do certame realizado em 23.04.10, foi declarada vencedora do Convite n&ordm; 04/10, destinado &agrave; aquisi&ccedil;&atilde;o de mobili&aacute;rio para os Gabinetes dos Desembargadores Raimundo Nonato da Costa Alencar e Jos&eacute; Ribamar Oliveira, a licitante </font><font face="Arial, sans-serif"><strong>RT DISTRIBUIDORA DE M&Oacute;VEIS LTDA</strong></font><font face="Arial, sans-serif">., pelo crit&eacute;rio do menor pre&ccedil;o ofertado, no valor global de </font><font face="Arial, sans-serif"><strong>R$ 8.108,00 (oito mil, cento e oito reais).</strong></font><br />
+
+<font face="Arial, sans-serif">Publique-se no Di&aacute;rio da Justi&ccedil;a, no </font><font face="Arial, sans-serif"><em>site </em></font><font face="Arial, sans-serif">e no Quadro de Aviso do TJ-PI (Mural), para efeito do disposto no art. 109, inciso I, letra &ldquo;b&rdquo; e &sect; 6&ordm;, da lei 8.666/93.</font></p>
+<p class="western" style="margin-bottom: 0cm" align="center">&nbsp;</p>
+<p class="western" style="margin-bottom: 0cm" align="center"><font face="Arial, sans-serif">Teresina (PI), 29 de abril de 2010.</font></p>
+<p class="western" style="margin-bottom: 0cm" align="center"><br />
+<font face="Arial, sans-serif">Teresinha de Carvalho S&eacute;rvio</font></p>
+
+<p class="western" style="margin-bottom: 0cm" align="center"><font face="Arial, sans-serif">Membro da CPL-1</font></p>
+
+            <div style="text-align:right; margin-right: 8px">
+                <span style=" font-style:italic">postado em 29/04/2010 - 14:04</span>
+            </div>
+            <div class="linha"></div>
+            </td><td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/e.gif"></td></tr><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/so.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/s.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/se.gif"></td></tr></table>
+
+        <table align="center" style="width:100%;margin-left:auto; margin-right:auto;" border="0" cellpadding="0" cellspacing="0" class="box2"><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/no.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/n.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/ne.gif"></td></tr><tr>   <td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/o.gif"></td>   <td bgcolor="#FFFFFF">
+
+
+            <h2>PREGÃO ELETRÔNICO Nº 06/2010 - Aquisição de veículos para a Corregedoria</h2>
+            <p style="margin-left: 8px; margin-right:8px; margin-top: 8px; margin-bottom:8px">
+            <h1>PREG&Atilde;O ELETR&Ocirc;NICO N&ordm; 06/2010</h1>
+<p align="center"><strong>(PROCESSO N&ordm; 016/2010)</strong></p>
+<p align="justify">&nbsp;A CORREGEDORIA GERAL DE JUSTI&Ccedil;A DO ESTADO DO PIAU&Iacute; torna p&uacute;blico para conhecimento dos interessados que no dia 10 (dez) do m&ecirc;s de maio de 2010, &agrave;s 09 (nove) horas (hora de Bras&iacute;lia), no pr&eacute;dio anexo do Pal&aacute;cio da Justi&ccedil;a, 1&ordm; andar, na Central de Licita&ccedil;&otilde;es e Contratos, far&aacute; realizar licita&ccedil;&atilde;o na modalidade PREG&Atilde;O ELETR&Ocirc;NICO, do tipo <strong>MENOR PRE&Ccedil;O, POR LOTE</strong>, regido pela Lei n&ordm; 10.520, de 17 de julho de 2002, Decreto n&ordm; 3.555/2000, alterado pelos Decretos n&ordm;s 3.693/2000, 5.450/2005 e 5.504/2005, Lei Complementar n&ordm; 123, de 14 de dezembro de 2006, Decreto 6.204, de 05 de setembro de 2007, Lei n&ordm; 8.078, de 11 de setembro de 1990 (C&oacute;digo de Defesa do Consumidor), pela Resolu&ccedil;&atilde;o N&ordm; 04/2003, de 01 de julho de 2003 e, subsidiariamente, pela Lei n&ordm; 8.666/93 e altera&ccedil;&otilde;es posteriores e sob as condi&ccedil;&otilde;es estabelecidas neste ato convocat&oacute;rio e Anexos I &ndash; Especifica&ccedil;&atilde;o do Objeto, II &ndash; Modelos de Declara&ccedil;&otilde;es e III &ndash; Minuta do Contrato.</p>
+
+<p><strong>&nbsp;</strong><strong><span>1.<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></strong><strong>DO OBJETO</strong></p>
+<p align="justify">O presente Preg&atilde;o Eletr&ocirc;nico tem por objeto aquisi&ccedil;&atilde;o de 3 (tr&ecirc;s) ve&iacute;culos automotores novos, zero quil&ocirc;metro, discriminados no Anexo I deste Instrumento Convocat&oacute;rio.</p>
+<p><strong><span>2.<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></strong><strong>DA PARTICIPA&Ccedil;&Atilde;O</strong></p>
+
+<p align="justify">Poder&atilde;o participar do processo empresas montadoras (fabricantes) ou revendedoras de ve&iacute;culos que atendam as especifica&ccedil;&otilde;es do objeto da presente licita&ccedil;&atilde;o, bem como todas as demais exig&ecirc;ncias contidas neste edital e seus anexos e que estejam previamente credenciados perante o Banco do Brasil S.A. em qualquer ag&ecirc;ncia sediada no pa&iacute;s.</p>
+<p><strong>3.&nbsp;DA RETIRADA DO EDITAL</strong></p>
+<p align="justify">O edital encontra-se dispon&iacute;vel no site www.licitacoes-e.com.br op&ccedil;&atilde;o &ldquo;Acesso Identificado&rdquo;, Pesquisa Avan&ccedil;ada, Modalidade: Preg&atilde;o, Comprador: Tribunal de Justi&ccedil;a do Estado do Piau&iacute;, Situa&ccedil;&atilde;o: Publicada; no site do TJ: <a href="http://www.tjpi.jus.br/">www.tjpi.jus.br</a>, no link &ldquo;Licita&ccedil;&otilde;es&rdquo;, bem como poder&aacute; ser retirado, na sala da Central de Licita&ccedil;&otilde;es e Contratos, localizada na Pra&ccedil;a Des. Edgard Nogueira, s/n, Centro C&iacute;vico, CEP 64000-830, Teresina/PI, no hor&aacute;rio das 7:30 &agrave;s 13:30 horas.</p>
+
+<p>Teresina, 22 de maio de 2010.</p>
+<p>Hailton Alves da Silva</p>
+<p>Pregoeiro</p>
+
+                 <img src="http://www.tjpi.jus.br/site/template/imgs/filetypes/pdf_16.gif"/>
+                 <a target="_blank" href="/tjpi/uploads/htmlcontent/524.pdf">
+                     <span style="font-size: 12px"><b>PREGÃO 06/2010</b></span>
+                 </a>
+
+            <div style="text-align:right; margin-right: 8px">
+
+                <span style=" font-style:italic">postado em 22/04/2010 - 13:07</span>
+            </div>
+            <div class="linha"></div>
+            </td><td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/e.gif"></td></tr><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/so.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/s.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/se.gif"></td></tr></table>
+
+        <table align="center" style="width:100%;margin-left:auto; margin-right:auto;" border="0" cellpadding="0" cellspacing="0" class="box2"><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/no.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/n.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/ne.gif"></td></tr><tr>   <td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/o.gif"></td>   <td bgcolor="#FFFFFF">
+
+
+            <h2>Convite nº 03/2010 - REPETIÇÃO</h2>
+            <p style="margin-left: 8px; margin-right:8px; margin-top: 8px; margin-bottom:8px">
+            <p>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="Word.Document" name="ProgId">
+<meta content="Microsoft Word 11" name="Generator">
+<meta content="Microsoft Word 11" name="Originator">
+<link href="file:///C:%5CUsers%5CCPL2%7E1%5CAppData%5CLocal%5CTemp%5Cmsohtml1%5C01%5Cclip_filelist.xml" rel="File-List" /><!--[if gte mso 9]><xml>
+
+  Normal
+  0
+  21
+
+
+  false
+  false
+  false
+
+
+
+
+
+
+
+  MicrosoftInternetExplorer4
+
+</xml><![endif]--><!--[if gte mso 9]><xml>
+
+
+</xml><![endif]--><style type="text/css">
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;"Times New Roman";
+	mso-fareast-"Times New Roman";}
+h1
+	{margin-top:0pt;
+	margin-right:0pt;
+	margin-bottom:15.0pt;
+	margin-left:0pt;
+	font-size:10.5pt;"Times New Roman";
+	color:#003399;
+	font-weight:bold;}
+h6
+	{
+	margin-right:0pt;
+	margin-left:0pt;
+	font-size:7.5pt;"Times New Roman";
+	font-weight:bold;}
+p
+	{
+	margin-right:0pt;
+	margin-left:0pt;
+	font-size:12.0pt;"Times New Roman";
+	mso-fareast-"Times New Roman";}
+p.western, li.western, div.western
+	{
+	margin-right:0pt;
+	margin-left:0pt;
+	font-size:12.0pt;"Times New Roman";
+	mso-fareast-"Times New Roman";}
+@page Section1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 85.05pt 70.85pt 85.05pt;}
+div.Section1
+	{page:Section1;}
+-->
+</style><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Tabela normal";
+	mso-style-parent:"";
+	font-size:10.0pt;"Times New Roman";}
+</style>
+<![endif]-->
+<p align="center" style="margin-left: 63pt;"><strong>REPETI&Ccedil;&Atilde;O</strong></p>
+<p style="margin: 5pt 0pt 0.0001pt 63pt;">&nbsp;</p>
+
+<h1><strong><span style="font-size: 12pt; color: windowtext;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CONVITE N&ordm; 03/2010</span></strong></h1>
+<h1><strong><span style="font-size: 12pt; color: windowtext;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PROCESSO N&ordm; 006/2010</span></strong></h1>
+<p style="margin: 5pt 0pt 0.0001pt 63pt;">&nbsp;</p>
+</meta>
+</meta>
+</meta>
+</meta>
+</p>
+<div align="justify">
+
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="Word.Document" name="ProgId">
+<meta content="Microsoft Word 11" name="Generator">
+<meta content="Microsoft Word 11" name="Originator">
+<h6><strong><span style="font-size: 12pt; color: black;">Objeto: Contrata&ccedil;&atilde;o de Empresa para reforma no pr&eacute;dio do F&oacute;rum dos Feitos da Fazenda P&uacute;blica de Teresina - PI, para funcionamento de cantina</span></strong><span style="font-size: 12pt; color: black;">, conforme especifica&ccedil;&otilde;es constantes no Anexo I do Edital.</span></h6>
+<h6><strong><span style="font-size: 12pt; color: black;">Fonte dos Recursos: Unidade Or&ccedil;ament&aacute;ria 040105, C&oacute;digo 4490-51, Classifica&ccedil;&atilde;o Funcional 02061051491 - FERMOJUPI </span></strong></h6>
+
+<h6><strong><span style="font-size: 12pt; color: black;">Abertura dos envelopes: </span></strong><span style="font-size: 12pt; color: black;">&agrave;s <strong>9:00h (nove) horas</strong>, do dia <strong>03.05.2010</strong>.</span></h6>
+<h6><strong><span style="font-size: 12pt; color: black;">Edital dispon&iacute;vel: </span></strong><span style="font-size: 12pt; color: black;">a partir de <strong>20.04.2010</strong>.</span></h6>
+<h6><span style="font-size: 12pt; color: black;">Endere&ccedil;o Eletr&ocirc;nico: <a href="http://www.tjpi.jus.br/"><strong><span style="color: rgb(129, 0, 129);">www.tjpi.jus.br</span></strong></a><a href="http://www.licitacoes-e.com.br/"><strong><span style="color: rgb(129, 0, 129);"> &ndash; link licita&ccedil;&otilde;es</span></strong></a></span></h6>
+
+<h6><span style="font-size: 12pt; color: black;">Refer&ecirc;ncia de tempo: hor&aacute;rio de Bras&iacute;lia.</span></h6>
+<h6><span style="font-size: 12pt; color: black;">Informa&ccedil;&otilde;es: <a href="mailto:cpl@tjpi.jus.br"><strong>cpl@tjpi.jus.br,</strong></a> Fones: (86) 3215-4440 / 3216-7450 ou na Sala da Central de Licita&ccedil;&otilde;es e Contratos, localizada na Pra&ccedil;a Des. Edgard Nogueira, s/n, Centro C&iacute;vico, CEP 64000-830, Teresina-PI, no hor&aacute;rio das 7h &agrave;s 14h.</span></h6>
+</meta>
+
+</meta>
+</meta>
+</meta>
+</div>
+<p>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="Word.Document" name="ProgId">
+<meta content="Microsoft Word 11" name="Generator">
+<meta content="Microsoft Word 11" name="Originator">  </meta>
+</meta>
+</meta>
+</meta>
+</p>
+
+                 <img src="http://www.tjpi.jus.br/site/template/imgs/filetypes/pdf_16.gif"/>
+                 <a target="_blank" href="/tjpi/uploads/htmlcontent/523.pdf">
+
+                     <span style="font-size: 12px"><b>Edital e anexos</b></span>
+                 </a>
+
+            <div style="text-align:right; margin-right: 8px">
+                <span style=" font-style:italic">postado em 20/04/2010 - 14:14</span>
+            </div>
+            <div class="linha"></div>
+            </td><td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/e.gif"></td></tr><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/so.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/s.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/se.gif"></td></tr></table>
+
+
+        <table align="center" style="width:100%;margin-left:auto; margin-right:auto;" border="0" cellpadding="0" cellspacing="0" class="box2"><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/no.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/n.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/ne.gif"></td></tr><tr>   <td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/o.gif"></td>   <td bgcolor="#FFFFFF">
+
+            <h2>PREGÃO ELETRÔNICO Nº 04/2010 - Material Permenente</h2>
+            <p style="margin-left: 8px; margin-right:8px; margin-top: 8px; margin-bottom:8px">
+            <p align="center"><strong>AVISO</strong></p>
+<p align="center"><strong>PREG&Atilde;O ELETR&Ocirc;NICO N&ordm; 04/2010</strong></p>
+
+<p align="center"><strong><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (PROCESSO N&ordm; 248/09) </span></strong></p>
+<p align="justify">&nbsp;&nbsp;<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; O TRIBUNAL DE JUSTI&Ccedil;A DO ESTADO DO PIAU&Iacute; torna p&uacute;blico para conhecimento dos interessados que no dia <strong>06 (seis) de maio de 2010, &agrave;s 09 (nove) horas </strong>(hora de Bras&iacute;lia), no pr&eacute;dio anexo do Pal&aacute;cio da Justi&ccedil;a, 1&ordm; andar, na Central de Licita&ccedil;&otilde;es e Contratos, far&aacute; realizar licita&ccedil;&atilde;o na modalidade PREG&Atilde;O ELETR&Ocirc;NICO, do tipo <strong>MENOR PRE&Ccedil;O POR LOTE</strong>, regido pela Lei n&ordm; 10.520, de 17 de julho de 2002, Decreto n&ordm; 3.555/2000, alterado pelos Decretos n&ordm;s 3.693/2000, 5.450/2005 e 5.504/2005, Lei Complementar n&ordm; 123, de 14 de dezembro de 2006, Decreto n&ordm; 6.204, de 05 de setembro de 2007, Lei n&ordm; 8.078, de 11 de setembro de 1990 (C&oacute;digo de Defesa do Consumidor), pela Resolu&ccedil;&atilde;o N&ordm; 04/2003, de 01 de julho de 2003 e, subsidiariamente, pela Lei n&ordm; 8.666/93 e altera&ccedil;&otilde;es posteriores e sob as condi&ccedil;&otilde;es estabelecidas neste ato convocat&oacute;rio e Anexos I - Especifica&ccedil;&atilde;o dos Objetos, II - Comarcas e F&oacute;runs destinat&aacute;rios, III - Modelo das Declara&ccedil;&otilde;es, IV - Minuta do Contrato e&nbsp;V - Minuta da Ordem de Fornecimento.</span></p>
+
+<p><strong>&nbsp;</strong><strong>1.<span>&nbsp;&nbsp; DO OBJETO</span></strong></p>
+<p style="margin: 12pt 0cm; text-align: justify" align="justify"><span style="color: black">O presente Preg&atilde;o Eletr&ocirc;nico tem por objeto a aquisi&ccedil;&atilde;o de <strong><u>Material Permanente</u></strong>, discriminado no Anexo I (Termo de Refer&ecirc;ncia) deste Instrumento Convocat&oacute;rio, que dever&aacute; ser minuciosamente observado pelos licitantes quando da elabora&ccedil;&atilde;o de suas propostas de pre&ccedil;os;</span></p>
+
+<p style="text-align: justify"><strong>2.&nbsp;DA PARTICIPA&Ccedil;&Atilde;O </strong></p>
+<p style="text-align: justify" align="justify"><strong>&nbsp;</strong>Poder&atilde;o participar do processo, empresas do ramo de material permanente, que comercializem os objetos da presente licita&ccedil;&atilde;o, desde que atendam todas as demais exig&ecirc;ncias contidas neste edital e seus anexos e que estejam previamente credenciados perante o Banco do Brasil S.A. em qualquer ag&ecirc;ncia sediada no pa&iacute;s.</p>
+<p>&nbsp;<strong>3.&nbsp;DA RETIRADA DO EDITAL</strong></p>
+<p style="text-align: justify" align="justify">O edital encontra-se dispon&iacute;vel no site www.licitacoes-e.com.br op&ccedil;&atilde;o &ldquo;Acesso Identificado&rdquo;, Pesquisa Avan&ccedil;ada, Modalidade: Preg&atilde;o, Comprador: Tribunal de Justi&ccedil;a do Estado do Piau&iacute;, Situa&ccedil;&atilde;o: Publicada; no site do TJ: <a href="http://www.tjpi.jus.br/">www.tjpi.jus.br</a>, no link &ldquo;Licita&ccedil;&otilde;es&rdquo;, bem como poder&aacute; ser retirado, na sala da Central de Licita&ccedil;&otilde;es e Contratos, localizada na Pra&ccedil;a Des. Edgard Nogueira, s/n, Centro C&iacute;vico, CEP 64000-830, Teresina/PI, no hor&aacute;rio das 7:30 &agrave;s 13:30 horas.</p>
+
+<p style="text-align: justify">&nbsp;Teresina, 20 de maio de 2010.</p>
+<p style="text-align: justify">&nbsp;Hailton Alves da Silva</p>
+<p style="text-align: justify">Pregoeiro</p>
+
+                 <img src="http://www.tjpi.jus.br/site/template/imgs/filetypes/pdf_16.gif"/>
+                 <a target="_blank" href="/tjpi/uploads/htmlcontent/522.pdf">
+                     <span style="font-size: 12px"><b>PREGÃO ELETRÔNICO Nº</b></span>
+                 </a>
+
+            <div style="text-align:right; margin-right: 8px">
+
+                <span style=" font-style:italic">postado em 20/04/2010 - 12:52</span>
+            </div>
+            <div class="linha"></div>
+            </td><td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/e.gif"></td></tr><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/so.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/s.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/se.gif"></td></tr></table>
+
+        <table align="center" style="width:100%;margin-left:auto; margin-right:auto;" border="0" cellpadding="0" cellspacing="0" class="box2"><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/no.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/n.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/ne.gif"></td></tr><tr>   <td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/o.gif"></td>   <td bgcolor="#FFFFFF">
+
+
+            <h2>CONVITE Nº 05/2010</h2>
+            <p style="margin-left: 8px; margin-right:8px; margin-top: 8px; margin-bottom:8px">
+            <p style="margin-top: 0.49cm; margin-bottom: 0cm;" class="western"><font color="#000000"><font face="Arial, sans-serif"><font size="3">Processo n&ordm; 10/2010</font></font></font></p>
+<p align="justify" style="margin-top: 0.49cm; margin-bottom: 0cm; line-height: 150%;"><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;">A CENTRAL DE LICITA&Ccedil;&Otilde;ES E CONTRATOS DO TRIBUNAL DE JUSTI&Ccedil;A DO ESTADO DO PIAU&Iacute;, atrav&eacute;s da Comiss&atilde;o Permanente de Licita&ccedil;&atilde;o-1, autorizada pelo Senhor Desembargador RAIMUNDO NONATO DA COSTA ALENCAR, Presidente do Tribunal de Justi&ccedil;a do Piau&iacute;, torna p&uacute;blico que no dia </font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;"><span style="font-style: normal;"><u><strong>30</strong></u></span></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;"><span style="font-style: normal;"><u><strong> </strong></u></span></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;"><u><strong>de abril de 2010</strong></u></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;"><span style="text-decoration: none;"><strong>, </strong></span></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;">&agrave;s 9</font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;"><strong>h</strong></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;"> - hor&aacute;rio local -</font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;"> na sala da Comiss&atilde;o Permanente de Licita&ccedil;&atilde;o-1, desta Central, situada no 1&ordm; andar do anexo do Pal&aacute;cio da Justi&ccedil;a, na Pra&ccedil;a Edgard Nogueira s/n, Centro C&iacute;vico, em Teresina &ndash; PI, ser&atilde;o recebidas e abertas propostas relativas ao </font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;">CONVITE N&ordm; 05/2010</font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;">, </font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;"><u><strong>que tem por objetivo a aquisi&ccedil;&atilde;o de persianas para o F&oacute;rum Central II de Teresina, conforme descri&ccedil;&atilde;o constante do instrumento convocat&oacute;rio</strong></u></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;"><span style="text-decoration: none;"><strong>. </strong></span></font></font></font></p>
+
+<p align="justify" style="margin-top: 0.49cm; margin-bottom: 0.21cm; line-height: 150%;"><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;">Poder&atilde;o participar do certame empresas do ramo, cadastradas ou n&atilde;o no Tribunal de Justi&ccedil;a, que se encontrem em situa&ccedil;&atilde;o de regularidade, de acordo com os crit&eacute;rios estabelecidos no Edital.</font></font></font></p>
+<p align="justify" style="margin-top: 0.49cm; margin-bottom: 0.21cm; line-height: 150%;"><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;">C&oacute;pias da Carta-Convite e informa&ccedil;&otilde;es complementares poder&atilde;o ser obtidas junto &agrave; Central de Licita&ccedil;&otilde;es, no endere&ccedil;o acima referido, no hor&aacute;rio de expediente das 07 &agrave;s 14h, mediante a apresenta&ccedil;&atilde;o de </font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;"><em>pen drive </em></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;">para coleta dos dados. </font></font></font></p>
+
+<p align="center" style="margin-top: 0.49cm; margin-bottom: 0.21cm; line-height: 150%;"><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;">Teresina (PI), 20 de abril de 2010.</font></font></font></p>
+<p align="center" style="margin-top: 0.49cm; margin-bottom: 0.21cm; line-height: 0.35cm;"><font color="#000000"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;">Marinalva de Santana Ribeiro</font></font></font></p>
+<p align="center" style="margin-bottom: 0cm; line-height: 0.35cm;"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt;">Presidente da CPL-1</font></font></p>
+
+                 <img src="http://www.tjpi.jus.br/site/template/imgs/filetypes/pdf_16.gif"/>
+                 <a target="_blank" href="/tjpi/uploads/htmlcontent/521.pdf">
+                     <span style="font-size: 12px"><b>Edital e anexos</b></span>
+                 </a>
+
+            <div style="text-align:right; margin-right: 8px">
+
+                <span style=" font-style:italic">postado em 20/04/2010 - 11:22</span>
+            </div>
+            <div class="linha"></div>
+            </td><td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/e.gif"></td></tr><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/so.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/s.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/se.gif"></td></tr></table>
+
+        <table align="center" style="width:100%;margin-left:auto; margin-right:auto;" border="0" cellpadding="0" cellspacing="0" class="box2"><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/no.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/n.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/ne.gif"></td></tr><tr>   <td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/o.gif"></td>   <td bgcolor="#FFFFFF">
+
+
+            <h2>INFORMAÇÃO SOBRE OS PEDIDOS DE ESCLARECIMENTOS E IMPUGNAÇÕES INTERPOSTOS AO PREGÃO Nº 04/2</h2>
+            <p style="margin-left: 8px; margin-right:8px; margin-top: 8px; margin-bottom:8px">
+            <p align="justify">INFORMA&Ccedil;&Atilde;O SOBRE OS PEDIDOS DE ESCLARECIMENTOS E IMPUGNA&Ccedil;&Otilde;ES INTERPOSTOS AO PREG&Atilde;O N&ordm; 04/2010</p>
+<p>Proc. N&ordm;248/2009</p>
+<p>Preg&atilde;o 04/2010</p>
+
+<p>N&ordm; Licita&ccedil;&atilde;o BB: 297969</p>
+<p>Resumo Licita&ccedil;&atilde;o: Aquisi&ccedil;&atilde;o de material permanente para o TJ do PI.</p>
+<p>Interessados: Luitze, Metel, Comercial Lutz, Artline, Jet e Bortolini</p>
+<p>&nbsp;</p>
+<p align="justify">1&ordm; &ndash; Os itens 26 e 27 do lote 05 foram separados em dois lotes: lote 05 &ndash; Arm&aacute;rio de a&ccedil;o baixo suspenso para cozinha e lote 06 &ndash; Arm&aacute;rio de a&ccedil;o alto. (interessados: Luitze, Metel e Comercial Lutz).</p>
+
+<p align="justify">2&ordm; &ndash; As especifica&ccedil;&otilde;es adotadas s&atilde;o suficientes para aquisi&ccedil;&atilde;o de material de boa qualidade que ser&atilde;o aferidas na entrega dos bens. (interessado: Artline)</p>
+<p align="justify">3&ordm; &ndash; A entrega e montagem dos bens ocorrer&atilde;o na forma do item 16 do edital. (interessado: Jet)</p>
+<p align="justify">4&ordm; &ndash; Relativamente aos questionamentos levantados pela empresa Bortolini, transcrevemos as respostas elaboradas pelo Depto. de Engenharia do TJ-PI.</p>
+
+<p>&nbsp;&ldquo;Em rela&ccedil;&atilde;o ao Lote 01:</p>
+<p>1) CADEIRA GIRAT&Oacute;RIA COM BRA&Ccedil;OS</p>
+<p align="justify">A) Especificou-se os dois tipos de poliuretano, para assento e encosto, no intuito de diminuir os custos do objeto, sem a perda da qualidade do mesmo, pois o encosto n&atilde;o recebe o mesmo peso que o assento.</p>
+<p align="justify">B) Os bra&ccedil;os dever&atilde;o ser do tipo regul&aacute;veis, em alma de a&ccedil;o recobertos com poliuretano integral &ldquo;skin&rdquo;.</p>
+
+<p align="justify">C) A base girat&oacute;ria ser&aacute; com cinco patas em nylon injetado de alto impacto e rod&iacute;zios de duplo giro.</p>
+<p>2)&nbsp;CADEIRA FIXA SEM BRA&Ccedil;OS</p>
+<p align="justify">A) Especificou-se os dois tipos de poliuretano, para assento e encosto, no intuito de diminuir os custos do objeto, sem a perda da qualidade do mesmo, pois o encosto n&atilde;o recebe o mesmo peso que o assento.</p>
+<p>3)&nbsp;POLTRONA GIRAT&Oacute;RIA MONOBLOCO ALTO COM BRA&Ccedil;OS</p>
+
+<p align="justify">A) Neste caso, por ser do tipo monobloco, ou seja, assento e encosto unidos em uma &uacute;nica pe&ccedil;a, ela dever&aacute; ser totalmente em poliuretano injetado.</p>
+<p align="justify">B) A base girat&oacute;ria ser&aacute; com cinco patas em nylon injetado de alto impacto e rod&iacute;zios de duplo giro.</p>
+<p align="justify">C) O revestimento deste tipo de poltrona dever&aacute; ser em couro ecol&oacute;gico.</p>
+
+<p>4)&nbsp;POLTRONA FIXA MONOBLOCO ESPALDAR M&Eacute;DIO COM BRA&Ccedil;OS</p>
+<p align="justify">A) Neste caso, por ser do tipo monobloco, ou seja, assento e encosto unidos em uma &uacute;nica pe&ccedil;a, ela dever&aacute; ser totalmente em poliuretano injetado.</p>
+<p align="justify">B) A base girat&oacute;ria ser&aacute; com cinco patas em nylon injetado de alto impacto e rod&iacute;zios de duplo giro.</p>
+
+<p align="justify">C) O revestimento deste tipo de poltrona dever&aacute; ser em couro ecol&oacute;gico.</p>
+<p align="justify">D) Por ser uma cadeira fixa, ela n&atilde;o dever&aacute; ter mecanismo de regulagem de altura a g&aacute;s.</p>
+<p>5)&nbsp;LONGARINA COM 02 LUGARES</p>
+<p align="justify">A) Especificou-se os dois tipos de poliuretano, para assento e encosto, no intuito de diminuir os custos do objeto, sem a perda da qualidade do mesmo, pois o encosto n&atilde;o recebe o mesmo peso que o assento.</p>
+
+<p>B) O revestimento deste tipo de poltrona dever&aacute; ser em poli&eacute;ster (100 %).</p>
+<p align="justify">C) A base dever&aacute; ser constitu&iacute;da por uma travessa horizontal, colunas verticais duplas no mesmo material e uma chapa quadrada, soldada na estrutura da longarina, para fixa&ccedil;&atilde;o da cadeira, toda estrutura da longarina possui tratamento &aacute; base de fosfato para prote&ccedil;&atilde;o contra ferrugem recoberto por tinta ep&oacute;xi p&oacute; curada em estufa.</p>
+
+<p align="justify">D)&nbsp;As Longarinas n&atilde;o necessitar&atilde;o possuir bra&ccedil;os.</p>
+<p>6)&nbsp;&nbsp;&nbsp; LONGARINA COM 03 LUGARES</p>
+<p align="justify">A) Especificou-se os dois tipos de poliuretano, para assento e encosto, no intuito de diminuir os custos do objeto, sem a perda da qualidade do mesmo, pois o encosto n&atilde;o recebe o mesmo peso que o assento.</p>
+<p align="justify">B) O revestimento deste tipo de poltrona dever&aacute; ser em poli&eacute;ster (100 %).</p>
+
+<p align="justify">C) A base dever&aacute; ser constitu&iacute;da por uma travessa horizontal, colunas verticais duplas no mesmo material e uma chapa quadrada, soldada na estrutura da longarina para fixa&ccedil;&atilde;o da cadeira, toda estrutura da longarina possui tratamento &aacute; base de fosfato para prote&ccedil;&atilde;o contra ferrugem recoberto por tinta ep&oacute;xi p&oacute; curada em estufa.</p>
+<p>D)&nbsp;As Longarinas n&atilde;o necessitar&atilde;o possuir bra&ccedil;os.</p>
+
+<p align="justify">7) Com rela&ccedil;&atilde;o aos itens 09, 10, 11 e 12, levou-se em considera&ccedil;&atilde;o a largura das mesas com 55cm, adicionados a ela os 30cm referentes ao teclado retr&aacute;til, o que levaria a mesa a ter uma largura final &uacute;til de pelo menos 80cm, ou seja 5cm a mais do que o exigido pela norma com rela&ccedil;&atilde;o a &ldquo;mesa utilizada com microcomputador&rdquo;, mas, para evitar qualquer tipo de questionamento com rela&ccedil;&atilde;o a esta especifica&ccedil;&atilde;o, retificamos a dimens&atilde;o m&iacute;nima da largura para 60cm.</p>
+<p align="justify">&nbsp;8) As dimens&otilde;es apresentadas nas especifica&ccedil;&otilde;es podem ser consideradas como dimens&otilde;es e especifica&ccedil;&otilde;es m&iacute;nimas, podendo as empresas cotarem seus produtos com dimens&otilde;es e especifica&ccedil;&otilde;es acima das mesmas.</p>
+
+<p align="justify">9) Realmente houve um equ&iacute;voco na cita&ccedil;&atilde;o da NBR, provavelmente por erros de digita&ccedil;&atilde;o e repeti&ccedil;&atilde;o, devendo os itens citados estarem em conformidade com as NBRs &ndash; 13965 e 13966.</p>
+<p>10)</p>
+<p align="justify">A) O gaveteiro com duas gavetas citado no &iacute;tem 9 possui as dimens&otilde;es citada nos itens 10 e 11, ou seja L 400 x P 440 x H 257mm.</p>
+<p align="justify">B)&nbsp;Os gaveteiros citados nos itens 10 e 11 ter&atilde;o dimens&otilde;es m&iacute;nimas de L 400 x P 440 x H 340 mm e n&atilde;o necessitam ter porta-objetos na primeira gaveta.</p>
+
+<p align="justify">O &iacute;tem 12 (mesa com 06 gavetas), quer dizer que ela possuir&aacute; dois gaveteiros, um de cada lado da mesa.</p>
+<p>Teresina, 06 de Abril de 2010.</p>
+<p><strong>Walber Lima Gomes Junior</strong></p>
+<p>Arquiteto</p>
+<p>Departamento de Engenharia<span style="font-size: 12pt">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+<p><strong>Fernando Luiz de Carvalho Baptista</strong></p>
+<p>Engenheiro Civil</p>
+
+<p>Coordenador do Departamento de Engenharia<span style="font-size: 12pt">&rdquo;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+<p>&nbsp;</p>
+<p>Teresina, 20 de abril de 2010</p>
+<p>Hailton Alves da Silva</p>
+
+            <div style="text-align:right; margin-right: 8px">
+                <span style=" font-style:italic">postado em 20/04/2010 - 10:43</span>
+            </div>
+            <div class="linha"></div>
+
+            </td><td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/e.gif"></td></tr><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/so.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/s.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/se.gif"></td></tr></table>
+
+        <table align="center" style="width:100%;margin-left:auto; margin-right:auto;" border="0" cellpadding="0" cellspacing="0" class="box2"><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/no.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/n.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/ne.gif"></td></tr><tr>   <td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/o.gif"></td>   <td bgcolor="#FFFFFF">
+
+            <h2>CONVITE Nº 04/2010</h2>
+            <p style="margin-left: 8px; margin-right:8px; margin-top: 8px; margin-bottom:8px">
+
+            <p>&nbsp;</p>
+<h1 class="western" align="center"><font color="#000000"><font face="Arial, sans-serif"><font size="3">CONVITE N&ordm; 04/2010</font></font></font></h1>
+<p class="western" style="margin-top: 0.49cm; margin-bottom: 0cm">&nbsp;</p>
+<h1 class="western"><font color="#000000"><font face="Arial, sans-serif"><font size="3">Processo n&ordm; 57/2010</font></font></font></h1>
+<p style="margin-top: 0.49cm; margin-bottom: 0cm; line-height: 150%" align="justify"><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2">A CENTRAL DE LICITA&Ccedil;&Otilde;ES E CONTRATOS DO TRIBUNAL DE JUSTI&Ccedil;A DO ESTADO DO PIAU&Iacute;, atrav&eacute;s da Comiss&atilde;o Permanente de Licita&ccedil;&atilde;o-1, autorizada pelo Senhor Desembargador RAIMUNDO NONATO DA COSTA ALENCA, Presidente do Tribunal de Justi&ccedil;a do Piau&iacute;, torna p&uacute;blico que no dia </font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2"><span style="font-style: normal"><u><strong>23</strong></u></span></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2"><span style="font-style: normal"><u><strong> </strong></u></span></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2"><u><strong>de ABRIL de 2010</strong></u></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2"><span style="text-decoration: none"><strong>, </strong></span></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2">&agrave;s 9</font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2"><strong>h</strong></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2"> - hor&aacute;rio local -</font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2"> na sala da Comiss&atilde;o Permanente de Licita&ccedil;&atilde;o-1, desta Central, situada no 1&ordm; andar do anexo do Pal&aacute;cio da Justi&ccedil;a, na Pra&ccedil;a Edgard Nogueira s/n, Centro C&iacute;vico, em Teresina &ndash; PI, ser&atilde;o recebidas e abertas propostas relativas ao </font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2">CONVITE N&ordm; 04/2010</font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2">, </font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2"><u><strong>que tem por objetivo a aquisi&ccedil;&atilde;o de m&oacute;veis para Gabinetes de Desembargadores, conforme descri&ccedil;&atilde;o constante do instrumento convocat&oacute;rio</strong></u></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2"><span style="text-decoration: none"><strong>. </strong></span></font></font></font></p>
+
+<p style="margin-top: 0.49cm; margin-bottom: 0.21cm; line-height: 150%" align="justify"><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2">Poder&atilde;o participar do certame empresas do ramo, cadastradas ou n&atilde;o no Tribunal de Justi&ccedil;a, que se encontrem em situa&ccedil;&atilde;o de regularidade, de acordo com os crit&eacute;rios estabelecidos no Edital.</font></font></font></p>
+<p style="margin-top: 0.49cm; margin-bottom: 0.21cm; line-height: 150%" align="justify"><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2">C&oacute;pias da Carta-Convite e informa&ccedil;&otilde;es complementares poder&atilde;o ser obtidas junto &agrave; Central de Licita&ccedil;&otilde;es, no endere&ccedil;o acima referido, no hor&aacute;rio de expediente das 07 &agrave;s 14h, mediante a apresenta&ccedil;&atilde;o de </font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2"><em>pen drive </em></font></font></font><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2">para coleta dos dados. </font></font></font></p>
+
+<p style="margin-top: 0.49cm; margin-bottom: 0.21cm; line-height: 150%" align="center"><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2">Teresina (PI), 15 de abril de 2010.</font></font></font></p>
+<p style="margin-top: 0.49cm; margin-bottom: 0.21cm; line-height: 0.35cm" align="center"><font color="#000000"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2">Marinalva de Santana Ribeiro</font></font></font></p>
+<p style="margin-bottom: 0cm; line-height: 0.35cm" align="center"><font face="Arial, sans-serif"><font style="font-size: 11pt" size="2">Presidente da CPL-1</font></font></p>
+
+                 <img src="http://www.tjpi.jus.br/site/template/imgs/filetypes/pdf_16.gif"/>
+                 <a target="_blank" href="/tjpi/uploads/htmlcontent/519.pdf">
+                     <span style="font-size: 12px"><b>edital</b></span>
+                 </a>
+
+            <div style="text-align:right; margin-right: 8px">
+
+                <span style=" font-style:italic">postado em 15/04/2010 - 09:37</span>
+            </div>
+            <div class="linha"></div>
+            </td><td width="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/e.gif"></td></tr><tr>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/so.gif"></td>    <td height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/s.gif"></td>    <td width="5" height="5" background="http://www.tjpi.jus.br/site/template/resource/boxes/box2/se.gif"></td></tr></table>
+
+    <div class="paginator"><img src="http://www.tjpi.jus.br/site/template/themes/site/pagination/i_previouspage_disable.gif" width="10" height="10" ><b>1</b> <a href="Page.licitacao.mtw?pNum=2" >2</a> <a href="Page.licitacao.mtw?pNum=3" >3</a> <a href="Page.licitacao.mtw?pNum=4" >4</a>  ... <a href="Page.licitacao.mtw?pNum=22" >22</a> <a href="Page.licitacao.mtw?pNum=23" >23</a> <a href="Page.licitacao.mtw?pNum=24" >24</a> <a href="Page.licitacao.mtw?pNum=2" ><img src="http://www.tjpi.jus.br/site/template/themes/site/pagination/i_nextpage.gif" ></a> </div>
+
+
+
+                </div>
+            </div>
+            <div class="footer">
+
+
+
+
+
+
+<p>
+    © 2007-2008, Tribunal de Justiça do Piauí - Todos os direitos reservados.<br/>
+         Pça Des. Edgard Nogueira s/n, Centro Cívico, CEP 64000-830 - Teresina-PI.<br/>
+    Tel: (86) 3216-7412/7440/7443 - FAX: (86) 3216-7402<br/>
+
+</p>
+<div style="text-align:right">
+
+
+		<a href="http://www.tjpi.jus.br/site/modules/admin/ModulesManage.mtw"><img alt="" src="http://www.tjpi.jus.br/site/template/imgs/icons/locked.gif" border="0" title="Gerência"/></a>
+
+</div>
+
+
+            </div>
+        </div>
+        <!-- Google Analytics --><script src='http://www.google-analytics.com/urchin.js' type='text/javascript'></script><script type='text/javascript'>_uacct = 'UA-3513985-1';urchinTracker();</script>
+    </body>
+
+</html>
