@@ -1,0 +1,147 @@
+Index: src/org/futurepages/core/control/Controller.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/org/futurepages/core/control/Controller.java	(revision 1001)
++++ src/org/futurepages/core/control/Controller.java	(revision )
+@@ -11,11 +11,13 @@
+ import org.futurepages.core.action.Action;
+ import org.futurepages.core.config.Params;
+ import java.io.IOException;
++import java.lang.management.ManagementFactory;
+ import java.util.ArrayList;
+ import java.util.Iterator;
+ import java.util.LinkedList;
+ import java.util.List;
+ import java.util.Set;
++import java.util.regex.Pattern;
+ 
+ import javax.servlet.ServletConfig;
+ import javax.servlet.ServletContext;
+@@ -65,7 +67,27 @@
+ 	private boolean withPrettyURL;
+ 	private static Controller INSTANCE;
+ 	private ThreadLocal<InvocationChain> chainTL = new ThreadLocal<InvocationChain>();
++	private static ServletConfig conf;
++	private static ClassGetActionUrlParts objectGetActionUrlParts;
+ 
++	static  {
++		boolean isDebugging = false;
++		Pattern debugPattern = Pattern.compile("-Xdebubg|jdwp");
++
++		for (String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
++			if (debugPattern.matcher(arg).find()) {
++				isDebugging =true;
++				break;
++			}
++		}
++		if (isDebugging && Params.get("DEBUG_MODE")!=null && Params.get("DEBUG_MODE").equalsIgnoreCase("ON")) {
++			objectGetActionUrlParts = new ClassGetActionUrlPartsDebugMode();
++		}
++		else {
++			objectGetActionUrlParts = new ClassGetActionUrlPartsExecutionMode();
++		}
++	}
++
+ 	public static Controller getInstance() {
+ 		return INSTANCE;
+ 	}
+@@ -76,8 +98,8 @@
+ 	@Override
+ 	public void init(ServletConfig conf) throws ServletException {
+ 		super.init(conf);
++		Controller.conf = conf;
+ 		try {
+-
+ 			withPrettyURL = Params.get("PRETTY_URL").equals("true");
+ 			startPage = Params.get("START_PAGE_NAME");
+ 
+@@ -196,7 +218,7 @@
+ 		String actionName = null;
+ 		String innerAction = null;
+ 		if(withPrettyURL){
+-			String[] prettyUrlParts = getActionUrlParts(req);
++			String[] prettyUrlParts = objectGetActionUrlParts.getActionUrlParts(req, this);
+ 			actionName = prettyUrlParts[0];
+ 			innerAction = prettyUrlParts[1];
+ 		}else{
+@@ -437,7 +459,7 @@
+ 	//Only for prettyURLs
+ 	//[0] module+subAction+Action
+ 	//[1] innerAction
+-	private String[] getActionUrlParts(HttpServletRequest req) {
++	private String[] getActionUrlPartsExecutionMode(HttpServletRequest req) {
+ 
+ 		String context = req.getContextPath();
+ 
+@@ -446,6 +468,27 @@
+ 		return getActionUrlParts(context, uri);
+ 	}
+ 
++	//Only for prettyURLs
++	//[0] module+subAction+Action
++	//[1] innerAction
++	private String[] getActionUrlPartsDebugMode(HttpServletRequest req) {
++
++		String context = req.getContextPath();
++
++		String uri = req.getRequestURI().toString();
++
++		String debugParameter = req.getParameter("debug");
++
++		if (debugParameter!=null
++				&& debugParameter.equalsIgnoreCase("ac")
++				&& (uri.equalsIgnoreCase("/" + Params.get("START_PAGE_NAME"))
++						|| uri.equalsIgnoreCase("/" + Params.get("START_PAGE_NAME") + "/"))) {
++			restartController();
++		}
++
++		return getActionUrlParts(context, uri);
++	}
++
+ 	public InvocationChain getChain(){
+ 		return this.chainTL.get();
+ 	}
+@@ -608,4 +651,41 @@
+ 	public ApplicationManager getAppManager() {
+ 		return (ApplicationManager) appManager;
+ 	}
++
++	private static void restartController()  {
++		try {
++			INSTANCE.destroy();
++			INSTANCE.init(conf);
++			System.out.println("**************** Controller reiniciado com sucesso! *******************");
++		}
++		catch (Exception e) {
++			System.out.println("**************** Erro no reinicio do Controller! *******************");
++			e.printStackTrace();
++		}
++	}
++
++	static abstract class  ClassGetActionUrlParts {
++
++		abstract String[] getActionUrlParts(HttpServletRequest req, Controller c);
++
++	}
++
++	static class ClassGetActionUrlPartsExecutionMode extends  ClassGetActionUrlParts{
++
++		@Override
++		public String[] getActionUrlParts(HttpServletRequest req, Controller c) {
++			return c.getActionUrlPartsExecutionMode(req);
++		}
++
++	}
++
++	static class ClassGetActionUrlPartsDebugMode extends ClassGetActionUrlParts{
++
++		@Override
++		public String[] getActionUrlParts(HttpServletRequest req, Controller c) {
++			return c.getActionUrlPartsDebugMode(req);
++		}
++
++	}
++
+ }

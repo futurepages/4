@@ -1,0 +1,20 @@
+Ao tentar estender o futurepages para que ele aceitasse urls sem "case sensitive"
+aconteceram os seguintes fatos:
+
+1 - Prolemas quanto ao nome do módulo quando é usado pretty url.
+	Neste caso o nome do módulo fica mapeado em web.xml.
+	/modulo/*
+	Fica impossível tirar o case sensitive no nome do módulo.
+
+2 - Como o que fica mapeado é uma Action que tem uma String como chave, fica fácil
+retirar o case sensitive. Basta apenas tornar a cheva maiúscula (ou minúscula)
+antes do mapeamento. E antes de trazer a Action do mapa, basta tornar a String,
+com o nome da action, vinda da URL maiúscula (ou minúscula).
+
+3 - Ao tentar tornar as Inner Actions not case sensitive temos um problema. Como a
+Inner Actions reflete a um método de uma action, fica difícil lidar com isso.
+	Por exemplo, uma String para uma Inner Action "FacaAlgumaCoisa" não casaria
+	com o nome de um método facaAlgumaCoisa.
+
+4 - Not case sensitive para uma Consequiencia, é que o tomcat faz diferença entre
+"Index.jsp" e "index.jsp".
