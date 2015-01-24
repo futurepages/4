@@ -9,8 +9,6 @@ import org.futurepages.core.persistence.HibernateManager;
 import org.futurepages.core.persistence.SchemaGeneration;
 import org.futurepages.core.quartz.QuartzManager;
 import org.futurepages.core.resource.ResourceMinifier;
-import org.futurepages.core.session.SessionListenerManager;
-import org.futurepages.core.tags.build.TagLibBuilder;
 import org.futurepages.util.Is;
 import org.quartz.SchedulerException;
 
@@ -20,10 +18,10 @@ import javax.servlet.ServletContextListener;
 import java.io.File;
 
 /**
- * É nesta classe onde o futurepages age sobre a aplicação,
- * gerando o necessário antes do deploy da aplicação
- * e desalocando o que for necessário no undeploy da mesma.
- *
+ * Starting up the application resources:
+ *  - param configurations
+ *  - module configurations
+ *  - etc.
  * @author leandro
  */
 public class ApplicationListener implements ServletContextListener {
@@ -37,25 +35,25 @@ public class ApplicationListener implements ServletContextListener {
 			String context = servletContext.getContextPath();
 			contextName = (!Is.empty(context) ? context : "ROOT");
 
-			log("Inicializando " + servletContext.getServletContextName() + "...");
+			log("starting up" + servletContext.getServletContextName() + "...");
 
-			log("Inicializando Parâmetros...");
+			log("Starting params...");
 			Params.initialize(context);
-			log("Parâmetros OK");
+			log("Params OK");
 
-			System.setProperty("file.encoding",   Params.get("PAGE_ENCODING"));
-			System.setProperty("sun.jnu.encoding",Params.get("PAGE_ENCODING"));
+			System.setProperty("file.encoding"   ,   Params.get("PAGE_ENCODING"));
+			System.setProperty("sun.jnu.encoding",   Params.get("PAGE_ENCODING"));
 			log("File Encoding: "+System.getProperty("file.encoding"));
 
-			log("Carregando módulos...");
+			log("Loading Modules...");
 			File[] modules = (new File(Params.get("MODULES_CLASSES_REAL_PATH"))).listFiles();
-			log("Módulos OK");
+			log("Modules OK");
 
 			if (HibernateManager.isRunning()) {
 				log("Hibernate OK");
 
-				// Atualiza/gera esquema do banco como solicitado no arquivo de configuração.
-				// somente se NÃO estiver em DEPLOY_MODE=production (tentará gerar e instalar banco de dados.
+				// Update/generate database scheme as params configuration file.
+				// only if it's not DEPLOY_MODE=production, it will try to generate and install database.
 				log("Deploy Mode: "+Params.get("DEPLOY_MODE"));
 				if (!Params.get("DEPLOY_MODE").equals("production")) {
 					if (Params.get("SCHEMA_GENERATION_TYPE").startsWith("update")) {
@@ -74,7 +72,7 @@ public class ApplicationListener implements ServletContextListener {
 						log("SCHEMA EXPORT - End");
 					}
 
-					//Se o modo de instalação estiver ligado, serão feitas as instalações de cada módulo.
+					//If INSTALL_MODE=on, install-modules will start.
 					String installMode = Params.get("INSTALL_MODE");
 					if (!installMode.equals("off") && !installMode.equals("none") && !Is.empty(installMode)) {
 						log("Install Mode: " + installMode);
@@ -82,13 +80,13 @@ public class ApplicationListener implements ServletContextListener {
 						log("Install - End");
 					}
 				}else{
-					//Micro-migração. Instancia a classe - onde espera-se que estejam as execuções de migração.
+					//Micro-migration. Instantiate the class where we put migration executions.
 					if(!Is.empty(Params.get("MIGRATION_CLASSPATH"))){
 						try{
-							log("Inicializando Migração em: "+Params.get("MIGRATION_CLASSPATH"));
+							log("Migration Class: "+Params.get("MIGRATION_CLASSPATH"));
 							Class.forName(Params.get("MIGRATION_CLASSPATH")).newInstance();
 						}catch(Exception ex){
-							log("Erro de Migração... "+ex.getMessage());
+							log("Migration ERROR... "+ex.getMessage());
 						}
 					}
 				}
@@ -96,44 +94,33 @@ public class ApplicationListener implements ServletContextListener {
 				log("WARNING: HIBERNATE is not running!");
 			}
 
-			log("Session Listenter...: ");
-			new SessionListenerManager(modules).initialize();
-			log("Session Listenter...: OK ");
-
-			//Inicializa o gerenciador do Quartz (Agendador de Tarefas) caso solicitado.
+			//Start Quartz Manager (Task Scheduler) if QUARTZ_MODE = on
 			if (Params.get("QUARTZ_MODE").equals("on")) {
-				log("Iniciando Quartz...");
+				log("Quartz ...");
 				QuartzManager.initialize(modules);
-				log("Quartz Inicializado.");
+				log("Quartz OK");
 			}
 
-			//Inicializa os parâmetros de configuração de Email se solicitado.
+			//Start the params of email configuration
 			if (Params.get("EMAIL_ACTIVE").equals("true")) {
-				log("Configurando Email...: ");
+				log("Email Config ...");
 				MailConfig.initialize();
-				log("Config Email OK");
-			}
-
-			//Por padrão gera o arquivo taglib.tld com as tags dos módulos da aplicação
-			if (Params.get("GENERATE_TAGLIB").equals("true")) {
-				log("Iniciando criação da Taglib.");
-				(new TagLibBuilder(modules)).build();
-				log("Taglib criada com sucesso.");
+				log("Email Config OK");
 			}
 
 			if(!Is.empty(Params.get("AUTO_REDIRECT_DOMAIN")) && Params.get("AUTO_REDIRECT_DOMAIN").contains("://") ){
-				log("Auto Redirect Domain ON. Inicializando 'Static Paths'...");
-				Paths.initialize(context); //somente se o AUTO_REDIRECT_DOMAIN for completo com protocolo.
+				log("Auto Redirect Domain ON. Starting 'Static Paths'...");
+				Paths.initialize(context); //only if the AUTO_REDIRECT_DOMAIN is complete with protocol.
 			}else{
 				if(Params.get("DEPLOY_MODE").equals("production")){
 					if(Is.empty(Params.get("AUTO_REDIRECT_DOMAIN"))){
-						log("Auto Redirect Domain OFF. Prefira usar o parâmetro AUTO_REDIRECT_DOMAIN para melhorar a performance da aplicação.");
+						log("Auto Redirect Domain OFF. Consider the usage of the param AUTO_REDIRECT_DOMAIN in production environments.");
 					}
 				}
 				Paths.initialize();
 			}
 
-			//Compacta recursos web
+			//Compact Web Resource
 			String minifyMode = Params.get("MINIFY_RESOURCE_MODE");
 			if (!minifyMode.equals("none")) {  //none, js, css, both
 				log("MINIFY RESOURCE MODE = " + minifyMode);
@@ -154,25 +141,24 @@ public class ApplicationListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent evt) {
-		log("Parando: " + evt.getServletContext().getServletContextName());
+		log("Stopping: " + evt.getServletContext().getServletContextName());
 		if (Params.get("QUARTZ_MODE").equals("on")) {
 			try {
 				QuartzManager.shutdown();
-				log("Schedulers do Quartz parado.");
+				log("Quartz Schedulers stopped.");
 			} catch (SchedulerException ex) {
-				log("Erro ao tentar parar Schedulers do Quartz: " + ex.getMessage());
+				log("Quartz Schedulers ERROR: " + ex.getMessage());
 				DefaultExceptionLogger.getInstance().execute(ex);
 			}
 		}
 		if (HibernateManager.isRunning()) {
 			HibernateManager.shutdown();
 		}
-		log("Aplicação parada: " + evt.getServletContext().getServletContextName());
+		log("Application STOPPED: " + evt.getServletContext().getServletContextName());
 	}
 
 	/**
-	 * Mensagem de log padrão do listener.
-	 * @param logText
+	 * @param logText the log text message.
 	 */
 	private void log(String logText) {
 		System.out.println("[::" + contextName + "::] " + logText);

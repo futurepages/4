@@ -1,16 +1,16 @@
 package org.futurepages.core.install;
 
+import org.futurepages.core.config.ModulesAutomation;
+import org.futurepages.core.config.Params;
+import org.futurepages.core.persistence.Dao;
+import org.futurepages.core.persistence.HibernateManager;
+import org.futurepages.util.FileUtil;
+import org.futurepages.util.The;
+
 import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
-import org.futurepages.core.config.Params;
-
-import org.futurepages.core.persistence.Dao;
-import org.futurepages.core.persistence.HibernateManager;
-import org.futurepages.core.tags.build.ModulesAutomation;
-import org.futurepages.util.FileUtil;
-import org.futurepages.util.The;
 
 /**
  * Classe responsável pela automatização da instalação dos módulos.

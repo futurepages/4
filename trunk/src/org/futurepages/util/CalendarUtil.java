@@ -8,6 +8,10 @@ import org.futurepages.enums.MonthEnum;
 import org.futurepages.enums.UnitTimeEnum;
 import org.futurepages.util.iterator.months.MonthYear;
 
+/**
+ * @deprecated Use new jdk8 api for Dates and Time
+ */
+@Deprecated
 public class CalendarUtil {
 
 	private static final long millisecondsDayFactor = 86400000L;

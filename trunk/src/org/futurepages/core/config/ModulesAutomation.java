@@ -1,4 +1,4 @@
-package org.futurepages.core.tags.build;
+package org.futurepages.core.config;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
