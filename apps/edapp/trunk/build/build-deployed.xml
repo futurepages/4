@@ -20,22 +20,22 @@
 
 
 	<target name="-compile-vaadin-custom-themes">
-		<echo message="Copiando pasta 'Web' já compilada para '${target.deployed}'..."/>
+		<echo message="Copiando pasta 'Web' já compilada para '${basedir}/${target.deployed}'..."/>
 			<echo message="Compilando temas customizados ..."/>
-			<ant antfile="compile-theme.xml"/>
+			<ant antfile="build/compile-theme.xml"/>
 	</target>
 
 
 	<target name="-deploy-web" depends="-compile-vaadin-custom-themes">
-		<echo message="Copiando pasta 'Web' já compilada para '${target.deployed}'..."/>
-		<deployAntTask source="${webroot}" target="${target.deployed}/${target.deployed.webdirname}"  />
+		<echo message="Copiando pasta 'Web' já compilada para '${basedir}/${target.deployed}'..."/>
+		<deployAntTask source="${webroot}" target="${basedir}/${target.deployed}/${target.deployed.webdirname}"  />
 	</target>
 
 	<target name="-copy-conf" depends="-deploy-web">
 		<echo message="Atualizando web.xml para modo de Produção..."/>
 		<copy overwrite="true"
-		      file="${target.deployed}/conf/web.xml"
-		      todir="${target.deployed}/${target.deployed.webdirname}/WEB-INF"
+		      file="${basedir}/${target.deployed}/conf/web.xml"
+		      todir="${basedir}/${target.deployed}/${target.deployed.webdirname}/WEB-INF"
 		/>
 	</target>
 
