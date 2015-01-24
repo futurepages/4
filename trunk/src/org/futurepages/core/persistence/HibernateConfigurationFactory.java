@@ -15,9 +15,8 @@ import javax.persistence.Entity;
 
 import org.futurepages.core.persistence.annotations.View;
 import org.futurepages.core.config.Modules;
-import org.futurepages.core.config.Params;
+import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.DefaultExceptionLogger;
-import org.futurepages.exceptions.ConfigFileNotFoundException;
 import org.futurepages.exceptions.ModuleWithoutBeanDirException;
 import org.futurepages.util.ClassesUtil;
 import org.futurepages.util.EncodingUtil;
@@ -40,8 +39,7 @@ public class HibernateConfigurationFactory {
 	}
 
 	public File[] getModulesDirs() throws UnsupportedEncodingException {
-		File[] modulesDirs = (new File(getRootFileDir() + "/" + Params.MODULES_PATH)).listFiles();
-		return modulesDirs;
+		return  (new File(getRootFileDir() + "/" + Apps.MODULES_PATH)).listFiles();
 	}
 
 	public File getRootFileDir() {
@@ -49,7 +47,7 @@ public class HibernateConfigurationFactory {
 		try {
 			return new File(EncodingUtil.correctPath(classPath));
 		} catch (UnsupportedEncodingException ex) {
-			System.out.println("erro ao gerar rootDir " + ex.getMessage());
+			System.out.println("Error try refering to rootDir.");
 			DefaultExceptionLogger.getInstance().execute(ex);
 			return null;
 		}
@@ -58,7 +56,7 @@ public class HibernateConfigurationFactory {
 	/**
 	 * Retorna o mapa das configurações de cada schema do 'hibernate' na aplicação
 	 */
-	public Map<String, Configurations> getApplicationConfigurations() throws ConfigFileNotFoundException, UnsupportedEncodingException, FileNotFoundException, IOException {
+	public Map<String, Configurations> getApplicationConfigurations() throws IOException {
 
 		Map<String, Schema> schemasMap = new HashMap<String, Schema>();
 		File[] modulesDirs = getModulesDirs();
@@ -100,7 +98,7 @@ public class HibernateConfigurationFactory {
 				//System.out.println(ex.getMessage());
 			}
 		} else {
-			System.out.println("[ATENÇÃO] Conexão do Módulo Externo Desligado: '"+module.getName()+"'");
+			System.out.println("[WARNING] EXTERNAL MODULE CONNECTION IS OFF FOR MODULE '"+module.getName()+"'");
 		}
 	}
 
@@ -111,7 +109,7 @@ public class HibernateConfigurationFactory {
 	}
 
 	private Collection<Class<Object>> listBeansAnnotatedFromModule(File module) throws ModuleWithoutBeanDirException {
-		File beansDirectory = new File(module.getAbsolutePath() + "/" + Params.BEANS_PACK_NAME);
+		File beansDirectory = new File(module.getAbsolutePath() + "/" + Apps.HIBERNATE_ENTITIES_SUBPATH);
 		if (beansDirectory.listFiles() != null) {
 			return ClassesUtil.getInstance().listClassesFromDirectory(beansDirectory, getRootFileDir().getAbsolutePath(), null, Entity.class, true);
 		}
@@ -119,23 +117,25 @@ public class HibernateConfigurationFactory {
 	}
 
 	/**
-	 * Devolve o schemaId registrado na propriedade "hibernate.schemaId" e devolve o Properties.
-	 * Se "hibernate.schemaId" não for definido, devolve o moduleId.
+	 * When CONNECT_EXTERNAL_MODULES=true, retrieve registred schemaId by the "hibernate.schemaId" property to be the Dao Key for
+	 * that Module
+	 *
+	 * If "hibernate.schemaId" is undefined, the schemaId will be the moduleId.
 	 */
 	private String getSchemaId(File module, Properties properties, Map<String, Schema> schemasMap) throws FileNotFoundException, IOException {
 		boolean defaultModule = !Modules.hasOwnSchema(module);
-		if (defaultModule) { //internal
+		if (defaultModule) { //default database
 			if(schemasMap.get(DEFAULT)==null){
 				schemasMap.put(DEFAULT, new Schema());
-				String configPath = "/" + Params.CONFIGURATION_DIR_NAME + "/" + Params.BASE_HIBERNATE_PROPERTIES_FILE;
+				String configPath = "/" + Apps.CONTEXT_CONFIG_DIR_NAME + "/" + Apps.BASE_HIBERNATE_PROPERTIES_FILE;
 				String filePath = getRootFileDir().getAbsolutePath() + configPath;
 				InputStream inputStream = new FileInputStream(filePath);
 				properties.load(inputStream);
 				schemasMap.get(DEFAULT).properties = properties;
 			}
 			return DEFAULT;
-		} else if (Params.get("CONNECT_EXTERNAL_MODULES").equals("true")) {
-			String configPath = "/" + Params.CONFIGURATION_DIR_NAME + "/" + Params.BASE_HIBERNATE_PROPERTIES_FILE;
+		} else if (Apps.get("CONNECT_EXTERNAL_MODULES").equals("true")) {
+			String configPath = "/" + Apps.MODULE_CONFIG_DIR_NAME + "/" + Apps.BASE_HIBERNATE_PROPERTIES_FILE;
 			String filePath = module.getAbsolutePath() + configPath;
 			InputStream inputStream;
 			inputStream = new FileInputStream(filePath);

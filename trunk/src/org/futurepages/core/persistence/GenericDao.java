@@ -21,6 +21,13 @@ public class GenericDao extends HQLProvider {
 
 	private String schemaId;
 
+	private static GenericDao newInstance(){
+		return new GenericDao();
+	}
+
+	public static GenericDao newInstance(String schemaId){
+		return new GenericDao(schemaId);
+	}
 
 	GenericDao(){ this.schemaId = HibernateManager.DEFAULT; }
 
@@ -29,7 +36,7 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public Session session() {
-		return HibernateManager.getSession(schemaId);
+		return HibernateManager.getInstance().getSession(schemaId);
 	}
 
 	public void clearSession() {

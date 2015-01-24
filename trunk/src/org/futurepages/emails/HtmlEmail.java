@@ -17,7 +17,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
-import org.futurepages.core.config.Params;
+import org.futurepages.core.config.Apps;
 
 import org.futurepages.util.StringUtils;
 import org.futurepages.util.The;
@@ -213,7 +213,7 @@ public class HtmlEmail extends MultiPartEmail {
      */
 	@Override
     public void send() throws EmailException {
-		if (Params.get("EMAIL_ACTIVE").equals("true")) {
+		if (Apps.get("EMAIL_ACTIVE").equals("true")) {
 			try {
 				// if the email has attachments then the base type is mixed,
 				// otherwise it should be related

@@ -1,6 +1,6 @@
 package org.futurepages.util;
 
-import org.futurepages.core.config.Params;
+import org.futurepages.core.config.Apps;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class PDFUtil {
     }
 
     public static void html2pdf(InputStream input, OutputStream out) throws Exception {
-       html2pdf(input, out, Params.get("WEB_REAL_PATH")+"/"+Params.get("RESOURCE_PATH")+"/fonts/");
+       html2pdf(input, out, Apps.get("WEB_REAL_PATH")+"/"+ Apps.get("RESOURCE_PATH")+"/fonts/");
     }
 
     public static void html2pdf(InputStream input, OutputStream out, String pathFontDir) throws Exception {

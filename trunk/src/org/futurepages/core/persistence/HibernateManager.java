@@ -1,113 +1,119 @@
 package org.futurepages.core.persistence;
 
-import java.io.UnsupportedEncodingException;
+import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import org.futurepages.core.exception.DefaultExceptionLogger;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
-import org.futurepages.exceptions.ConfigFileNotFoundException;
 
 public class HibernateManager {
 
-	public static final String FACTORY_KEY = HibernateManager.DEFAULT;
 	public static final String DEFAULT = "default";
-	private static boolean running = false;
+	private boolean running = false;
 
-	private static Map<String, Configurations>       configurations;
-	private static Map<String, GenericDao>           genericDaos    = new HashMap<String,GenericDao>();
-	private static Map<String, SessionFactory>       factories      = new HashMap<String, SessionFactory>();
-	private static Map<String, ThreadLocal<Session>> sessionsTL     = new HashMap<String, ThreadLocal<Session>>();
+	private Map<String, Configurations>       configurations;
+	private Map<String, GenericDao>           genericDaos    = new HashMap<String,GenericDao>();
+	private Map<String, SessionFactory>       factories      = new HashMap<String, SessionFactory>();
+	private Map<String, ThreadLocal<Session>> sessionsTL     = new HashMap<String, ThreadLocal<Session>>();
+
+	private static HibernateManager INSTANCE;
 
 	/**
 	 * Inicialização Estática da Conexão do Hibernate com o(s) Banco(s) de Dados.
 	 */
-	static {
+	private HibernateManager() {
+		initResources();
+	}
+
+	private synchronized void initResources() {
+		HibernateConfigurationFactory hiberCfgFac = HibernateConfigurationFactory.getInstance();
 		try {
-			HibernateConfigurationFactory hiberCfgFac = HibernateConfigurationFactory.getInstance();
 			configurations = hiberCfgFac.getApplicationConfigurations();
 			if (!configurations.isEmpty()) {
 				for (String schemaId : configurations.keySet()) {
-					log("registering '"+schemaId+ "' schema.");
+					log("registering '" + schemaId + "' schema.");
 					Configuration config;
 					config = configurations.get(schemaId).getEntitiesConfig();
-					factories  .put(schemaId , config.buildSessionFactory());
-					sessionsTL .put(schemaId , new ThreadLocal<Session>());
-					genericDaos.put(schemaId , new GenericDao(schemaId));
+					factories.put(schemaId, config.buildSessionFactory());
+					sessionsTL.put(schemaId, new ThreadLocal<Session>());
+					genericDaos.put(schemaId, GenericDao.newInstance(schemaId));
 				}
 				running = true;
 			}
-		} catch (ConfigFileNotFoundException e) {
-			log("Arquivo de Configurações do hibernate não encontrado: " + e.getMessage());
-		} catch (UnsupportedEncodingException e) {
-			log("Não foi possível carregar as configurações hibernate: " + e.getMessage());
-			System.out.println(e.getMessage());
-		} catch (Exception ex) {
-			log("Erro Inesperado na inicialização do Hibernate: " + ex.getMessage());
-			DefaultExceptionLogger.getInstance().execute(ex);
+		} catch (Exception e) {
+			log("Hibernate couldn´t be started.: " + e.getMessage());
+			DefaultExceptionLogger.getInstance().execute(e);
 		}
 	}
 
-	public static SessionFactory getSessionFactory() {
+	public static HibernateManager getInstance(){
+		if(INSTANCE==null){
+			INSTANCE = new HibernateManager();
+		}
+		return INSTANCE;
+	}
+
+	public SessionFactory getSessionFactory() {
 		return factories.get(DEFAULT);
 	}
 
-	public static SessionFactory getSessionFactory(String sessionFactoryKey) {
+	public SessionFactory getSessionFactory(String sessionFactoryKey) {
 		return factories.get(sessionFactoryKey);
 	}
 
-	public static Configurations getConfigurations(String configurationKey) {
+	public Configurations getConfigurations(String configurationKey) {
 		return configurations.get(configurationKey);
 	}
 
-	public static Configurations getConfigurations() {
+	public Configurations getConfigurations() {
 		return getConfigurations(DEFAULT);
 	}
 
-	public static Map<String, Configurations> getConfigurationsMap() {
+	public Map<String, Configurations> getConfigurationsMap() {
 		return configurations;
 	}
 
-	static Session getSession() {
+	Session getSession() {
 		return getSession(DEFAULT);
 	}
 
-	static Session getSession(String schemaId) {
+	Session getSession(String schemaId) {
 		Session session = getSessionTL(schemaId).get();
 
 		if (session != null && session.isOpen()) {
 				return session;
 		}else{
-			if(session==null || !session.isOpen()) {
-				session = getSessionFactory(schemaId).openSession();
-				HibernateManager.getSessionTL(schemaId).set(session);
-			}
+			session = getSessionFactory(schemaId).openSession();
+			getSessionTL(schemaId).set(session);
 			return session;
 		}
 	}
 
-	static void setSessionFactory(String schemaId, SessionFactory sessionFactory) {
+	void setSessionFactory(String schemaId, SessionFactory sessionFactory) {
 		factories.put(schemaId, sessionFactory);
 	}
 
-	static ThreadLocal<Session> getSessionTL(String schemaId) {
+	ThreadLocal<Session> getSessionTL(String schemaId) {
 		return sessionsTL.get(schemaId);
 	}
 
 	public static boolean isRunning() {
-		return running;
+		return getInstance().running;
 	}
 
 	public static void shutdown() {
+		getInstance().doShutdown();
+	}
+
+	public void doShutdown() {
 		try {
-			log("killing sessions...");
+			log("Killing sessions...");
 			for (ThreadLocal<Session> sTL : sessionsTL.values()) {
 				if (sTL != null && sTL.get() != null) {//verifica se a sessao esta aberta se estiver fecha ela
 					if(sTL.get().isOpen()){
@@ -126,9 +132,9 @@ public class HibernateManager {
 			genericDaos.clear();
 			sessionsTL.clear();
 
-			log("sessions killed.");
+			log("Hibernate Sessions killed.");
 		} catch (Exception ex) {
-			log("Não foi possível matar hibernate-sessions:");
+			log("Impossible to Kill hibernate-sessions:");
 			DefaultExceptionLogger.getInstance().execute(ex);
 		}
 
@@ -146,19 +152,19 @@ public class HibernateManager {
         }
 	}
 
-	private static void log(String msg) {
-		System.out.println("[::hibernate::] " + msg);
+	private void log(String msg) {
+		System.out.println("   >> hibernate: "+msg);
 	}
 
-	static GenericDao getGenericDao(String schemaId) {
+	GenericDao getGenericDao(String schemaId) {
 		return genericDaos.get(schemaId);
 	}
 
-	static GenericDao getDefaultGenericDao(){
+	GenericDao getDefaultGenericDao(){
 		return genericDaos.get(DEFAULT);
 	}
 
-	public static void closeSessions() {
+	public void closeSessions() {
 		for(String schemaId : configurations.keySet()){
 			ThreadLocal<Session> sessionTL =  getSessionTL(schemaId);
 			Session session =sessionTL.get();

@@ -12,8 +12,8 @@ public class Modules {
      */
     public static void registerModule(File module) throws Exception {
         if (module.isDirectory()) {
-            String moduleName = Params.MODULES_PACK + "." + module.getName() + ".ModuleManager";
-            File moduleManagerFile = new File(Params.get("MODULES_CLASSES_REAL_PATH") + "/" + module.getName() + "/ModuleManager.class");
+            String moduleName = Apps.MODULES_PACK + "." + module.getName() + ".ModuleManager";
+            File moduleManagerFile = new File(Apps.get("MODULES_CLASSES_REAL_PATH") + "/" + module.getName() + "/ModuleManager.class");
             //Registra o Manager do Módulo, caso ele exista.
 //            if (moduleManagerFile.exists()) {
 //                Class<? extends AbstractApplicationManager> moduleAppManager = (Class<? extends AbstractApplicationManager>) Class.forName(moduleName);
@@ -46,7 +46,7 @@ public class Modules {
 
 
     public static boolean hasOwnSchema(File module) {
-        File hiberPropertiesFile = new File(StringUtils.concat(module.getAbsolutePath() , "/" , Params.CONFIGURATION_DIR_NAME ,"/" ,Params.BASE_HIBERNATE_PROPERTIES_FILE));
+        File hiberPropertiesFile = new File(StringUtils.concat(module.getAbsolutePath() , "/" , Apps.MODULE_CONFIG_DIR_NAME,"/" , Apps.BASE_HIBERNATE_PROPERTIES_FILE));
 		return hiberPropertiesFile.exists();
     }
 }

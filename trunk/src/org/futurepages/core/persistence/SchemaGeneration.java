@@ -10,7 +10,7 @@ public class SchemaGeneration {
 
 	public static void update(boolean justBeans) throws Exception  {
             log("Schema-Generation UPDATE ---- BEGIN ----");
-            SchemaUpdate schemaUpdate = new SchemaUpdate(HibernateManager.getConfigurations().getTablesConfig());
+            SchemaUpdate schemaUpdate = new SchemaUpdate(HibernateManager.getInstance().getConfigurations().getTablesConfig());
             schemaUpdate.execute(true, true);
 			
 
@@ -31,7 +31,7 @@ public class SchemaGeneration {
 
     public static void export() throws Exception  {
             log("Schema-Generation EXPORT ---- BEGIN ----");
-            SchemaExport schemaExport = new SchemaExport(HibernateManager.getConfigurations().getTablesConfig());
+            SchemaExport schemaExport = new SchemaExport(HibernateManager.getInstance().getConfigurations().getTablesConfig());
             schemaExport.create(true, true);
 			(new SchemaGeneratorsManager(ModuleUtil.getIstance().getModules())).execute();
 

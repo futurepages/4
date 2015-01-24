@@ -11,11 +11,7 @@ import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 
 /**
- * Quartz é a biblioteca utilizada pelo futurepages para realizar agendamentos
- * de execuções automáticas realizadas pelo sistema.
- *
- * QuartzManager gerencia os squedulers do Quartz.
- *
+ * //TODO comment...
  * @author leandro
  */
 public class QuartzManager {
@@ -33,11 +29,11 @@ public class QuartzManager {
 	}
 
 	public static void shutdown() throws SchedulerException {
-		System.out.println("Matando Jobs do Quartz");
+		System.out.println("Killing Quartz's Jobs...");
 		Collection<Scheduler> schedulers = schedulerFactory.getAllSchedulers();
 		for(Scheduler scheduler : schedulers){
 			scheduler.shutdown();
 		}
-		System.out.println("Jobs do Quartz mortos com sucesso.");
+		System.out.println("Quartz's Jobs successful killed.");
 	}
 }

@@ -3,7 +3,7 @@ package org.futurepages.util;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 
-import org.futurepages.core.config.Params;
+import org.futurepages.core.config.Apps;
 
 public class ModuleUtil {
 
@@ -18,10 +18,10 @@ public class ModuleUtil {
 	
 	public static String moduleId(Class klass){
 		String className = klass.getName();
-		if(!className.startsWith(Params.MODULES_PACK)){
+		if(!className.startsWith(Apps.MODULES_PACK)){
 			return null;
 		}
-		return The.firstTokenAfter(className, Params.MODULES_PACK , ".");
+		return The.firstTokenAfter(className, Apps.MODULES_PACK , ".");
 	}
 
 	public File[] getModules() throws UnsupportedEncodingException {
@@ -29,7 +29,7 @@ public class ModuleUtil {
 		if(modules == null){
 			getClassPath();
 			
-			File modulesDir = new File(rootDir + "/" + Params.MODULES_PATH);
+			File modulesDir = new File(rootDir + "/" + Apps.MODULES_PATH);
 			modules = modulesDir.listFiles();
 		}
 		return modules;

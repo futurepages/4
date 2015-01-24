@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.futurepages.core.config.Params;
 import org.futurepages.exceptions.NotModuleException;
 import org.futurepages.util.ClassesUtil;
 import org.futurepages.util.FileUtil;
@@ -76,7 +75,7 @@ public abstract class ModulesAutomation {
 	}
 
 	private String getClassPath() {
-		String classPath = Params.get("CLASSES_PATH");
+		String classPath = Apps.get("CLASSES_PATH");
 		if(Is.empty(classPath)){
 			try {
 				classPath = ModuleUtil.getClassPath();

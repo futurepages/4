@@ -1,11 +1,8 @@
 package org.futurepages.core.install;
 
 import org.futurepages.core.config.ModulesAutomation;
-import org.futurepages.core.config.Params;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HibernateManager;
-import org.futurepages.util.FileUtil;
-import org.futurepages.util.The;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
@@ -23,7 +20,7 @@ import java.util.Map;
  */
 public class InstallersManager extends ModulesAutomation {
 
-	private static final String INSTALL_DIR_NAME = "install";
+	private static final String INSTALL_DIR_NAME = "model/install";
 	private String installMode;
 
 	public InstallersManager(File[] modules, String installMode) {
@@ -54,40 +51,29 @@ public class InstallersManager extends ModulesAutomation {
 
 	/**
 	 *
-	 * Instalação do banco de dados.
-	 *
-	 * 1) Instala os Recursos (se houver: install.Resources)
-	 * 2) Instala dentro de uma mesma transação:
-	 * 3)	- Instala os módulos em ordem alfabética
-	 * 4)	- Dependendo do modo de instalação...
-	 *			- Instala os dados de exemplos da aplicação (se existir: install.Examples e (INSTALL_MODE = "examples" ou "on")
-	 *			- Instala os dados de produção  da aplicação (se existir: install.Production e INSTALL_MODE = "production")
-	 *			- Se estiver no modo "modules" não será instalado
-	 * @param modules
-	 * @throws Exception
-	 * @throws java.lang.Exception
-	 */
+	 * See Futurepages2 docs and translate to new situation.
+	 * */
 	private void install(File[] modules) throws Exception {
-		if (modules != null && !installMode.equals("off")) {
+		if (HibernateManager.isRunning() && modules != null && !installMode.equals("off")) {
 			try {
-				if (HibernateManager.isRunning()) {
-					Dao.beginTransaction();
-				}
+				Dao.beginTransaction();
 
 				//Initial Resources Installer
-				try {
-					Class resourcesInstaller = Class.forName(INSTALL_DIR_NAME + ".Resources");
-					log(">>> installer " + resourcesInstaller.getSimpleName() + " running...  ");
-					resourcesInstaller.newInstance();
-					log(">>>   Resources OK.");
-				} catch (ClassNotFoundException ex) {
-					log(">>> installer of Resources isn't present.");
-				}
+//				try {
+//					Class resourcesInstaller = Class.forName(INSTALL_DIR_NAME + ".Resources");
+//					log(">>> installer " + resourcesInstaller.getSimpleName() + " running...  ");
+//					resourcesInstaller.newInstance();
+//					log(">>>   Resources OK.");
+//				} catch (ClassNotFoundException ex) {
+//					log(">>> installer of Resources isn't present.");
+//				}
 
-				if (installMode.startsWith("script:")) {
-					System.out.println("Installing data from script: "+Params.get("CLASSES_REAL_PATH") + "/install/" + installMode.split("script\\:")[1]+"...");
-					Dao.executeSQLs(false,FileUtil.getStringLines(Params.get("CLASSES_REAL_PATH")			   + "/install/" + installMode.split("script\\:")[1]));
-				} else {
+				//TODO rever este código... IMPLEMENTAR para o pacote 'apps'
+//				if (installMode.startsWith("script:")) {
+//					System.out.println("Installing data from script: "+Params.get("CLASSES_REAL_PATH") + "/install/" + installMode.split("script\\:")[1]+"...");
+//					Dao.executeSQLs(false,FileUtil.getStringLines(Params.get("CLASSES_REAL_PATH")+ "/install/" + installMode.split("script\\:")[1]));
+//				} else {
+				if(installMode.equals("modules") || installMode.equals("on")){
 					Map<String, List<Class<Installer>>> classes = getModulesDirectoryClasses(Installer.class, null);
 					for (String moduleName : classes.keySet()) {
 						log("module '" + moduleName + "' installing...");
@@ -100,32 +86,33 @@ public class InstallersManager extends ModulesAutomation {
 						}
 						log("module '" + moduleName + "' installed.");
 					}
-					//ExtraInstaller
-					String extraInstaller = null;
-					if (!installMode.equals("modules")) {
-						if (installMode.equals("on")) {
-							extraInstaller = "Examples";
-						} else {
-							extraInstaller = The.capitalizedWord(installMode);
-						}
-					}
-
-					if (extraInstaller != null) {
-						try {
-							Class exInstallerClass = Class.forName(INSTALL_DIR_NAME + "." + extraInstaller);
-							log(">>> " + extraInstaller + " installing...  ");
-							Installer extras = (Installer) exInstallerClass.newInstance();
-							log(">>> " + extras + " installed in " + extras.totalTime() + " secs.");
-						} catch (ClassNotFoundException ex) {
-							log(">>> installer of " + extraInstaller + " not present.");
-						}
-					}
 				}
+// TODO IMPLEMENTAR O INSTALL DAS APPS FORA DOS MODULOS.
+//					}
+//					//ExtraInstaller
+//					String extraInstaller = null;
+//					if (!installMode.equals("modules")) {
+//						if (installMode.equals("on")) {
+//							extraInstaller = "Examples";
+//						} else {
+//							extraInstaller = The.capitalizedWord(installMode);
+//						}
+//					}
 
-				if (HibernateManager.isRunning()) {
-					Dao.commitTransaction();
-					Dao.close();
-				}
+//					if (extraInstaller != null) {
+//						try {
+//							Class exInstallerClass = Class.forName(INSTALL_DIR_NAME + "." + extraInstaller);
+//							log(">>> " + extraInstaller + " installing...  ");
+//							Installer extras = (Installer) exInstallerClass.newInstance();
+//							log(">>> " + extras + " installed in " + extras.totalTime() + " secs.");
+//						} catch (ClassNotFoundException ex) {
+//							log(">>> installer of " + extraInstaller + " not present.");
+//						}
+//					}
+//				}
+				Dao.commitTransaction();
+				Dao.close();
+
 			} catch (Exception ex) {
 				Dao.rollBackTransaction();
 				throw ex;

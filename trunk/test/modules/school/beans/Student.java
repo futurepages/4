@@ -1,4 +1,4 @@
-package modules.escola.beans;
+package modules.school.beans;
 
 import java.io.Serializable;
 
@@ -9,14 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Aluno implements Serializable{
+public class Student implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
 	@ManyToOne
-	private Turma turma;
+	private Course course;
 
 	public Long getId() {
 		return id;
@@ -26,12 +26,12 @@ public class Aluno implements Serializable{
 		this.id = id;
 	}
 
-	public Turma getTurma() {
-		return turma;
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setTurma(Turma turma) {
-		this.turma = turma;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 	
 }
