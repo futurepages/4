@@ -1,9 +1,0 @@
-[Migrando para o Futurepages2]
-- prefixo de tags: mtw -> fpg
-- dao().metodo() passa a ser Dao.metodo()
-- tr_save() -> save()
-- tr_update() -> update()
-- save() -> saveTransaction()
-- update() -> updateTransaction()
-- <mtw:box1> , <mtw:box2> , etc... não existem. ( utilizar <fpg:box theme="whiteOne"/> por exemplo  )
-- paginateList() -> paginationSlice()
