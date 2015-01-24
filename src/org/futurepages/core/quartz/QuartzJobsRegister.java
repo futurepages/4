@@ -1,6 +1,7 @@
 package org.futurepages.core.quartz;
 
 import org.futurepages.core.config.ModulesAutomation;
+import org.futurepages.core.config.Apps;
 import org.futurepages.exceptions.NotModuleException;
 import org.quartz.Job;
 import org.quartz.JobDetail;
@@ -16,7 +17,7 @@ import java.util.Map;
 public class QuartzJobsRegister extends ModulesAutomation {
 
 	public QuartzJobsRegister(File[] modules) {
-		super(modules, "jobs");
+		super(modules, Apps.MODULE_JOBS_SUBPATH);
 	}
 
 	public void register() throws ClassNotFoundException, SchedulerException, ParseException, NotModuleException{

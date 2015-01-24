@@ -1,6 +1,6 @@
 package org.futurepages.core.path;
 
-import org.futurepages.core.config.Params;
+import org.futurepages.core.config.Apps;
 import javax.servlet.http.HttpServletRequest;
 import org.futurepages.util.The;
 
@@ -29,30 +29,23 @@ public class Paths {
 	//#### ESCOPO DINÂMICO ########################################################################
 
     public String getModule(HttpServletRequest req,String module) {
-        return getContext(req)+"/"+Params.MODULES_PATH+"/"+((module!=null)?module:"");
+        return getContext(req)+"/"+ Apps.MODULES_PATH+"/"+((module!=null)?module:"");
     }
 
     public String getModuleAction(HttpServletRequest req, String moduleId) {
-        if(Params.get("PRETTY_URL").equals("true")){
-            return getContext(req)+"/"+moduleId;
-        }
-        return getModule(req,moduleId);
+        return getContext(req)+"/"+moduleId;
     }
 
     public String getResource(HttpServletRequest req) {
-        return The.concat(getContext(req),"/",Params.get("RESOURCE_PATH"));
+        return The.concat(getContext(req),"/", Apps.get("RESOURCE_PATH"));
     }
 
     public String getResource(HttpServletRequest req, String module) {
-        return The.concat(getModule(req,module),"/",Params.get("RESOURCE_PATH"));
-    }
-
-    public String getTheme(HttpServletRequest req){
-        return getTemplate(req)+"/"+Params.get("THEMES_DIR_NAME")+"/"+Params.get("THEME");
+        return The.concat(getModule(req,module),"/", Apps.get("RESOURCE_PATH"));
     }
 
     public String getTemplate(HttpServletRequest req){
-        return getContext(req)+"/"+Params.TEMPLATE_PATH;
+        return getContext(req)+"/"+ Apps.TEMPLATE_PATH;
     }
 
     public String getContext(HttpServletRequest req){
@@ -64,7 +57,7 @@ public class Paths {
     }
 
 	public String getTemplate(HttpServletRequest req, String module) {
-		return (module==null? getTemplate(req) : getModule(req, module)+"/"+Params.TEMPLATE_PATH);
+		return (module==null? getTemplate(req) : getModule(req, module)+"/"+ Apps.TEMPLATE_PATH);
 	}
 
 	
@@ -98,14 +91,6 @@ public class Paths {
      */
     public static String resource(HttpServletRequest req, String module) {
         return INSTANCE.getResource(req,module);
-    }
-
-    /**
-     * @param req Requisição
-     * @return a url completa da pasta de temas da aplicação
-     */
-    public static String theme(HttpServletRequest req){
-        return INSTANCE.getTheme(req);
     }
 
     /**

@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-import org.futurepages.core.config.Params;
+import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 
 /**
@@ -17,10 +17,10 @@ import org.futurepages.core.exception.DefaultExceptionLogger;
 public class JavaScriptMinifier {
 
 	public void execute(List<File> jsFiles) throws IOException {
-		File alreadyCompressed = new File(Params.get("WEB_REAL_PATH") + "/META-INF/JS_COMPRESSED");
+		File alreadyCompressed = new File(Apps.get("WEB_REAL_PATH") + "/META-INF/JS_COMPRESSED");
 		if (!alreadyCompressed.exists()) { //só comprime se não tiver comprimido ainda.
 			alreadyCompressed.createNewFile();
-			int pathInit = Params.get("WEB_REAL_PATH").length() - 1;
+			int pathInit = Apps.get("WEB_REAL_PATH").length() - 1;
 			FileWriter resultFileWriter = new FileWriter(alreadyCompressed);
 			for (File f : jsFiles) {
 				FileInputStream fis = null;

@@ -1,7 +1,7 @@
 package org.futurepages.core.path;
 
 import javax.servlet.http.HttpServletRequest;
-import org.futurepages.core.config.Params;
+import org.futurepages.core.config.Apps;
 import org.futurepages.util.The;
 
 /**
@@ -22,14 +22,13 @@ public class StaticPaths extends Paths {
 	private String themePath;
 
 	public StaticPaths(String context) {
-		hostPath = Params.get("AUTO_REDIRECT_DOMAIN");
+		hostPath = Apps.get("AUTO_REDIRECT_DOMAIN");
 		contextPath = The.concat("/",context);
-		modulePath = The.concat(contextPath,"/",Params.MODULES_PATH,"/");
-		modulesActionPath = (Params.get("PRETTY_URL").equals("true")) ? The.concat(contextPath,"/") : modulePath;
-		resourceInternalPath =  Params.get("RESOURCE_PATH");
+		modulePath = The.concat(contextPath,"/", Apps.MODULES_PATH,"/");
+		modulesActionPath = The.concat(contextPath,"/");
+		resourceInternalPath =  Apps.get("RESOURCE_PATH");
 		resourcePath =  The.concat(contextPath,"/",resourceInternalPath);
-		templatePath = The.concat(contextPath,"/",Params.TEMPLATE_PATH);
-		themePath =  The.concat(templatePath,"/",Params.get("THEMES_DIR_NAME"),"/",Params.get("THEME"));
+		templatePath = The.concat(contextPath,"/", Apps.TEMPLATE_PATH);
 
 	}
 
@@ -58,11 +57,6 @@ public class StaticPaths extends Paths {
         return templatePath;
     }
 
-	@Override
-    public String getTheme(HttpServletRequest req){
-        return themePath;
-    }
-
 
 	@Override
     public String getHost(HttpServletRequest req){
@@ -71,6 +65,6 @@ public class StaticPaths extends Paths {
 
 	@Override
 	public String getTemplate(HttpServletRequest req, String module) {
-		return (module==null? getTemplate(req) : The.concat(modulePath,module,"/",Params.TEMPLATE_PATH));
+		return (module==null? getTemplate(req) : The.concat(modulePath,module,"/", Apps.TEMPLATE_PATH));
 	}
 }

@@ -3,7 +3,7 @@ package org.futurepages.util.template.simpletemplate.template;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.futurepages.core.config.Params;
+import org.futurepages.core.config.Apps;
 import org.futurepages.util.template.simpletemplate.util.ContextTemplateTag;
 
 /**
@@ -60,9 +60,9 @@ public class TemplateBlockBase extends AbstractTemplateBlock {
 
 	public void eval(Map<String, Object> params, TemplateWriter sb) {
 		HashMap<String, Object> auxMap = new HashMap<String,Object>();
-		Params.getParamsMap();
-		for(String key : Params.getParamsMap().keySet()){
-			auxMap.put(key, Params.get(key));
+		Apps.getInstance().getParamsMap();
+		for(String key : Apps.getInstance().getParamsMap().keySet()){
+			auxMap.put(key, Apps.get(key));
 		}
 		for(String key : params.keySet()){
 			auxMap.put(key, params.get(key));

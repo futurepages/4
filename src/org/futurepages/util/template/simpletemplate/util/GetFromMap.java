@@ -1,7 +1,7 @@
 package org.futurepages.util.template.simpletemplate.util;
 
 import java.util.Map;
-import org.futurepages.core.config.Params;
+import org.futurepages.core.config.Apps;
 import org.futurepages.util.Is;
 import org.futurepages.util.ReflectionUtil;
 
@@ -21,7 +21,7 @@ public class GetFromMap {
 		public String getParamValue(String matchedVar, Map<String,Object> mapValues){
 			String key = matchedVar.substring(2, matchedVar.length()-1);
 			Object value = getValue(key, mapValues);
-			return (value==null? (Params.get(key)!=null ? Params.get(key) : "") : value.toString());
+			return (value==null? (Apps.get(key)!=null ? Apps.get(key) : "") : value.toString());
 		}
 
 		@Override

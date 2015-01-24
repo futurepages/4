@@ -1,4 +1,4 @@
-package modules.escola.beans;
+package modules.school.beans;
 
 import java.io.Serializable;
 
@@ -8,13 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Turma implements Serializable{
+public class Course implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
-	private String nome;
+	private String name;
 
 	public long getId() {
 		return id;
@@ -24,12 +24,12 @@ public class Turma implements Serializable{
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

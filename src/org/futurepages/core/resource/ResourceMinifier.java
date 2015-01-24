@@ -4,7 +4,7 @@ package org.futurepages.core.resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import org.futurepages.core.config.Params;
+import org.futurepages.core.config.Apps;
 import org.futurepages.util.FileUtil;
 
 /**
@@ -16,7 +16,7 @@ public class ResourceMinifier {
 	public void execute(String minifyMode) {
 		boolean js = (minifyMode.equals("js")||minifyMode.equals("both"));
 		boolean css = (minifyMode.equals("css")||minifyMode.equals("both"));
-		File webDir = new File(Params.get("WEB_REAL_PATH"));
+		File webDir = new File(Apps.get("WEB_REAL_PATH"));
 
 		if(js){
 			List<File> jsFiles = FileUtil.listFilesFromDirectory(webDir, true,".*\\.js");

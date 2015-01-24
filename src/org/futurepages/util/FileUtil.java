@@ -538,9 +538,20 @@ public class FileUtil {
 	}
 
 	public File getSubFile(File file, String name) {
-		for (File sub : file.listFiles()) {
-			if(sub.getName().equals(name)){
-				return sub;
+		if(file!=null){
+			File[] files = file.listFiles();
+			for (File sub : files) {
+				if (sub.getName().equals(name)) {
+					return sub;
+				} else if (name.startsWith(sub.getName() + "/")) {
+					String newName = name.split("/")[0];
+					newName = name.replaceFirst(newName+"/","");
+					return getSubFile(sub, newName);
+				} else if (name.startsWith(sub.getName() + "\\")) {
+					String newName = name.split("\\\\")[0];
+					newName = name.replaceFirst(newName+"\\\\","");
+					return getSubFile(sub, newName);
+				}
 			}
 		}
 		return null;
