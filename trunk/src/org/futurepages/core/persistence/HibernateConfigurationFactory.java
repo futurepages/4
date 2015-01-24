@@ -13,7 +13,7 @@ import java.util.Properties;
 
 import javax.persistence.Entity;
 
-import org.futurepages.annotations.View;
+import org.futurepages.core.persistence.annotations.View;
 import org.futurepages.core.config.Modules;
 import org.futurepages.core.config.Params;
 import org.futurepages.core.exception.DefaultExceptionLogger;

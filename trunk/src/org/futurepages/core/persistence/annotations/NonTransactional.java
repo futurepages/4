@@ -1,4 +1,4 @@
-package org.futurepages.annotations;
+package org.futurepages.core.persistence.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
