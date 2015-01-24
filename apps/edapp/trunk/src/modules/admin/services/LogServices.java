@@ -1,9 +1,9 @@
-package modules.admin.services;
+package modules.admin.model.services;
 
 import java.util.Calendar;
-import modules.admin.beans.Log;
-import modules.admin.beans.User;
-import modules.admin.enums.LogType;
+import modules.admin.model.entities.Log;
+import modules.admin.model.entities.User;
+import modules.admin.model.entities.enums.LogType;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.persistence.Dao;
 

@@ -1,16 +1,16 @@
-package modules.admin.install;
+package modules.admin.model.install;
 
 
-import modules.admin.beans.Param;
-import modules.admin.beans.User;
-import modules.admin.core.AdminConstants;
-import modules.admin.dao.ModuleDao;
-import modules.admin.dao.ProfileDao;
-import modules.admin.enums.AdminProfilesEnum;
-import modules.admin.enums.AdminRolesEnum;
-import modules.admin.enums.ParamEnum;
-import modules.admin.enums.ParamValueType;
-import org.futurepages.core.config.Params;
+import modules.admin.model.entities.Param;
+import modules.admin.model.entities.User;
+import modules.admin.model.core.AdminConstants;
+import modules.admin.model.dao.ModuleDao;
+import modules.admin.model.dao.ProfileDao;
+import modules.admin.model.entities.enums.AdminProfilesEnum;
+import modules.admin.model.entities.enums.AdminRolesEnum;
+import modules.admin.model.entities.enums.ParamEnum;
+import modules.admin.model.entities.enums.ParamValueType;
+import org.futurepages.core.config.Apps;
 
 import org.futurepages.core.install.Installer;
 import org.futurepages.core.persistence.Dao;
@@ -33,7 +33,7 @@ public class AdminInstaller extends Installer implements AdminConstants {
         userAdmin.setFullName("Administrador Padrão do Sistema");
         userAdmin.setEmail("admin@admin.com");
 		
-		if(Params.get("DEPLOY_MODE").equals("none")){
+		if(Apps.get("DEPLOY_MODE").equals("none")){
 			userAdmin.setPassword("admin.senha");
 		}else{
 			userAdmin.setPassword("admin.user#temp.pswd");

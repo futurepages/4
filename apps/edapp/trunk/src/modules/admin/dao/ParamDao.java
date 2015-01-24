@@ -1,11 +1,11 @@
-package modules.admin.dao;
+package modules.admin.model.dao;
 
 import java.util.List;
 
 import org.futurepages.core.persistence.Dao;
-import modules.admin.beans.Param;
-import modules.admin.enums.ParamEnum;
-import modules.admin.enums.ParamValueType;
+import modules.admin.model.entities.Param;
+import modules.admin.model.entities.enums.ParamEnum;
+import modules.admin.model.entities.enums.ParamValueType;
 import org.futurepages.core.pagination.PaginationSlice;
 import org.futurepages.core.persistence.HQLProvider;
 import org.futurepages.util.Is;

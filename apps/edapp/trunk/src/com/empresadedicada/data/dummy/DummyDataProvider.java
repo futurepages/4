@@ -43,9 +43,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
-import modules.admin.exceptions.ExpiredPasswordException;
-import modules.admin.exceptions.InvalidUserOrPasswordException;
-import modules.admin.services.UserServices;
+import modules.admin.model.exceptions.ExpiredPasswordException;
+import modules.admin.model.exceptions.InvalidUserOrPasswordException;
+import modules.admin.model.services.UserServices;
 
 /**
  * A dummy implementation for the backend API.
@@ -133,7 +133,6 @@ public class DummyDataProvider implements DataProvider, Serializable {
                                 + "/movies-fallback.txt"));
                     }
                 } else {
-                    System.out.println(baseDirectory);
                     json = readJsonFromFile(new File(baseDirectory
                             + "/movies-fallback.txt"));
                 }
@@ -388,11 +387,11 @@ public class DummyDataProvider implements DataProvider, Serializable {
     public User authenticate(String userName, String password) {
         User user = new User();
 
-        modules.admin.beans.User tryUser = new modules.admin.beans.User();
+        modules.admin.model.entities.User tryUser = new modules.admin.model.entities.User();
         tryUser.setAccessKey(userName);
         tryUser.setPlainPassword(password);
         try {
-            modules.admin.beans.User userAuth = UserServices.authenticatedAndDetachedUser(tryUser);
+            modules.admin.model.entities.User userAuth = UserServices.authenticatedAndDetachedUser(tryUser);
             String[] namesOfName = userAuth.getFullName().split(" ");
             user.setFirstName(namesOfName[0]);
             user.setLastName(namesOfName[namesOfName.length-1]);

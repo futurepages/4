@@ -1,10 +1,10 @@
-package modules.admin.dao;
+package modules.admin.model.dao;
 
 import java.util.List;
-import modules.admin.beans.User;
+import modules.admin.model.entities.User;
 import org.futurepages.core.persistence.Dao;
-import modules.admin.beans.Module;
-import modules.admin.core.AdminConstants;
+import modules.admin.model.entities.Module;
+import modules.admin.model.core.AdminConstants;
 import org.futurepages.core.persistence.HQLProvider;
 import org.futurepages.util.Is;
 

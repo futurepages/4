@@ -1,9 +1,9 @@
-package modules.admin.dao;
+package modules.admin.model.dao;
 
 import java.util.Calendar;
 import java.util.List;
-import modules.admin.beans.Log;
-import modules.admin.enums.LogType;
+import modules.admin.model.entities.Log;
+import modules.admin.model.entities.enums.LogType;
 import org.futurepages.core.admin.DefaultUser;
 import org.futurepages.core.pagination.PaginationSlice;
 import org.futurepages.core.persistence.Dao;

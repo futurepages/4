@@ -2,6 +2,7 @@ package com.empresadedicada.view;
 
 import com.empresadedicada.event.EDEvent.UserLoginRequestedEvent;
 import com.empresadedicada.event.EDEventBus;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
@@ -69,7 +70,7 @@ public class LoginView extends VerticalLayout {
         final Button signin = new Button("Sign In");
         signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
         signin.setClickShortcut(KeyCode.ENTER);
-        signin.focus();
+//        signin.focus();
 
         fields.addComponents(username, password, signin);
         fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
@@ -78,6 +79,7 @@ public class LoginView extends VerticalLayout {
             EDEventBus.post(new UserLoginRequestedEvent(username.getValue(), password.getValue()));
         }
         );
+        username.focus();
         return fields;
     }
 

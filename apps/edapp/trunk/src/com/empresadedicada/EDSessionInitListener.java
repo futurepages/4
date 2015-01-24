@@ -27,17 +27,17 @@ public class EDSessionInitListener implements SessionInitListener {
                         .attr("content",
                                 "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no");
                 head.appendElement("meta")
-                        .attr("name", "apple-mobile-web-app-capable")
+                        .attr("name", "apple-mobile-web-apps-capable")
                         .attr("content", "yes");
                 head.appendElement("meta")
-                        .attr("name", "apple-mobile-web-app-status-bar-style")
+                        .attr("name", "apple-mobile-web-apps-status-bar-style")
                         .attr("content", "black-translucent");
 
                 String contextPath = response.getRequest().getContextPath();
 
                 head.appendElement("link")
                         .attr("rel", "apple-touch-icon")
-                        .attr("href", contextPath + "/VAADIN/themes/dashboard/img/app-icon.png");
+                        .attr("href", contextPath + "/VAADIN/themes/dashboard/img/apps-icon.png");
 
             }
 

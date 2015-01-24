@@ -1,4 +1,4 @@
-package modules.admin.validators;
+package modules.admin.model.validators;
 
 import edu.vt.middleware.dictionary.ArrayWordList;
 import edu.vt.middleware.dictionary.WordListDictionary;
@@ -18,9 +18,9 @@ import edu.vt.middleware.password.WhitespaceRule;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import modules.admin.beans.User;
-import modules.admin.core.AdminConstants;
-import modules.admin.dao.UserDao;
+import modules.admin.model.entities.User;
+import modules.admin.model.core.AdminConstants;
+import modules.admin.model.dao.UserDao;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.validation.Validator;
 import org.futurepages.util.FileUtil;

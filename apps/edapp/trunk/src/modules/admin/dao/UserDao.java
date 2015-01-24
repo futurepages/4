@@ -1,11 +1,9 @@
-package modules.admin.dao;
+package modules.admin.model.dao;
 
-import modules.admin.beans.User;
+import modules.admin.model.entities.User;
 import org.futurepages.core.pagination.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
-import org.futurepages.core.persistence.HQLProvider;
 import org.futurepages.core.persistence.SpecificDao;
-import sun.security.jca.GetInstance;
 
 import java.util.List;
 

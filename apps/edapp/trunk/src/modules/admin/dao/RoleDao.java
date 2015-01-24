@@ -1,12 +1,12 @@
-package modules.admin.dao;
+package modules.admin.model.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import modules.admin.beans.Role;
-import modules.admin.beans.User;
-import modules.admin.core.AdminConstants;
+import modules.admin.model.entities.Role;
+import modules.admin.model.entities.User;
+import modules.admin.model.core.AdminConstants;
 
 import org.futurepages.core.admin.DefaultRole;
 import org.futurepages.core.persistence.Dao;

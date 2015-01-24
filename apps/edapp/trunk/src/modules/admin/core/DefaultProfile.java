@@ -1,5 +1,5 @@
 
-package modules.admin.core;
+package modules.admin.model.core;
 
 /**
  *

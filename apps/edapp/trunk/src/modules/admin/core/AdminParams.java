@@ -1,9 +1,9 @@
-package modules.admin.core;
+package modules.admin.model.core;
 
 import java.util.HashMap;
 import java.util.List;
-import modules.admin.beans.Param;
-import modules.admin.dao.ParamDao;
+import modules.admin.model.entities.Param;
+import modules.admin.model.dao.ParamDao;
 
 
 public class AdminParams<K, V> extends HashMap<String,Object> {

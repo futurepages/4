@@ -1,12 +1,12 @@
-package modules.admin.core;
+package modules.admin.model.core;
 
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import modules.admin.beans.Log;
-import modules.admin.enums.LogType;
+import modules.admin.model.entities.Log;
+import modules.admin.model.entities.enums.LogType;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.util.DateUtil;

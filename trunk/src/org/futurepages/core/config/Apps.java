@@ -29,8 +29,8 @@ public class Apps {
 	public static final  String CONTEXT_CONFIG_DIR_NAME         = "conf";
 	public static final  String MODULE_CONFIG_DIR_NAME          = "app-conf";
 	public static final  String MODULE_JOBS_SUBPATH             = "control/jobs";
-    public static final  String HIBERNATE_ENTITIES_SUBPATH      = "model/entity";
-    public static final  String HIBERNATE_ENTITIES_SUBPACK      = "model.entity";
+    public static final  String HIBERNATE_ENTITIES_SUBPATH      = "model/entities";
+    public static final  String HIBERNATE_ENTITIES_SUBPACK      = "model.entities";
 	public static final  String TEMPLATE_PATH                   = "template";
 	public static final  String BASE_HIBERNATE_PROPERTIES_FILE  = "hibernate.properties";
 
@@ -139,7 +139,7 @@ public class Apps {
 		paramsMap.put("CONTEXT_NAME", contextName);
 
 		paramsMap.put("EMAIL_CHARSET", "UTF_8");
-		paramsMap.put("MINIFY_RESOURCE_MODE", "none"); //none, css, js, both //TODO rever esta funcionalidade se precisa continuar
+//		paramsMap.put("MINIFY_RESOURCE_MODE", "none"); //none, css, js, both //TODO rever esta funcionalidade se precisa continuar
 	}
 
 

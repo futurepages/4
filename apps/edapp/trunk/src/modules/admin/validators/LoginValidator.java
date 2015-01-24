@@ -1,6 +1,6 @@
-package modules.admin.validators;
+package modules.admin.model.validators;
 
-import modules.admin.beans.User;
+import modules.admin.model.entities.User;
 import org.futurepages.core.validation.Validator;
 import org.futurepages.errors.UninformedFieldsError;
 import org.futurepages.util.Is;

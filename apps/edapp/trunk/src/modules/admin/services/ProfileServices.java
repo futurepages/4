@@ -1,7 +1,7 @@
-package modules.admin.services;
+package modules.admin.model.services;
 
-import modules.admin.beans.Profile;
-import modules.admin.beans.Role;
+import modules.admin.model.entities.Profile;
+import modules.admin.model.entities.Role;
 import org.futurepages.core.persistence.Dao;
 
 /**

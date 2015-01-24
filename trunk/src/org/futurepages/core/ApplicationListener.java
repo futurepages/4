@@ -74,9 +74,10 @@ public class ApplicationListener implements ServletContextListener {
             ServletRegistration.Dynamic d = context.addServlet("EDServlet", s);
 			context.getAttributeNames();
 			context.setInitParameter("productionMode",String.valueOf(!Apps.devMode())); // for VAADIN Production Mode
-			System.out.println("vaadin-productionMode: " + context.getInitParameter("productionMode"));
 			d.setInitParameter("UI", "com.empresadedicada.EDUI");
             d.addMapping("/*");
+
+			log("vaadin-productionMode: " + context.getInitParameter("productionMode"));
 	}
 
 	// TODO REVER SE AINDA SERÁ NECESSÁRIO...

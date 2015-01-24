@@ -1,16 +1,16 @@
-package modules.admin.services;
+package modules.admin.model.services;
 
-import modules.admin.beans.Log;
-import modules.admin.beans.Profile;
-import modules.admin.beans.User;
-import modules.admin.core.AdminConstants;
-import modules.admin.dao.ProfileDao;
-import modules.admin.dao.UserDao;
-import modules.admin.enums.AdminRolesEnum;
-import modules.admin.enums.LogType;
-import modules.admin.exceptions.ExpiredPasswordException;
-import modules.admin.exceptions.DisabledUserException;
-import modules.admin.exceptions.InvalidUserOrPasswordException;
+import modules.admin.model.entities.Log;
+import modules.admin.model.entities.Profile;
+import modules.admin.model.entities.User;
+import modules.admin.model.core.AdminConstants;
+import modules.admin.model.dao.ProfileDao;
+import modules.admin.model.dao.UserDao;
+import modules.admin.model.entities.enums.AdminRolesEnum;
+import modules.admin.model.entities.enums.LogType;
+import modules.admin.model.exceptions.ExpiredPasswordException;
+import modules.admin.model.exceptions.DisabledUserException;
+import modules.admin.model.exceptions.InvalidUserOrPasswordException;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.util.Is;
 
@@ -31,8 +31,8 @@ public class UserServices {
 	 * usuario/senha inválido
 	 * inativado
 	 * 
-	 * @throws modules.admin.exceptions.InvalidUserOrPasswordException
-	 * @throws modules.admin.exceptions.DisabledUserException
+	 * @throws modules.admin.model.exceptions.InvalidUserOrPasswordException
+	 * @throws modules.admin.model.exceptions.DisabledUserException
 	 */
 	public static User authenticatedUser(User formUser) throws InvalidUserOrPasswordException, ExpiredPasswordException {
 		final boolean accessByMail = Is.validMail(formUser.getAccessKey());

@@ -1,10 +1,10 @@
 
-package modules.admin.dao;
+package modules.admin.model.dao;
 
 import java.util.List;
-import modules.admin.beans.Profile;
-import modules.admin.core.DefaultProfile;
-import modules.admin.enums.AdminProfilesEnum;
+import modules.admin.model.entities.Profile;
+import modules.admin.model.core.DefaultProfile;
+import modules.admin.model.entities.enums.AdminProfilesEnum;
 import org.futurepages.core.persistence.Dao;
 
 /**

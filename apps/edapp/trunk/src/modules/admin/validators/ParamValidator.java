@@ -1,7 +1,7 @@
-package modules.admin.validators;
+package modules.admin.model.validators;
 
-import modules.admin.beans.Param;
-import modules.admin.enums.ParamValueType;
+import modules.admin.model.entities.Param;
+import modules.admin.model.entities.enums.ParamValueType;
 import org.futurepages.core.validation.Validator;
 
 public class ParamValidator extends Validator {

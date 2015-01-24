@@ -1,8 +1,8 @@
-package modules.admin.validators;
+package modules.admin.model.validators;
 
 import java.util.List;
-import modules.admin.beans.Profile;
-import modules.admin.dao.ProfileDao;
+import modules.admin.model.entities.Profile;
+import modules.admin.model.dao.ProfileDao;
 import org.apache.commons.collections.CollectionUtils;
 import org.futurepages.core.validation.Validator;
 import org.futurepages.util.Is;

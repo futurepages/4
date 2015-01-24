@@ -1,4 +1,4 @@
-package modules.admin.exceptions;
+package modules.admin.model.exceptions;
 
 //import modules.sistema.beans.Usuario;
 
