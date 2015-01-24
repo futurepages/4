@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<project basedir="../" default="compile-widgetset" xmlns:ivy="antlib:org.apache.ivy.ant" name="VAADIN: Compile Widgetset">
+<project basedir="../." default="compile-widgetset" xmlns:ivy="antlib:org.apache.ivy.ant" name="VAADIN: Compile Widgetset">
 
-	<loadproperties srcfile="build.properties"/>
+	<loadproperties srcfile="build/build.properties"/>
 	<property name="workdir" value="${artifacts}/work"/>
 	<property name="warfilename" value="webapp.war"/>
 
-    <ivy:resolve file="ivy.xml" />
+    <ivy:resolve file="build/ivy.xml" />
 	<ivy:cachepath pathid="ivy.deps.default" conf="default" />
 	<ivy:cachepath pathid="ivy.deps.widgetset" conf="widgetset-compile" />
 	<ivy:cachefileset setid="ivy.deps.default.fileset" conf="default"/>

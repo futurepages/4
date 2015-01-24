@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="../" default="run" xmlns:ivy="antlib:org.apache.ivy.ant" name="Build Deployed">
+<project basedir="../." default="run" xmlns:ivy="antlib:org.apache.ivy.ant" name="Build Deployed">
 
-	<loadproperties srcfile="build.properties"/>
+	<loadproperties srcfile="build/build.properties"/>
 
+	<ivy:resolve file="build/ivy.xml" />
 	<ivy:cachepath pathid="ivy.deps.default" conf="default" />
 
 	<path id="classpath">
