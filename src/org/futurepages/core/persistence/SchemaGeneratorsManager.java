@@ -1,10 +1,11 @@
 package org.futurepages.core.persistence;
 
+import org.futurepages.core.config.ModulesAutomation;
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import org.futurepages.core.tags.build.ModulesAutomation;
 
 /**
  *  Resposável pela geração de schema após a geração.

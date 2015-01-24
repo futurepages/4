@@ -1,5 +1,9 @@
 package org.futurepages.util;
 
+import org.futurepages.core.locale.LocaleManager;
+import org.futurepages.enums.DateFormatEnum;
+import org.futurepages.enums.MonthEnum;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,18 +11,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.futurepages.core.i18n.LocaleManager;
-
-import org.futurepages.enums.DateFormatEnum;
-import org.futurepages.enums.MonthEnum;
-
 /**
- * Rotinas úteis de manipulação de datas String
+ * @deprecated Use new jdk8 api for Dates and Time
  */
 public class DateUtil {
 
-	public static String dbDate(int ano, int mes, int dia) {
-		return ano + "-" + mes + "-" + dia;
+	public static String dbDate(int year, int month, int day) {
+		return year + "-" + month + "-" + day;
 	}
 
 	/**

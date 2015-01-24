@@ -101,19 +101,14 @@ public class Params {
 		paramsMap.put("MIGRATION_CLASSPATH", "");
 		paramsMap.put("SCHEMA_GENERATION_TYPE", "none");
 		paramsMap.put("QUARTZ_MODE", "off");
-
-		// parâmetros de redirecionamento
-		paramsMap.put("LOGIN_URL_REDIRECT", null);
-		paramsMap.put("LOGIN_URL_REDIRECT_VAR_NAME", "next");
-
 		return classesPath;
 	}
 
 	/**
-	 * Parâmetros Padrões (WEB Application)
+	 * Default Params (WEB Application)
 	 */
 	private static void webDefaultParams(String classesPath, String contextName) {
-		//entrada: "C:/path/completo/tal/projectName/webQualquerCoisa/WEB-INF/classes/"
+		//input example: "C:/complete/path/etc/projectName/webSomeStuff/WEB-INF/classes/"
 		String applicationRealPath = (new File(classesPath.substring(0, classesPath.length()-16))).getAbsolutePath()+"/"; //16 = "WEB-INF/classes/".length
 
 		contextName = (contextName != null ? contextName : "");
@@ -147,7 +142,7 @@ public class Params {
 
 	private static String pathParamsFile = null;
 	/**
-	 * Lê os parâmetros do arquivo xml
+	 * Parse xml param file
 	 */
 	private static void parseXML() {
 		pathParamsFile = The.concat(paramsMap.get("CLASSES_PATH"), CONFIGURATION_DIR_NAME , "/", PARAMS_FILE_NAME);

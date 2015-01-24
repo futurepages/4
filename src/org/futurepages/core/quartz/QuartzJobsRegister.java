@@ -1,11 +1,6 @@
 package org.futurepages.core.quartz;
 
-import java.io.File;
-import java.text.ParseException;
-import java.util.List;
-import java.util.Map;
-
-import org.futurepages.core.tags.build.ModulesAutomation;
+import org.futurepages.core.config.ModulesAutomation;
 import org.futurepages.exceptions.NotModuleException;
 import org.quartz.Job;
 import org.quartz.JobDetail;
@@ -13,7 +8,12 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
-public class QuartzJobsRegister extends ModulesAutomation{
+import java.io.File;
+import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
+
+public class QuartzJobsRegister extends ModulesAutomation {
 
 	public QuartzJobsRegister(File[] modules) {
 		super(modules, "jobs");
