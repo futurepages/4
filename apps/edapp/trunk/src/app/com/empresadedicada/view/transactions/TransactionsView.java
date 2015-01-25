@@ -11,7 +11,7 @@ import java.util.Set;
 
 import org.vaadin.maddon.FilterableListContainer;
 
-import apps.com.empresadedicada.EDUI;
+import apps.com.empresadedicada.AppUI;
 import apps.com.empresadedicada.component.MovieDetailsWindow;
 import apps.com.empresadedicada.domain.Transaction;
 import apps.com.empresadedicada.event.EDEvent.BrowserResizeEvent;
@@ -202,7 +202,7 @@ public final class TransactionsView extends VerticalLayout implements View {
         table.setColumnCollapsible("price", false);
 
         table.setColumnReorderingAllowed(true);
-        table.setContainerDataSource(new TempTransactionsContainer(EDUI.getDataProvider().getRecentTransactions(200)));
+        table.setContainerDataSource(new TempTransactionsContainer(AppUI.getDataProvider().getRecentTransactions(200)));
         table.setSortContainerPropertyId("time");
         table.setSortAscending(false);
 
@@ -220,7 +220,7 @@ public final class TransactionsView extends VerticalLayout implements View {
         table.setColumnFooter(
                 "price",
                 "$"
-                        + DECIMALFORMAT.format(EDUI.getDataProvider().getTotalSum()));
+                        + DECIMALFORMAT.format(AppUI.getDataProvider().getTotalSum()));
 
         // Allow dragging items to the reports menu
         table.setDragMode(TableDragMode.MULTIROW);
@@ -309,7 +309,7 @@ public final class TransactionsView extends VerticalLayout implements View {
                 if (item != null) {
                     Long movieId = (Long) item.getItemProperty("movieId")
                             .getValue();
-                    MovieDetailsWindow.open(EDUI.getDataProvider()
+                    MovieDetailsWindow.open(AppUI.getDataProvider()
                             .getMovie(movieId), null, null);
                 }
             }

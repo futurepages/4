@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import apps.com.empresadedicada.EDUI;
+import apps.com.empresadedicada.AppUI;
 import apps.com.empresadedicada.component.MovieDetailsWindow;
 import apps.com.empresadedicada.domain.Movie;
 import apps.com.empresadedicada.domain.Transaction;
@@ -81,7 +81,7 @@ public final class ScheduleView extends CssLayout implements View {
     private void injectMovieCoverStyles() {
         // Add all movie cover images as classes to CSSInject
         String styles = "";
-        for (Movie m : EDUI.getDataProvider().getMovies()) {
+        for (Movie m : AppUI.getDataProvider().getMovies()) {
             WebBrowser webBrowser = Page.getCurrent().getWebBrowser();
 
             String bg = "url(VAADIN/themes/" + UI.getCurrent().getTheme()
@@ -171,7 +171,7 @@ public final class ScheduleView extends CssLayout implements View {
         catalog.setCaption("Catalog");
         catalog.addStyleName("catalog");
 
-        for (final Movie movie : EDUI.getDataProvider().getMovies()) {
+        for (final Movie movie : AppUI.getDataProvider().getMovies()) {
             VerticalLayout frame = new VerticalLayout();
             frame.addStyleName("frame");
             frame.setWidthUndefined();
@@ -267,12 +267,12 @@ public final class ScheduleView extends CssLayout implements View {
                 final Date endDate) {
             // Transactions are dynamically fetched from the backend service
             // when needed.
-            Collection<Transaction> transactions = EDUI
+            Collection<Transaction> transactions = AppUI
                     .getDataProvider().getTransactionsBetween(startDate,
                             endDate);
             List<CalendarEvent> result = new ArrayList<CalendarEvent>();
             for (Transaction transaction : transactions) {
-                Movie movie = EDUI.getDataProvider().getMovie(
+                Movie movie = AppUI.getDataProvider().getMovie(
                         transaction.getMovieId());
                 Date end = new Date(transaction.getTime().getTime()
                         + movie.getDuration() * 60 * 1000);

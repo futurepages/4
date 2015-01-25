@@ -3,7 +3,7 @@ package apps.com.empresadedicada.component;
 import java.util.ArrayList;
 import java.util.List;
 
-import apps.com.empresadedicada.EDUI;
+import apps.com.empresadedicada.AppUI;
 import apps.com.empresadedicada.data.dummy.DummyDataGenerator;
 import apps.com.empresadedicada.domain.Movie;
 import com.vaadin.addon.charts.Chart;
@@ -26,7 +26,7 @@ public class TopGrossingMoviesChart extends Chart {
         getConfiguration().getyAxis().setTitle("");
         setSizeFull();
 
-        List<Movie> movies = new ArrayList<Movie>(EDUI.getDataProvider()
+        List<Movie> movies = new ArrayList<Movie>(AppUI.getDataProvider()
                 .getMovies());
 
         List<Series> series = new ArrayList<Series>();

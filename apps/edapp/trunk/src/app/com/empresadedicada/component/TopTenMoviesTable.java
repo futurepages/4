@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import apps.com.empresadedicada.EDUI;
+import apps.com.empresadedicada.AppUI;
 import apps.com.empresadedicada.domain.MovieRevenue;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
@@ -46,7 +46,7 @@ public final class TopTenMoviesTable extends Table {
         setSizeFull();
 
         List<MovieRevenue> movieRevenues = new ArrayList<MovieRevenue>(
-                EDUI.getDataProvider().getTotalMovieRevenues());
+                AppUI.getDataProvider().getTotalMovieRevenues());
         Collections.sort(movieRevenues, new Comparator<MovieRevenue>() {
             @Override
             public int compare(final MovieRevenue o1, final MovieRevenue o2) {

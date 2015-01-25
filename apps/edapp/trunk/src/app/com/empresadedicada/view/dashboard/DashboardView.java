@@ -3,18 +3,16 @@ package apps.com.empresadedicada.view.dashboard;
 import java.util.Collection;
 import java.util.Iterator;
 
-import apps.com.empresadedicada.EDUI;
+import apps.com.empresadedicada.AppUI;
 import apps.com.empresadedicada.component.SparklineChart;
 import apps.com.empresadedicada.component.TopGrossingMoviesChart;
 import apps.com.empresadedicada.component.TopSixTheatersChart;
 import apps.com.empresadedicada.component.TopTenMoviesTable;
 import apps.com.empresadedicada.data.dummy.DummyDataGenerator;
 import apps.com.empresadedicada.domain.EDNotification;
-import apps.com.empresadedicada.domain.EDNotification;
 import apps.com.empresadedicada.event.EDEventBus;
 import apps.com.empresadedicada.event.EDEvent.CloseOpenWindowsEvent;
 import apps.com.empresadedicada.event.EDEvent.NotificationsCountUpdatedEvent;
-import apps.com.empresadedicada.event.EDEventBus;
 import apps.com.empresadedicada.view.dashboard.DashboardEdit.DashboardEditListener;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
@@ -270,7 +268,7 @@ public final class DashboardView extends Panel implements View,
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
 
-        Collection<EDNotification> notifications = EDUI
+        Collection<EDNotification> notifications = AppUI
                 .getDataProvider().getNotifications();
         EDEventBus.post(new NotificationsCountUpdatedEvent());
 
@@ -375,7 +373,7 @@ public final class DashboardView extends Panel implements View,
         @Subscribe
         public void updateNotificationsCount(
                 final NotificationsCountUpdatedEvent event) {
-            setUnreadCount(EDUI.getDataProvider()
+            setUnreadCount(AppUI.getDataProvider()
                     .getUnreadNotificationsCount());
         }
 

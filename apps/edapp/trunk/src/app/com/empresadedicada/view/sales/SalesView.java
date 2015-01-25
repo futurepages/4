@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.vaadin.maddon.ListContainer;
 
-import apps.com.empresadedicada.EDUI;
+import apps.com.empresadedicada.AppUI;
 import apps.com.empresadedicada.domain.Movie;
 import apps.com.empresadedicada.domain.MovieRevenue;
 import com.vaadin.addon.charts.model.style.SolidColor;
@@ -64,7 +64,7 @@ public class SalesView extends VerticalLayout implements View {
 
         initMovieSelect();
         // Add first 4 by default
-        List<Movie> subList = new ArrayList<Movie>(EDUI.getDataProvider().getMovies()).subList(0, 4);
+        List<Movie> subList = new ArrayList<Movie>(AppUI.getDataProvider().getMovies()).subList(0, 4);
         for (Movie m : subList) {
             addDataSet(m);
         }
@@ -77,7 +77,7 @@ public class SalesView extends VerticalLayout implements View {
     }
 
     private void initMovieSelect() {
-        Collection<Movie> movies = EDUI.getDataProvider().getMovies();
+        Collection<Movie> movies = AppUI.getDataProvider().getMovies();
         Container movieContainer = new ListContainer<Movie>(Movie.class, movies);
         movieSelect.setContainerDataSource(movieContainer);
     }
@@ -165,7 +165,7 @@ public class SalesView extends VerticalLayout implements View {
         movieSelect.removeItem(movie);
         movieSelect.setValue(null);
 
-        Collection<MovieRevenue> dailyRevenue = EDUI.getDataProvider()
+        Collection<MovieRevenue> dailyRevenue = AppUI.getDataProvider()
                 .getDailyRevenuesByMovie(movie.getId());
 
         ListContainer<MovieRevenue> dailyRevenueContainer = new TempMovieRevenuesContainer(

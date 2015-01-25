@@ -2,7 +2,7 @@ package apps.com.empresadedicada.view;
 
 import java.util.Collection;
 
-import apps.com.empresadedicada.EDUI;
+import apps.com.empresadedicada.AppUI;
 import apps.com.empresadedicada.component.ProfilePreferencesWindow;
 import apps.com.empresadedicada.domain.Transaction;
 import apps.com.empresadedicada.domain.User;
@@ -227,7 +227,7 @@ public final class EDMenu extends CustomComponent {
     @Subscribe
     public void updateNotificationsCount(
             final NotificationsCountUpdatedEvent event) {
-        int unreadNotificationsCount =  EDUI.getDataProvider().getUnreadNotificationsCount();
+        int unreadNotificationsCount =  AppUI.getDataProvider().getUnreadNotificationsCount();
         notificationsBadge.setValue(String.valueOf(unreadNotificationsCount));
         notificationsBadge.setVisible(unreadNotificationsCount > 0);
     }

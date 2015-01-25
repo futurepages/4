@@ -3,7 +3,7 @@ package apps.com.empresadedicada.component;
 import java.util.ArrayList;
 import java.util.List;
 
-import apps.com.empresadedicada.EDUI;
+import apps.com.empresadedicada.AppUI;
 import apps.com.empresadedicada.data.dummy.DummyDataGenerator;
 import apps.com.empresadedicada.domain.Movie;
 import com.vaadin.addon.charts.Chart;
@@ -28,7 +28,7 @@ public class TopSixTheatersChart extends Chart {
 
         DataSeries series = new DataSeries();
 
-        List<Movie> movies = new ArrayList<Movie>(EDUI.getDataProvider()
+        List<Movie> movies = new ArrayList<Movie>(AppUI.getDataProvider()
                 .getMovies());
         for (int i = 0; i < 6; i++) {
             Movie movie = movies.get(i);
