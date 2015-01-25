@@ -1,0 +1,6 @@
+admin.title = Administração
+admin.smallTitle = Administração de Usuários/Permissões
+
+user.login = Login
+user.fullName = Nome Completo
+user.password = Senha
