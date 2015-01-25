@@ -1,7 +1,7 @@
 package org.futurepages.core.config;
 
 import org.futurepages.core.exception.DefaultExceptionLogger;
-import org.futurepages.exceptions.FuturepagesPropertiesException;
+import org.futurepages.exceptions.AppsPropertiesException;
 import org.futurepages.util.FileUtil;
 import org.futurepages.util.The;
 
@@ -27,7 +27,7 @@ public class Apps {
 	public static final  String MODULES_PATH                    = "modules";
 	public static final  String MODULES_PACK                    = "modules";
 	public static final  String CONTEXT_CONFIG_DIR_NAME         = "conf";
-	public static final  String MODULE_CONFIG_DIR_NAME          = "app-conf";
+	public static final  String MODULE_CONFIG_DIR_NAME          = "app_conf";
 	public static final  String MODULE_JOBS_SUBPATH             = "control/jobs";
     public static final  String HIBERNATE_ENTITIES_SUBPATH      = "model/entities";
     public static final  String HIBERNATE_ENTITIES_SUBPACK      = "model.entities";
@@ -156,17 +156,17 @@ public class Apps {
 		try {
 			isr = new FileReader(propertiesFilePath);
 		} catch (FileNotFoundException e) {
-			throw new FuturepagesPropertiesException("Futurepages Properties File Not Found: "+ propertiesFilePath,e);
+			throw new AppsPropertiesException("Futurepages Properties File Not Found: "+ propertiesFilePath,e);
 		}
 		try {
 			paramsAndProperties.load(isr);
 		} catch (IOException e) {
-			throw new FuturepagesPropertiesException("Unable to find and/or parse Futurepages Properties File: "+ propertiesFilePath,e);
+			throw new AppsPropertiesException("Unable to find and/or parse Futurepages Properties File: "+ propertiesFilePath,e);
 		}
 		try {
 			isr.close();
 		} catch (IOException e) {
-			throw new FuturepagesPropertiesException("Unable to find and/or parse Futurepages Properties File: "+ propertiesFilePath,e);
+			throw new AppsPropertiesException("Unable to find and/or parse Futurepages Properties File: "+ propertiesFilePath,e);
 		}
 		for(String key : paramsAndProperties.stringPropertyNames()){
 			paramsMap.put(key, paramsAndProperties.getProperty(key));
