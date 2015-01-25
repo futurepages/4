@@ -1,6 +1,6 @@
 package apps.info.workset.dedicada.view;
 
-import apps.info.workset.dedicada.EDNavigator;
+import apps.info.workset.dedicada.AppNavigator;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -24,6 +24,6 @@ public class MainView extends HorizontalLayout {
         addComponent(content);
         setExpandRatio(content, 1.0f);
 
-        new EDNavigator(content);
+        new AppNavigator(content);
     }
 }

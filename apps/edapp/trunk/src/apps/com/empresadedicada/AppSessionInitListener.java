@@ -37,7 +37,7 @@ public class AppSessionInitListener implements SessionInitListener {
 
                 head.appendElement("link")
                         .attr("rel", "apple-touch-icon")
-                        .attr("href", contextPath + "/VAADIN/themes/dashboard/img/apps-icon.png");
+                        .attr("href", contextPath + "/VAADIN/themes/dashboard/img/app-icon.png");
 
             }
 

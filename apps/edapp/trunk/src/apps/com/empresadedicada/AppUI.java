@@ -13,7 +13,6 @@ import apps.com.empresadedicada.view.MainView;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-//import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.BrowserWindowResizeEvent;
 import com.vaadin.server.Page.BrowserWindowResizeListener;
@@ -26,9 +25,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.Locale;
 
-@SuppressWarnings("serial")
-@Title("Workset Dedicada")
-//@Widgetset("apps.com.empresadedicada.widgetset.DashboardWidgetSet")
+@Title("Empresa Dedicada DashBoard")
 @Theme("dashboard")
 public class AppUI extends UI {
 

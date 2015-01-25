@@ -19,7 +19,6 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 @Title("Workset Dedicada")
-//@Widgetset("com.empresadedicada.widgetset.WorksetDedicadaWidgetSet")
 @Theme("dashboard")
 public class AppUI extends UI {
 

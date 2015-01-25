@@ -11,13 +11,12 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.navigator.ViewProvider;
+import org.futurepages.core.config.Apps;
+import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
 
 @SuppressWarnings("serial")
 public class AppNavigator extends Navigator {
 
-    // Provide a Google Analytics tracker id here
-//    private static final String TRACKER_ID = null;// "UA-658457-6";
-//    private GoogleAnalyticsTracker tracker;
 
     private static final EDViewType ERROR_VIEW = EDViewType.DASHBOARD;
     private ViewProvider errorViewProvider;
@@ -25,22 +24,22 @@ public class AppNavigator extends Navigator {
     public AppNavigator(final ComponentContainer container) {
         super(UI.getCurrent(), container);
 
-//        String host = getUI().getPage().getLocation().getHost();
-//        if (TRACKER_ID != null && host.endsWith("demo.vaadin.com")) {
-//            initGATracker(TRACKER_ID);
-//        }
+        String host = getUI().getPage().getLocation().getHost();
+        String TRACKER_ID = Apps.get("GOOGLE_ANALYTICS_ID");
+        if (TRACKER_ID != null && host.equals(Apps.get("PRODUCTION_HOST"))) {
+            initGATracker(TRACKER_ID);
+        }
         initViewChangeListener();
         initViewProviders();
 
     }
 
-//    private void initGATracker(final String trackerId) {
-//        tracker = new GoogleAnalyticsTracker(trackerId, "demo.vaadin.com");
-//
-//        // GoogleAnalyticsTracker is an extension add-on for UI so it is
-//        // initialized by calling .extend(UI)
-//        tracker.extend(UI.getCurrent());
-//    }
+    private void initGATracker(final String trackerId) {
+        GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker(trackerId, "demo.vaadin.com");
+
+        // GoogleAnalyticsTracker is an extension add-on for UI so it is initialized by calling .extend(UI)
+        tracker.extend(UI.getCurrent());
+    }
 
     private void initViewChangeListener() {
         addViewChangeListener(new ViewChangeListener() {

@@ -76,7 +76,8 @@
 			<arg value="${workdir}/VAADIN/widgetsets" />
 			<arg value="${widgetset}" />
 			<arg value="-logLevel"/>
-			<arg value="DEBUG"/>
+			<!--<arg value="DEBUG"/>-->
+			<arg value="ERROR"/>
 			<arg value="-strict"/>
             <jvmarg value="-Xmx1024M"/>
             <jvmarg value="-Xss512M"/>
