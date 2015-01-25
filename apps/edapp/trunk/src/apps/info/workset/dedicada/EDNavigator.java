@@ -1,4 +1,4 @@
-package apps.info.workset.dedicada.control;
+package apps.info.workset.dedicada;
 
 import apps.info.workset.dedicada.control.events.EDEvent;
 import apps.info.workset.dedicada.control.events.EDEventBus;

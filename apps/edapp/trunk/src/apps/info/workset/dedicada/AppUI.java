@@ -1,4 +1,4 @@
-package apps.info.workset.dedicada.control;
+package apps.info.workset.dedicada;
 
 import apps.info.workset.dedicada.control.events.EDEvent;
 import apps.info.workset.dedicada.control.events.EDEventBus;
@@ -17,8 +17,6 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-
-import java.util.Locale;
 
 @Title("Workset Dedicada")
 //@Widgetset("com.empresadedicada.widgetset.WorksetDedicadaWidgetSet")

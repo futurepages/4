@@ -1,6 +1,6 @@
 package apps.info.workset.dedicada.view.pages.sales;
 
-import apps.info.workset.dedicada.control.AppUI;
+import apps.info.workset.dedicada.AppUI;
 import apps.info.workset.dedicada.model.entities.Movie;
 import apps.info.workset.dedicada.model.entities.MovieRevenue;
 import com.vaadin.addon.charts.model.style.SolidColor;

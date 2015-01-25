@@ -1,4 +1,4 @@
-package apps.info.workset.dedicada.control;
+package apps.info.workset.dedicada;
 
 import org.jsoup.nodes.Element;
 

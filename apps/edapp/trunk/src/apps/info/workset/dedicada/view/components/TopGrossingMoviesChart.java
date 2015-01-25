@@ -1,6 +1,6 @@
 package apps.info.workset.dedicada.view.components;
 
-import apps.info.workset.dedicada.control.AppUI;
+import apps.info.workset.dedicada.AppUI;
 import apps.info.workset.dedicada.model.data.dummy.DummyDataGenerator;
 import apps.info.workset.dedicada.model.entities.Movie;
 import com.vaadin.addon.charts.Chart;

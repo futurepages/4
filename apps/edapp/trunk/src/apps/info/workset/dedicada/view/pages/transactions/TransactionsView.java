@@ -1,6 +1,6 @@
 package apps.info.workset.dedicada.view.pages.transactions;
 
-import apps.info.workset.dedicada.control.AppUI;
+import apps.info.workset.dedicada.AppUI;
 import apps.info.workset.dedicada.control.events.EDEvent;
 import apps.info.workset.dedicada.control.events.EDEventBus;
 import apps.info.workset.dedicada.model.entities.Transaction;

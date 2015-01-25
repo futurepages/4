@@ -1,6 +1,6 @@
 package apps.info.workset.dedicada.view.components;
 
-import apps.info.workset.dedicada.control.AppUI;
+import apps.info.workset.dedicada.AppUI;
 import apps.info.workset.dedicada.model.entities.MovieRevenue;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;

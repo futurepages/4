@@ -1,6 +1,6 @@
 package apps.info.workset.dedicada.view;
 
-import apps.info.workset.dedicada.control.EDNavigator;
+import apps.info.workset.dedicada.EDNavigator;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
