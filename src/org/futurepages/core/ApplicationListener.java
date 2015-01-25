@@ -1,6 +1,7 @@
 package org.futurepages.core;
 
 import org.futurepages.core.config.Apps;
+import org.futurepages.core.control.vaadin.DefaultAppServlet;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.install.InstallersManager;
 import org.futurepages.core.mail.MailConfig;
@@ -22,6 +23,9 @@ import javax.servlet.ServletRegistration;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Starting up the application resources:
@@ -67,17 +71,58 @@ public class ApplicationListener implements ServletContextListener {
 	}
 
 	private void configureApplicationServlets(ServletContext context) throws ClassNotFoundException, ServletException {
-			Class klass = Class.forName("com.empresadedicada.EDServlet");
-            Class oneClass = (Class) klass;
-            Servlet s = context.createServlet(oneClass);
+			String appsPaths = Apps.get("APPS");
 
-            ServletRegistration.Dynamic d = context.addServlet("EDServlet", s);
-			context.getAttributeNames();
-			context.setInitParameter("productionMode",String.valueOf(!Apps.devMode())); // for VAADIN Production Mode
-			d.setInitParameter("UI", "com.empresadedicada.EDUI");
-            d.addMapping("/*");
+			String[] apps = appsPaths.split(",");
+			Map<String,String> appsMapping = new LinkedHashMap<>();
+			for(String app : apps){
+				app = app.trim();
+				String appPackage, appPath;
+				if(!app.contains(":")){
+					appPackage = app;
+					appPath = "/*";
+				}else{
+					String[] appPackageAndPath = app.split("\\:");
+					appPackage = appPackageAndPath[0];
+					appPath = appPackageAndPath[1]+"/*";
+				}
+				//TODO se o caminho tiver *, o caminho será como passado e nao concatenado já a um *
+				//TODO nao permitir dois com mesmo path. Quebrar!
+				//TODO ver os casos de correção, adicao de barra.
+				//TODO validar string do path. Quebrar se errado!
+				appsMapping.put(appPackage, appPath);
+			}
 
-			log("vaadin-productionMode: " + context.getInitParameter("productionMode"));
+			context.setInitParameter("productionMode", String.valueOf(!Apps.devMode())); // for VAADIN Production Mode
+			for(String appPackagePath : appsMapping.keySet()){
+				Class servletClass = DefaultAppServlet.class;
+				String servletName = appPackagePath.replaceAll("\\.","_")+"_Servlet";
+				String servletMapping = appsMapping.get(appPackagePath);
+
+	            Servlet servlet = context.createServlet(servletClass);
+				ServletRegistration.Dynamic d = context.addServlet(servletName, servlet);
+				d.setInitParameter("UI", appPackagePath+".AppUI");
+				d.setInitParameter("widgetset",appPackagePath+".app_conf.widgetset");
+				d.addMapping(servletMapping);
+				//it's necessary when it's a subpath...
+				if(!servletMapping.equals("/*")){
+					d.addMapping("/VAADIN/*");
+				}
+			}
+
+
+//			Class klass = Class.forName("com.empresadedicada.EDServlet");
+//            Class oneClass = (Class) klass;
+//            Servlet s = context.createServlet(oneClass);
+//
+//            ServletRegistration.Dynamic d = context.addServlet("EDServlet", s);
+//			context.getAttributeNames();
+//			context.setInitParameter("productionMode", String.valueOf(!Apps.devMode())); // for VAADIN Production Mode
+//			d.setInitParameter("UI", "com.empresadedicada.EDUI");
+//			d.setInitParameter("widgetset","com.empresadedicada.widgetset.DashboardWidgetSet");
+//			d.addMapping("/*"); //  a = /a/* ,
+
+		log("vaadin-productionMode: " + context.getInitParameter("productionMode"));
 	}
 
 	// TODO REVER SE AINDA SERÁ NECESSÁRIO...
@@ -102,7 +147,6 @@ public class ApplicationListener implements ServletContextListener {
 		File[] modules = (new File(Apps.get("MODULES_CLASSES_REAL_PATH"))).listFiles();
 		log("Modules OK");
 		return 	modules;
-
 	}
 
 	private void configEncoding() {

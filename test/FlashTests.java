@@ -18,7 +18,7 @@ import jxl.read.biff.BiffException;
 import org.futurepages.util.StringUtils;
 import org.futurepages.util.The;
 
-public class TesteRelampago2 {
+public class FlashTests {
 
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/test";
