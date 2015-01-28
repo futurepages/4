@@ -4,8 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.futurepages.util.CalendarUtil;
-import org.futurepages.util.DateUtil;
+import org.futurepages.util.BrazilianCalendarUtil;
+import org.futurepages.util.BrazilianDateUtil;
 import org.futurepages.core.formatter.Formatter;
 
 /**
@@ -16,10 +16,10 @@ public class LiteralDayOfWeekFormatter implements Formatter {
 	public String format(Object date, Locale loc) {
 
 		if (date instanceof Date) {
-			return DateUtil.literalDayOfWeek((Date)date);
+			return BrazilianDateUtil.literalDayOfWeek((Date) date);
 
 		}else if (date instanceof Calendar) {
-			return CalendarUtil.literalDayOfWeek((Calendar)date);
+			return BrazilianCalendarUtil.literalDayOfWeek((Calendar) date);
 		}
 
 		return null;

@@ -1,7 +1,7 @@
 package org.futurepages.formatters;
 
 import junit.framework.Assert;
-import org.futurepages.util.DateUtil;
+import org.futurepages.util.BrazilianDateUtil;
 import org.junit.Test;
 
 public class RemainingTimeFormatterTest {
@@ -68,13 +68,13 @@ public class RemainingTimeFormatterTest {
 	}
 
 	private void assertFormatValue(String bdBaseDateTime, String bdElapsedDateTime, String expectedText) {
-		System.out.println(RemainingTimeFormatter.formatValue(DateUtil.dbDateTimeToCalendar(bdBaseDateTime), DateUtil.dbDateTimeToCalendar(bdElapsedDateTime)));
+		System.out.println(RemainingTimeFormatter.formatValue(BrazilianDateUtil.dbDateTimeToCalendar(bdBaseDateTime), BrazilianDateUtil.dbDateTimeToCalendar(bdElapsedDateTime)));
 
 
 		Assert.assertEquals(
 				expectedText,
-				RemainingTimeFormatter.formatValue(DateUtil.dbDateTimeToCalendar(bdBaseDateTime),
-				DateUtil.dbDateTimeToCalendar(bdElapsedDateTime))
+				RemainingTimeFormatter.formatValue(BrazilianDateUtil.dbDateTimeToCalendar(bdBaseDateTime),
+				BrazilianDateUtil.dbDateTimeToCalendar(bdElapsedDateTime))
 				);
 	}
 }

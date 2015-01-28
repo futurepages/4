@@ -14,7 +14,7 @@ import java.util.GregorianCalendar;
 /**
  * @deprecated Use new jdk8 api for Dates and Time
  */
-public class DateUtil {
+public class BrazilianDateUtil {
 
 	public static String dbDate(int year, int month, int day) {
 		return year + "-" + month + "-" + day;
@@ -55,7 +55,7 @@ public class DateUtil {
 	public static String literalDayOfWeek(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		return CalendarUtil.literalDayOfWeek(cal);
+		return BrazilianCalendarUtil.literalDayOfWeek(cal);
 	}
 
 	/**
@@ -108,10 +108,10 @@ public class DateUtil {
 	public static String literalDateFromDB(Object in) {
 		String value = "";
 		if (in instanceof Date) {
-			value = DateUtil.dbDate((Date) in);
+			value = BrazilianDateUtil.dbDate((Date) in);
 
 		} else if (in instanceof Calendar) {
-			value = DateUtil.dbDate(((Calendar) in).getTime());
+			value = BrazilianDateUtil.dbDate(((Calendar) in).getTime());
 
 		} else if (in instanceof String) {
 			value = (String) in;
@@ -291,7 +291,7 @@ public class DateUtil {
 	}
 
 	public static String rawDateIn6(Date dataIn) {
-		String in = new SimpleDateFormat("dd/MM/yyyy", LocaleManager.getDefaultLocale()).format(dataIn).toString();
+		String in = new SimpleDateFormat("dd/MM/yyyy", LocaleManager.getDefaultLocale()).format(dataIn);
 		return rawDateIn6(in);
 	}
 
@@ -328,7 +328,7 @@ public class DateUtil {
 			Integer.parseInt(dia);
 			Integer.parseInt(mes);
 			Integer.parseInt(ano);
-			DateUtil.date(dia + "/" + mes + "/" + ano);
+			BrazilianDateUtil.date(dia + "/" + mes + "/" + ano);
 		} catch (Exception e) {
 			return false;
 		}

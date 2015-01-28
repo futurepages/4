@@ -19,7 +19,7 @@ import org.junit.runners.Parameterized.Parameters;
  *
  */
 @RunWith(Parameterized.class)
-public class CalendarUtil_literalRangeOfDatesTest {
+public class BrazilianCalendarUtil_literalRangeOfDatesTest {
 
 	private Calendar calInicio;
 	private Calendar calFim;
@@ -27,7 +27,7 @@ public class CalendarUtil_literalRangeOfDatesTest {
 	private String esperado;
 	private String msg;
 	
-	public CalendarUtil_literalRangeOfDatesTest(String mask,String dataInicio, String dataFim, String strDataCorrente, String esperado,String msg) {
+	public BrazilianCalendarUtil_literalRangeOfDatesTest(String mask, String dataInicio, String dataFim, String strDataCorrente, String esperado, String msg) {
 
 		calInicio = createCalendar(dataInicio, mask);
 		calFim = createCalendar(dataFim, mask);
@@ -38,7 +38,7 @@ public class CalendarUtil_literalRangeOfDatesTest {
 
 	private Calendar createCalendar(String strDate, String mask){
 		Calendar cal = new GregorianCalendar();
-		cal.setTime(DateUtil.parse(strDate, mask));
+		cal.setTime(BrazilianDateUtil.parse(strDate, mask));
 		return cal;
 	}
 
@@ -105,7 +105,7 @@ public class CalendarUtil_literalRangeOfDatesTest {
 	}
 
 	private void literalRangeOfDatesTestProcedure(Calendar calInicio, Calendar calFim,  Calendar dataCorrente, String esperado, String msg) {
-		String result = CalendarUtil.literalRangeOfDates(calInicio, calFim, dataCorrente);
+		String result = BrazilianCalendarUtil.literalRangeOfDates(calInicio, calFim, dataCorrente);
 		String msgErro = "Erro para a seguinte caso: "+msg;
 		Assert.assertEquals(msgErro,esperado, result);
 

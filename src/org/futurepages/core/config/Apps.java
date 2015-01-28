@@ -11,7 +11,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -117,7 +119,6 @@ public class Apps {
 		paramsMap.put("EMAIL_SSL_CONNECTION", "false");
 		paramsMap.put("INSTALL_MODE", "off");
 		paramsMap.put("PAGE_ENCODING", "ISO-8859-1");
-		paramsMap.put("RELEASE", "");
 		paramsMap.put("MIGRATION_CLASSPATH", "");
 		paramsMap.put("SCHEMA_GENERATION_TYPE", "none");
 		paramsMap.put("QUARTZ_MODE", "off");
@@ -177,12 +178,6 @@ public class Apps {
 	 * Constroi os Parâmetros Compostos 
 	 */
 	private void compositeWebParams() {
-
-		if (!get("RELEASE").equals("")) {
-			paramsMap.put("RELEASE_QUERY", "?release=" + Apps.get("RELEASE"));
-		} else {
-			paramsMap.put("RELEASE_QUERY", "");
-		}
 		String autoRedirectDomain = get("AUTO_REDIRECT_DOMAIN");
 		if(!devMode && autoRedirectDomain!=null 
 				&&  (!autoRedirectDomain.startsWith("http://") && !autoRedirectDomain.startsWith("https://"))){
@@ -222,5 +217,43 @@ public class Apps {
 		map.put(regexParam("INSTALL_MODE"),"");
 		map.put(regexParam("MIGRATION_CLASSPATH"),"");
 		FileUtil.putStrings(map, propertiesFilePath, propertiesFilePath, true);
+	}
+
+	public static File[] listAppsRootDirs(){
+		String appsPaths = get("APPS");
+		List<String> listOfApps = new ArrayList<>();
+		String[] apps = appsPaths.split(",");
+		for(String app : apps){
+			if(!app.contains(":")){
+				listOfApps.add(app.trim().replaceAll("\\.", "/"));
+			}else{
+				listOfApps.add(app.split("\\:")[0].trim().replaceAll("\\.", "/"));
+			}
+		}
+		File[] dirs = new File[listOfApps.size()];
+		for(int i = 0; i<dirs.length;i++){
+			dirs[i] = new File(get("CLASSES_PATH")+"/"+listOfApps.get(i));
+		}
+		return dirs;
+	}
+
+	public static File[] listModulesAndApps() {
+
+		File[] apps = Apps.listAppsRootDirs();
+
+		File[] modules = (new File(Apps.get("MODULES_CLASSES_REAL_PATH"))).listFiles();
+		modules = modules==null? new File[0] : modules;
+
+		File[] modulesAndApps = new File[modules.length+apps.length];
+		for(int i = 0; i<modules.length ; i++){
+			modulesAndApps[i] = modules[i];
+		}
+//		for(int i = modules.length-1; i>=0 ; i--){
+		for(int i = modulesAndApps.length-1; i>=modules.length; i--){
+			modulesAndApps[i] = apps[modulesAndApps.length-i-1];
+//			4   5-2+0 = 3
+
+		}
+		return modulesAndApps;
 	}
 }

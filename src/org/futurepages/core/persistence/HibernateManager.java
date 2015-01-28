@@ -47,7 +47,7 @@ public class HibernateManager {
 				running = true;
 			}
 		} catch (Exception e) {
-			log("Hibernate couldn´t be started.: " + e.getMessage());
+			log("Hibernate couldn´t be started: " + e.getMessage());
 			DefaultExceptionLogger.getInstance().execute(e);
 		}
 	}

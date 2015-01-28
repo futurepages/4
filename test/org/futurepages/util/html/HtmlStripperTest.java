@@ -6,7 +6,7 @@ import java.io.UnsupportedEncodingException;
 
 import junit.framework.Assert;
 
-import org.futurepages.util.CalendarUtil;
+import org.futurepages.util.BrazilianCalendarUtil;
 import org.futurepages.util.FileUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -28,7 +28,7 @@ public class HtmlStripperTest {
 	@AfterClass
 	public static void afterClass(){
 		end = System.currentTimeMillis();
-		long time = CalendarUtil.getDifference(start, end, 1);
+		long time = BrazilianCalendarUtil.getDifference(start, end, 1);
 		System.out.println("HtmlStripperTest.afterClass() Tempo gasto (ms) :"+ time);
 	}
 

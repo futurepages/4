@@ -76,7 +76,7 @@ public class InstallersManager extends ModulesAutomation {
 				if(installMode.equals("modules") || installMode.equals("on")){
 					Map<String, List<Class<Installer>>> classes = getModulesDirectoryClasses(Installer.class, null);
 					for (String moduleName : classes.keySet()) {
-						log("module '" + moduleName + "' installing...");
+						log(moduleName + " installing...");
 						for (Class<?> installer : classes.get(moduleName)) {
 							if (!Modifier.isAbstract(installer.getModifiers())) {
 								log(">>> installer " + installer.getSimpleName() + " running...  ");
@@ -84,7 +84,7 @@ public class InstallersManager extends ModulesAutomation {
 								log(">>> installer " + installer.getSimpleName() + " OK");
 							}
 						}
-						log("module '" + moduleName + "' installed.");
+						log(moduleName + " installed.");
 					}
 				}
 // TODO IMPLEMENTAR O INSTALL DAS APPS FORA DOS MODULOS.

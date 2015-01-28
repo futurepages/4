@@ -1,7 +1,7 @@
 package org.futurepages.core.exception;
 
 import org.futurepages.exceptions.PageNotFoundException;
-import org.futurepages.util.DateUtil;
+import org.futurepages.util.BrazilianDateUtil;
 import org.futurepages.util.EncodingUtil;
 import org.futurepages.util.StringUtils;
 import org.futurepages.util.The;
@@ -33,7 +33,7 @@ public class DefaultExceptionLogger implements ExceptionLogger{
 		String numeroProtocolo = System.currentTimeMillis()+"-"+Thread.currentThread().getId();
 
 		String exceptionId =  StringUtils.concat("[",errorType.toUpperCase(),"] ",numeroProtocolo);
-        log(exceptionId , "  ("  , DateUtil.viewDateTime(new Date()) , ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log(exceptionId , "  ("  , BrazilianDateUtil.viewDateTime(new Date()) , ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
 
 		if(!pageNotFoundEx){
@@ -67,8 +67,8 @@ public class DefaultExceptionLogger implements ExceptionLogger{
 				System.out.println();
 
 				log(">[session]  id: ", req.getSession().getId(), "; ",
-						"creation: ", DateUtil.viewDateTime(new Date(req.getSession().getCreationTime())), "; ",
-						"last access: ", DateUtil.viewDateTime(new Date(req.getSession().getLastAccessedTime())), "; ",
+						"creation: ", BrazilianDateUtil.viewDateTime(new Date(req.getSession().getCreationTime())), "; ",
+						"last access: ", BrazilianDateUtil.viewDateTime(new Date(req.getSession().getLastAccessedTime())), "; ",
 						"max inative interval: ", String.valueOf(req.getSession().getMaxInactiveInterval() / 60), " minutes;"
 				); //TODO - informacoes de tempo da sessao
 				System.out.print(">[session]  ");
