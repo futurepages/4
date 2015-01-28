@@ -12,7 +12,7 @@ import org.futurepages.util.iterator.months.MonthYear;
  * @deprecated Use new jdk8 api for Dates and Time
  */
 @Deprecated
-public class CalendarUtil {
+public class BrazilianCalendarUtil {
 
 	private static final long millisecondsDayFactor = 86400000L;
 
@@ -102,7 +102,7 @@ public class CalendarUtil {
 	// calcula os dias sem levar em contas as horas
 	public static int getDifferenceInAbsoluteDays(Calendar start, Calendar end) {
 		int milliseconds = 86400000;
-		return getDifference(DateUtil.dateToCalendar(start.getTime()), DateUtil.dateToCalendar(end.getTime()), milliseconds);
+		return getDifference(BrazilianDateUtil.dateToCalendar(start.getTime()), BrazilianDateUtil.dateToCalendar(end.getTime()), milliseconds);
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class CalendarUtil {
 	}
 
 	public static Calendar buildCalendar(int field, int addValue, Calendar dataInicial) {
-		Calendar novaData = CalendarUtil.buildCalendar(dataInicial);
+		Calendar novaData = BrazilianCalendarUtil.buildCalendar(dataInicial);
 		novaData.add(field, addValue);
 		return novaData;
 	}
@@ -340,7 +340,7 @@ public class CalendarUtil {
 		} else {
 			mask = "H'h'mm";
 		}
-		return DateUtil.format(cal, mask);
+		return BrazilianDateUtil.format(cal, mask);
 	}
 
 	public static String literalRangeOfDates(Calendar calIni, Calendar calFim, Calendar hoje) {
@@ -526,7 +526,7 @@ public class CalendarUtil {
 	 * Hora e minuto no formato HH:mm (hora no formato 24h.)
 	 */
 	public static String showHourMin(Calendar calendar) {
-		return DateUtil.format(calendar, "H:mm");
+		return BrazilianDateUtil.format(calendar, "H:mm");
 	}
 
 	public static Calendar buildCalendar(Calendar calendar) {
@@ -548,7 +548,7 @@ public class CalendarUtil {
 	public static int getDifferenceInMonths(MonthYear mYearIni, MonthYear mYearFim) {
 		Calendar calIni = new GregorianCalendar(mYearIni.getYear(), mYearIni.getMonth() - 1, 1);
 		Calendar calFim = new GregorianCalendar(mYearFim.getYear(), mYearFim.getMonth() - 1, 1);
-		return CalendarUtil.getDifferenceInMonths(calIni, calFim);
+		return BrazilianCalendarUtil.getDifferenceInMonths(calIni, calFim);
 
 	}
 
@@ -556,7 +556,7 @@ public class CalendarUtil {
 	 * Se são dias vizinhos, retorna true
 	 */
 	public static boolean isNeighborDays(Calendar cal1, Calendar cal2) {
-		return CalendarUtil.getDifferenceInDays(CalendarUtil.buildDate(cal1), CalendarUtil.buildDate(cal2)) == 1;
+		return BrazilianCalendarUtil.getDifferenceInDays(BrazilianCalendarUtil.buildDate(cal1), BrazilianCalendarUtil.buildDate(cal2)) == 1;
 	}
 
 
@@ -572,7 +572,7 @@ public class CalendarUtil {
 
 		} catch (TooBigDateException e) {
 			prefix = exceptionPrefix;
-			exp = DateUtil.viewDateTime((nowFirst ? end : start));
+			exp = BrazilianDateUtil.viewDateTime((nowFirst ? end : start));
 		}
 
 		if (!Is.empty(prefix)) {

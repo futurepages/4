@@ -4,6 +4,7 @@ import org.futurepages.core.config.Apps;
 import org.futurepages.core.control.vaadin.DefaultAppServlet;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.install.InstallersManager;
+import org.futurepages.core.locale.Txt;
 import org.futurepages.core.mail.MailConfig;
 import org.futurepages.core.path.Paths;
 import org.futurepages.core.persistence.HibernateManager;
@@ -21,9 +22,9 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -44,16 +45,17 @@ public class ApplicationListener implements ServletContextListener {
 			ServletContext ctx = evt.getServletContext();
 			String context = ctx.getContextPath();
 			contextName = (!Is.empty(context) ? context : "ROOT");
-
 			log("Starting " + ctx.getServletContextName() + "...");
 
 			initAppsProperties(context);
+
 			configEncoding();
 
 			File[] appsAndModules = loadAppsAndModules();
-
 			initHibernateAndConsequences(appsAndModules);
+			initTxts(appsAndModules);
 			initQuartzManager(appsAndModules);
+
 			initEmailConfigurations();
 
 			//initAutoRedirectionEngine(context);
@@ -70,6 +72,12 @@ public class ApplicationListener implements ServletContextListener {
 		}
 	}
 
+	private void initTxts(File[] appsAndModules) throws IOException {
+		log("Loading Locale txts...");
+		Txt.initialize(appsAndModules);
+		log("Locale txts loaded.");
+	}
+
 	private void configureApplicationServlets(ServletContext context) throws ClassNotFoundException, ServletException {
 			String appsPaths = Apps.get("APPS");
 
@@ -84,12 +92,14 @@ public class ApplicationListener implements ServletContextListener {
 				}else{
 					String[] appPackageAndPath = app.split("\\:");
 					appPackage = appPackageAndPath[0];
-					appPath = appPackageAndPath[1]+"/*";
+					appPath = (!appPackageAndPath[1].equals("/")?appPackageAndPath[1]:"")+(appPackageAndPath[1].contains("*")?"":"/*");
 				}
-				//TODO se o caminho tiver *, o caminho será como passado e nao concatenado já a um *
-				//TODO nao permitir dois com mesmo path. Quebrar!
-				//TODO ver os casos de correção, adicao de barra.
-				//TODO validar string do path. Quebrar se errado!
+				if(appsMapping.get(appPackage)!=null){
+					throw new ServletException("Unable to load servlets. Define only one application package per path. ");
+				}
+				if(appsMapping.values().contains(appPath)){
+					throw new ServletException("Unable to load servlets. Duplicatated path: \""+appPath+"\"");
+				}
 				appsMapping.put(appPackage, appPath);
 			}
 
@@ -109,19 +119,6 @@ public class ApplicationListener implements ServletContextListener {
 					d.addMapping("/VAADIN/*");
 				}
 			}
-
-
-//			Class klass = Class.forName("com.empresadedicada.EDServlet");
-//            Class oneClass = (Class) klass;
-//            Servlet s = context.createServlet(oneClass);
-//
-//            ServletRegistration.Dynamic d = context.addServlet("EDServlet", s);
-//			context.getAttributeNames();
-//			context.setInitParameter("productionMode", String.valueOf(!Apps.devMode())); // for VAADIN Production Mode
-//			d.setInitParameter("UI", "com.empresadedicada.EDUI");
-//			d.setInitParameter("widgetset","com.empresadedicada.widgetset.DashboardWidgetSet");
-//			d.addMapping("/*"); //  a = /a/* ,
-
 		log("vaadin-productionMode: " + context.getInitParameter("productionMode"));
 	}
 
@@ -141,12 +138,13 @@ public class ApplicationListener implements ServletContextListener {
 	}
 
 	private File[] loadAppsAndModules() {
-		//TODO Loading Apps
-		//TODO Load only requireds motdules by apps...
-		log("Loading Modules...");
-		File[] modules = (new File(Apps.get("MODULES_CLASSES_REAL_PATH"))).listFiles();
-		log("Modules OK");
-		return 	modules;
+		//TODO Load only requireds motdules by apps???
+		log("Loading Apps and Modules...");
+
+		File[] appsAndModules = Apps.getInstance().listModulesAndApps();
+
+		log("Apps and Modules OK");
+		return 	appsAndModules;
 	}
 
 	private void configEncoding() {

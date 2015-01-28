@@ -22,20 +22,20 @@ public class SchemaGeneratorsManager extends ModulesAutomation {
 
 	public void execute() throws Exception {
 		executeSQLFromModules();
-		executeSQLAfterModules();
+		executeSQLAfterModules(); // será dos apps. TODO rever...
 	}
 
 	private void executeSQLFromModules() throws Exception {
 		Map<String, List<Class<SchemaGenerator>>> classes = getModulesDirectoryClasses(SchemaGenerator.class, null);
 		for (String moduleName : classes.keySet()) {
 			if (classes.get(moduleName).size() > 0) {
-				log("module '" + moduleName + "' generating schema...");
+				log(moduleName + " generating schema...");
 				for (Class<?> generator : classes.get(moduleName)) {
 					log(">>> " + generator.getSimpleName() + " running...  ");
 					generator.newInstance();
 					log(">>> " + generator.getSimpleName() + " OK");
 				}
-				log("module '" + moduleName + "' generated.");
+				log(moduleName + " generated.");
 			}
 		}
 	}

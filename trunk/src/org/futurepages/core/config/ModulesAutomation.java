@@ -15,6 +15,7 @@ import org.futurepages.util.ClassesUtil;
 import org.futurepages.util.FileUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.ModuleUtil;
+import org.futurepages.util.The;
 
 public abstract class ModulesAutomation {
 
@@ -44,8 +45,7 @@ public abstract class ModulesAutomation {
 
 	protected <S extends Object> List<Class<S>> getClasses(File dirr, Class<S> superKlass, Class<? extends Annotation> annotation) {
 		if (applicationClasses == null) {
-			applicationClasses = new ArrayList<Class<S>>(ClassesUtil.getInstance().listClassesFromDirectory(
-					dirr, getClassPath(), superKlass, annotation, true));
+			applicationClasses = new ArrayList<Class<S>>(ClassesUtil.getInstance().listClassesFromDirectory(dirr, getClassPath(), superKlass, annotation, true));
 		}
 		return applicationClasses;
 	}
@@ -59,12 +59,17 @@ public abstract class ModulesAutomation {
 
 				if (module.isDirectory()) {
 
-					final File dir = getSubFile(module, getDirName());
-					classes = new ArrayList<Class<S>>(ClassesUtil.getInstance().listClassesFromDirectory(
-							dir, getClassPath(), superKlass, annotation, true));
+					final File dir = FileUtil.getInstance().getSubFile(module, getDirName());
+					if(dir!=null && dir.exists()){
+						classes = new ArrayList<Class<S>>(ClassesUtil.getInstance().listClassesFromDirectory(dir, getClassPath(), superKlass, annotation, true));
 
-					sortClassList(classes);
-					modulesClasses.put(module.getName(), classes);
+						sortClassList(classes);
+						if(isApp(module.getAbsolutePath())){
+							modulesClasses.put("app "+getAppName(module.getAbsolutePath()), classes);
+						}else{
+							modulesClasses.put("module "+module.getName(), classes);
+						}
+					}
 				}
 				else{
 					throw new NotModuleException(module.getAbsolutePath()+" não pode ficar dentro da pasta de módulos");
@@ -74,7 +79,16 @@ public abstract class ModulesAutomation {
 		return modulesClasses;
 	}
 
-	private String getClassPath() {
+	public static String getAppName(String dirPath) {
+		String classesPath = getClassPath();
+		return dirPath.substring((classesPath + "apps/").length()).replaceAll("[\\\\/]","\\.");
+	}
+
+	public static boolean isApp(String filePath){
+		return (filePath!=null && filePath.replaceAll("\\\\","/").startsWith(getClassPath().replaceAll("\\\\", "/")+"apps/"));
+	}
+
+	private static String getClassPath() {
 		String classPath = Apps.get("CLASSES_PATH");
 		if(Is.empty(classPath)){
 			try {
@@ -95,8 +109,12 @@ public abstract class ModulesAutomation {
 		});
 	}
 
-	protected File getSubFile(File file, String name) {
-		return FileUtil.getInstance().getSubFile(file, name);
+	public static String getModulePackage(File file) {
+		if(ModulesAutomation.isApp(file.getAbsolutePath())){
+			return (ModulesAutomation.getAppName(file.getAbsolutePath()));
+		}else{
+			return The.concat(Apps.MODULES_PACK,".",file.getName());
+		}
 	}
 }
 

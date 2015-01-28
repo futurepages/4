@@ -6,11 +6,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.futurepages.enums.UnitTimeEnum;
-import org.futurepages.util.CalendarUtil.TooBigDateException;
+import org.futurepages.util.BrazilianCalendarUtil.TooBigDateException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class CalendarUtilTest {
+public class BrazilianCalendarUtilTest {
 	private static final String CALENDAR_MASK = "dd/MM/yyyy HH:mm:ss";
 	/**
 	 * CalMinuendo -  CalSubtraendo = CalDifefença
@@ -37,7 +37,7 @@ public class CalendarUtilTest {
 
 	private static void testGetElapsedTime_CALENDAR_START_CALENDAR_END__TestProcedure(int[] expectedResult, 
 			Calendar calStart, Calendar calEnd, String msg) {
-		int[] atualResult = CalendarUtil.getElapsedTime(calStart, calEnd);
+		int[] atualResult = BrazilianCalendarUtil.getElapsedTime(calStart, calEnd);
 		Assert.assertEquals(msg+" ANO" ,expectedResult[0], atualResult[0]);
 		Assert.assertEquals(msg+" MES" ,expectedResult[1], atualResult[1]);
 		Assert.assertEquals(msg+" DIA" ,expectedResult[2], atualResult[2]);
@@ -152,9 +152,9 @@ public class CalendarUtilTest {
 		getElapsedTimeStatementTestProcedure(msg, time, expected, UnitTimeEnum.YEAR,1);
 	}
 
-	/** Vide {@link CalendarUtil.getElapsedTimeStatement} */
+	/** Vide {@link BrazilianCalendarUtil.getElapsedTimeStatement} */
 	private void getElapsedTimeStatementTestProcedure(String msg, int[] time, String expected,UnitTimeEnum unitLimit,int limitValue) throws TooBigDateException{
-		String result = CalendarUtil.getElapsedTimeStatement(time, unitLimit,limitValue);
+		String result = BrazilianCalendarUtil.getElapsedTimeStatement(time, unitLimit, limitValue);
 		Assert.assertEquals(msg, expected, result);
 	}
 
@@ -261,8 +261,8 @@ public class CalendarUtilTest {
 	public void testGetElapsedTimeFromNowStatement() throws ParseException{
 		Calendar start = Calendar.getInstance();
 		start.add(Calendar.YEAR,-1);
-		String result = CalendarUtil.getElapsedTimeUntilNowStatement(start,UnitTimeEnum.MONTH,0);
-		Assert.assertEquals(DateUtil.viewDateTime(start),result);
+		String result = BrazilianCalendarUtil.getElapsedTimeUntilNowStatement(start, UnitTimeEnum.MONTH, 0);
+		Assert.assertEquals(BrazilianDateUtil.viewDateTime(start),result);
 	}
 	
 	
@@ -272,7 +272,7 @@ public class CalendarUtilTest {
 			calendar1.setTime(dateFormat.parse(cal1));
 		Calendar calendar2 = Calendar.getInstance(); 
 			calendar2.setTime(dateFormat.parse(cal2));
-		int result = CalendarUtil.compareCalendarDate(calendar1, calendar2);
+		int result = BrazilianCalendarUtil.compareCalendarDate(calendar1, calendar2);
 		Assert.assertEquals(msg,esperado, result);
 	}
 	
@@ -298,7 +298,7 @@ public class CalendarUtilTest {
 	
 
 	private void getDifferenceInDays_testProcedure(Calendar c1,Calendar c2, int esperado, String msg){
-		int result = CalendarUtil.getDifferenceInDays(c1, c2);
+		int result = BrazilianCalendarUtil.getDifferenceInDays(c1, c2);
 		Assert.assertEquals(msg,esperado, result);
 	}
 
@@ -310,55 +310,55 @@ public class CalendarUtilTest {
 
 	@Test
 	public void testIsCalendarDateEquals(){
-		Calendar c1 = DateUtil.dbDateTimeToCalendar("2011-11-03 00:06:00");
-		Calendar c2 = DateUtil.dbDateTimeToCalendar("2011-11-03 07:06:00");
-		Calendar c3 = DateUtil.dbDateTimeToCalendar("2011-11-03 11:59:00");
+		Calendar c1 = BrazilianDateUtil.dbDateTimeToCalendar("2011-11-03 00:06:00");
+		Calendar c2 = BrazilianDateUtil.dbDateTimeToCalendar("2011-11-03 07:06:00");
+		Calendar c3 = BrazilianDateUtil.dbDateTimeToCalendar("2011-11-03 11:59:00");
 
-		Calendar c3_ = DateUtil.dbDateTimeToCalendar("2012-11-03 20:59:00");
-		Calendar c4 = DateUtil.dbDateTimeToCalendar("2011-11-13 01:59:00");
-		Calendar c5 = DateUtil.dbDateTimeToCalendar("2011-12-03 18:59:00");
+		Calendar c3_ = BrazilianDateUtil.dbDateTimeToCalendar("2012-11-03 20:59:00");
+		Calendar c4 = BrazilianDateUtil.dbDateTimeToCalendar("2011-11-13 01:59:00");
+		Calendar c5 = BrazilianDateUtil.dbDateTimeToCalendar("2011-12-03 18:59:00");
 
-		Assert.assertTrue(CalendarUtil.isCalendarDateEquals(c1, c1));
-		Assert.assertTrue(CalendarUtil.isCalendarDateEquals(c1, c2));
-		Assert.assertTrue(CalendarUtil.isCalendarDateEquals(c2, c1));
-		Assert.assertTrue(CalendarUtil.isCalendarDateEquals(c2, c2));
-		Assert.assertTrue(CalendarUtil.isCalendarDateEquals(c1, c3));
-		Assert.assertTrue(CalendarUtil.isCalendarDateEquals(c3, c1));
-		Assert.assertTrue(CalendarUtil.isCalendarDateEquals(c3, c3));
+		Assert.assertTrue(BrazilianCalendarUtil.isCalendarDateEquals(c1, c1));
+		Assert.assertTrue(BrazilianCalendarUtil.isCalendarDateEquals(c1, c2));
+		Assert.assertTrue(BrazilianCalendarUtil.isCalendarDateEquals(c2, c1));
+		Assert.assertTrue(BrazilianCalendarUtil.isCalendarDateEquals(c2, c2));
+		Assert.assertTrue(BrazilianCalendarUtil.isCalendarDateEquals(c1, c3));
+		Assert.assertTrue(BrazilianCalendarUtil.isCalendarDateEquals(c3, c1));
+		Assert.assertTrue(BrazilianCalendarUtil.isCalendarDateEquals(c3, c3));
 
-		Assert.assertFalse(CalendarUtil.isCalendarDateEquals(c3, c3_));
-		Assert.assertFalse(CalendarUtil.isCalendarDateEquals(c3_, c3));
-		Assert.assertFalse(CalendarUtil.isCalendarDateEquals(c1, c4));
-		Assert.assertFalse(CalendarUtil.isCalendarDateEquals(c4, c1));
-		Assert.assertFalse(CalendarUtil.isCalendarDateEquals(c1, c5));
+		Assert.assertFalse(BrazilianCalendarUtil.isCalendarDateEquals(c3, c3_));
+		Assert.assertFalse(BrazilianCalendarUtil.isCalendarDateEquals(c3_, c3));
+		Assert.assertFalse(BrazilianCalendarUtil.isCalendarDateEquals(c1, c4));
+		Assert.assertFalse(BrazilianCalendarUtil.isCalendarDateEquals(c4, c1));
+		Assert.assertFalse(BrazilianCalendarUtil.isCalendarDateEquals(c1, c5));
 	}
 
 	@Test
 	public void testIsNeighborDays(){
-		Calendar c1 = DateUtil.dbDateTimeToCalendar("2011-11-03 00:06:00");
-		Calendar c2 = DateUtil.dbDateTimeToCalendar("2011-11-04 07:06:00");
-		Calendar c3 = DateUtil.dbDateTimeToCalendar("2011-11-05 11:59:00");
-		Calendar c4 = DateUtil.dbDateTimeToCalendar("2011-11-06 20:59:00");
-		Calendar c5 = DateUtil.dbDateTimeToCalendar("2011-11-07 01:59:00");
-		Calendar c6 = DateUtil.dbDateTimeToCalendar("2011-11-08 18:59:00");
-		Calendar c7 = DateUtil.dbDateTimeToCalendar("2012-11-09 18:59:00");
-		Calendar c8 = DateUtil.dbDateTimeToCalendar("2012-10-08 00:06:00");
-		Assert.assertFalse(CalendarUtil.isNeighborDays(c1, c1));
-		Assert.assertTrue(CalendarUtil.isNeighborDays(c1, c2));
-		Assert.assertFalse(CalendarUtil.isNeighborDays(c1, c3));
-		Assert.assertFalse(CalendarUtil.isNeighborDays(c1, c4));
-		Assert.assertFalse(CalendarUtil.isNeighborDays(c1, c5));
-		Assert.assertFalse(CalendarUtil.isNeighborDays(c1, c6));
-		Assert.assertFalse(CalendarUtil.isNeighborDays(c1, c7));
-		Assert.assertFalse(CalendarUtil.isNeighborDays(c1, c8));
-		Assert.assertFalse(CalendarUtil.isNeighborDays(c1, c1));
+		Calendar c1 = BrazilianDateUtil.dbDateTimeToCalendar("2011-11-03 00:06:00");
+		Calendar c2 = BrazilianDateUtil.dbDateTimeToCalendar("2011-11-04 07:06:00");
+		Calendar c3 = BrazilianDateUtil.dbDateTimeToCalendar("2011-11-05 11:59:00");
+		Calendar c4 = BrazilianDateUtil.dbDateTimeToCalendar("2011-11-06 20:59:00");
+		Calendar c5 = BrazilianDateUtil.dbDateTimeToCalendar("2011-11-07 01:59:00");
+		Calendar c6 = BrazilianDateUtil.dbDateTimeToCalendar("2011-11-08 18:59:00");
+		Calendar c7 = BrazilianDateUtil.dbDateTimeToCalendar("2012-11-09 18:59:00");
+		Calendar c8 = BrazilianDateUtil.dbDateTimeToCalendar("2012-10-08 00:06:00");
+		Assert.assertFalse(BrazilianCalendarUtil.isNeighborDays(c1, c1));
+		Assert.assertTrue(BrazilianCalendarUtil.isNeighborDays(c1, c2));
+		Assert.assertFalse(BrazilianCalendarUtil.isNeighborDays(c1, c3));
+		Assert.assertFalse(BrazilianCalendarUtil.isNeighborDays(c1, c4));
+		Assert.assertFalse(BrazilianCalendarUtil.isNeighborDays(c1, c5));
+		Assert.assertFalse(BrazilianCalendarUtil.isNeighborDays(c1, c6));
+		Assert.assertFalse(BrazilianCalendarUtil.isNeighborDays(c1, c7));
+		Assert.assertFalse(BrazilianCalendarUtil.isNeighborDays(c1, c8));
+		Assert.assertFalse(BrazilianCalendarUtil.isNeighborDays(c1, c1));
 
-		Assert.assertTrue(CalendarUtil.isNeighborDays(c2, c3));
-		Assert.assertTrue(CalendarUtil.isNeighborDays(c3, c4));
-		Assert.assertTrue(CalendarUtil.isNeighborDays(c4, c5));
-		Assert.assertTrue(CalendarUtil.isNeighborDays(c5, c6));
-		Assert.assertFalse(CalendarUtil.isNeighborDays(c6, c7));
-		Assert.assertFalse(CalendarUtil.isNeighborDays(c7, c8));
+		Assert.assertTrue(BrazilianCalendarUtil.isNeighborDays(c2, c3));
+		Assert.assertTrue(BrazilianCalendarUtil.isNeighborDays(c3, c4));
+		Assert.assertTrue(BrazilianCalendarUtil.isNeighborDays(c4, c5));
+		Assert.assertTrue(BrazilianCalendarUtil.isNeighborDays(c5, c6));
+		Assert.assertFalse(BrazilianCalendarUtil.isNeighborDays(c6, c7));
+		Assert.assertFalse(BrazilianCalendarUtil.isNeighborDays(c7, c8));
 	}
 	
 	@Test
@@ -369,7 +369,7 @@ public class CalendarUtilTest {
 	}
 	
 	private void getDiffernece_segundaDataMaiorTestProcedure(int diff) {
-		Calendar c1 = CalendarUtil.buildCalendar(Calendar.DATE, -diff);
+		Calendar c1 = BrazilianCalendarUtil.buildCalendar(Calendar.DATE, -diff);
 		Calendar c2 = Calendar.getInstance();
 		getDifferenceInDays_testProcedure(c1, c2, diff, "Erro com quando a segunda data é Maior e a diferença é "+diff);
 	}
@@ -382,7 +382,7 @@ public class CalendarUtilTest {
 	}
 
 	private void getDiffernece_segundaDataMenorTestProcedure(int diff) {
-		Calendar c1 = CalendarUtil.buildCalendar(Calendar.DATE, -diff);
+		Calendar c1 = BrazilianCalendarUtil.buildCalendar(Calendar.DATE, -diff);
 		Calendar c2 = Calendar.getInstance();
 		getDifferenceInDays_testProcedure(c2, c1, diff, "Erro com quando a segunda data é Menor e a diferença é "+diff);
 	}
@@ -390,7 +390,7 @@ public class CalendarUtilTest {
 	private void isLeapYearTestProcedure(String msg, int year, boolean expected){
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, year);
-		boolean result = CalendarUtil.isLeapYear(cal);
+		boolean result = BrazilianCalendarUtil.isLeapYear(cal);
 		Assert.assertEquals("Erro no método quando o ano é "+msg, expected, result);
 	}
 	
@@ -405,10 +405,10 @@ public class CalendarUtilTest {
 	}
 	
 	private void getOrdinalDayOfYearTestProcedure(String errorMsg, String data, int esperado) {
-		Date date = DateUtil.parse(data, "dd/MM/yyyy");
+		Date date = BrazilianDateUtil.parse(data, "dd/MM/yyyy");
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		int result = CalendarUtil.getOrdinalDayOfYear(cal);
+		int result = BrazilianCalendarUtil.getOrdinalDayOfYear(cal);
 		Assert.assertEquals(errorMsg, esperado, result);
 	}
 
