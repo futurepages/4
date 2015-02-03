@@ -1,4 +1,4 @@
-package org.futurepages.util;
+package org.futurepages.util.brazil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,7 +81,7 @@ public class NumberUtil {
 	 *
 	 * @param number - o número a ser convertido
 	 * @return - o número por extenso
-	 * @throws java.lang.Exception
+	 * @throws Exception
 	 */
 	public static String milharPorExtenso(String number) throws Exception {
 		if (number.length() != 4) {
@@ -101,7 +101,7 @@ public class NumberUtil {
 	 *
 	 * @param number
 	 * @return
-	 * @throws java.lang.Exception
+	 * @throws Exception
 	 */
 	public static String dezenaPorExtenso(String number) throws Exception {
 		if (number.length() != 2) {

@@ -4,6 +4,8 @@ import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -40,7 +42,10 @@ public class HibernateManager {
 					log("registering '" + schemaId + "' schema.");
 					Configuration config;
 					config = configurations.get(schemaId).getEntitiesConfig();
-					factories.put(schemaId, config.buildSessionFactory());
+
+					ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(config.getProperties()).buildServiceRegistry();
+
+					factories.put(schemaId, config.buildSessionFactory(serviceRegistry));
 					sessionsTL.put(schemaId, new ThreadLocal<Session>());
 					genericDaos.put(schemaId, GenericDao.newInstance(schemaId));
 				}
@@ -89,7 +94,7 @@ public class HibernateManager {
 		if (session != null && session.isOpen()) {
 				return session;
 		}else{
-			session = getSessionFactory(schemaId).openSession();
+			session = getSessionFactory(schemaId).getCurrentSession();
 			getSessionTL(schemaId).set(session);
 			return session;
 		}
@@ -122,7 +127,7 @@ public class HibernateManager {
 					sTL.remove();
 				}
 			}
-			
+
 			for (SessionFactory sf : factories.values()) {
 				if (sf != null && !sf.isClosed()) { //se a fabrica de sessao não estiver fechada fecha ela
 					sf.close();

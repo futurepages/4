@@ -1,81 +1,159 @@
 package org.futurepages.core.pagination;
 
+import javafx.scene.effect.Reflection;
+import org.futurepages.core.persistence.GenericDao;
+import org.futurepages.core.persistence.HQLProvider;
+import org.futurepages.core.persistence.HQLQuery;
+import org.futurepages.util.ReflectionUtil;
+
 import java.util.List;
 
-public class PaginationSlice<T> {
+public class PaginationSlice<T> extends HQLProvider{
 
-	/** Total de registros não paginados*/
     private Long totalSize;
-    
-    /** Tamanho da página*/
     private Integer pageSize;
-    
-    /** número total de páginas*/
     private int totalPages;
-    
-    /** número da página*/
     private int pageNumber;
-
-	/** o quanto deslocou */
     private int pagesOffset;
-    
-    /** lista referente à página*/
+    private int firstResult;
+    private HQLQuery hqlQuery;
+    private GenericDao dao;
     private List<T> list;
 
-    public PaginationSlice(Long totalSize, Integer pageSize, int pagesOffset, int numPages, int page,  List<T> list) {
-        this.totalSize = totalSize;
-        this.pageSize = pageSize;
-        this.totalPages = numPages;
-        this.list = list;
-        this.pageNumber = page;
+    public PaginationSlice(int pageNumber, int pageSize, int pagesOffset, GenericDao dao, HQLQuery<T> hqlQuery) {
+        this.dao = dao;
+        this.hqlQuery = hqlQuery;
+
+        this.pagesOffset = pagesOffset; // have a public set
+        this.pageSize = pageSize; // have a public set
+        loadPage(pageNumber);
+    }
+
+
+    public PaginationSlice(GenericDao dao, HQLQuery<T> hqlQuery) {
+        this.dao = dao;
+        this.hqlQuery = hqlQuery;
+        this.totalSize = calcTotalSize();
+        this.firstResult = 0;
+    }
+
+    public PaginationSlice<T> loadPage(int rawPageNumber) {
+        this.totalSize = calcTotalSize();
+        this.totalPages  = calcTotalPages(totalSize,pageSize);
+        this.pageNumber = calcCorrectPageNumber(rawPageNumber,totalPages);
+        this.firstResult = calcFirstResult(pageNumber, pageSize);
+        this.list = loadList();
+        return this;
+    }
+
+    public PaginationSlice<T> loadPageByFirstResult(int firstResult) {
+        this.totalSize = dao.numRows(hql(count("*"), hqlQuery.getEntity(), hqlQuery.getWhere()));
+        this.totalPages  = calcTotalPages(totalSize,pageSize);
+        this.pageNumber = calcCorrectPageNumberByFirstResult(firstResult);
+        this.firstResult = firstResult;
+        this.list = loadList();
+        return this;
+    }
+
+    public PaginationSlice<T> loadRows(int firstResult,int maxResult) {
+        this.pageSize = maxResult;
+        loadPageByFirstResult(firstResult);
+        return this;
+    }
+
+    private int calcCorrectPageNumberByFirstResult(int firstResult) {
+       int page = (int) Math.ceil((firstResult+1)/pageSize);
+       pagesOffset =  (firstResult+1)-(pageSize*page-1);
+       return page;
+    }
+
+
+    private List<T> loadList() {
+        System.out.println(hqlQuery.toString() + "first:" + firstResult + "; pageSize:" + pageSize);
+        System.out.println();
+        return dao.selectQuery(hqlQuery)
+                  .setFirstResult(firstResult)
+                  .setMaxResults(pageSize)
+                  .list();
+    }
+
+    public PaginationSlice<T> loadPrevious(){
+        return loadPage(pageNumber-1);
+    }
+
+    public PaginationSlice<T> loadNext(){
+        return loadPage(pageNumber+1);
+    }
+
+    public void setPagesOffset(int pagesOffset) {
         this.pagesOffset = pagesOffset;
     }
 
-    public void setTotalPages(int total) {
-        this.totalPages = total;
+    public void setPageSize(int pageSize){
+        this.pageSize = pageSize;
     }
 
-    public int getTotalPages() {
-        return totalPages;
-    }
 
     public Long getTotalSize() {
         return totalSize;
     }
 
-    public void setTotalSize(Long totalSize) {
-        this.totalSize = totalSize;
+    public long calcTotalSize(){
+        return dao.numRows(hql(count("*"),hqlQuery.getEntity(), hqlQuery.getWhere()));
     }
 
     public Integer getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
+    public int getTotalPages() {
+        return totalPages;
     }
 
     public int getPageNumber() {
-		return pageNumber;
-	}
+        return pageNumber;
+    }
 
-	public void setPageNumber(int page) {
-		this.pageNumber = page;
-	}
+    public int getPagesOffset() {
+        return pagesOffset;
+    }
 
-	public List<T> getList() {
+    public int getFirstResult() {
+        return firstResult;
+    }
+
+    public HQLQuery getHqlQuery() {
+        return hqlQuery;
+    }
+
+    public GenericDao getDao() {
+        return dao;
+    }
+
+    public List<T> getList() {
         return list;
     }
 
-    public void setList(List<T> list) {
-        this.list = list;
+
+    private int calcTotalPages(long totalSize, int pageSize) {
+        return (int) Math.ceil(totalSize / (double) pageSize);
     }
 
-	public int getPagesOffset() {
-		return pagesOffset;
-	}
 
-	public void setPagesOffset(int pagesOffset) {
-		this.pagesOffset = pagesOffset;
-	}
+    private int calcFirstResult(int pageNumber, int pageSize){
+        return ((pageNumber * pageSize) - pageSize)+pagesOffset;
+    }
+
+    private int calcCorrectPageNumber(int pageNumber, int totalPages) {
+		if(pagesOffset == 0){
+			if (pageNumber > totalPages) {
+				return totalPages;
+			}
+		}
+		return pageNumber;
+    }
+
+    public void reloadPage() {
+        loadPage(pageNumber);
+    }
 }

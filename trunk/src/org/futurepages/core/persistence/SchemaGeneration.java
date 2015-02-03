@@ -12,7 +12,7 @@ public class SchemaGeneration {
             log("Schema-Generation UPDATE ---- BEGIN ----");
             SchemaUpdate schemaUpdate = new SchemaUpdate(HibernateManager.getInstance().getConfigurations().getTablesConfig());
             schemaUpdate.execute(true, true);
-			
+
 
 			if(!justBeans){
 				File[] modules = ModuleUtil.getIstance().getModules();

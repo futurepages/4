@@ -1,4 +1,6 @@
-package org.futurepages.util;
+package org.futurepages.util.brazil;
+
+import org.futurepages.util.*;
 
 public class PisPasepNitUtil {
 

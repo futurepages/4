@@ -25,7 +25,7 @@ public class ProbabilityUtil {
 	/**
 	 * Calcula quantos subconjuntos N elementos podem ser formados de um conjunto com S elementos.
 	 * 
-	 * @param numberOfelements : S
+	 * @param numberOfElements : S
 	 * @param groupSize : N
 	 * 		
 	 * @return fat(S) / [fat(N) * fat(S - N)] 
@@ -33,9 +33,9 @@ public class ProbabilityUtil {
 	public static int numberOfCombinations(int numberOfElements, int groupSize){
 		int N = numberOfElements; 
 		int S = groupSize; 
-		Long fatN = FatorialUtil.fat(N);
-		Long fatS = FatorialUtil.fat(S);
-		Long fatN_S = FatorialUtil.fat(N - S );
+		Long fatN = FactorialUtil.fat(N);
+		Long fatS = FactorialUtil.fat(S);
+		Long fatN_S = FactorialUtil.fat(N - S);
 		
 		BigDecimal numberComb = new BigDecimal(fatN / (fatS * fatN_S));
 		return numberComb.intValue();

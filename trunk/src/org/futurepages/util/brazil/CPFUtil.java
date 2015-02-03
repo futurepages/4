@@ -1,4 +1,7 @@
-package org.futurepages.util;
+package org.futurepages.util.brazil;
+
+import org.futurepages.util.Is;
+import org.futurepages.util.The;
 
 public abstract class CPFUtil {
 

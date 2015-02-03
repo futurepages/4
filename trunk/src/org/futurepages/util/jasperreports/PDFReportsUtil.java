@@ -39,10 +39,11 @@ public class PDFReportsUtil {
 	 * @throws IOException
 	 */
 	public static OutputStream createPDF(String fileName, InputStream inputStream, Map<String, Object> params, Connection conexao, HttpServletResponse response) throws JRException, IOException {
-		JasperPrint report = JasperFillManager.fillReport(inputStream,params,Dao.getInstance().session().connection());
+//		JasperPrint report = JasperFillManager.fillReport(inputStream,params,Dao.getInstance().session().connection());
+		JasperPrint report = null; //JasperFillManager.fillReport(inputStream,params,Dao.getInstance().session().connection());
 		response.setContentType("application/pdf");
 		response.setHeader("Content-Disposition","inline; filename="+fileName);
-		OutputStream out = response.getOutputStream();				
+		OutputStream out = response.getOutputStream();
         JRExporter exporter = new JRPdfExporter();
 		exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, fileName);
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, report);

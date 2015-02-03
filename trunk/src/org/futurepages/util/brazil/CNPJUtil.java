@@ -1,4 +1,4 @@
-package org.futurepages.util;
+package org.futurepages.util.brazil;
 
 public class CNPJUtil {
 	public static int QUANTIDADE_DIGITOS_CNPJ = 14;

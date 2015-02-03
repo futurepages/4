@@ -1,7 +1,7 @@
 package org.futurepages.formatters;
 
 import java.math.BigDecimal;
-import org.futurepages.util.MoneyUtil;
+import org.futurepages.util.brazil.MoneyUtil;
 import java.util.Locale;
 import org.futurepages.core.formatter.Formatter;
 
