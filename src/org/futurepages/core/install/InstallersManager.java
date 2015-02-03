@@ -56,7 +56,7 @@ public class InstallersManager extends ModulesAutomation {
 	private void install(File[] modules) throws Exception {
 		if (HibernateManager.isRunning() && modules != null && !installMode.equals("off")) {
 			try {
-				Dao.beginTransaction();
+				Dao.getInstance().beginTransaction();
 
 				//Initial Resources Installer
 //				try {
@@ -110,11 +110,11 @@ public class InstallersManager extends ModulesAutomation {
 //						}
 //					}
 //				}
-				Dao.commitTransaction();
+				Dao.getInstance().commitTransaction();
 				Dao.close();
 
 			} catch (Exception ex) {
-				Dao.rollBackTransaction();
+				Dao.getInstance().rollBackTransaction();
 				throw ex;
 			}
 		}

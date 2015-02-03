@@ -87,7 +87,11 @@ public class Txt {
 							this.localesMap.put(localeFile.getName(), localesMap );
 						}
 						for(String key : txts.stringPropertyNames()){
-							localesMap.put(key, txts.getProperty(key));
+							String txtValue = txts.getProperty(key);
+							if(localesMap.get(key)!=null){
+								System.out.println(">> Txt key "+key+" overwritten for locale '"+localeFile.toString()+"'. Old Value: '"+localesMap.get(key)+"'; New Value: '"+txtValue+"'");
+							}
+							localesMap.put(key, txtValue);
 						}
 					}
 				}

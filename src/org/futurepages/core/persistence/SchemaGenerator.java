@@ -25,12 +25,12 @@ public abstract class SchemaGenerator {
 
 	protected void executeSQL(String sql) {
 			System.out.println("[::schema-generator::] " + sql);
-			Dao.executeSQL(sql);
+			Dao.getInstance().executeSQL(sql);
 	}
 
 	protected void executeSQLFromFile(String path) throws FileNotFoundException, IOException {
 		String[] sqls = FileUtil.getStringLines(this.getClass(), path);
-		Dao.executeSQLs(sqls);
+		Dao.getInstance().executeSQLs(sqls);
 	}
 
 	public abstract void execute() throws Exception;

@@ -5,7 +5,7 @@ import java.util.Locale;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.formatter.Formatter;
 import org.futurepages.enums.MonthEnum;
-import org.futurepages.util.NumberUtil;
+import org.futurepages.util.brazil.NumberUtil;
 
 /**
  * Formata a data no formato DD/MM/YYYY

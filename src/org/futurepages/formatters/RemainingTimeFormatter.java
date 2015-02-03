@@ -4,8 +4,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import org.futurepages.enums.UnitTimeEnum;
-import org.futurepages.util.BrazilianCalendarUtil;
-import org.futurepages.util.BrazilianDateUtil;
+import org.futurepages.util.brazil.CalendarUtil;
+import org.futurepages.util.brazil.DateUtil;
 import org.futurepages.core.formatter.Formatter;
 import org.futurepages.enums.MonthEnum;
 import org.futurepages.util.StringUtils;
@@ -21,14 +21,14 @@ public class RemainingTimeFormatter implements Formatter<Calendar> {
 
 	public static String formatValue(Calendar agora, Calendar momentoNoFuturo){
 		try {
-			if(BrazilianCalendarUtil.isNeighborDays(momentoNoFuturo, agora)){
-					return "amanhã às "+ BrazilianDateUtil.viewDateTime(momentoNoFuturo, "HH:mm");
+			if(CalendarUtil.isNeighborDays(momentoNoFuturo, agora)){
+					return "amanhã às "+ DateUtil.viewDateTime(momentoNoFuturo, "HH:mm");
 			}else{
-				int[] time = BrazilianCalendarUtil.getElapsedTime(momentoNoFuturo, agora);
-				BrazilianCalendarUtil.getElapsedTimeStatement(time, UnitTimeEnum.HOUR, 24, false);
-				return "hoje às " + BrazilianDateUtil.viewDateTime(momentoNoFuturo, "HH:mm");
+				int[] time = CalendarUtil.getElapsedTime(momentoNoFuturo, agora);
+				CalendarUtil.getElapsedTimeStatement(time, UnitTimeEnum.HOUR, 24, false);
+				return "hoje às " + DateUtil.viewDateTime(momentoNoFuturo, "HH:mm");
 			}
-		} catch (BrazilianCalendarUtil.TooBigDateException e) {
+		} catch (CalendarUtil.TooBigDateException e) {
 			int mesAtual = agora.get(Calendar.MONTH)+1;
 			int anoAtual = agora.get(Calendar.YEAR);
 			int diaFuturo = momentoNoFuturo.get(Calendar.DAY_OF_MONTH);

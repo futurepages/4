@@ -12,7 +12,7 @@ import java.util.List;
 
 import javax.persistence.EnumType;
 
-import org.futurepages.util.BrazilianDateUtil;
+import org.futurepages.util.brazil.DateUtil;
 import org.futurepages.util.HQLUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
@@ -39,7 +39,7 @@ public class HQLField implements HQLable {
 
 
 	public String between(Calendar inicio, Calendar fim) {
-		return concat("(", fieldName, BETWEEN, "'", BrazilianDateUtil.dbDate(inicio), "'", AND, "'", BrazilianDateUtil.dbDate(fim), "'", ")");
+		return concat("(", fieldName, BETWEEN, "'", DateUtil.dbDate(inicio), "'", AND, "'", DateUtil.dbDate(fim), "'", ")");
 	}
 
 
@@ -61,12 +61,12 @@ public class HQLField implements HQLable {
 		cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY));
 		cal.set(Calendar.MINUTE, cal.getActualMinimum(Calendar.MINUTE));
 		cal.set(Calendar.SECOND, cal.getActualMinimum(Calendar.SECOND));
-		String dateBegin = BrazilianDateUtil.dbDateTime(cal.getTime());
+		String dateBegin = DateUtil.dbDateTime(cal.getTime());
 
 		cal.set(Calendar.HOUR_OF_DAY, cal.getActualMaximum(Calendar.HOUR_OF_DAY));
 		cal.set(Calendar.MINUTE, cal.getActualMaximum(Calendar.MINUTE));
 		cal.set(Calendar.SECOND, cal.getActualMaximum(Calendar.SECOND));
-		String dateEnd = BrazilianDateUtil.dbDateTime(cal.getTime());
+		String dateEnd = DateUtil.dbDateTime(cal.getTime());
 
 		return this.between(dateBegin, dateEnd);
 	}
@@ -510,7 +510,7 @@ public class HQLField implements HQLable {
 		if (cal == null) {
 			return "";
 		}
-		return concat(fieldName, comparator, "'", escQuoteAndSlashes(BrazilianDateUtil.dbDateTime(cal.getTime())), "'");
+		return concat(fieldName, comparator, "'", escQuoteAndSlashes(DateUtil.dbDateTime(cal.getTime())), "'");
 	}
 
 	private String concat(String... str) {

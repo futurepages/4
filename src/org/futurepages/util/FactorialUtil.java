@@ -3,7 +3,7 @@ package org.futurepages.util;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FatorialUtil {
+public class FactorialUtil {
 	
 	private static  Map<Long, Long> fatoriais = new HashMap<Long, Long>();
 	

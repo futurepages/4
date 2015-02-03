@@ -1,8 +1,10 @@
-package org.futurepages.util;
+package org.futurepages.util.brazil;
 
 import org.futurepages.core.locale.LocaleManager;
 import org.futurepages.enums.DateFormatEnum;
 import org.futurepages.enums.MonthEnum;
+import org.futurepages.util.Is;
+import org.futurepages.util.TimeUtil;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -12,9 +14,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * @deprecated Use new jdk8 api for Dates and Time
+ * Brazilian format Dates, Use new jdk8 api for Dates and Time
  */
-public class BrazilianDateUtil {
+public class DateUtil {
 
 	public static String dbDate(int year, int month, int day) {
 		return year + "-" + month + "-" + day;
@@ -55,7 +57,7 @@ public class BrazilianDateUtil {
 	public static String literalDayOfWeek(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		return BrazilianCalendarUtil.literalDayOfWeek(cal);
+		return CalendarUtil.literalDayOfWeek(cal);
 	}
 
 	/**
@@ -108,10 +110,10 @@ public class BrazilianDateUtil {
 	public static String literalDateFromDB(Object in) {
 		String value = "";
 		if (in instanceof Date) {
-			value = BrazilianDateUtil.dbDate((Date) in);
+			value = DateUtil.dbDate((Date) in);
 
 		} else if (in instanceof Calendar) {
-			value = BrazilianDateUtil.dbDate(((Calendar) in).getTime());
+			value = DateUtil.dbDate(((Calendar) in).getTime());
 
 		} else if (in instanceof String) {
 			value = (String) in;
@@ -328,7 +330,7 @@ public class BrazilianDateUtil {
 			Integer.parseInt(dia);
 			Integer.parseInt(mes);
 			Integer.parseInt(ano);
-			BrazilianDateUtil.date(dia + "/" + mes + "/" + ano);
+			DateUtil.date(dia + "/" + mes + "/" + ano);
 		} catch (Exception e) {
 			return false;
 		}

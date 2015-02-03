@@ -3,6 +3,8 @@ package org.futurepages.core.persistence;
 import org.futurepages.util.Is;
 import org.futurepages.util.StringUtils;
 
+import java.io.Serializable;
+
 /**
  * @author leandro
  */
@@ -214,6 +216,37 @@ public class HQLProvider implements HQLable {
 			return "";
 		}
 	}
+	public static <T extends Serializable> HQLQuery<T> hql(String field, String expression, Class<T> entityFrom, String where) {
+		return new HQLQuery(field, expression, entityFrom, where);
+	}
+
+	public static <T extends Serializable> HQLQuery<T> hql(Class<T> entityFrom) {
+		return new HQLQuery(entityFrom);
+	}
+
+	public static <T extends Serializable> HQLQuery<T> hql(Class<T> entityFrom, String where) {
+		return new HQLQuery(entityFrom, where);
+	}
+
+	public static <T extends Serializable> HQLQuery hql(Class<T> entityFrom, String where, String order) {
+		return new HQLQuery(entityFrom, where, order);
+	}
+
+	public static <T extends Serializable> HQLQuery hql(String select, Class<T> entityFrom, String where) {
+		return new HQLQuery(select, entityFrom, where);
+	}
+
+	public static <T extends Serializable> HQLQuery hql(String select, Class<T> entityFrom, String where, String order) {
+		return new HQLQuery(select, entityFrom, where, order);
+	}
+
+	public static <T extends Serializable> HQLQuery hql(String select, Class<T> entityFrom, String alias, String join, String where, String order) {
+		return new HQLQuery(select,entityFrom,alias,join,where,order);
+	}
+
+	public static <T extends Serializable> HQLQuery hql(String select, Class<T> entityFrom, String alias, String join, String where, String group, String having, String order) {
+		return new HQLQuery(select,entityFrom,alias,join,where,group,having,order);
+	}
 
 	public static String asc(String field) {
 		return field + ASC;
@@ -280,7 +313,15 @@ public class HQLProvider implements HQLable {
 
 	public static String groupBy(String groupClause) {
 		if (!Is.empty(groupClause)) {
-			return GROUP_BY + groupClause;
+			return HAVING + groupClause;
+		} else {
+			return "";
+		}
+	}
+
+	public static String having(String havingClause) {
+		if (!Is.empty(havingClause)) {
+			return HAVING + havingClause;
 		} else {
 			return "";
 		}
@@ -288,13 +329,5 @@ public class HQLProvider implements HQLable {
 
 	public static String concat(String... args) {
 		return StringUtils.concat(args);
-	}
-
-	@Deprecated
-	/**
-	 * @deprecated utilize field(a,b,c) em vez de field(a+b+c) , isto elimina a nescessidade deste método.
-	 */
-	public static String toPath(String alias){
-		return Is.empty(alias) ? "" : alias+".";
 	}
 }

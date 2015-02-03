@@ -2,11 +2,12 @@ package org.futurepages.util.iterator.months;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import org.futurepages.util.BrazilianCalendarUtil;
+import org.futurepages.util.brazil.CalendarUtil;
 import org.futurepages.util.The;
 
 /**
- *  
+ *  @deprecated Now in JDK8 it's present. Use the new API.
+ *
  * @author Leandro Santana
  */
 public class MonthYear implements Comparable<MonthYear> {
@@ -73,7 +74,7 @@ public class MonthYear implements Comparable<MonthYear> {
 	public int compareTo(MonthYear that) {
 		Calendar calThis = new GregorianCalendar(this.year,this.month-1,1);
 		Calendar calThat = new GregorianCalendar(that.getYear(),that.getMonth()-1,1);
-		return BrazilianCalendarUtil.compareCalendarDate(calThis, calThat);
+		return CalendarUtil.compareCalendarDate(calThis, calThat);
 	}
 
 	public int lastDay(){

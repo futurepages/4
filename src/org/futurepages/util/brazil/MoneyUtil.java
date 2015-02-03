@@ -1,4 +1,4 @@
-package org.futurepages.util;
+package org.futurepages.util.brazil;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;

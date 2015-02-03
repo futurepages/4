@@ -1,7 +1,7 @@
 package org.futurepages.formatters;
 
-import org.futurepages.util.CNPJUtil;
-import org.futurepages.util.CPFUtil;
+import org.futurepages.util.brazil.CNPJUtil;
+import org.futurepages.util.brazil.CPFUtil;
 import java.util.Locale;
 import org.futurepages.core.formatter.Formatter;
  

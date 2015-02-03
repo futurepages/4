@@ -23,8 +23,8 @@ public class DefaultSessionInitListener implements SessionInitListener {
 
                 head.appendElement("meta")
                         .attr("name", "viewport")
-                        .attr("content",
-                                "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no");
+                        .attr("content", "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no");
+
                 head.appendElement("meta")
                         .attr("name", "apple-mobile-web-apps-capable")
                         .attr("content", "yes");
@@ -36,7 +36,7 @@ public class DefaultSessionInitListener implements SessionInitListener {
 
                 head.appendElement("link")
                         .attr("rel", "apple-touch-icon")
-                        .attr("href", contextPath + "/VAADIN/themes/dashboard/img/apps-icon.png");
+                        .attr("href", contextPath + "/VAADIN/mobile/img/apple-touch-icon.png");
 
             }
 

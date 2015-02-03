@@ -4,8 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.futurepages.util.BrazilianCalendarUtil;
-import org.futurepages.util.BrazilianDateUtil;
+import org.futurepages.util.brazil.CalendarUtil;
+import org.futurepages.util.brazil.DateUtil;
 import org.futurepages.core.formatter.Formatter;
 
 public class SimpleElapsedTimeFormatter implements Formatter {
@@ -15,7 +15,7 @@ public class SimpleElapsedTimeFormatter implements Formatter {
 		Calendar momentoNoPassado;
 
 		if(dateOrCalendar instanceof Date){
-			momentoNoPassado = BrazilianDateUtil.dateTimeToCalendar((Date) dateOrCalendar);
+			momentoNoPassado = DateUtil.dateTimeToCalendar((Date) dateOrCalendar);
 		}else{
 			momentoNoPassado = (Calendar) dateOrCalendar;
 		}
@@ -25,13 +25,13 @@ public class SimpleElapsedTimeFormatter implements Formatter {
 	}
 
 	public static String formatValue(Calendar agora, Calendar momentoNoPassado){
-		if(BrazilianCalendarUtil.isSameDay(agora, momentoNoPassado)){
-			return BrazilianDateUtil.format(momentoNoPassado, "HH:mm");
+		if(CalendarUtil.isSameDay(agora, momentoNoPassado)){
+			return DateUtil.format(momentoNoPassado, "HH:mm");
 		}
-		else if(BrazilianCalendarUtil.isNeighborDays(momentoNoPassado, agora)){
+		else if(CalendarUtil.isNeighborDays(momentoNoPassado, agora)){
 				return "Ontem";
 		}else {
-			return BrazilianDateUtil.format(momentoNoPassado, "MMM dd");
+			return DateUtil.format(momentoNoPassado, "MMM dd");
 		}
 	}
 }
