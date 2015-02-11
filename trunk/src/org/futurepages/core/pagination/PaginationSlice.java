@@ -69,8 +69,8 @@ public class PaginationSlice<T> extends HQLProvider{
 
 
     private List<T> loadList() {
-        System.out.println(hqlQuery.toString() + "first:" + firstResult + "; pageSize:" + pageSize);
-        System.out.println();
+        //System.out.println(hqlQuery.toString() + "first:" + firstResult + "; pageSize:" + pageSize);
+        //System.out.println();
         return dao.selectQuery(hqlQuery)
                   .setFirstResult(firstResult)
                   .setMaxResults(pageSize)

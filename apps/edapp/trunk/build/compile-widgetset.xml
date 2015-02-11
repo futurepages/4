@@ -40,24 +40,6 @@
 		<mkdir dir="${workdir}"/>
 	</target>
 
-	<target name="compile-theme" depends="-init, -compile-theme-1, -compile-theme-2">
-		<!-- the dependencies do all the work here -->
-	</target>
-
-	<target name="-compile-theme-1" if="theme.name">
-		<mkdir dir="${workdir}/VAADIN/themes/${theme.name}"/>
-		<java classname="com.vaadin.sass.SassCompiler" failonerror="yes" fork="yes">
-			<classpath refid="classpath"/>
-			<jvmarg value="-Djava.awt.headless=true"/>
-			<arg value="${theme.dir}/${theme.name}/styles.scss"/>
-			<arg value="${workdir}/VAADIN/themes/${theme.name}/styles.css"/>
-		</java>
-	</target>
-
-	<target name="-compile-theme-2" unless="theme.name">
-		<echo message="theme.name is not set - skipping theme compilation"/>
-	</target>
-
 	<target name="compile-project" depends="-init">
 		<javac destdir="${workdir}" debug="${compile.debug}" includeantruntime="no">
 			<src path="${sources}"/>
@@ -69,11 +51,14 @@
 		<!-- the dependencies do all the work here -->
 	</target>
 
+	<taskdef name="buildUniqueWidgetset" classname="org.futurepages.ant.BuildWidgetsets" classpathref="classpath"/>
+
 	<target name="-build-widgetset-1" if="widgetset">
+		<buildUniqueWidgetset classesPath="${basedir}/${classesPath}" source="${basedir}/${sources}"/>
 		<java classname="com.google.gwt.dev.Compiler"
 			  failonerror="yes" fork="yes">
 			<arg value="-war" />
-			<arg value="${workdir}/VAADIN/widgetsets" />
+			<arg value="${basedir}/${webroot}/VAADIN/widgetsets" />
 			<arg value="${widgetset}" />
 			<arg value="-logLevel"/>
 			<!--<arg value="DEBUG"/>-->
@@ -91,45 +76,11 @@
 		</java>
 
 		<!-- cleanup -->
-		<delete dir="${workdir}/VAADIN/gwt-unitCache"/>
-		<delete dir="${workdir}/VAADIN/widgetsets/WEB-INF"/>
+		<delete dir="${basedir}/${webroot}/VAADIN/gwt-unitCache"/>
+		<delete dir="${basedir}/${webroot}/VAADIN/widgetsets/WEB-INF"/>
 	</target>
 
 	<target name="-build-widgetset-2" unless="widgetset">
 		<echo message="widgetset is not set - skipping widgetset compilation"/>
 	</target>
-
-	<!--descomente estes dois se tiver interesse em usá-los. O IDEA configurado já faz isto.-->
-	<!--<target name="package-war" depends="-init" description="Packages everything in a WAR that has been deployed in ${workdir}">-->
-		<!--<mkdir dir="${workdir}/WEB-INF/lib"/>-->
-		<!--<copy todir="${workdir}/WEB-INF/lib" flatten="true">-->
-			<!--<fileset refid="ivy.deps.default.fileset"/>-->
-		<!--</copy>-->
-
-		<!--<copy todir="${workdir}">-->
-			<!--<fileset dir="${sources}"/>-->
-		<!--</copy>-->
-
-		<!--<delete>-->
-			<!--<fileset dir="${workdir}/WEB-INF/lib">-->
-				<!--<include name="**/*-sources.jar"/>-->
-				<!--<include name="**/*-javadoc.jar"/>-->
-			<!--</fileset>-->
-		<!--</delete>-->
-
-		<!--<war destfile="${artifacts}/${warfilename}"-->
-			<!--basedir="${workdir}"-->
-			<!--webxml="${webroot}/WEB-INF/web.xml"-->
-			<!-->-->
-			<!--<lib dir="${webroot}/WEB-INF/lib" erroronmissingdir="no">-->
-				<!--<include name="*.jar"/>-->
-			<!--</lib>-->
-			<!--<lib dir="${libraries}" erroronmissingdir="no">-->
-				<!--<include name="*.jar"/>-->
-			<!--</lib>-->
-		<!--</war>-->
-	<!--</target>-->
-
-	<!--<target name="build-and-package" depends="compile-theme, compile-project, compile-widgetset, package-war">-->
-	<!--</target>-->
 </project>

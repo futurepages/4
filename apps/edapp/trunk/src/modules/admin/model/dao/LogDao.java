@@ -13,23 +13,23 @@ import org.futurepages.util.Is;
 public class LogDao extends HQLProvider {
 
 	public static List<Log> topLastAccessesByUser(int top, String userLogin) {
-		return Dao.topList(top , Log.class, field("agent").equalsTo(userLogin), desc("dateTime"));
+		return Dao.getInstance().topList(top , hql(Log.class, field("agent").equalsTo(userLogin), desc("dateTime")));
 	}
 
 	/**
-	 *  Retorna a hora do penúltimo registro de acesso do usuário passado. 
+	 *  Retorna a hora do penúltimo registro de acesso do usuário passado.
 	 * @param defUser
 	 * @return
 	 */
 	public static Calendar getFirstLoginBeforeLast(DefaultUser defUser) {
 		final String where = ands(field("agent").equalsTo(defUser.getLogin()),field("operType").equalsTo(LogType.LOGIN));
-		List<Log> logs = Dao.topList(2 , Log.class, where, desc("dateTime"));
+		List<Log> logs = Dao.getInstance().topList(2 , hql(Log.class, where, desc("dateTime")));
 		if(logs.size()==2){
 			return logs.get(1).getDateTime();
 		}
 		return null;
 	}
-    
+
     private static String montaWhere(String className, String logType, String agent, String ipHost, String idValue, String logContent) {
         StringBuilder where = new StringBuilder();
         int cont = 0;
@@ -88,19 +88,19 @@ public class LogDao extends HQLProvider {
 				cont++;
 			}
 		}
-        
+
         return where.toString();
     }
 
     public static PaginationSlice<Log> paginationSliceFiltro(int numPage, int pageSize, String beanName, String logType, String agent, String ipHost, String idValue, String logContent) {
         String where = montaWhere(beanName, logType, agent, ipHost, idValue, logContent);
 
-        return Dao.paginationSlice(numPage, pageSize, Log.class, where, desc("dateTime"));
+        return Dao.getInstance().paginationSlice(numPage, pageSize, hql(Log.class, where, desc("dateTime")));
     }
 
     public static List<Log> list(String beanName, String logType, String agent, String ipHost, String idValue, String logContent) {
         String where = montaWhere(beanName, logType, agent, ipHost, idValue, logContent);
-        
-        return Dao.list(Log.class, where.toString(), desc("dateTime"));
+
+        return Dao.getInstance().list(hql(Log.class, where, desc("dateTime")));
     }
 }

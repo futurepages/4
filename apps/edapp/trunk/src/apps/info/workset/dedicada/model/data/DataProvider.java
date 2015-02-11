@@ -1,7 +1,7 @@
 package apps.info.workset.dedicada.model.data;
 
 import apps.info.workset.dedicada.model.entities.EDNotification;
-import apps.info.workset.dedicada.model.entities.Movie;
+import apps.info.workset.dedicada.model.entities.Cidade;
 import apps.info.workset.dedicada.model.entities.MovieRevenue;
 import apps.info.workset.dedicada.model.entities.Transaction;
 import apps.info.workset.dedicada.model.entities.User;
@@ -59,14 +59,14 @@ public interface DataProvider {
     /**
      * @return A Collection of movies.
      */
-    Collection<Movie> getMovies();
+    Collection<Cidade> getMovies();
 
     /**
      * @param movieId
      *            Movie's identifier
      * @return A Movie instance for the given id.
      */
-    Movie getMovie(long movieId);
+    Cidade getMovie(long movieId);
 
     /**
      * @param startDate

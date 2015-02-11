@@ -1,6 +1,6 @@
-admin.title = Administração
-admin.smallTitle = Administração de Usuários/Permissões
+admin.module.title = Administração
+admin.module.smallTitle = Administração de Usuários/Permissões
 
-user.login = Login
-user.fullName = Nome Completo
-user.password = Senha
+admin.user.login = Login
+admin.user.fullName = Nome Completo
+admin.user.password = Senha

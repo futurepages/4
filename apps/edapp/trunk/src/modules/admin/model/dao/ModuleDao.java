@@ -13,7 +13,7 @@ public class ModuleDao extends HQLProvider {
 
 
 	public static List<Module> list(){
-		return Dao.list(Module.class, null, asc("title"));
+		return Dao.getInstance().list(hql(Module.class, null, asc("title")));
 	}
 
     //lista os modulos que o usuario nao possui
@@ -34,31 +34,31 @@ public class ModuleDao extends HQLProvider {
             moduleCondition = null;
         }
 
-        return Dao.list(Module.class, moduleCondition, asc("title"));
+        return Dao.getInstance().list(hql(Module.class, moduleCondition, asc("title")));
     }
 
     public static List<Module> listAllModulesSelected(String[] id_modulos) {
-        return Dao.list(Module.class, field("moduleId").in(id_modulos));
+        return Dao.getInstance().list(hql(Module.class, field("moduleId").in(id_modulos)));
     }
 
     public static List<Module> listOrderByTitle() {
-        return Dao.list(Module.class, field("moduleId").differentFrom(AdminConstants.SUPER_ID), asc("title"));
+        return Dao.getInstance().list(hql(Module.class, field("moduleId").differentFrom(AdminConstants.SUPER_ID), asc("title")));
     }
 
     public static List<Module> listAllOrderByTitle() {
-        return Dao.list(Module.class, null, asc("title"));
+        return Dao.getInstance().list(hql(Module.class, null, asc("title")));
     }
-	
+
     public static Module getById(String moduleId) {
-        return Dao.get(Module.class, moduleId);
-    }	
+        return Dao.getInstance().get(Module.class, moduleId);
+    }
 
     public static Module save(String moduleId, String smallTitle, String title) {
         Module moduleAdmin = new Module();
         moduleAdmin.setModuleId(moduleId);
         moduleAdmin.setSmallTitle(smallTitle);
         moduleAdmin.setTitle(title);
-        Dao.save(moduleAdmin);
+        Dao.getInstance().save(moduleAdmin);
         return moduleAdmin;
     }
 }

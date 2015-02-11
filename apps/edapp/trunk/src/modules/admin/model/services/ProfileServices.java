@@ -20,16 +20,16 @@ public class ProfileServices {
 	 * @return profile salvo no banco de dados (não destacado)
 	 * @throws Exception 
 	 */
-	public static Profile sync(Profile profileForm) throws Exception {
-		Profile profileExistente = Dao.get(Profile.class, profileForm.getProfileId());
-		Dao.evict(profileExistente);
-		if (profileExistente == null) {
-			//cria pela primeira Vez			
-			return Dao.save(profileForm);
-		} else {
-			//já existia antes o profile:
-			return Dao.update(profileForm);
-		}
-	}
+//	public static Profile sync(Profile profileForm) throws Exception {
+//		Profile profileExistente = Dao.get(Profile.class, profileForm.getProfileId());
+//		Dao.evict(profileExistente);
+//		if (profileExistente == null) {
+//			//cria pela primeira Vez
+//			return Dao.save(profileForm);
+//		} else {
+//			//já existia antes o profile:
+//			return Dao.update(profileForm);
+//		}
+//	}
 
 }

@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import org.futurepages.core.admin.DefaultRole;
 
 @Entity
-@Table(name="admin_role")
 public class Role implements DefaultRole, Serializable{
     
     @Id

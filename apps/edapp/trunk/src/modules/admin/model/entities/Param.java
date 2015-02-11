@@ -8,11 +8,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+
 import modules.admin.model.entities.enums.ParamEnum;
 import modules.admin.model.entities.enums.ParamValueType;
 
 @Entity
-@Table(name="admin_param")
 public class Param implements Serializable{
     
     @Id

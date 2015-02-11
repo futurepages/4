@@ -2,7 +2,7 @@ package apps.info.workset.dedicada.view.components;
 
 import apps.info.workset.dedicada.AppUI;
 import apps.info.workset.dedicada.model.data.dummy.DummyDataGenerator;
-import apps.info.workset.dedicada.model.entities.Movie;
+import apps.info.workset.dedicada.model.entities.Cidade;
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.ChartType;
 import com.vaadin.addon.charts.model.Credits;
@@ -28,10 +28,10 @@ public class TopSixTheatersChart extends Chart {
 
         DataSeries series = new DataSeries();
 
-        List<Movie> movies = new ArrayList<Movie>(AppUI.getDataProvider()
+        List<Cidade> movies = new ArrayList<Cidade>(AppUI.getDataProvider()
                 .getMovies());
         for (int i = 0; i < 6; i++) {
-            Movie movie = movies.get(i);
+            Cidade movie = movies.get(i);
             DataSeriesItem item = new DataSeriesItem(movie.getTitle(),
                     movie.getScore());
             series.add(item);

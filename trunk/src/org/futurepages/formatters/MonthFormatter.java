@@ -2,7 +2,7 @@ package org.futurepages.formatters;
 
 import java.util.Locale;
 import org.futurepages.core.formatter.Formatter;
-import org.futurepages.enums.MonthEnum;
+import org.futurepages.util.brazil.enums.MonthEnum;
  
 /**
  * Formata a data no formato DD/MM/YYYY

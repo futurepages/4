@@ -44,7 +44,6 @@ public class Modules {
         }
     }
 
-
     public static boolean hasOwnSchema(File module) {
         File hiberPropertiesFile = new File(StringUtils.concat(module.getAbsolutePath() , "/" , Apps.MODULE_CONFIG_DIR_NAME,"/" , Apps.BASE_HIBERNATE_PROPERTIES_FILE));
 		return hiberPropertiesFile.exists();

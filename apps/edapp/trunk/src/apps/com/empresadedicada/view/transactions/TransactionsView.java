@@ -175,10 +175,8 @@ public final class TransactionsView extends VerticalLayout implements View {
     private Table buildTable() {
         final Table table = new Table() {
             @Override
-            protected String formatPropertyValue(final Object rowId,
-                    final Object colId, final Property<?> property) {
-                String result = super.formatPropertyValue(rowId, colId,
-                        property);
+            protected String formatPropertyValue(final Object rowId, final Object colId, final Property<?> property) {
+                String result = super.formatPropertyValue(rowId, colId, property);
                 if (colId.equals("time")) {
                     result = DATEFORMAT.format(((Date) property.getValue()));
                 } else if (colId.equals("price")) {

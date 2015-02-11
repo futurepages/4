@@ -16,7 +16,7 @@ public class RoleDao extends HQLProvider {
 
 
 	public static List<Role> list(){
-		return Dao.list(Role.class, null, asc("title"));
+		return Dao.getInstance().list(hql(Role.class, null, asc("title")));
 	}
 
 	//lista as roles que o usuario não possui
@@ -36,34 +36,34 @@ public class RoleDao extends HQLProvider {
 			roleCondition = null;
 		}
 
-		return Dao.list(Role.class, roleCondition, asc("title"));
+		return Dao.getInstance().list(hql(Role.class, roleCondition, asc("title")));
 	}
 
 	public static List<Role> listAllRolesSelected(String[] id_roles) {
-		return Dao.list(Role.class, field("roleId").in(id_roles));
+		return Dao.getInstance().list(hql(Role.class, field("roleId").in(id_roles)));
 	}
 
 	public static List<Role> listOrderByTitle() {
-		return Dao.list(Role.class, field("roleId").differentFrom(AdminConstants.SUPER_ID), asc("title"));
+		return Dao.getInstance().list(hql(Role.class, field("roleId").differentFrom(AdminConstants.SUPER_ID), asc("title")));
 	}
 
 	public static List<Role> listAllOrderByTitle() {
-		return Dao.list(Role.class, null, "title");
+		return Dao.getInstance().list(hql(Role.class, null, "title"));
 	}
 
 	public static Role get(DefaultRole role) {
-		return Dao.get(Role.class, role.getRoleId());
+		return Dao.getInstance().get(Role.class, role.getRoleId());
 	}
 
 	public static Role getById(String roleId) {
-		return Dao.get(Role.class, roleId);
+		return Dao.getInstance().get(Role.class, roleId);
 	}
 
 	public static Role save(String roleId, String title) {
 		Role role = new Role();
 		role.setRoleId(roleId);
 		role.setTitle(title);
-		Dao.save(role);
+		Dao.getInstance().save(role);
 		return role;
 	}
 
@@ -76,20 +76,20 @@ public class RoleDao extends HQLProvider {
 		role.setRoleId(roleDef.getRoleId());
 		role.setTitle(title);
 		role.setModule(ModuleDao.getById(moduleId));
-		return Dao.save(role);
+		return Dao.getInstance().save(role);
 	}
 
 	public static List<Role> listByModule(String moduleId) {
-		return Dao.list(Role.class, field("module.moduleId").equalsTo(moduleId), asc("title"));
+		return Dao.getInstance().list(hql(Role.class, field("module.moduleId").equalsTo(moduleId), asc("title")));
 	}
 
 	public static Map<String, String> mapByModule(String moduleId){
 		String where = ands(field("module.moduleId").equalsTo(moduleId));
-		return Dao.map(Role.class, "roleId", "title", where, asc("title"));
+		return Dao.getInstance().map(hql("roleId, title", Role.class, where, asc("title")));
 	}
 
 	public static Map<String, String> mapAll(){
-		return Dao.map(Role.class, "roleId", "title", null, asc("title"));
+		return Dao.getInstance().map(hql("roleId,title",Role.class, null, asc("title")));
 	}
 
 	public static String whereBasic(List<Role> roles, String field) {

@@ -2,7 +2,7 @@ package apps.info.workset.dedicada.model.data.dummy;
 
 import apps.info.workset.dedicada.model.data.DataProvider;
 import apps.info.workset.dedicada.model.entities.EDNotification;
-import apps.info.workset.dedicada.model.entities.Movie;
+import apps.info.workset.dedicada.model.entities.Cidade;
 import apps.info.workset.dedicada.model.entities.MovieRevenue;
 import apps.info.workset.dedicada.model.entities.Transaction;
 import apps.info.workset.dedicada.model.entities.User;
@@ -59,7 +59,7 @@ public class DummyDataProvider implements DataProvider, Serializable {
     /* List of countries and cities for them */
     private static Multimap<String, String> countryToCities;
     private static Date lastDataUpdate;
-    private static Collection<Movie> movies;
+    private static Collection<Cidade> movies;
     private static Multimap<Long, Transaction> transactions;
     private static Multimap<Long, MovieRevenue> revenue;
 
@@ -92,7 +92,7 @@ public class DummyDataProvider implements DataProvider, Serializable {
      * @return a list of Movie objects
      */
     @Override
-    public Collection<Movie> getMovies() {
+    public Collection<Cidade> getMovies() {
         return Collections.unmodifiableCollection(movies);
     }
 
@@ -103,7 +103,7 @@ public class DummyDataProvider implements DataProvider, Serializable {
      *
      * @return
      */
-    private static Collection<Movie> loadMoviesData() {
+    private static Collection<Cidade> loadMoviesData() {
 
         JsonObject json = null;
         File cache;
@@ -140,7 +140,7 @@ public class DummyDataProvider implements DataProvider, Serializable {
             e.printStackTrace();
         }
 
-        Collection<Movie> result = new ArrayList<Movie>();
+        Collection<Cidade> result = new ArrayList<Cidade>();
         if (json != null) {
             JsonArray moviesJson;
 
@@ -150,7 +150,7 @@ public class DummyDataProvider implements DataProvider, Serializable {
                 JsonObject posters = movieJson.get("posters").getAsJsonObject();
                 if (!posters.get("profile").getAsString()
                         .contains("poster_default")) {
-                    Movie movie = new Movie();
+                    Cidade movie = new Cidade();
                     movie.setId(i);
                     movie.setTitle(movieJson.get("title").getAsString());
                     movie.setDuration(movieJson.get("runtime").getAsInt());
@@ -304,7 +304,7 @@ public class DummyDataProvider implements DataProvider, Serializable {
         Multimap<Long, Transaction> result = MultimapBuilder.hashKeys()
                 .arrayListValues().build();
 
-        for (Movie movie : movies) {
+        for (Cidade movie : movies) {
             result.putAll(movie.getId(), new ArrayList<Transaction>());
 
             Calendar cal = Calendar.getInstance();
@@ -373,8 +373,8 @@ public class DummyDataProvider implements DataProvider, Serializable {
 
     }
 
-    public static Movie getMovieForTitle(String title) {
-        for (Movie movie : movies) {
+    public static Cidade getMovieForTitle(String title) {
+        for (Cidade movie : movies) {
             if (movie.getTitle().equals(title)) {
                 return movie;
             }
@@ -423,13 +423,13 @@ public class DummyDataProvider implements DataProvider, Serializable {
     private Multimap<Long, MovieRevenue> countRevenues() {
         Multimap<Long, MovieRevenue> result = MultimapBuilder.hashKeys()
                 .arrayListValues().build();
-        for (Movie movie : movies) {
+        for (Cidade movie : movies) {
             result.putAll(movie.getId(), countMovieRevenue(movie));
         }
         return result;
     }
 
-    private Collection<MovieRevenue> countMovieRevenue(Movie movie) {
+    private Collection<MovieRevenue> countMovieRevenue(Cidade movie) {
         Map<Date, Double> dailyIncome = new HashMap<Date, Double>();
         for (Transaction transaction : transactions.get(movie.getId())) {
             Date day = getDay(transaction.getTime());
@@ -477,9 +477,9 @@ public class DummyDataProvider implements DataProvider, Serializable {
     @Override
     public Collection<MovieRevenue> getTotalMovieRevenues() {
         return Collections2.transform(movies,
-                new Function<Movie, MovieRevenue>() {
+                new Function<Cidade, MovieRevenue>() {
                     @Override
-                    public MovieRevenue apply(Movie input) {
+                    public MovieRevenue apply(Cidade input) {
                         return Iterables.getLast(getDailyRevenuesByMovie(input
                                 .getId()));
                     }
@@ -515,10 +515,10 @@ public class DummyDataProvider implements DataProvider, Serializable {
     }
 
     @Override
-    public Movie getMovie(final long movieId) {
-        return Iterables.find(movies, new Predicate<Movie>() {
+    public Cidade getMovie(final long movieId) {
+        return Iterables.find(movies, new Predicate<Cidade>() {
             @Override
-            public boolean apply(Movie input) {
+            public boolean apply(Cidade input) {
                 return input.getId() == movieId;
             }
         });

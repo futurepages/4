@@ -1,13 +1,10 @@
 package apps.info.workset.dedicada.view.pages.transactions;
 
-import apps.info.workset.dedicada.AppUI;
 import apps.info.workset.dedicada.control.events.EDEvent;
 import apps.info.workset.dedicada.control.events.EDEventBus;
 import apps.info.workset.dedicada.model.entities.Transaction;
 import apps.info.workset.dedicada.view.EDViewType;
-import apps.info.workset.dedicada.view.components.MovieDetailsWindow;
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.data.Container.Filter;
 import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
@@ -15,8 +12,6 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.Action;
 import com.vaadin.event.Action.Handler;
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
@@ -30,14 +25,19 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.Table.Align;
 import com.vaadin.ui.Table.TableDragMode;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import modules.global.model.entities.brasil.Cidade;
+import org.futurepages.core.control.vaadin.containers.PaginationSliceContainer;
+import org.futurepages.core.pagination.PaginationSlice;
+import org.futurepages.core.persistence.Dao;
+import org.futurepages.core.persistence.HQLField;
+import org.futurepages.core.persistence.HQLProvider;
+import org.futurepages.util.Is;
 import org.vaadin.maddon.FilterableListContainer;
 
 import java.text.DateFormat;
@@ -46,7 +46,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Set;
 
 @SuppressWarnings({ "serial", "unchecked" })
@@ -54,11 +53,10 @@ public final class TransactionsView extends VerticalLayout implements View {
 
     private final Table table;
     private Button createReport;
-    private static final DateFormat DATEFORMAT = new SimpleDateFormat(
-            "MM/dd/yyyy hh:mm:ss a");
+
+    private static final DateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
     private static final DecimalFormat DECIMALFORMAT = new DecimalFormat("#.##");
-    private static final String[] DEFAULT_COLLAPSIBLE = { "country", "city",
-            "theater", "room", "title", "seats" };
+    private static final String[] DEFAULT_COLLAPSIBLE = { "pais" };
 
     public TransactionsView() {
         setSizeFull();
@@ -86,15 +84,14 @@ public final class TransactionsView extends VerticalLayout implements View {
         header.setSpacing(true);
         Responsive.makeResponsive(header);
 
-        Label title = new Label("Latest Transactions");
+        Label title = new Label("Cidades Brasileiras");
         title.setSizeUndefined();
         title.addStyleName(ValoTheme.LABEL_H1);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         header.addComponent(title);
 
         createReport = buildCreateReport();
-        HorizontalLayout tools = new HorizontalLayout(buildFilter(),
-                createReport);
+        HorizontalLayout tools = new HorizontalLayout(buildFilter(), createReport);
         tools.setSpacing(true);
         tools.addStyleName("toolbar");
         header.addComponent(tools);
@@ -118,77 +115,53 @@ public final class TransactionsView extends VerticalLayout implements View {
 
     private Component buildFilter() {
         final TextField filter = new TextField();
-        filter.addTextChangeListener(new TextChangeListener() {
-            @Override
-            public void textChange(final TextChangeEvent event) {
-                Filterable data = (Filterable) table.getContainerDataSource();
-                data.removeAllContainerFilters();
-                data.addContainerFilter(new Filter() {
-                    @Override
-                    public boolean passesFilter(final Object itemId,
-                            final Item item) {
-
-                        if (event.getText() == null
-                                || event.getText().equals("")) {
-                            return true;
-                        }
-
-                        return filterByProperty("country", item,
-                                event.getText())
-                                || filterByProperty("city", item,
-                                        event.getText())
-                                || filterByProperty("title", item,
-                                        event.getText());
-
-                    }
-
-                    @Override
-                    public boolean appliesToProperty(final Object propertyId) {
-                        if (propertyId.equals("country")
-                                || propertyId.equals("city")
-                                || propertyId.equals("title")) {
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-            }
+        filter.addTextChangeListener(event -> {
+            PaginationSliceContainer data =((PaginationSliceContainer) table.getContainerDataSource());
+            	if (Is.empty(event.getText())) {
+                    data.removeFilter();
+				} else {
+					data.applyFilter(HQLProvider.ors(new HQLField("estado.nome").matches(event.getText()), new HQLField("nome").matches(event.getText())));
+				}
+				table.refreshRowCache();
+				table.markAsDirty();
+                table.setColumnFooter("pais", String.valueOf(data.size()));
         });
 
         filter.setInputPrompt("Filter");
+
         filter.setIcon(FontAwesome.SEARCH);
         filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-        filter.addShortcutListener(new ShortcutListener("Clear",
-                KeyCode.ESCAPE, null) {
+
+        filter.addShortcutListener(new ShortcutListener("Clear", KeyCode.ESCAPE, null) {
             @Override
             public void handleAction(final Object sender, final Object target) {
-                filter.setValue("");
-                ((Filterable) table.getContainerDataSource())
-                        .removeAllContainerFilters();
+                if(!filter.getValue().equals("")){
+                    filter.setValue("");
+    //                ((Filterable) table.getContainerDataSource()).removeAllContainerFilters(); // parece ser o pattern
+                    ((PaginationSliceContainer) table.getContainerDataSource()).removeFilter();
+                    table.refreshRowCache();
+                    table.markAsDirty();
+                }
             }
         });
         return filter;
     }
 
     private Table buildTable() {
-        final Table table = new Table() {
-            @Override
-            protected String formatPropertyValue(final Object rowId,
-                    final Object colId, final Property<?> property) {
-                String result = super.formatPropertyValue(rowId, colId,
-                        property);
-                if (colId.equals("time")) {
-                    result = DATEFORMAT.format(((Date) property.getValue()));
-                } else if (colId.equals("price")) {
-                    if (property != null && property.getValue() != null) {
-                        return "$" + DECIMALFORMAT.format(property.getValue());
-                    } else {
-                        return "";
-                    }
-                }
-                return result;
-            }
-        };
+        final Table table = new Table();
+//        {
+//            @Override
+//            protected String formatPropertyValue(final Object rowId,final Object colId, final Property<?> property) {
+//                String result = super.formatPropertyValue(rowId, colId, property);
+////                if(colId.equals("estado")){
+////                    Estado estado = ((Cidade)(((BeanItem) getItem(rowId)).getBean())).getEstado();
+////                    return (estado!=null)?estado.getNome(): "";
+////                }
+//                return result;
+//            }
+//        };
+
+        table.setCacheRate(4);
         table.setSizeFull();
         table.addStyleName(ValoTheme.TABLE_BORDERLESS);
         table.addStyleName(ValoTheme.TABLE_NO_HORIZONTAL_LINES);
@@ -196,29 +169,32 @@ public final class TransactionsView extends VerticalLayout implements View {
         table.setSelectable(true);
 
         table.setColumnCollapsingAllowed(true);
-        table.setColumnCollapsible("time", false);
-        table.setColumnCollapsible("price", false);
+        table.setPageLength(200);
+
+        //table.setEditable(true);
 
         table.setColumnReorderingAllowed(true);
-        table.setContainerDataSource(new TempTransactionsContainer(AppUI.getDataProvider().getRecentTransactions(200)));
-        table.setSortContainerPropertyId("time");
-        table.setSortAscending(false);
 
-        table.setColumnAlignment("seats", Align.RIGHT);
-        table.setColumnAlignment("price", Align.RIGHT);
+        //HbnContainer<Cidade> hbnContainer = new HbnContainer(Cidade.class);
+        //hbnContainer.getItemIds();
+        //table.setContainerDataSource(new BeanItemContainer(Cidade.class, Dao.list(Cidade.class)));
+        //table.setContainerDataSource(new SliceContainer(pagCidades));
 
-        table.setVisibleColumns("time", "country", "city", "theater", "room",
-                "title", "seats", "price");
-        table.setColumnHeaders("Time", "Country", "City", "Theater", "Room",
-                "Title", "Seats", "Price");
+        PaginationSlice<Cidade> pagCidades = Dao.getInstance().paginationSlice(HQLProvider.hql(Cidade.class,HQLProvider.field("pais").equalsTo("BRA")));
+        table.setContainerDataSource(new PaginationSliceContainer(pagCidades));
+        table.setSortContainerPropertyId("nome");
+        table.setSortAscending(true);
 
+//        table.setColumnAlignment("seats", Align.RIGHT);
+//        table.setColumnAlignment("price", Align.RIGHT);
+
+//        table.setVisibleColumns("nomeBusca","nome","estado","pais");
+//        table.setColumnHeaders("Cidade", "Nome", "Estado (Quando no Brasil)", "Capital do Estado", "País");
+        table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT_DEFAULTS_ID);
         table.setFooterVisible(true);
-        table.setColumnFooter("time", "Total");
-
-        table.setColumnFooter(
-                "price",
-                "$"
-                        + DECIMALFORMAT.format(AppUI.getDataProvider().getTotalSum()));
+        table.setColumnFooter("nome", "Total");
+//
+        table.setColumnFooter("pais", String.valueOf(pagCidades.calcTotalSize()));
 
         // Allow dragging items to the reports menu
         table.setDragMode(TableDragMode.MULTIROW);
@@ -226,13 +202,11 @@ public final class TransactionsView extends VerticalLayout implements View {
 
         table.addActionHandler(new TransactionsActionHandler());
 
-        table.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                if (table.getValue() instanceof Set) {
-                    Set<Object> val = (Set<Object>) table.getValue();
-                    createReport.setEnabled(val.size() > 0);
-                }
+        table.addValueChangeListener(event -> {
+            if (table.getValue() instanceof Set) {
+//                Set<Object> val = (Set<Object>) table.getValue();
+//                createReport.setEnabled(val.size() > 0);
+                        table.setColumnFooter("pais", String.valueOf(table.getContainerDataSource().size()));
             }
         });
         table.setImmediate(true);
@@ -243,8 +217,7 @@ public final class TransactionsView extends VerticalLayout implements View {
     private boolean defaultColumnsVisible() {
         boolean result = true;
         for (String propertyId : DEFAULT_COLLAPSIBLE) {
-            if (table.isColumnCollapsed(propertyId) == Page.getCurrent()
-                    .getBrowserWindowWidth() < 800) {
+            if (table.isColumnCollapsed(propertyId) == Page.getCurrent().getBrowserWindowWidth() < 800) {
                 result = false;
             }
         }
@@ -257,8 +230,7 @@ public final class TransactionsView extends VerticalLayout implements View {
         // enough to make the table fit better.
         if (defaultColumnsVisible()) {
             for (String propertyId : DEFAULT_COLLAPSIBLE) {
-                table.setColumnCollapsed(propertyId, Page.getCurrent()
-                        .getBrowserWindowWidth() < 800);
+                table.setColumnCollapsed(propertyId, Page.getCurrent().getBrowserWindowWidth() < 800);
             }
         }
     }
@@ -295,21 +267,19 @@ public final class TransactionsView extends VerticalLayout implements View {
         private final Action details = new Action("Movie details");
 
         @Override
-        public void handleAction(final Action action, final Object sender,
-                final Object target) {
-            if (action == report) {
-                createNewReportFromSelection();
-            } else if (action == discard) {
-                Notification.show("Not implemented in this demo");
-            } else if (action == details) {
-                Item item = ((Table) sender).getItem(target);
-                if (item != null) {
-                    Long movieId = (Long) item.getItemProperty("movieId")
-                            .getValue();
-                    MovieDetailsWindow.open(AppUI.getDataProvider()
-                            .getMovie(movieId), null, null);
-                }
-            }
+        public void handleAction(final Action action, final Object sender,final Object target) {
+//            if (action == report) {
+//                createNewReportFromSelection();
+//            } else if (action == discard) {
+//                Notification.show("Not implemented in this demo");
+//            } else if (action == details) {
+//                Item item = ((Table) sender).getItem(target);
+//                if (item != null) {
+//                    Long movieId = (Long) item.getItemProperty("movieId")
+//                            .getValue();
+//                    MovieDetailsWindow.open(AppUI.getDataProvider().getMovie(movieId), null, null);
+//                }
+//            }
         }
 
         @Override
@@ -318,8 +288,7 @@ public final class TransactionsView extends VerticalLayout implements View {
         }
     }
 
-    private class TempTransactionsContainer extends
-            FilterableListContainer<Transaction> {
+    private class TempTransactionsContainer extends FilterableListContainer<Transaction> {
 
         public TempTransactionsContainer(
                 final Collection<Transaction> collection) {

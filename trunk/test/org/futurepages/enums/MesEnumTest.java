@@ -1,6 +1,6 @@
 package org.futurepages.enums;
 
-import org.futurepages.enums.MonthEnum;
+import org.futurepages.util.brazil.enums.MonthEnum;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

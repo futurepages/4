@@ -1,6 +1,6 @@
 package org.futurepages.core.persistence;
 
-import org.futurepages.core.config.ModulesAutomation;
+import org.futurepages.core.config.Automations;
 
 import java.io.File;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author leandro
  */
-public class SchemaGeneratorsManager extends ModulesAutomation {
+public class SchemaGeneratorsManager extends Automations {
 
 	private static final String SCHEMA_DIR_NAME = "schema";
 

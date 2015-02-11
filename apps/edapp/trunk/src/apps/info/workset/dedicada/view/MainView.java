@@ -16,7 +16,7 @@ public class MainView extends HorizontalLayout {
         setSizeFull();
         addStyleName("mainview");
 
-        addComponent(new apps.info.workset.dedicada.view.EDMenu());
+        addComponent(new AppMenu());
 
         ComponentContainer content = new CssLayout();
         content.addStyleName("view-content");

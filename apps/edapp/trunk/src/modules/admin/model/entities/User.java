@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "admin_user")
 public class User implements DefaultUser, Serializable {
 
     private static final String KEY = "5JkWo73odsp1gCiHjnpKW6HwfqhR5WckqEZES2uIKMPiq8t0hrz92sA";
@@ -66,9 +65,9 @@ public class User implements DefaultUser, Serializable {
 	
 	public List<Log> getLastAccesses() {
 
-		if (ultimosAcessos == null) {
-			ultimosAcessos = LogDao.topLastAccessesByUser(5, this.login);
-		}
+//		if (ultimosAcessos == null) {
+//			ultimosAcessos = LogDao.topLastAccessesByUser(5, this.login);
+//		}
 
 		return ultimosAcessos;
 	}

@@ -1,0 +1,3 @@
+com.vaadin.DefaultWidgetSet
+com.vaadin.addon.charts.Widgetset
+com.vaadin.addon.timeline.gwt.TimelineWidgetSet

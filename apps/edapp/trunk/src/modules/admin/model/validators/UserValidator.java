@@ -78,13 +78,13 @@ public class UserValidator extends Validator {
 	}
 
 	public void validateLogin(User user) {
-		if (Is.empty(user.getLogin())) {
-			error("login", "Preencha o campo do login");
-		} else if (!Is.validStringKey(user.getLogin())) {
-			error("login", "O login digitado é inválido");
-		} else if (UserDao.get(user.getLogin()) != null) {
-			error("login", "Login digitado já existe");
-		}
+//		if (Is.empty(user.getLogin())) {
+//			error("login", "Preencha o campo do login");
+//		} else if (!Is.validStringKey(user.getLogin())) {
+//			error("login", "O login digitado é inválido");
+//		} else if (UserDao.get(user.getLogin()) != null) {
+//			error("login", "Login digitado já existe");
+//		}
 	}
 
 //	public void confirmatedPasswords(User user, String confirmPassword) {
@@ -131,14 +131,14 @@ public class UserValidator extends Validator {
 	}
 
 	public void email(String login, String newEmail) {
-
-		if (Is.empty(newEmail) || !Is.validMail(newEmail)) {
-			error("Email inválido. Informe um email válido.");
-		}
-
-		if ((UserDao.getByEmail(newEmail) != null) && (!UserDao.isMailMine(login, newEmail))) {
-			error("O email informado já está cadastrado para outro usuário. Informe outro email válido.");
-		}
+//
+//		if (Is.empty(newEmail) || !Is.validMail(newEmail)) {
+//			error("Email inválido. Informe um email válido.");
+//		}
+//
+//		if ((UserDao.getByEmail(newEmail) != null) && (!UserDao.isMailMine(login, newEmail))) {
+//			error("O email informado já está cadastrado para outro usuário. Informe outro email válido.");
+//		}
 	}
 
 	/*

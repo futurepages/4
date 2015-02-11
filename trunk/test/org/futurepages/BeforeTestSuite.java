@@ -11,6 +11,6 @@ public class BeforeTestSuite {
 	}
 
 	private void exportDatabase() throws Exception {
-		SchemaGeneration.export();
+//		SchemaGeneration.export();
 	}
 }

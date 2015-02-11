@@ -102,7 +102,7 @@ public class UserServices {
 	}
 
 	public static void logAccess(User user, String ipHost) {
-		Dao.save(new Log(null, LogType.LOGIN, user, ipHost));
+		Dao.getInstance().save(new Log(null, LogType.LOGIN, user, ipHost));
 	}
 
 	public static void turnDetached(User user) {
@@ -113,17 +113,17 @@ public class UserServices {
 				user.getProfile().getAllowedProfiles().size(); //touch
 			}
 		}
-		Dao.evict(user);
+		Dao.getInstance().evict(user);
 
 		if (user.getProfile() != null) {
-			Dao.evict(user.getProfile());
+			Dao.getInstance().evict(user.getProfile());
 		}
 	}
 
 	public static User updateEmailUser(String login, String newEmail) {
 		User user = UserDao.getByLogin(login);
 		user.setEmail(newEmail);
-		Dao.update(user);
+		Dao.getInstance().update(user);
 		return user;
 	}
 	

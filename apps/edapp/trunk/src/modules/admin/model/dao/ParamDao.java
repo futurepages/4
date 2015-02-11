@@ -2,18 +2,18 @@ package modules.admin.model.dao;
 
 import java.util.List;
 
-import org.futurepages.core.persistence.Dao;
-import modules.admin.model.entities.Param;
 import modules.admin.model.entities.enums.ParamEnum;
 import modules.admin.model.entities.enums.ParamValueType;
 import org.futurepages.core.pagination.PaginationSlice;
+import org.futurepages.core.persistence.Dao;
+import modules.admin.model.entities.Param;
 import org.futurepages.core.persistence.HQLProvider;
 import org.futurepages.util.Is;
 
 public class ParamDao extends HQLProvider {
 
 	public static void saveOrUpdate(String paramId, ParamValueType valueType, String val, String titulo, int maxLength) {
-		Param param = Dao.get(Param.class, paramId);
+		Param param = Dao.getInstance().get(Param.class, paramId);
 		if (param == null) {
 			persist(paramId, valueType, val, titulo, maxLength);
 		} else {
@@ -22,14 +22,14 @@ public class ParamDao extends HQLProvider {
 	}
 
 	public static Param update(String paramId, String val) {
-		Param param = Dao.get(Param.class, paramId);
+		Param param = Dao.getInstance().get(Param.class, paramId);
 		param.setVal(val);
-		return Dao.update(param);
+		return Dao.getInstance().update(param);
 	}
 
 	public static void persist(String paramId, ParamValueType valueType, String val, String titulo, int maxLength) {
 		Param param = new Param(paramId, valueType, val, titulo, maxLength);
-		Dao.save(param);
+		Dao.getInstance().save(param);
 	}
 
 	public static PaginationSlice<Param> paginationSlice(int page, int pageSize, String paramId, String title, String val, String valueType) {
@@ -69,52 +69,18 @@ public class ParamDao extends HQLProvider {
 			cont++;
 		}
 
-		return Dao.paginationSlice(page, pageSize, Param.class, where.toString(), asc("paramId"));
+		return Dao.getInstance().paginationSlice(page, pageSize, hql(Param.class, where.toString(), asc("paramId")));
 	}
 
 	public static Param get(String paramId) {
-		return Dao.get(Param.class, paramId);
+		return Dao.getInstance().get(Param.class, paramId);
 	}
 
 	public static Param get(ParamEnum param) {
-		return Dao.get(Param.class, param.getId());
+		return Dao.getInstance().get(Param.class, param.getId());
 	}
 
 	public static List<Param> list() {
-		return Dao.list(Param.class);
+		return Dao.getInstance().list(hql(Param.class));
 	}
-
-	/**
-	 * Atualiza a variável do pacote do módulo referente ao parâmetro.
-	 * @param param
-	 * @throws IllegalAccessException
-	 * @throws ClassNotFoundException
-	 * @throws NoSuchFieldException
-	 */
-	// TODO: preciso de uma explanação sobre este método por Leandro
-	// Este método era utilizado num sistema da seguinte maneira:
-	// - ele atualizava um valor estático (como se fosse cache) numa classe dentro do pacote core do módulo.
-	// Não vamos utilizá-lo. Pode desconsiderá-lo. Foi uma abordagem que eu utilizei, mas que eu me arrependi.
-	// Não vi grandes ganhos utilizando esta maneira, onde cada parametro está numa classe com o nome do módulo no pacote core.
-	// Ideia é criarmos em breve um mecanismo de cache num único mapa inicializado com a aplicação e onde sempre que há um update,
-	// o valor é alterado na classe (vamos deixar isto pra depois).
-//	public static void updateClassReference(Param param) throws IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
-//		if (param.getClassReference() != null) {
-//			String[] clsRef = The.explodedToArray(param.getClassReference(), ".");
-//			Class classRef = Class.forName(Params.MODULES_PACK+"."+param.getModule().getModuleId()+".core."+clsRef[0]);
-//			Field fieldRef = classRef.getDeclaredField(clsRef[1]);
-//			if (param.getType().equals("double")) {
-//				fieldRef.set(null, Double.parseDouble(param.getParamValue()));
-//			}
-//			else if (param.getType().equals("int")) {
-//				fieldRef.set(null, Integer.parseInt(param.getParamValue()));
-//			}
-//			else if (param.getType().equals("long")) {
-//				fieldRef.set(null, Long.parseLong(param.getParamValue()));
-//			}
-//			else{
-//				fieldRef.set(null, param.getParamValue());
-//			}
-//		}
-//	}
 }

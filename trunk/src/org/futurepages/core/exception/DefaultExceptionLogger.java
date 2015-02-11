@@ -26,6 +26,10 @@ public class DefaultExceptionLogger implements ExceptionLogger{
 		return execute(throwable, ExceptionLogType.SILENT_EXCEPTION.name(),null);
 	}
 
+	public String execute(String msg) {
+		return execute(new Exception(msg), ExceptionLogType.SILENT_EXCEPTION.name(),null);
+	}
+
 	public String execute(Throwable throwable, String errorType, HttpServletRequest req) {
 
 		boolean pageNotFoundEx = (throwable instanceof PageNotFoundException);

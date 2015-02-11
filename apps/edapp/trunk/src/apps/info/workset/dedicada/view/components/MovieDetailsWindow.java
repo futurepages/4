@@ -2,7 +2,7 @@ package apps.info.workset.dedicada.view.components;
 
 import apps.info.workset.dedicada.control.events.EDEvent;
 import apps.info.workset.dedicada.control.events.EDEventBus;
-import apps.info.workset.dedicada.model.entities.Movie;
+import apps.info.workset.dedicada.model.entities.Cidade;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Responsive;
@@ -29,7 +29,7 @@ public final class MovieDetailsWindow extends Window {
 
     private final Label synopsis = new Label();
 
-    private MovieDetailsWindow(final Movie movie, final Date startTime,
+    private MovieDetailsWindow(final Cidade movie, final Date startTime,
             final Date endTime) {
         addStyleName("moviedetailswindow");
         Responsive.makeResponsive(this);
@@ -75,7 +75,7 @@ public final class MovieDetailsWindow extends Window {
         return footer;
     }
 
-    private Component buildMovieDetails(final Movie movie,
+    private Component buildMovieDetails(final Cidade movie,
             final Date startTime, final Date endTime) {
         HorizontalLayout details = new HorizontalLayout();
         details.setWidth(100.0f, Unit.PERCENTAGE);
@@ -95,7 +95,7 @@ public final class MovieDetailsWindow extends Window {
         return details;
     }
 
-    private Component buildDetailsForm(final Movie movie, final Date startTime,
+    private Component buildDetailsForm(final Cidade movie, final Date startTime,
             final Date endTime) {
         FormLayout fields = new FormLayout();
         fields.setSpacing(false);
@@ -149,7 +149,7 @@ public final class MovieDetailsWindow extends Window {
         return fields;
     }
 
-    private void updateSynopsis(final Movie m, final boolean expand) {
+    private void updateSynopsis(final Cidade m, final boolean expand) {
         String synopsisText = synopsis.getData().toString();
         if (m != null) {
             synopsisText = m.getSynopsis();
@@ -163,7 +163,7 @@ public final class MovieDetailsWindow extends Window {
         synopsis.setValue(synopsisText);
     }
 
-    public static void open(final Movie movie, final Date startTime,
+    public static void open(final Cidade movie, final Date startTime,
             final Date endTime) {
         EDEventBus.post(new EDEvent.CloseOpenWindowsEvent());
         Window w = new MovieDetailsWindow(movie, startTime, endTime);

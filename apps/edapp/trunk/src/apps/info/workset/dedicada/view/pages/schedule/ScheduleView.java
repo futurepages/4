@@ -3,7 +3,7 @@ package apps.info.workset.dedicada.view.pages.schedule;
 import apps.info.workset.dedicada.AppUI;
 import apps.info.workset.dedicada.control.events.EDEvent;
 import apps.info.workset.dedicada.control.events.EDEventBus;
-import apps.info.workset.dedicada.model.entities.Movie;
+import apps.info.workset.dedicada.model.entities.Cidade;
 import apps.info.workset.dedicada.model.entities.Transaction;
 import apps.info.workset.dedicada.view.components.MovieDetailsWindow;
 import com.google.common.eventbus.Subscribe;
@@ -81,7 +81,7 @@ public final class ScheduleView extends CssLayout implements View {
     private void injectMovieCoverStyles() {
         // Add all movie cover images as classes to CSSInject
         String styles = "";
-        for (Movie m : AppUI.getDataProvider().getMovies()) {
+        for (Cidade m : AppUI.getDataProvider().getMovies()) {
             WebBrowser webBrowser = Page.getCurrent().getWebBrowser();
 
             String bg = "url(VAADIN/themes/" + UI.getCurrent().getTheme()
@@ -171,7 +171,7 @@ public final class ScheduleView extends CssLayout implements View {
         catalog.setCaption("Catalog");
         catalog.addStyleName("catalog");
 
-        for (final Movie movie : AppUI.getDataProvider().getMovies()) {
+        for (final Cidade movie : AppUI.getDataProvider().getMovies()) {
             VerticalLayout frame = new VerticalLayout();
             frame.addStyleName("frame");
             frame.setWidthUndefined();
@@ -272,7 +272,7 @@ public final class ScheduleView extends CssLayout implements View {
                             endDate);
             List<CalendarEvent> result = new ArrayList<CalendarEvent>();
             for (Transaction transaction : transactions) {
-                Movie movie = AppUI.getDataProvider().getMovie(
+                Cidade movie = AppUI.getDataProvider().getMovie(
                         transaction.getMovieId());
                 Date end = new Date(transaction.getTime().getTime()
                         + movie.getDuration() * 60 * 1000);
@@ -286,9 +286,9 @@ public final class ScheduleView extends CssLayout implements View {
 
         private Date start;
         private Date end;
-        private Movie movie;
+        private Cidade movie;
 
-        public MovieEvent(final Date start, final Date end, final Movie movie) {
+        public MovieEvent(final Date start, final Date end, final Cidade movie) {
             this.start = start;
             this.end = end;
             this.movie = movie;
@@ -319,11 +319,11 @@ public final class ScheduleView extends CssLayout implements View {
             return false;
         }
 
-        public Movie getMovie() {
+        public Cidade getMovie() {
             return movie;
         }
 
-        public void setMovie(final Movie movie) {
+        public void setMovie(final Cidade movie) {
             this.movie = movie;
         }
 

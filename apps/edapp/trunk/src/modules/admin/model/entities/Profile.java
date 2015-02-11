@@ -20,7 +20,6 @@ import modules.admin.model.core.DefaultProfile;
  * @author Jorge Rafael
  */
 @Entity
-@Table(name = "admin_profile")
 public class Profile implements DefaultProfile, Serializable {
 
 	@Id
@@ -37,29 +36,29 @@ public class Profile implements DefaultProfile, Serializable {
 
 	@OrderBy("smallTitle asc")
 	@ManyToMany
-	@JoinTable(name = "admin_profile_module",
-	joinColumns =
-	@JoinColumn(name = "profileId"),
-	inverseJoinColumns =
-	@JoinColumn(name = "moduleId"))
+//	@JoinTable(name = "admin_profile_module",
+//	joinColumns =
+//	@JoinColumn(name = "profileId"),
+//	inverseJoinColumns =
+//	@JoinColumn(name = "moduleId"))
 	private List<Module> modules;
 
 	@OrderBy("title asc")
 	@ManyToMany
-	@JoinTable(name = "admin_profile_role",
-	joinColumns =
-	@JoinColumn(name = "profileId"),
-	inverseJoinColumns =
-	@JoinColumn(name = "roleId"))
+//	@JoinTable(name = "admin_profile_role",
+//	joinColumns =
+//	@JoinColumn(name = "profileId"),
+//	inverseJoinColumns =
+//	@JoinColumn(name = "roleId"))
 	private List<Role> roles;
 
 	@OrderBy("label asc")
 	@ManyToMany
-	@JoinTable(name = "admin_profile_allowedprofiles",
-	joinColumns =
-	@JoinColumn(name = "profileId"),
-	inverseJoinColumns =
-	@JoinColumn(name = "allowedId"))
+//	@JoinTable(name = "admin_profile_allowedprofiles",
+//	joinColumns =
+//	@JoinColumn(name = "profileId"),
+//	inverseJoinColumns =
+//	@JoinColumn(name = "allowedId"))
 	private List<Profile> allowedProfiles;
 
 	public Profile() {

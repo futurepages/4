@@ -9,7 +9,7 @@ import modules.admin.model.entities.Log;
 import modules.admin.model.entities.enums.LogType;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.persistence.Dao;
-import org.futurepages.util.DateUtil;
+import org.futurepages.util.brazil.DateUtil;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -58,9 +58,9 @@ public abstract class LoggableJob implements Job {
 		log.setObs(obs);
 
 
-		Dao.beginTransaction();
-		Dao.save(log);
-		Dao.commitTransaction();
+//		Dao.beginTransaction();
+//		Dao.save(log);
+//		Dao.commitTransaction();
 		Dao.close();
 	}
 

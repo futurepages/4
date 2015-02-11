@@ -75,7 +75,7 @@ public enum AdminProfilesEnum implements DefaultProfile, AdminConstants, Seriali
 			for(DefaultRole role : profileEnum.roles){
 				profile.getRoles().add(RoleDao.get(role));
 			}
-			Dao.save(profile);
+			Dao.getInstance().save(profile);
 		}
 	}
 

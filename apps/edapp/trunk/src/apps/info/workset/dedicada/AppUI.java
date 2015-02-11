@@ -17,6 +17,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import org.futurepages.core.locale.LocaleManager;
 
 @Title("Workset Dedicada")
 @Theme("dashboard")
@@ -27,14 +28,12 @@ public class AppUI extends UI {
 	
 	@Override
 	protected void init(VaadinRequest request) {
-        //TODO rever locale...
-//        setLocale(new Locale("pt", "BR"));
-        System.out.println("req-locale: "+request.getLocale());
-        System.out.println("ui-locale:  "+this.getLocale());
 
+        setLocale(LocaleManager.getInstance().getDesiredLocale(request.getLocale()));
         EDEventBus.register(this);
 
         Responsive.makeResponsive(this);
+
         addStyleName(ValoTheme.UI_WITH_MENU);
         
         updateContent();
@@ -58,7 +57,7 @@ public class AppUI extends UI {
             // Authenticated user
             setContent(new MainView());
             removeStyleName("loginview");
-            getNavigator().navigateTo(getNavigator().getState());
+//            getNavigator().navigateTo(getNavigator().getState()); //comentado pq já é feito pelo framework.
         } else {
             setContent(new LoginView());
             addStyleName("loginview");
@@ -70,6 +69,7 @@ public class AppUI extends UI {
         User user = getDataProvider().authenticate(event.getUserName(),  event.getPassword());
         VaadinSession.getCurrent().setAttribute(User.class.getName(), user);
         updateContent();
+        getNavigator().navigateTo(getNavigator().getState()); //foi retirado do updateContent() pq o navegador já chamava.
     }
 
     @Subscribe

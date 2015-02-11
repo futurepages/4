@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.formatter.Formatter;
-import org.futurepages.enums.MonthEnum;
+import org.futurepages.util.brazil.enums.MonthEnum;
 import org.futurepages.util.brazil.NumberUtil;
 
 /**

@@ -53,7 +53,7 @@ public class ProfileValidator extends Validator {
 			error("Selecione um perfil para o usuário");
 		}else if(Is.empty(profile.getLabel())){
 			error("Informe a descrição do Perfil");
-		} 
+		}
 		else {
 			valida(profile);
 		}

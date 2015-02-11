@@ -3,7 +3,8 @@ package modules.admin.model.entities;
 import modules.admin.model.core.NotLoggeable;
 import modules.admin.model.entities.enums.LogType;
 import net.vidageek.mirror.dsl.Mirror;
-import org.futurepages.util.DateUtil;
+import org.futurepages.util.ModuleUtil;
+import org.futurepages.util.brazil.DateUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.ObjectContainer;
 import org.futurepages.util.ReflectionUtil;
@@ -39,8 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-@Table(name = "admin_log")
-@org.hibernate.annotations.Table(appliesTo = "admin_log", indexes = {@Index(name = "idx_beanId", columnNames = {"idName", "idValue"})})
+//@org.hibernate.annotations.Table(appliesTo = "admin_log", indexes = {@Index(name = "idx_beanId", columnNames = {"idName", "idValue"})})
 public class Log implements Serializable {
 
 	public static final char ESCAPE = '#';
@@ -92,7 +92,7 @@ public class Log implements Serializable {
 		this.logContent = logContent;
 		this.logType = LogType.SYSTEM;
 		this.obs = obs;
-		System.out.println(StringUtils.concat("[", DateUtil.viewDateTime(dateTime,"dd/MM/yyyy - HH:mm:ss"), "] SYSTEM: ", logContent, ((obs != null) ? " (" + obs + ")" : "")));
+		System.out.println(StringUtils.concat("[", DateUtil.viewDateTime(dateTime, "dd/MM/yyyy - HH:mm:ss"), "] SYSTEM: ", logContent, ((obs != null) ? " (" + obs + ")" : "")));
 	}
 
 	/**

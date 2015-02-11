@@ -1,20 +1,17 @@
 package modules.admin.model.entities;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import javax.persistence.Transient;
-import modules.admin.model.dao.RoleDao;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
-@Table(name="admin_module")
 public class Module implements Serializable{
     
     @Id
@@ -44,9 +41,9 @@ public class Module implements Serializable{
 	private List<Role> roles;
 
 	public List<Role> getRoles(){
-		if(roles == null){
-			roles = RoleDao.listByModule(this.getModuleId());
-		}
+//		if(roles == null){
+//			roles = RoleDao.listByModule(this.getModuleId());
+//		}
 		return roles;
 	}
 

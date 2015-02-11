@@ -1,7 +1,7 @@
 package apps.info.workset.dedicada.view.pages.sales;
 
 import apps.info.workset.dedicada.AppUI;
-import apps.info.workset.dedicada.model.entities.Movie;
+import apps.info.workset.dedicada.model.entities.Cidade;
 import apps.info.workset.dedicada.model.entities.MovieRevenue;
 import com.vaadin.addon.charts.model.style.SolidColor;
 import com.vaadin.addon.timeline.Timeline;
@@ -63,8 +63,8 @@ public class SalesView extends VerticalLayout implements View {
 
         initMovieSelect();
         // Add first 4 by default
-        List<Movie> subList = new ArrayList<Movie>(AppUI.getDataProvider().getMovies()).subList(0, 4);
-        for (Movie m : subList) {
+        List<Cidade> subList = new ArrayList<Cidade>(AppUI.getDataProvider().getMovies()).subList(0, 4);
+        for (Cidade m : subList) {
             addDataSet(m);
         }
 
@@ -76,8 +76,8 @@ public class SalesView extends VerticalLayout implements View {
     }
 
     private void initMovieSelect() {
-        Collection<Movie> movies = AppUI.getDataProvider().getMovies();
-        Container movieContainer = new ListContainer<Movie>(Movie.class, movies);
+        Collection<Cidade> movies = AppUI.getDataProvider().getMovies();
+        Container movieContainer = new ListContainer<Cidade>(Cidade.class, movies);
         movieSelect.setContainerDataSource(movieContainer);
     }
 
@@ -107,7 +107,7 @@ public class SalesView extends VerticalLayout implements View {
                 KeyCode.ENTER, null) {
             @Override
             public void handleAction(final Object sender, final Object target) {
-                addDataSet((Movie) movieSelect.getValue());
+                addDataSet((Cidade) movieSelect.getValue());
             }
         });
 
@@ -141,7 +141,7 @@ public class SalesView extends VerticalLayout implements View {
         add.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(final ClickEvent event) {
-                addDataSet((Movie) movieSelect.getValue());
+                addDataSet((Cidade) movieSelect.getValue());
                 clear.setEnabled(true);
             }
         });
@@ -160,7 +160,7 @@ public class SalesView extends VerticalLayout implements View {
         return result;
     }
 
-    private void addDataSet(final Movie movie) {
+    private void addDataSet(final Cidade movie) {
         movieSelect.removeItem(movie);
         movieSelect.setValue(null);
 
