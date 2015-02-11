@@ -3,9 +3,9 @@ package org.futurepages.util.brazil;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import org.futurepages.enums.DayOfWeek;
-import org.futurepages.enums.MonthEnum;
-import org.futurepages.enums.UnitTimeEnum;
+import org.futurepages.util.brazil.enums.DayOfWeek;
+import org.futurepages.util.brazil.enums.MonthEnum;
+import org.futurepages.util.brazil.enums.UnitTimeEnum;
 import org.futurepages.util.Is;
 import org.futurepages.util.iterator.months.MonthYear;
 

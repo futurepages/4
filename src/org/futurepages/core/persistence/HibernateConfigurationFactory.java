@@ -1,5 +1,16 @@
 package org.futurepages.core.persistence;
 
+import org.futurepages.core.config.Apps;
+import org.futurepages.core.config.Modules;
+import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.persistence.annotations.View;
+import org.futurepages.exceptions.ModuleWithoutBeanDirException;
+import org.futurepages.util.ClassesUtil;
+import org.futurepages.util.EncodingUtil;
+import org.futurepages.util.Is;
+import org.futurepages.util.ModuleUtil;
+
+import javax.persistence.Entity;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,17 +21,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.persistence.Entity;
-
-import org.futurepages.core.persistence.annotations.View;
-import org.futurepages.core.config.Modules;
-import org.futurepages.core.config.Apps;
-import org.futurepages.core.exception.DefaultExceptionLogger;
-import org.futurepages.exceptions.ModuleWithoutBeanDirException;
-import org.futurepages.util.ClassesUtil;
-import org.futurepages.util.EncodingUtil;
-import org.futurepages.util.Is;
 
 /**
  * Classe de instanciação das Configurações Hibernate; 
@@ -36,10 +36,6 @@ public class HibernateConfigurationFactory {
 			INSTANCE = new HibernateConfigurationFactory();
 		}
 		return INSTANCE;
-	}
-
-	public File[] getModulesDirs() throws UnsupportedEncodingException {
-		return  (new File(getRootFileDir() + "/" + Apps.MODULES_PATH)).listFiles();
 	}
 
 	public File getRootFileDir() {
@@ -59,7 +55,7 @@ public class HibernateConfigurationFactory {
 	public Map<String, Configurations> getApplicationConfigurations() throws IOException {
 
 		Map<String, Schema> schemasMap = new HashMap<String, Schema>();
-		File[] modulesDirs = getModulesDirs();
+		File[] modulesDirs = Apps.listModulesAndApps(); //TODO modules and apps
 		if (modulesDirs != null) {
 			for (File module : modulesDirs) {
 				mapModule(module, schemasMap);
@@ -89,8 +85,10 @@ public class HibernateConfigurationFactory {
 				classes = listBeansAnnotatedFromModule(module);
 				for (Class<?> annotatedClass : classes) {
 					configurations.getEntitiesConfig().addAnnotatedClass(annotatedClass);
+					Configurations.addClass(annotatedClass, true);
 					if (!annotatedClass.isAnnotationPresent(View.class)) {
 						configurations.getTablesConfig().addAnnotatedClass(annotatedClass);
+						Configurations.addClass(annotatedClass, false);
 					}
 				}
 			} catch (ModuleWithoutBeanDirException ex) {
@@ -103,15 +101,13 @@ public class HibernateConfigurationFactory {
 	}
 
 	private void insertSchemaProperties(Schema schema) {
-		schema.config.getEntitiesConfig().addProperties(schema.properties);
-		schema.config.getTablesConfig().addProperties(schema.properties);
-		schema.config.getEntitiesConfig().createMappings();
+		schema.config.addProperties(schema.properties);
 	}
 
 	private Collection<Class<Object>> listBeansAnnotatedFromModule(File module) throws ModuleWithoutBeanDirException {
 		File beansDirectory = new File(module.getAbsolutePath() + "/" + Apps.HIBERNATE_ENTITIES_SUBPATH);
 		if (beansDirectory.listFiles() != null) {
-			return ClassesUtil.getInstance().listClassesFromDirectory(beansDirectory, getRootFileDir().getAbsolutePath(), null, Entity.class, true);
+			return ClassesUtil.getInstance().listClassesFromDirectory(beansDirectory, ModuleUtil.getClassesPath(), null, Entity.class, true);
 		}
 		throw new ModuleWithoutBeanDirException(module.getName());
 	}
@@ -128,7 +124,7 @@ public class HibernateConfigurationFactory {
 			if(schemasMap.get(DEFAULT)==null){
 				schemasMap.put(DEFAULT, new Schema());
 				String configPath = "/" + Apps.CONTEXT_CONFIG_DIR_NAME + "/" + Apps.BASE_HIBERNATE_PROPERTIES_FILE;
-				String filePath = getRootFileDir().getAbsolutePath() + configPath;
+				String filePath = ModuleUtil.getClassesPath() + configPath;
 				InputStream inputStream = new FileInputStream(filePath);
 				properties.load(inputStream);
 				schemasMap.get(DEFAULT).properties = properties;
@@ -153,10 +149,12 @@ public class HibernateConfigurationFactory {
 	}
 
 	private Map<String, Configurations> generateConfigurationsMap(Map<String, Schema> schemasMap) {
-		Map<String, Configurations> configurationsMap = new HashMap<String, Configurations>();
+		Map<String, Configurations> configurationsMap = new HashMap<>();
 		for(String schemaId : schemasMap.keySet()){
 			Schema schema = schemasMap.get(schemaId);
 			insertSchemaProperties(schema);
+			schema.config.setNamingStrategy();
+			schema.config.createMappings();
 			configurationsMap.put(schemaId, schema.config);
 		}
 		return configurationsMap;

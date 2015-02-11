@@ -2,6 +2,7 @@ package org.futurepages.util;
 
 import static org.junit.Assert.assertEquals;
 
+import org.futurepages.util.brazil.NumberUtil;
 import org.junit.Test;
 
 /**

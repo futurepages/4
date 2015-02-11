@@ -3,6 +3,7 @@ package org.futurepages.core.locale;
 import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.util.The;
 
 import java.io.File;
 import java.io.FileReader;
@@ -57,7 +58,7 @@ public class Txt {
 		String str = getInstance().localesMap.get(localeId).get(txtKey);
 		if (str == null) {
 			DefaultExceptionLogger.getInstance().execute(new LocaleManagerException("Txt propertie '" + txtKey + "' not present for locale " + localeId + "."));
-			return txtKey.replaceAll("[\\.|_]", " ");
+			return The.concat("${", txtKey.replaceAll("[\\.|_]", " "), "}");
 		}
 		return str;
 	}

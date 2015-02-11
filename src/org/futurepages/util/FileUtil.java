@@ -119,7 +119,7 @@ public class FileUtil {
 	}
 
 	public static String[] getStringLines(File file) throws FileNotFoundException, IOException {
-		return getStringContent(file).split("\r\n");
+		return getStringContent(file).split("[\r\n|\n]");
 	}
 
 	public static void putKeyValue(Map<String, String> map, URL srcURL, String targetPath) throws Exception {

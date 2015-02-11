@@ -1,8 +1,8 @@
 package org.futurepages.util.brazil;
 
 import org.futurepages.core.locale.LocaleManager;
-import org.futurepages.enums.DateFormatEnum;
-import org.futurepages.enums.MonthEnum;
+import org.futurepages.util.brazil.enums.DateFormatEnum;
+import org.futurepages.util.brazil.enums.MonthEnum;
 import org.futurepages.util.Is;
 import org.futurepages.util.TimeUtil;
 

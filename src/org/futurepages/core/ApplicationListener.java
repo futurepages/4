@@ -112,7 +112,7 @@ public class ApplicationListener implements ServletContextListener {
 	            Servlet servlet = context.createServlet(servletClass);
 				ServletRegistration.Dynamic d = context.addServlet(servletName, servlet);
 				d.setInitParameter("UI", appPackagePath+".AppUI");
-				d.setInitParameter("widgetset",appPackagePath+".app_conf.widgetset");
+				d.setInitParameter("widgetset","apps.Widgetsets"); //TODO sofisticate it!!!!
 				d.addMapping(servletMapping);
 				//it's necessary when it's a subpath...
 				if(!servletMapping.equals("/*")){
@@ -141,7 +141,7 @@ public class ApplicationListener implements ServletContextListener {
 		//TODO Load only requireds motdules by apps???
 		log("Loading Apps and Modules...");
 
-		File[] appsAndModules = Apps.getInstance().listModulesAndApps();
+		File[] appsAndModules = Apps.listModulesAndApps();
 
 		log("Apps and Modules OK");
 		return 	appsAndModules;

@@ -11,4 +11,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface View {}
+public @interface View {
+//	Class<?> length() default Object.class;
+}

@@ -3,6 +3,7 @@ package org.futurepages.core.control.vaadin.containers;
 import com.sun.javaws.security.JavaWebStartSecurity;
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItem;
+import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.pagination.PaginationSlice;
 import org.futurepages.core.persistence.HQLProvider;
 import org.futurepages.core.persistence.HQLQuery;
@@ -101,10 +102,12 @@ public class PaginationSliceContainer<BEANTYPE> extends BeanContainer {
 
     	public void applyFilter(String newWhereFilter){
         removeAllContainerFilters();
+        removeAllItems();
         this.newWhereFilter = newWhereFilter;
     }
 
 	public void removeFilter(){
+        removeAllItems();
         removeAllContainerFilters();
         this.newWhereFilter = null;
     }
@@ -122,7 +125,7 @@ public class PaginationSliceContainer<BEANTYPE> extends BeanContainer {
                 sb.append((i!=0? "," : "")).append(ascending[i] ? HQLProvider.asc(propertyIds[i].toString()) : HQLProvider.desc(propertyIds[i].toString()));
                 removeAllItems();
             } catch (NoSuchFieldException e) {
-                System.out.println(propertyIds[i] + "'s not a entity field! Just a method. Remove when ordering " + paginationSlice.getHqlQuery().getEntity().getName());
+//                DefaultExceptionLogger.getInstance().execute(propertyIds[i] + "'s not a entity field! Just a method. Remove when ordering " + paginationSlice.getHqlQuery().getEntity().getName());
             }
         }
         newOrder = sb.toString();

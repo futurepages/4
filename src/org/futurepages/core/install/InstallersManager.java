@@ -1,6 +1,6 @@
 package org.futurepages.core.install;
 
-import org.futurepages.core.config.ModulesAutomation;
+import org.futurepages.core.config.Automations;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HibernateManager;
 
@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * @author leandro
  */
-public class InstallersManager extends ModulesAutomation {
+public class InstallersManager extends Automations {
 
 	private static final String INSTALL_DIR_NAME = "model/install";
 	private String installMode;

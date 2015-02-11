@@ -4,13 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.futurepages.util.brazil.CNPJUtil;
 import org.junit.Test;
 
 public class CNPJUtilTest {
 
 	@Test
     public void formataCPF() {
-        assertEquals("O CNPJ 78425986003615 não foi formatado corretamente.","78.425.986/0036-15",CNPJUtil.formata("78425986003615"));
+        assertEquals("O CNPJ 78425986003615 não foi formatado corretamente.","78.425.986/0036-15", CNPJUtil.formata("78425986003615"));
     }	
 	
     @Test

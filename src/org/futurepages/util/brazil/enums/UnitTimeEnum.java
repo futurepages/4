@@ -1,4 +1,4 @@
-package org.futurepages.enums;
+package org.futurepages.util.brazil.enums;
 
 import java.io.Serializable;
 import java.util.Calendar;

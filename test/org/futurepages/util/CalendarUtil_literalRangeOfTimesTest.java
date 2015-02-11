@@ -5,7 +5,9 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 
-import org.futurepages.enums.DateFormatEnum;
+import org.futurepages.util.brazil.enums.DateFormatEnum;
+import org.futurepages.util.brazil.CalendarUtil;
+import org.futurepages.util.brazil.DateUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,14 +21,14 @@ import org.junit.runners.Parameterized.Parameters;
  *
  */
 @RunWith(Parameterized.class)
-public class BrazilianCalendarUtil_literalRangeOfTimesTest {
+public class CalendarUtil_literalRangeOfTimesTest {
 
 	private Calendar calInicio;
 	private Calendar calFim;
 	private String esperado;
 	private String msg;
 
-	public BrazilianCalendarUtil_literalRangeOfTimesTest(String dataInicio, String dataFim, String esperado, String msg) {
+	public CalendarUtil_literalRangeOfTimesTest(String dataInicio, String dataFim, String esperado, String msg) {
 		calInicio = createCalendar(dataInicio);
 		calFim = createCalendar(dataFim);
 		this.esperado = esperado;
@@ -35,7 +37,7 @@ public class BrazilianCalendarUtil_literalRangeOfTimesTest {
 
 	private Calendar createCalendar(String strDate){
 		Calendar cal = new GregorianCalendar();
-		cal.setTime(BrazilianDateUtil.parse(strDate, DateFormatEnum.DATE_TIME_PT_BR.getMask("/")));
+		cal.setTime(DateUtil.parse(strDate, DateFormatEnum.DATE_TIME_PT_BR.getMask("/")));
 		return cal;
 	}
 
@@ -65,7 +67,7 @@ public class BrazilianCalendarUtil_literalRangeOfTimesTest {
 	}
 
 	private void literalRangeOfTimesProcedure(Calendar calInicio, Calendar calFim, String esperado, String msg) {
-		String result = BrazilianCalendarUtil.literalRangeOfTimes(calInicio, calFim);
+		String result = CalendarUtil.literalRangeOfTimes(calInicio, calFim);
 		String msgErro = "Erro para a seguinte caso: "+msg;
 		Assert.assertEquals(msgErro,esperado, result);
 	}

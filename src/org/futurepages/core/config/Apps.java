@@ -4,6 +4,7 @@ import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.exceptions.AppsPropertiesException;
 import org.futurepages.util.FileUtil;
 import org.futurepages.util.The;
+import org.futurepages.util.template.simpletemplate.expressions.primitivehandle.Null;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,6 +29,8 @@ public class Apps {
     public static final  String PARAMS_FILE_NAME                = "futurepages.properties";
 	public static final  String MODULES_PATH                    = "modules";
 	public static final  String MODULES_PACK                    = "modules";
+	public static final  String APPS_PACK                       = "apps";
+	public static final  String APPS_PATH                       = "apps";
 	public static final  String CONTEXT_CONFIG_DIR_NAME         = "conf";
 	public static final  String MODULE_CONFIG_DIR_NAME          = "app_conf";
 	public static final  String MODULE_JOBS_SUBPATH             = "control/jobs";
@@ -65,10 +68,13 @@ public class Apps {
 		}
 	}
 
-	public static void init(String contextName) throws UnsupportedEncodingException {
+	public static void init(String contextNameOrClassesPath) throws UnsupportedEncodingException {
 		INSTANCE = new Apps();
-		String classesRealPath = INSTANCE.defineMainParams();
-
+		String contextName = null;
+		String classesRealPath = INSTANCE.defineMainParams(contextNameOrClassesPath);
+		if(!contextNameOrClassesPath.contains("/") && !contextNameOrClassesPath.contains("\\")){
+			contextName = contextNameOrClassesPath;
+		}
 		if(contextName!=null){
 			getInstance().webDefaultParams(classesRealPath, contextName);
 			getInstance().parsePropertiesFile();
@@ -100,10 +106,15 @@ public class Apps {
 		return  paramsMap;
 	}
 
-	private String defineMainParams() throws UnsupportedEncodingException {
+	private String defineMainParams(String classesRoot) throws UnsupportedEncodingException {
 
 		//super-core params
-		String classesPath = (new File(FileUtil.classesPath(Apps.class))).getAbsolutePath()+"/";
+		String classesPath ;
+		try{
+			classesPath = (new File(FileUtil.classesPath(Apps.class))).getAbsolutePath()+"/";
+		}catch (NullPointerException ex){
+			classesPath = classesRoot+"/";
+		}
 		paramsMap.put("CLASSES_PATH", classesPath);
 
 		paramsMap.put("CLASSES_REAL_PATH", classesPath.substring(0, classesPath.length()-1)); //sem a última barra, mantido por conta de legados.
@@ -237,10 +248,27 @@ public class Apps {
 		return dirs;
 	}
 
+	private List<String> appsList;
+
+	public List<String> getAppsList(){
+		if(appsList ==null){
+			String appsPaths = get("APPS");
+			appsList = new ArrayList<>();
+			String[] apps = appsPaths.split(",");
+			for(String app : apps){
+				if(!app.contains(":")){
+					appsList.add(app.trim());
+				}else{
+					appsList.add(app.split("\\:")[0].trim());
+				}
+			}
+		}
+		return appsList;
+	}
+
 	public static File[] listModulesAndApps() {
 
 		File[] apps = Apps.listAppsRootDirs();
-
 		File[] modules = (new File(Apps.get("MODULES_CLASSES_REAL_PATH"))).listFiles();
 		modules = modules==null? new File[0] : modules;
 
@@ -248,11 +276,8 @@ public class Apps {
 		for(int i = 0; i<modules.length ; i++){
 			modulesAndApps[i] = modules[i];
 		}
-//		for(int i = modules.length-1; i>=0 ; i--){
 		for(int i = modulesAndApps.length-1; i>=modules.length; i--){
 			modulesAndApps[i] = apps[modulesAndApps.length-i-1];
-//			4   5-2+0 = 3
-
 		}
 		return modulesAndApps;
 	}
