@@ -330,4 +330,22 @@ public class HQLProvider implements HQLable {
 	public static String concat(String... args) {
 		return StringUtils.concat(args);
 	}
+
+	public static String concatWithComma(Object... fields) {
+		if (fields != null) {
+			if (fields.length == 1) {
+				if (!Is.empty(fields[0])) {
+					return fields[0].toString();
+				}
+			} else if (fields.length > 1) {
+				StringBuilder sb = new StringBuilder();
+				for (Object field : fields) {
+					sb.append(field.toString()).append(",");
+				}
+				String result = sb.toString();
+				return result.substring(0, result.length() - 1);
+			}
+		}
+		return "";
+	}
 }
