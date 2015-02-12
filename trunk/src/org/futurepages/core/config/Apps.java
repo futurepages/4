@@ -119,6 +119,7 @@ public class Apps {
 
 		paramsMap.put("CLASSES_REAL_PATH", classesPath.substring(0, classesPath.length()-1)); //sem a última barra, mantido por conta de legados.
 		paramsMap.put("MODULES_CLASSES_REAL_PATH", get("CLASSES_REAL_PATH") + "/" + Apps.MODULES_PATH);
+		paramsMap.put("APPS_CLASSES_REAL_PATH", get("CLASSES_REAL_PATH") + "/" + Apps.APPS_PATH);
 
 		//stand-alone params
 		paramsMap.put("CONNECT_EXTERNAL_MODULES", "false"); //só quando for dar suporte a mais de um banco de dados

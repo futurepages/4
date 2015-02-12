@@ -1,11 +1,11 @@
 package org.futurepages.util;
 
+import org.futurepages.core.config.Apps;
+import org.futurepages.core.config.Automations;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-
-import org.futurepages.core.config.Apps;
-import org.futurepages.core.config.Automations;
 
 public class ModuleUtil {
 
@@ -90,4 +90,23 @@ public class ModuleUtil {
 		return null;
 	}
 
+	public static String moduleId(File file){
+		String filePath = file.getAbsolutePath().replaceAll("\\\\","/");
+		String modulesPath = Apps.get("MODULES_CLASSES_REAL_PATH").replaceAll("\\\\","/");
+		if(filePath.startsWith(modulesPath)){
+			return The.firstTokenAfter(filePath, modulesPath, "/");
+		}else{
+			String appsPath = Apps.get("APPS_CLASSES_REAL_PATH").replaceAll("\\\\","/");
+			if(filePath.startsWith(appsPath)){
+				List<String> appsList = Apps.getInstance().getAppsList();
+				String internalPath = Apps.APPS_PATH+filePath.substring(appsPath.length()).replaceAll("/",".");
+				for(String app: appsList){
+					if(internalPath.startsWith(app)){
+						return app.replaceAll("\\.","_");
+					}
+				}
+			}
+		}
+		return null;
+	}
 }

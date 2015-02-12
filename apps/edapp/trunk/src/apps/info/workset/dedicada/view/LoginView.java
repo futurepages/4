@@ -17,6 +17,7 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import org.futurepages.core.locale.Txt;
 
 @SuppressWarnings("serial")
 public class LoginView extends VerticalLayout {
@@ -56,11 +57,11 @@ public class LoginView extends VerticalLayout {
         fields.setSpacing(true);
         fields.addStyleName("fields");
 
-        final TextField username = new TextField("Username");
+        final TextField username = new TextField(Txt.get("admin.user.login"));
         username.setIcon(FontAwesome.USER);
         username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-        final PasswordField password = new PasswordField("Password");
+        final PasswordField password = new PasswordField(Txt.get("admin.user.password"));
         password.setIcon(FontAwesome.LOCK);
         password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
@@ -72,9 +73,8 @@ public class LoginView extends VerticalLayout {
         fields.addComponents(username, password, signin);
         fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
 
-        signin.addClickListener(event -> {
-            EDEventBus.post(new EDEvent.UserLoginRequestedEvent(username.getValue(), password.getValue()));
-        }
+        signin.addClickListener(event ->
+            EDEventBus.post(new EDEvent.UserLoginRequestedEvent(username.getValue(), password.getValue()))
         );
         username.focus();
         return fields;
@@ -84,13 +84,13 @@ public class LoginView extends VerticalLayout {
         CssLayout labels = new CssLayout();
         labels.addStyleName("labels");
 
-        Label welcome = new Label("Welcome");
+        Label welcome = new Label(Txt.get("admin.needed.authentication"));
         welcome.setSizeUndefined();
         welcome.addStyleName(ValoTheme.LABEL_H4);
         welcome.addStyleName(ValoTheme.LABEL_COLORED);
         labels.addComponent(welcome);
 
-        Label title = new Label("Empresa Dedicada");
+        Label title = new Label("Workset Dedicada");
         title.setSizeUndefined();
         title.addStyleName(ValoTheme.LABEL_H3);
         title.addStyleName(ValoTheme.LABEL_LIGHT);

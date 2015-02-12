@@ -33,7 +33,6 @@ public class AppUI extends UI {
         EDEventBus.register(this);
 
         Responsive.makeResponsive(this);
-
         addStyleName(ValoTheme.UI_WITH_MENU);
         
         updateContent();
@@ -67,9 +66,13 @@ public class AppUI extends UI {
     @Subscribe
     public void userLoginRequested(final EDEvent.UserLoginRequestedEvent event) {
         User user = getDataProvider().authenticate(event.getUserName(),  event.getPassword());
-        VaadinSession.getCurrent().setAttribute(User.class.getName(), user);
+        if(user!=null){
+            VaadinSession.getCurrent().setAttribute(User.class.getName(), user);
+        }
         updateContent();
-        getNavigator().navigateTo(getNavigator().getState()); //foi retirado do updateContent() pq o navegador já chamava.
+        if(user!=null){
+            getNavigator().navigateTo(getNavigator().getState()); //foi retirado do updateContent() pq o navegador já chamava.
+        }
     }
 
     @Subscribe
