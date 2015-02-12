@@ -3,6 +3,7 @@ package org.futurepages.core.locale;
 import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.util.ModuleUtil;
 import org.futurepages.util.The;
 
 import java.io.File;
@@ -57,8 +58,8 @@ public class Txt {
 		}
 		String str = getInstance().localesMap.get(localeId).get(txtKey);
 		if (str == null) {
-			DefaultExceptionLogger.getInstance().execute(new LocaleManagerException("Txt propertie '" + txtKey + "' not present for locale " + localeId + "."));
-			return The.concat("${", txtKey.replaceAll("[\\.|_]", " "), "}");
+			DefaultExceptionLogger.getInstance().execute(new LocaleManagerException("Txt property '" + txtKey + "' not present for locale " + localeId + "."));
+			return The.concat(txtKey.replaceAll("[\\.|_]", " "));
 		}
 		return str;
 	}
@@ -87,12 +88,17 @@ public class Txt {
 							localesMap = new HashMap<String,String>();
 							this.localesMap.put(localeFile.getName(), localesMap );
 						}
+						String moduleId = ModuleUtil.moduleId(localeFile);
 						for(String key : txts.stringPropertyNames()){
 							String txtValue = txts.getProperty(key);
+							if(key.startsWith("$.")){
+								key = The.concat(moduleId,".",key.substring(2));
+							}
 							if(localesMap.get(key)!=null){
 								System.out.println(">> Txt key "+key+" overwritten for locale '"+localeFile.toString()+"'. Old Value: '"+localesMap.get(key)+"'; New Value: '"+txtValue+"'");
 							}
 							localesMap.put(key, txtValue);
+//							System.out.println(key+": "+txtValue);
 						}
 					}
 				}
