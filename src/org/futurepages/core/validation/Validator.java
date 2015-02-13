@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.futurepages.core.exception.DefaultExceptionLogger;
-import org.futurepages.exceptions.ErrorException;
+import org.futurepages.exceptions.UserException;
 
 public abstract class Validator {
 
@@ -45,7 +45,7 @@ public abstract class Validator {
 		putError(key, msg);
 	}
 
-	public void error(String key, ErrorException ex) {
+	public void error(String key, UserException ex) {
 		putError(key, ex.getMessage());
 	}
 
@@ -65,7 +65,7 @@ public abstract class Validator {
 		validationMap.put(key, message);
 
 		if (breakOnFirst) {
-			throw new ErrorException(validationMap);
+			throw new UserException(validationMap);
 		}
 	}
 
@@ -81,7 +81,7 @@ public abstract class Validator {
 		validationMapAux();
 
 		if ((breakOnFirst != null) && (!validationMap.isEmpty())) {
-			ErrorException exce = new ErrorException(validationMap);
+			UserException exce = new UserException(validationMap);
 			throw exce;
 		}
 		return validationMap;

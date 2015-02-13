@@ -70,7 +70,7 @@ public class Txt {
 	}
 
 	private void doInit(File[] appsAndModules) throws IOException {
-		for(int i = appsAndModules.length-1; i>=0; i--){
+		for(int i = 0; i<appsAndModules.length; i++){
 			File localesDir = new File(appsAndModules[i]+"/"+ Apps.MODULE_CONFIG_DIR_NAME+"/locales");
 			if(localesDir.exists()){
 				File[] localeFiles = localesDir.listFiles();
@@ -89,6 +89,7 @@ public class Txt {
 							this.localesMap.put(localeFile.getName(), localesMap );
 						}
 						String moduleId = ModuleUtil.moduleId(localeFile);
+						System.out.println(moduleId);
 						for(String key : txts.stringPropertyNames()){
 							String txtValue = txts.getProperty(key);
 							if(key.startsWith("$.")){
