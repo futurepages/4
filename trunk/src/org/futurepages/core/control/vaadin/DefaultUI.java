@@ -6,6 +6,9 @@ import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.Position;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
@@ -19,7 +22,15 @@ public abstract class DefaultUI extends UI {
 
     private final DefaultEventBus eventBus  = new DefaultEventBus();
 
-    public static DefaultEventBus getEventBus() {
+    protected abstract DefaultUser loadUserLocally();
+    protected abstract DefaultNavigator naviagator();
+    protected abstract Layout loginView();
+    protected abstract CustomComponent appMenu();
+    protected abstract void removeUserLocally();
+    protected abstract void storeUserLocally(DefaultUser user);
+
+
+    public DefaultEventBus getEventBus() {
         return ((DefaultUI) getCurrent()).eventBus;
     }
 
@@ -50,19 +61,37 @@ public abstract class DefaultUI extends UI {
 
    private void updateContent() {
         DefaultUser user = (DefaultUser) VaadinSession.getCurrent().getAttribute(DefaultUser.class.getName());
+        if(user==null){
+            user = loadUserLocally();
+            if(user!=null){
+                VaadinSession.getCurrent().setAttribute(DefaultUser.class.getName(), user);
+            }
+        }
 
         if (user != null) {
-            setContent(getMainView());
+            setContent(mainView());
+            naviagator(); // new instance of it.
             removeStyleName("loginview");
         } else {
-            setContent(getLoginView());
+            setContent(loginView());
             addStyleName("loginview");
         }
     }
 
-    protected abstract Layout getLoginView();
+    protected Layout mainView(){
+        return new DefaultMainView(appMenu(), getComponentContainer());
+    }
 
-    protected abstract Layout getMainView();
+    protected ComponentContainer componentContainer;
+
+    protected ComponentContainer getComponentContainer(){
+        if(componentContainer==null){
+            componentContainer = new CssLayout();
+            componentContainer.addStyleName("view-content");
+            componentContainer.setSizeFull();
+        }
+        return componentContainer;
+    }
 
     @Subscribe
     public void userLoginRequested(final DefaultEvents.UserLoginRequestedEvent event) {
@@ -70,6 +99,9 @@ public abstract class DefaultUI extends UI {
             DefaultUser user = authenticate(event.getLogin(), event.getPassword());
             if(user!=null){
                 VaadinSession.getCurrent().setAttribute(DefaultUser.class.getName(), user);
+                if(event.isRemember()){
+                    storeUserLocally(user);
+                }
             }
             updateContent();
             if(user!=null){
@@ -83,7 +115,7 @@ public abstract class DefaultUI extends UI {
     protected void showAuthenticatingError(UserException ue) {
         Notification errorNotification = new Notification(ue.getMessage());
         errorNotification.setDelayMsec(2000);
-        errorNotification.setStyleName("bar error small");
+        errorNotification.setStyleName("bar failure small");
         errorNotification.setPosition(Position.TOP_CENTER);
         errorNotification.show(Page.getCurrent());
     }
@@ -97,6 +129,7 @@ public abstract class DefaultUI extends UI {
      */
     @Subscribe
     public void userLoggedOut(final DefaultEvents.UserLoggedOutEvent event) {
+        removeUserLocally();
         VaadinSession.getCurrent().close();
         Page.getCurrent().reload();
     }

@@ -116,7 +116,8 @@ public final class TransactionsView extends VerticalLayout implements View {
             	if (Is.empty(event.getText())) {
                     data.removeFilter();
 				} else {
-					data.applyFilter(HQLProvider.ors(new HQLField("estado.nome").matches(event.getText()), new HQLField("nome").matches(event.getText())));
+                    data.removeFilter();
+					data.applyFilter(HQLProvider.ors(new HQLField("estado.nome").matches(event.getText()), new HQLField("nome").matches(event.getText()),new HQLField("nomeBusca").matches(event.getText())));
 				}
 				table.refreshRowCache();
 				table.markAsDirty();

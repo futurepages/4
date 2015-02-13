@@ -531,4 +531,8 @@ public class User implements DefaultUser, Serializable {
 		}
 		return false;
 	}
+
+	public String identifiedHashToStore() {
+		return The.concat(this.getLogin() , "#" , Security.md5(The.concat(this.getLogin() , "||" , this.getPassword())));
+	}
 }

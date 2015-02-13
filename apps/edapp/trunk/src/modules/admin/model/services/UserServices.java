@@ -12,8 +12,10 @@ import modules.admin.model.exceptions.ExpiredPasswordException;
 import modules.admin.model.exceptions.DisabledUserException;
 import modules.admin.model.exceptions.InvalidUserOrPasswordException;
 import org.futurepages.core.admin.DefaultUser;
+import org.futurepages.core.control.vaadin.BrowserCookie;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.util.Is;
+import org.futurepages.util.Security;
 
 import java.util.List;
 
@@ -141,5 +143,13 @@ public class UserServices {
 		user.setAccessKey(login);
 		user.setPassword(password);
 		return authenticatedAndDetachedUser(user);
+	}
+
+	public static User getByIdentiedHash(String loggedValue) {
+		User dbUser = UserDao.getByLogin(loggedValue.split("#")[0]);
+		if (dbUser.identifiedHashToStore().equals(loggedValue)) {
+			return dbUser;
+		}
+		return null;
 	}
 }

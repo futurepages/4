@@ -367,10 +367,8 @@ public final class DashboardView extends Panel implements View, DashboardEdit.Da
         }
 
         @Subscribe
-        public void updateNotificationsCount(
-                final AppEvents.NotificationsCountUpdatedEvent event) {
-            setUnreadCount(AppUI.getDataProvider()
-                    .getUnreadNotificationsCount());
+        public void updateNotificationsCount(final AppEvents.NotificationsCountUpdatedEvent event) {
+               setUnreadCount(AppUI.getDataProvider().getUnreadNotificationsCount());
         }
 
         public void setUnreadCount(final int count) {
