@@ -7,17 +7,17 @@ import java.util.LinkedHashMap;
  *
  * @author leandro
  */
-public class ErrorException extends RuntimeException {
+public class UserException extends RuntimeException {
 
 	private LinkedHashMap<String, String> validationMap;
 
 	private String message;
 
-	public ErrorException(String msg) {
+	public UserException(String msg) {
 		super(msg);
 	}
 
-	public ErrorException(Exception ex) {
+	public UserException(Exception ex) {
 		this.message = ex.getMessage();
 	}
 
@@ -28,7 +28,7 @@ public class ErrorException extends RuntimeException {
 
 
 
-	public ErrorException(LinkedHashMap<String, String> validationMap) {
+	public UserException(LinkedHashMap<String, String> validationMap) {
 		super(validationMessage(validationMap));
 		this.setValidationMap(validationMap);
 	}

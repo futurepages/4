@@ -1,44 +1,25 @@
 package apps.info.workset.dedicada;
 
-import apps.info.workset.dedicada.control.events.EDEvent;
-import apps.info.workset.dedicada.control.events.EDEventBus;
 import apps.info.workset.dedicada.view.EDViewType;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.navigator.ViewProvider;
 import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.UI;
-import org.futurepages.core.config.Apps;
-import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
+import org.futurepages.core.control.vaadin.DefaultEventBus;
+import org.futurepages.core.control.vaadin.DefaultNavigator;
 
 @SuppressWarnings("serial")
-public class AppNavigator extends Navigator {
+public class AppNavigator extends DefaultNavigator {
 
     private static final EDViewType ERROR_VIEW = EDViewType.DASHBOARD;
     private ViewProvider errorViewProvider;
 
-    public AppNavigator(final ComponentContainer container) {
-        super(UI.getCurrent(), container);
-
-        String host = getUI().getPage().getLocation().getHost();
-        String TRACKER_ID = Apps.get("GOOGLE_ANALYTICS_ID");
-        if (TRACKER_ID != null && host.equals(Apps.get("PRODUCTION_HOST"))) {
-            initGATracker(TRACKER_ID);
-        }
-        initViewChangeListener();
-        initViewProviders();
-
+    public AppNavigator(ComponentContainer container) {
+        super(container);
     }
 
-    private void initGATracker(final String trackerId) {
-        GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker(trackerId, "demo.vaadin.com");
-
-        // GoogleAnalyticsTracker is an extension add-on for UI so it is initialized by calling .extend(UI)
-        tracker.extend(UI.getCurrent());
-    }
-
-    private void initViewChangeListener() {
+    @Override
+    protected void initViewChangeListener() {
         addViewChangeListener(new ViewChangeListener() {
 
             @Override
@@ -53,9 +34,9 @@ public class AppNavigator extends Navigator {
                 EDViewType view = EDViewType.getByViewName(event
                         .getViewName());
                 // Appropriate events get fired after the view is changed.
-                EDEventBus.post(new EDEvent.PostViewChangeEvent(view));
-                EDEventBus.post(new EDEvent.BrowserResizeEvent());
-                EDEventBus.post(new EDEvent.CloseOpenWindowsEvent());
+                DefaultEventBus.post(new AppEvents.PostViewChangeEvent(view));
+                DefaultEventBus.post(new AppEvents.BrowserResizeEvent());
+                DefaultEventBus.post(new AppEvents.CloseOpenWindowsEvent());
 
 //                if (tracker != null) {
 //                    // The view change is submitted as a pageview for GA tracker
@@ -65,7 +46,8 @@ public class AppNavigator extends Navigator {
         });
     }
 
-    private void initViewProviders() {
+    @Override
+    protected void initViewProviders() {
         // A dedicated view provider is added for each separate view type
         for (final EDViewType viewType : EDViewType.values()) {
             ViewProvider viewProvider = new ClassBasedViewProvider(

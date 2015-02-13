@@ -1,8 +1,7 @@
 package apps.info.workset.dedicada.view.pages.dashboard;
 
 import apps.info.workset.dedicada.AppUI;
-import apps.info.workset.dedicada.control.events.EDEvent;
-import apps.info.workset.dedicada.control.events.EDEventBus;
+import apps.info.workset.dedicada.AppEvents;
 import apps.info.workset.dedicada.model.data.dummy.DummyDataGenerator;
 import apps.info.workset.dedicada.model.entities.EDNotification;
 import apps.info.workset.dedicada.view.components.SparklineChart;
@@ -34,6 +33,7 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import org.futurepages.core.control.vaadin.DefaultEventBus;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -53,7 +53,7 @@ public final class DashboardView extends Panel implements View, DashboardEdit.Da
     public DashboardView() {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
         setSizeFull();
-        EDEventBus.register(this);
+        DefaultEventBus.register(this);
 
         root = new VerticalLayout();
         root.setSizeFull();
@@ -75,7 +75,7 @@ public final class DashboardView extends Panel implements View, DashboardEdit.Da
         root.addLayoutClickListener(new LayoutClickListener() {
             @Override
             public void layoutClick(final LayoutClickEvent event) {
-                EDEventBus.post(new EDEvent.CloseOpenWindowsEvent());
+                DefaultEventBus.post(new AppEvents.CloseOpenWindowsEvent());
             }
         });
     }
@@ -266,7 +266,7 @@ public final class DashboardView extends Panel implements View, DashboardEdit.Da
 
         Collection<EDNotification> notifications = AppUI
                 .getDataProvider().getNotifications();
-        EDEventBus.post(new EDEvent.NotificationsCountUpdatedEvent());
+        DefaultEventBus.post(new AppEvents.NotificationsCountUpdatedEvent());
 
         for (EDNotification notification : notifications) {
             VerticalLayout notificationLayout = new VerticalLayout();
@@ -363,12 +363,12 @@ public final class DashboardView extends Panel implements View, DashboardEdit.Da
             setId(ID);
             addStyleName("notifications");
             addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-            EDEventBus.register(this);
+            DefaultEventBus.register(this);
         }
 
         @Subscribe
         public void updateNotificationsCount(
-                final EDEvent.NotificationsCountUpdatedEvent event) {
+                final AppEvents.NotificationsCountUpdatedEvent event) {
             setUnreadCount(AppUI.getDataProvider()
                     .getUnreadNotificationsCount());
         }

@@ -1,10 +1,9 @@
 package apps.info.workset.dedicada.model.data;
 
 import apps.info.workset.dedicada.model.entities.EDNotification;
-import apps.info.workset.dedicada.model.entities.Cidade;
+import apps.info.workset.dedicada.model.entities.Movie;
 import apps.info.workset.dedicada.model.entities.MovieRevenue;
 import apps.info.workset.dedicada.model.entities.Transaction;
-import apps.info.workset.dedicada.model.entities.User;
 
 import java.util.Collection;
 import java.util.Date;
@@ -39,7 +38,6 @@ public interface DataProvider {
      * @param password
      * @return Authenticated used.
      */
-    User authenticate(String userName, String password);
 
     /**
      * @return The number of unread notifications for the current user.
@@ -59,14 +57,14 @@ public interface DataProvider {
     /**
      * @return A Collection of movies.
      */
-    Collection<Cidade> getMovies();
+    Collection<Movie> getMovies();
 
     /**
      * @param movieId
      *            Movie's identifier
      * @return A Movie instance for the given id.
      */
-    Cidade getMovie(long movieId);
+    Movie getMovie(long movieId);
 
     /**
      * @param startDate

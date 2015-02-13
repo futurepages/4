@@ -26,7 +26,7 @@ import java.util.List;
 @Entity
 public class User implements DefaultUser, Serializable {
 
-    private static final String KEY = "5JkWo73odsp1gCiHjnpKW6HwfqhR5WckqEZES2uIKMPiq8t0hrz92sA";
+    private static final String KEY = "kqEZES2uIKMLLSds343edHjnpKW6HwlhR5WcPiq8t0hrz92sAfq";
 
 
 	@Id
@@ -65,9 +65,9 @@ public class User implements DefaultUser, Serializable {
 	
 	public List<Log> getLastAccesses() {
 
-//		if (ultimosAcessos == null) {
-//			ultimosAcessos = LogDao.topLastAccessesByUser(5, this.login);
-//		}
+		if (ultimosAcessos == null) {
+			ultimosAcessos = LogDao.topLastAccessesByUser(5, this.login);
+		}
 
 		return ultimosAcessos;
 	}

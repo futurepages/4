@@ -1,8 +1,7 @@
 package apps.info.workset.dedicada.view;
 
 
-import apps.info.workset.dedicada.control.events.EDEvent;
-import apps.info.workset.dedicada.control.events.EDEventBus;
+import apps.info.workset.dedicada.AppEvents;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
@@ -17,6 +16,7 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import org.futurepages.core.control.vaadin.DefaultEventBus;
 import org.futurepages.core.locale.Txt;
 
 @SuppressWarnings("serial")
@@ -74,7 +74,7 @@ public class LoginView extends VerticalLayout {
         fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
 
         signin.addClickListener(event ->
-            EDEventBus.post(new EDEvent.UserLoginRequestedEvent(username.getValue(), password.getValue()))
+            DefaultEventBus.post(new AppEvents.UserLoginRequestedEvent(username.getValue(), password.getValue()))
         );
         username.focus();
         return fields;

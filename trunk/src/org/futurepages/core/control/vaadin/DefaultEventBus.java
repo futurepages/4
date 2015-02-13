@@ -1,33 +1,39 @@
-package apps.info.workset.dedicada.control.events;
+package org.futurepages.core.control.vaadin;
 
-import apps.info.workset.dedicada.AppUI;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
+import com.vaadin.ui.UI;
+import org.futurepages.core.exception.DefaultExceptionLogger;
+
 /**
  * A simple wrapper for Guava event bus. Defines static convenience methods for
  * relevant actions.
  */
-public class EDEventBus implements SubscriberExceptionHandler {
-
+public class DefaultEventBus implements SubscriberExceptionHandler {
 
     private final EventBus eventBus = new EventBus(this);
 
     public static void post(final Object event) {
-//TODO Ver o que houve e ajeitar...
-        AppUI.getEventbus().eventBus.post(event);
+        currentEventBus().post(event);
     }
 
     public static void register(final Object object) {
-        AppUI.getEventbus().eventBus.register(object);
+        currentEventBus().register(object);
     }
 
     public static void unregister(final Object object) {
-        AppUI.getEventbus().eventBus.unregister(object);
+        currentEventBus().unregister(object);
+    }
+
+
+    private static EventBus currentEventBus() {
+        return ((DefaultUI) UI.getCurrent()).getEventBus().eventBus;
     }
 
     @Override
     public final void handleException(final Throwable exception, final SubscriberExceptionContext context) {
-        exception.printStackTrace();
+        //todo use context too.
+        DefaultExceptionLogger.getInstance().execute(exception);
     }
 }

@@ -1,15 +1,10 @@
 package apps.info.workset.dedicada.view.pages.transactions;
 
-import apps.info.workset.dedicada.control.events.EDEvent;
-import apps.info.workset.dedicada.control.events.EDEventBus;
+import apps.info.workset.dedicada.AppEvents;
 import apps.info.workset.dedicada.model.entities.Transaction;
 import apps.info.workset.dedicada.view.EDViewType;
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.Item;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.Action;
 import com.vaadin.event.Action.Handler;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -32,6 +27,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import modules.global.model.entities.brasil.Cidade;
+import org.futurepages.core.control.vaadin.DefaultEventBus;
 import org.futurepages.core.control.vaadin.containers.PaginationSliceContainer;
 import org.futurepages.core.pagination.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
@@ -61,7 +57,7 @@ public final class TransactionsView extends VerticalLayout implements View {
     public TransactionsView() {
         setSizeFull();
         addStyleName("transactions");
-        EDEventBus.register(this);
+        DefaultEventBus.register(this);
 
         addComponent(buildToolbar());
 
@@ -75,7 +71,7 @@ public final class TransactionsView extends VerticalLayout implements View {
         super.detach();
         // A new instance of TransactionsView is created every time it's
         // navigated to so we'll need to clean up references to it on detach.
-        EDEventBus.unregister(this);
+        DefaultEventBus.unregister(this);
     }
 
     private Component buildToolbar() {
@@ -225,7 +221,7 @@ public final class TransactionsView extends VerticalLayout implements View {
     }
 
     @Subscribe
-    public void browserResized(final EDEvent.BrowserResizeEvent event) {
+    public void browserResized(final AppEvents.BrowserResizeEvent event) {
         // Some columns are collapsed when browser window width gets small
         // enough to make the table fit better.
         if (defaultColumnsVisible()) {
@@ -252,7 +248,7 @@ public final class TransactionsView extends VerticalLayout implements View {
     void createNewReportFromSelection() {
         UI.getCurrent().getNavigator()
                 .navigateTo(EDViewType.REPORTS.getViewName());
-        EDEventBus.post(new EDEvent.TransactionReportEvent((Collection<Transaction>) table.getValue()));
+        DefaultEventBus.post(new AppEvents.TransactionReportEvent((Collection<Transaction>) table.getValue()));
     }
 
     @Override

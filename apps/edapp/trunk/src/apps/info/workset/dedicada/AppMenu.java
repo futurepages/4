@@ -1,10 +1,7 @@
-package apps.info.workset.dedicada.view;
+package apps.info.workset.dedicada;
 
-import apps.info.workset.dedicada.AppUI;
-import apps.info.workset.dedicada.control.events.EDEvent;
-import apps.info.workset.dedicada.control.events.EDEventBus;
 import apps.info.workset.dedicada.model.entities.Transaction;
-import apps.info.workset.dedicada.model.entities.User;
+import apps.info.workset.dedicada.view.EDViewType;
 import apps.info.workset.dedicada.view.components.ProfilePreferencesWindow;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.dd.DragAndDropEvent;
@@ -32,7 +29,9 @@ import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
-import org.futurepages.core.locale.Txt;
+import modules.admin.model.entities.User;
+import org.futurepages.core.admin.DefaultUser;
+import org.futurepages.core.control.vaadin.DefaultEventBus;
 
 import java.util.Collection;
 
@@ -58,7 +57,7 @@ public final class AppMenu extends CustomComponent {
 
 		// There's only one DashboardMenu per UI so this doesn't need to be
 		// unregistered from the UI-scoped DashboardEventBus.
-		EDEventBus.register(this);
+		DefaultEventBus.register(this);
 
 		setCompositionRoot(buildContent());
 	}
@@ -89,17 +88,15 @@ public final class AppMenu extends CustomComponent {
 		return logoWrapper;
 	}
 
-	private User getCurrentUser() {
-		return (User) VaadinSession.getCurrent().getAttribute(
-				User.class.getName());
+	private DefaultUser getCurrentUser() {
+		return (DefaultUser) VaadinSession.getCurrent().getAttribute(DefaultUser.class.getName());
 	}
 
 	private Component buildUserMenu() {
 		final MenuBar settings = new MenuBar();
 		settings.addStyleName("user-menu");
-		final User user = getCurrentUser();
-		settingsItem = settings.addItem("", new ThemeResource(
-				"img/profile-pic-300px.jpg"), null);
+		final User user = (User) getCurrentUser();
+		settingsItem = settings.addItem("", new ThemeResource("img/profile-pic-300px.jpg"), null);
 		updateUserName(null);
 		settingsItem.addItem("Edit Profile", new Command() {
 			@Override
@@ -117,7 +114,7 @@ public final class AppMenu extends CustomComponent {
 		settingsItem.addItem("Sign Out", new Command() {
 			@Override
 			public void menuSelected(final MenuItem selectedItem) {
-				EDEventBus.post(new EDEvent.UserLoggedOutEvent());
+				DefaultEventBus.post(new AppEvents.UserLoggedOutEvent());
 			}
 		});
 		return settings;
@@ -164,7 +161,7 @@ public final class AppMenu extends CustomComponent {
 										EDViewType.REPORTS.getViewName());
 						Table table = (Table) event.getTransferable()
 								.getSourceComponent();
-						EDEventBus.post(new EDEvent.TransactionReportEvent(
+						DefaultEventBus.post(new AppEvents.TransactionReportEvent(
 								(Collection<Transaction>) table.getValue()));
 					}
 
@@ -215,29 +212,29 @@ public final class AppMenu extends CustomComponent {
 	}
 
 	@Subscribe
-	public void postViewChange(final EDEvent.PostViewChangeEvent event) {
+	public void postViewChange(final AppEvents.PostViewChangeEvent event) {
 		// After a successful view change the menu can be hidden in mobile view.
 		getCompositionRoot().removeStyleName(STYLE_VISIBLE);
 	}
 
 	@Subscribe
 	public void updateNotificationsCount(
-			final EDEvent.NotificationsCountUpdatedEvent event) {
+			final AppEvents.NotificationsCountUpdatedEvent event) {
 		int unreadNotificationsCount = AppUI.getDataProvider().getUnreadNotificationsCount();
 		notificationsBadge.setValue(String.valueOf(unreadNotificationsCount));
 		notificationsBadge.setVisible(unreadNotificationsCount > 0);
 	}
 
 	@Subscribe
-	public void updateReportsCount(final EDEvent.ReportsCountUpdatedEvent event) {
+	public void updateReportsCount(final AppEvents.ReportsCountUpdatedEvent event) {
 		reportsBadge.setValue(String.valueOf(event.getCount()));
 		reportsBadge.setVisible(event.getCount() > 0);
 	}
 
 	@Subscribe
-	public void updateUserName(final EDEvent.ProfileUpdatedEvent event) {
-		User user = getCurrentUser();
-		settingsItem.setText(user.getFirstName() + " " + user.getLastName());
+	public void updateUserName(final AppEvents.ProfileUpdatedEvent event) {
+		User user = (User) getCurrentUser();
+		settingsItem.setText(user.getFullName());
 	}
 
 	public final class ValoMenuItemButton extends Button {
@@ -251,7 +248,7 @@ public final class AppMenu extends CustomComponent {
 			setPrimaryStyleName("valo-menu-item");
 			setIcon(view.getIcon());
 			setCaption(view.getViewName().substring(0, 1).toUpperCase() + view.getViewName().substring(1));
-			EDEventBus.register(this);
+			DefaultEventBus.register(this);
 			addClickListener(new ClickListener() {
 				@Override
 				public void buttonClick(final ClickEvent event) {
@@ -263,7 +260,7 @@ public final class AppMenu extends CustomComponent {
 		}
 
 		@Subscribe
-		public void postViewChange(final EDEvent.PostViewChangeEvent event) {
+		public void postViewChange(final AppEvents.PostViewChangeEvent event) {
 			removeStyleName(STYLE_SELECTED);
 			if (event.getView() == view) {
 				addStyleName(STYLE_SELECTED);

@@ -1,7 +1,6 @@
 package apps.info.workset.dedicada.view.pages.reports;
 
-import apps.info.workset.dedicada.control.events.EDEvent;
-import apps.info.workset.dedicada.control.events.EDEventBus;
+import apps.info.workset.dedicada.AppEvents;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
@@ -26,6 +25,7 @@ import com.vaadin.ui.TabSheet.CloseHandler;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import org.futurepages.core.control.vaadin.DefaultEventBus;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,7 +42,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
         addStyleName("reports");
         addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
         setCloseHandler(this);
-        EDEventBus.register(this);
+        DefaultEventBus.register(this);
 
         addTab(buildDrafts());
     }
@@ -161,13 +161,13 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
             reportEditor.addWidget(ReportEditor.PaletteItemType.TRANSACTIONS, prefillData);
         }
 
-        EDEventBus.post(new EDEvent.ReportsCountUpdatedEvent(
+        DefaultEventBus.post(new AppEvents.ReportsCountUpdatedEvent(
                 getComponentCount() - 1));
         setSelectedTab(getComponentCount() - 1);
     }
 
     @Subscribe
-    public void createTransactionReport(final EDEvent.TransactionReportEvent event) {
+    public void createTransactionReport(final AppEvents.TransactionReportEvent event) {
         addReport(ReportType.TRANSACTIONS, event.getTransactions());
     }
 
@@ -201,7 +201,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
             public void buttonClick(final ClickEvent event) {
                 confirmDialog.close();
                 removeComponent(tabContent);
-                EDEventBus.post(new EDEvent.ReportsCountUpdatedEvent(
+                DefaultEventBus.post(new AppEvents.ReportsCountUpdatedEvent(
                         getComponentCount() - 1));
                 Notification
                         .show("The report was saved as a draft",
@@ -216,8 +216,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
             public void buttonClick(final ClickEvent event) {
                 confirmDialog.close();
                 removeComponent(tabContent);
-                EDEventBus.post(new EDEvent.ReportsCountUpdatedEvent(
-                        getComponentCount() - 1));
+                DefaultEventBus.post(new AppEvents.ReportsCountUpdatedEvent(getComponentCount() - 1));
             }
         });
         discard.addStyleName(ValoTheme.BUTTON_DANGER);

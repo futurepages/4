@@ -1,43 +1,14 @@
-package apps.info.workset.dedicada.control.events;
+package apps.info.workset.dedicada;
 
 import apps.info.workset.dedicada.model.entities.Transaction;
 import apps.info.workset.dedicada.view.EDViewType;
+import org.futurepages.core.control.vaadin.DefaultEvents;
 
 import java.util.Collection;
 
-/*
- * Event bus events used in Dashboard are listed here as inner classes.
- */
-public abstract class EDEvent {
+public abstract class AppEvents extends DefaultEvents {
 
-    public static final class UserLoginRequestedEvent {
-        private final String userName, password;
-
-        public UserLoginRequestedEvent(final String userName,
-                final String password) {
-            this.userName = userName;
-            this.password = password;
-        }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-    }
-
-    public static class BrowserResizeEvent {
-
-    }
-
-    public static class UserLoggedOutEvent {
-
-    }
-
-    public static class NotificationsCountUpdatedEvent {
-    }
+    public static class NotificationsCountUpdatedEvent {}
 
     public static final class ReportsCountUpdatedEvent {
         private final int count;
@@ -76,10 +47,6 @@ public abstract class EDEvent {
         }
     }
 
-    public static class CloseOpenWindowsEvent {
-    }
-
-    public static class ProfileUpdatedEvent {
-    }
+    public static class ProfileUpdatedEvent {}
 
 }

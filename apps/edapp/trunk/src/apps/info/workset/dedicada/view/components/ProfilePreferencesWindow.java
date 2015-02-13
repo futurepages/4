@@ -1,8 +1,6 @@
 package apps.info.workset.dedicada.view.components;
 
-import apps.info.workset.dedicada.control.events.EDEvent;
-import apps.info.workset.dedicada.control.events.EDEventBus;
-import apps.info.workset.dedicada.model.entities.User;
+import apps.info.workset.dedicada.AppEvents;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -11,7 +9,6 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.server.UserError;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
@@ -26,14 +23,14 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import modules.admin.model.entities.User;
+import org.futurepages.core.control.vaadin.DefaultEventBus;
 
 @SuppressWarnings("serial")
 public class ProfilePreferencesWindow extends Window {
@@ -48,26 +45,26 @@ public class ProfilePreferencesWindow extends Window {
      * explicitly set, calling fieldGroup.setItemDataSource(user) synchronizes
      * the fields with the user object.
      */
-    @PropertyId("firstName")
-    private TextField firstNameField;
-    @PropertyId("lastName")
-    private TextField lastNameField;
-    @PropertyId("title")
-    private ComboBox titleField;
-    @PropertyId("male")
-    private OptionGroup sexField;
+    @PropertyId("fullName")
+    private TextField fullNameField;
     @PropertyId("email")
     private TextField emailField;
-    @PropertyId("location")
-    private TextField locationField;
-    @PropertyId("phone")
-    private TextField phoneField;
-    @PropertyId("newsletterSubscription")
-    private OptionalSelect<Integer> newsletterField;
-    @PropertyId("website")
-    private TextField websiteField;
-    @PropertyId("bio")
-    private TextArea bioField;
+    @PropertyId("title")
+    private ComboBox titleField;
+//    @PropertyId("male")
+//    private OptionGroup sexField;
+//    @PropertyId("email")
+//    private TextField emailField;
+//    @PropertyId("location")
+//    private TextField locationField;
+//    @PropertyId("phone")
+//    private TextField phoneField;
+//    @PropertyId("newsletterSubscription")
+//    private OptionalSelect<Integer> newsletterField;
+//    @PropertyId("website")
+//    private TextField websiteField;
+//    @PropertyId("bio")
+//    private TextArea bioField;
 
     private ProfilePreferencesWindow(final User user,
             final boolean preferencesTabOpen) {
@@ -158,10 +155,10 @@ public class ProfilePreferencesWindow extends Window {
         root.addComponent(details);
         root.setExpandRatio(details, 1);
 
-        firstNameField = new TextField("First Name");
-        details.addComponent(firstNameField);
-        lastNameField = new TextField("Last Name");
-        details.addComponent(lastNameField);
+        fullNameField = new TextField("Full Name");
+        details.addComponent(fullNameField);
+        emailField = new TextField("Email");
+        details.addComponent(emailField);
 
         titleField = new ComboBox("Title");
         titleField.setInputPrompt("Please specify");
@@ -171,59 +168,59 @@ public class ProfilePreferencesWindow extends Window {
         titleField.setNewItemsAllowed(true);
         details.addComponent(titleField);
 
-        sexField = new OptionGroup("Sex");
-        sexField.addItem(Boolean.FALSE);
-        sexField.setItemCaption(Boolean.FALSE, "Female");
-        sexField.addItem(Boolean.TRUE);
-        sexField.setItemCaption(Boolean.TRUE, "Male");
-        sexField.addStyleName("horizontal");
-        details.addComponent(sexField);
-
-        Label section = new Label("Contact Info");
-        section.addStyleName(ValoTheme.LABEL_H4);
-        section.addStyleName(ValoTheme.LABEL_COLORED);
-        details.addComponent(section);
-
-        emailField = new TextField("Email");
-        emailField.setWidth("100%");
-        emailField.setRequired(true);
-        emailField.setNullRepresentation("");
-        details.addComponent(emailField);
-
-        locationField = new TextField("Location");
-        locationField.setWidth("100%");
-        locationField.setNullRepresentation("");
-        locationField.setComponentError(new UserError(
-                "This address doesn't exist"));
-        details.addComponent(locationField);
-
-        phoneField = new TextField("Phone");
-        phoneField.setWidth("100%");
-        phoneField.setNullRepresentation("");
-        details.addComponent(phoneField);
-
-        newsletterField = new OptionalSelect<Integer>();
-        newsletterField.addOption(0, "Daily");
-        newsletterField.addOption(1, "Weekly");
-        newsletterField.addOption(2, "Monthly");
-        details.addComponent(newsletterField);
-
-        section = new Label("Additional Info");
-        section.addStyleName(ValoTheme.LABEL_H4);
-        section.addStyleName(ValoTheme.LABEL_COLORED);
-        details.addComponent(section);
-
-        websiteField = new TextField("Website");
-        websiteField.setInputPrompt("http://");
-        websiteField.setWidth("100%");
-        websiteField.setNullRepresentation("");
-        details.addComponent(websiteField);
-
-        bioField = new TextArea("Bio");
-        bioField.setWidth("100%");
-        bioField.setRows(4);
-        bioField.setNullRepresentation("");
-        details.addComponent(bioField);
+//        sexField = new OptionGroup("Sex");
+//        sexField.addItem(Boolean.FALSE);
+//        sexField.setItemCaption(Boolean.FALSE, "Female");
+//        sexField.addItem(Boolean.TRUE);
+//        sexField.setItemCaption(Boolean.TRUE, "Male");
+//        sexField.addStyleName("horizontal");
+//        details.addComponent(sexField);
+//
+//        Label section = new Label("Contact Info");
+//        section.addStyleName(ValoTheme.LABEL_H4);
+//        section.addStyleName(ValoTheme.LABEL_COLORED);
+//        details.addComponent(section);
+//
+//        emailField = new TextField("Email");
+//        emailField.setWidth("100%");
+//        emailField.setRequired(true);
+//        emailField.setNullRepresentation("");
+//        details.addComponent(emailField);
+//
+//        locationField = new TextField("Location");
+//        locationField.setWidth("100%");
+//        locationField.setNullRepresentation("");
+//        locationField.setComponentError(new UserError(
+//                "This address doesn't exist"));
+//        details.addComponent(locationField);
+//
+//        phoneField = new TextField("Phone");
+//        phoneField.setWidth("100%");
+//        phoneField.setNullRepresentation("");
+//        details.addComponent(phoneField);
+//
+//        newsletterField = new OptionalSelect<Integer>();
+//        newsletterField.addOption(0, "Daily");
+//        newsletterField.addOption(1, "Weekly");
+//        newsletterField.addOption(2, "Monthly");
+//        details.addComponent(newsletterField);
+//
+//        section = new Label("Additional Info");
+//        section.addStyleName(ValoTheme.LABEL_H4);
+//        section.addStyleName(ValoTheme.LABEL_COLORED);
+//        details.addComponent(section);
+//
+//        websiteField = new TextField("Website");
+//        websiteField.setInputPrompt("http://");
+//        websiteField.setWidth("100%");
+//        websiteField.setNullRepresentation("");
+//        details.addComponent(websiteField);
+//
+//        bioField = new TextArea("Bio");
+//        bioField.setWidth("100%");
+//        bioField.setRows(4);
+//        bioField.setNullRepresentation("");
+//        details.addComponent(bioField);
 
         return root;
     }
@@ -250,7 +247,7 @@ public class ProfilePreferencesWindow extends Window {
                     success.setPosition(Position.BOTTOM_CENTER);
                     success.show(Page.getCurrent());
 
-                    EDEventBus.post(new EDEvent.ProfileUpdatedEvent());
+                    DefaultEventBus.post(new AppEvents.ProfileUpdatedEvent());
                     close();
                 } catch (CommitException e) {
                     Notification.show("Error while updating profile",
@@ -266,7 +263,7 @@ public class ProfilePreferencesWindow extends Window {
     }
 
     public static void open(final User user, final boolean preferencesTabActive) {
-        EDEventBus.post(new EDEvent.CloseOpenWindowsEvent());
+        DefaultEventBus.post(new AppEvents.CloseOpenWindowsEvent());
         Window w = new ProfilePreferencesWindow(user, preferencesTabActive);
         UI.getCurrent().addWindow(w);
         w.focus();

@@ -11,6 +11,7 @@ import modules.admin.model.entities.enums.LogType;
 import modules.admin.model.exceptions.ExpiredPasswordException;
 import modules.admin.model.exceptions.DisabledUserException;
 import modules.admin.model.exceptions.InvalidUserOrPasswordException;
+import org.futurepages.core.admin.DefaultUser;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.util.Is;
 
@@ -133,5 +134,12 @@ public class UserServices {
 		}else{
 			return (user.getProfile().getAllowedProfiles());
 		}
+	}
+
+	public static DefaultUser authenticatedAndDetachedUser(String login, String password) throws InvalidUserOrPasswordException, ExpiredPasswordException {
+		User user = new User();
+		user.setAccessKey(login);
+		user.setPassword(password);
+		return authenticatedAndDetachedUser(user);
 	}
 }

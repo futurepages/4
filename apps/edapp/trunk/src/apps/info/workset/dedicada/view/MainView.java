@@ -1,5 +1,6 @@
 package apps.info.workset.dedicada.view;
 
+import apps.info.workset.dedicada.AppMenu;
 import apps.info.workset.dedicada.AppNavigator;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;

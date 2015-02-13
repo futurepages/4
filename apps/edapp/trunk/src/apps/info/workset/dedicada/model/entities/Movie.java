@@ -1,14 +1,10 @@
 package apps.info.workset.dedicada.model.entities;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.Date;
 
-@Entity(name="apps.info.workset.dedicada.model.entities.Cidade") //necessário para dar suporte à duplicação.
-public final class Cidade {
+public final class Movie {
 
-    @Id
     private long id;
     private String title;
     private String synopsis;
