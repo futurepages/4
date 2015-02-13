@@ -89,7 +89,7 @@ public class Txt {
 							this.localesMap.put(localeFile.getName(), localesMap );
 						}
 						String moduleId = ModuleUtil.moduleId(localeFile);
-						System.out.println(moduleId);
+						//System.out.println(moduleId);
 						for(String key : txts.stringPropertyNames()){
 							String txtValue = txts.getProperty(key);
 							if(key.startsWith("$.")){
@@ -99,7 +99,7 @@ public class Txt {
 								System.out.println(">> Txt key "+key+" overwritten for locale '"+localeFile.toString()+"'. Old Value: '"+localesMap.get(key)+"'; New Value: '"+txtValue+"'");
 							}
 							localesMap.put(key, txtValue);
-//							System.out.println(key+": "+txtValue);
+							//System.out.println(key+": "+txtValue);
 						}
 					}
 				}

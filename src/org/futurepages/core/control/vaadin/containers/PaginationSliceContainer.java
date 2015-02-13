@@ -1,16 +1,11 @@
 package org.futurepages.core.control.vaadin.containers;
 
-import com.sun.javaws.security.JavaWebStartSecurity;
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItem;
-import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.pagination.PaginationSlice;
 import org.futurepages.core.persistence.HQLProvider;
-import org.futurepages.core.persistence.HQLQuery;
 import org.futurepages.util.Is;
-import org.futurepages.util.ReflectionUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,9 +96,9 @@ public class PaginationSliceContainer<BEANTYPE> extends BeanContainer {
 	}
 
     	public void applyFilter(String newWhereFilter){
-        removeAllContainerFilters();
-        removeAllItems();
-        this.newWhereFilter = newWhereFilter;
+            removeAllContainerFilters();
+            removeAllItems();
+            this.newWhereFilter = newWhereFilter;
     }
 
 	public void removeFilter(){
