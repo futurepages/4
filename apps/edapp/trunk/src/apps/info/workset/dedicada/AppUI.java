@@ -75,6 +75,6 @@ public class AppUI extends DefaultUI {
 
     @Override
     protected void removeUserLocally() {
-        BrowserCookie.setCookie(DefaultUser.class.getSimpleName(),"");
+        BrowserCookie.setCookie(DefaultUser.class.getSimpleName(),""); //TODO create a remove method.
     }
 }
