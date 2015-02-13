@@ -2,13 +2,6 @@ package org.futurepages.core.control.vaadin;
 
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.JavaScript;
-import com.vaadin.ui.JavaScriptFunction;
-import java.util.UUID;
-
-import org.futurepages.core.admin.DefaultUser;
-import org.futurepages.util.Security;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import javax.servlet.http.Cookie;
 
@@ -23,6 +16,7 @@ public class BrowserCookie {
         setCookie(key, value, "/");
     }
 
+    //TODO improve this method with more parameters.
     public static void setCookie(String key, String value, String path) {
         JavaScript.getCurrent().execute(String.format(
                 "document.cookie = \"%s=%s; path=%s;expires=\"+(new Date((new Date()).setTime((new Date()).getTime()+(15*86400000)))).toGMTString()+\";\"", key, value, path
