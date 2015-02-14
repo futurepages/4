@@ -1,1 +1,10 @@
-admin.user.fullName = Nome Super Completo
+login.caption = Workset Dedicada
+menu.app_title = Workset <strong>Dedicada</strong>
+menu.preferences = Preferências
+menu.sign_out = Sair
+menu.edit_profile = Editar Perfil
+login.user.accesskey = Login
+login.user.password = Senha
+login.enter = Entrar
+login.remember = Manter Conectado
+login.authentication_required = Autenticação Requerida

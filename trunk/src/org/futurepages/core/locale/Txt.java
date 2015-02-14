@@ -59,7 +59,8 @@ public class Txt {
 		String str = getInstance().localesMap.get(localeId).get(txtKey);
 		if (str == null) {
 			DefaultExceptionLogger.getInstance().execute(new LocaleManagerException("Txt property '" + txtKey + "' not present for locale " + localeId + "."));
-			return The.concat(txtKey.replaceAll("[\\.|_]", " "));
+//			return The.concat(txtKey.replaceAll("[\\.|_]", " "));
+			return The.lastTokenOf(txtKey,"\\.").replaceAll("_", " ");
 		}
 		return str;
 	}

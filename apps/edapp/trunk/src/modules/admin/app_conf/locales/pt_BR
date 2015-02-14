@@ -1,10 +1,6 @@
 $.module.title = Administração
 $.module.smallTitle = Administração de Usuários/Permissões
 
-$.needed.authentication = Autenticação Requerida
-
 $.user.login = Login
 $.user.fullName = Nome Completo
 $.user.password = Senha
-$.login.remember = Lembrar Senha
-$.login.enter = Entrar

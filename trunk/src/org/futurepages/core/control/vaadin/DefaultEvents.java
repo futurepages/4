@@ -1,13 +1,5 @@
 package org.futurepages.core.control.vaadin;
 
-import com.google.gwt.user.client.Cookies;
-import com.vaadin.server.VaadinService;
-import elemental.client.Browser;
-import org.futurepages.core.admin.DefaultUser;
-import org.futurepages.util.Security;
-
-import javax.servlet.http.Cookie;
-
 public abstract class DefaultEvents {
 
     public static final class UserLoginRequestedEvent {
@@ -42,5 +34,17 @@ public abstract class DefaultEvents {
     public static class UserLoggedOutEvent {}
 
     public static class CloseOpenWindowsEvent {}
+
+    public static final class PostViewChangeEvent {
+        private final DefaultViewItem itemView;
+
+        public PostViewChangeEvent(final DefaultViewItem itemView) {
+            this.itemView = itemView;
+        }
+
+        public DefaultViewItem getViewItem() {
+            return itemView;
+        }
+    }
 
 }

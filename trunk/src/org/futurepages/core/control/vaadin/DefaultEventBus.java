@@ -28,7 +28,7 @@ public class DefaultEventBus implements SubscriberExceptionHandler {
 
 
     private static EventBus currentEventBus() {
-        return ((DefaultUI) UI.getCurrent()).getEventBus().eventBus;
+        return DefaultUI.getEventBus().eventBus;
     }
 
     @Override

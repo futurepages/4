@@ -39,7 +39,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 @SuppressWarnings("serial")
-public final class DashboardView extends Panel implements View, DashboardEdit.DashboardEditListener {
+public final class HomeView extends Panel implements View, DashboardEdit.DashboardEditListener {
 
     public static final String EDIT_ID = "dashboard-edit";
     public static final String TITLE_ID = "dashboard-title";
@@ -50,7 +50,7 @@ public final class DashboardView extends Panel implements View, DashboardEdit.Da
     private final VerticalLayout root;
     private Window notificationsWindow;
 
-    public DashboardView() {
+    public HomeView() {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
         setSizeFull();
         DefaultEventBus.register(this);
@@ -110,7 +110,7 @@ public final class DashboardView extends Panel implements View, DashboardEdit.Da
         header.addStyleName("viewheader");
         header.setSpacing(true);
 
-        titleLabel = new Label("Dashboard");
+        titleLabel = new Label("Home");
         titleLabel.setId(TITLE_ID);
         titleLabel.setSizeUndefined();
         titleLabel.addStyleName(ValoTheme.LABEL_H1);
@@ -149,7 +149,7 @@ public final class DashboardView extends Panel implements View, DashboardEdit.Da
             @Override
             public void buttonClick(final ClickEvent event) {
                 getUI().addWindow(
-                        new DashboardEdit(DashboardView.this, titleLabel.getValue()));
+                        new DashboardEdit(HomeView.this, titleLabel.getValue()));
             }
         });
         return result;

@@ -106,7 +106,7 @@ public class The {
 	}
 
 	/**
-	 * Retorna o primeiro token da String
+	 * @return the first token of the string str after splitting by 'separator'.
 	 */
 	public static String lastTokenOf(String str, String separator) {
 		if (str != null) {

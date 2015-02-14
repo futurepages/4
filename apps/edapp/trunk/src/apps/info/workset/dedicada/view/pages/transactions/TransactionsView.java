@@ -2,7 +2,6 @@ package apps.info.workset.dedicada.view.pages.transactions;
 
 import apps.info.workset.dedicada.AppEvents;
 import apps.info.workset.dedicada.model.entities.Transaction;
-import apps.info.workset.dedicada.view.EDViewType;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Item;
 import com.vaadin.event.Action;
@@ -134,10 +133,11 @@ public final class TransactionsView extends VerticalLayout implements View {
             public void handleAction(final Object sender, final Object target) {
                 if(!filter.getValue().equals("")){
                     filter.setValue("");
-    //                ((Filterable) table.getContainerDataSource()).removeAllContainerFilters(); // parece ser o pattern
+                    // ((Filterable) table.getContainerDataSource()).removeAllContainerFilters(); // este parece ser o pattern
                     ((PaginationSliceContainer) table.getContainerDataSource()).removeFilter();
                     table.refreshRowCache();
                     table.markAsDirty();
+                    table.setColumnFooter("pais", String.valueOf(table.getContainerDataSource().size()));
                 }
             }
         });
@@ -177,7 +177,7 @@ public final class TransactionsView extends VerticalLayout implements View {
         //table.setContainerDataSource(new BeanItemContainer(Cidade.class, Dao.list(Cidade.class)));
         //table.setContainerDataSource(new SliceContainer(pagCidades));
 
-        PaginationSlice<Cidade> pagCidades = Dao.getInstance().paginationSlice(HQLProvider.hql(Cidade.class,HQLProvider.field("pais").equalsTo("BRA")));
+        PaginationSlice<Cidade> pagCidades = Dao.getInstance().paginationSlice(HQLProvider.hql(Cidade.class, HQLProvider.field("pais").equalsTo("BRA")));
         table.setContainerDataSource(new PaginationSliceContainer(pagCidades));
         table.setSortContainerPropertyId("nome");
         table.setSortAscending(true);
@@ -247,8 +247,7 @@ public final class TransactionsView extends VerticalLayout implements View {
     }
 
     void createNewReportFromSelection() {
-        UI.getCurrent().getNavigator()
-                .navigateTo(EDViewType.REPORTS.getViewName());
+        UI.getCurrent().getNavigator().navigateTo("reports");
         DefaultEventBus.post(new AppEvents.TransactionReportEvent((Collection<Transaction>) table.getValue()));
     }
 

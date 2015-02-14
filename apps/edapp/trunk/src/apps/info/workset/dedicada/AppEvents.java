@@ -1,7 +1,6 @@
 package apps.info.workset.dedicada;
 
 import apps.info.workset.dedicada.model.entities.Transaction;
-import apps.info.workset.dedicada.view.EDViewType;
 import org.futurepages.core.control.vaadin.DefaultEvents;
 
 import java.util.Collection;
@@ -32,18 +31,6 @@ public abstract class AppEvents extends DefaultEvents {
 
         public Collection<Transaction> getTransactions() {
             return transactions;
-        }
-    }
-
-    public static final class PostViewChangeEvent {
-        private final EDViewType view;
-
-        public PostViewChangeEvent(final EDViewType view) {
-            this.view = view;
-        }
-
-        public EDViewType getView() {
-            return view;
         }
     }
 
