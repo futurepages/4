@@ -1,6 +1,8 @@
 package org.futurepages.core.control.vaadin;
 
-public abstract class DefaultEvents {
+import org.futurepages.core.view.ViewItem;
+
+public abstract class Events {
 
     public static final class UserLoginRequestedEvent {
         public final static String REMEMBER_KEY = UserLoginRequestedEvent.class.getSimpleName()+"_remember";
@@ -36,13 +38,13 @@ public abstract class DefaultEvents {
     public static class CloseOpenWindowsEvent {}
 
     public static final class PostViewChangeEvent {
-        private final DefaultViewItem itemView;
+        private final ViewItem itemView;
 
-        public PostViewChangeEvent(final DefaultViewItem itemView) {
+        public PostViewChangeEvent(final ViewItem itemView) {
             this.itemView = itemView;
         }
 
-        public DefaultViewItem getViewItem() {
+        public ViewItem getViewItem() {
             return itemView;
         }
     }

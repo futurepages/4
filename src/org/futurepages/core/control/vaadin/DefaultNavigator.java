@@ -8,6 +8,7 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
+import org.futurepages.core.view.ViewItem;
 import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
 
 @SuppressWarnings("serial")
@@ -15,7 +16,7 @@ public class DefaultNavigator extends Navigator {
 
     protected GoogleAnalyticsTracker gaTracker;
     protected ViewProvider errorViewProvider;
-    private final DefaultViewItem HOME_ITEM_VIEW;
+    private final ViewItem HOME_ITEM_VIEW;
 
     private DefaultMenu menu;
 
@@ -51,13 +52,13 @@ public class DefaultNavigator extends Navigator {
             @Override
             public void afterViewChange(final ViewChangeEvent event) {
 
-                DefaultViewItem itemView = menu.getItemViews().get(event.getViewName());
+                ViewItem itemView = menu.getItemViews().get(event.getViewName());
 
                 // Appropriate events get fired after the view is changed.
-                DefaultEventBus.post(new DefaultEvents.PostViewChangeEvent(itemView));
+                FuturepagesEventBus.post(new Events.PostViewChangeEvent(itemView));
 
-                DefaultEventBus.post(new DefaultEvents.BrowserResizeEvent());
-                DefaultEventBus.post(new DefaultEvents.CloseOpenWindowsEvent());
+                FuturepagesEventBus.post(new Events.BrowserResizeEvent());
+                FuturepagesEventBus.post(new Events.CloseOpenWindowsEvent());
 
                 if (gaTracker!= null) {
                     // The view change is submitted as a pageview for GA tracker
@@ -69,7 +70,7 @@ public class DefaultNavigator extends Navigator {
 
     protected void initViewProviders() {
         // A dedicated view provider is added for each separate view type
-        for (DefaultViewItem viewItem : menu.getItemViews().values()) {
+        for (ViewItem viewItem : menu.getItemViews().values()) {
             ViewProvider viewProvider = new ClassBasedViewProvider(viewItem.getViewName(), viewItem.getViewClass()) {
 
                 // This field caches an already initialized view instance if the
