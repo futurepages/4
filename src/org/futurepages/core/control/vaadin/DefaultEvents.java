@@ -12,8 +12,8 @@ public abstract class DefaultEvents {
             this.login = login;
             this.password = password;
             this.remember = remember;
-            BrowserCookie.setCookie(REMEMBER_KEY, String.valueOf(remember));
-            BrowserCookie.setCookie(LOGIN_KEY, String.valueOf(login));
+            Cookies.set(REMEMBER_KEY, String.valueOf(remember));
+            Cookies.set(LOGIN_KEY, String.valueOf(login));
         }
 
         public String getLogin() {

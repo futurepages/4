@@ -81,8 +81,7 @@ public abstract class Validator {
 		validationMapAux();
 
 		if ((breakOnFirst != null) && (!validationMap.isEmpty())) {
-			UserException exce = new UserException(validationMap);
-			throw exce;
+			throw new UserException(validationMap);
 		}
 		return validationMap;
 	}
