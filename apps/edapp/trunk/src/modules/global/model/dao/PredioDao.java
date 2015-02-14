@@ -2,7 +2,7 @@ package modules.global.model.dao;
 
 import java.util.List;
 import modules.global.model.entities.Predio;
-import org.futurepages.core.pagination.PaginationSlice;
+import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HQLProvider;
 import org.futurepages.util.Is;

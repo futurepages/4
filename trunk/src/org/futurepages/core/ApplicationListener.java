@@ -10,7 +10,6 @@ import org.futurepages.core.path.Paths;
 import org.futurepages.core.persistence.HibernateManager;
 import org.futurepages.core.persistence.SchemaGeneration;
 import org.futurepages.core.quartz.QuartzManager;
-import org.futurepages.core.resource.ResourceMinifier;
 import org.futurepages.exceptions.NotModuleException;
 import org.futurepages.util.Is;
 import org.quartz.SchedulerException;
@@ -58,9 +57,7 @@ public class ApplicationListener implements ServletContextListener {
 
 			initEmailConfigurations();
 
-			//initAutoRedirectionEngine(context);
-
-			//compressWebTextRes();
+			//initAutoRedirectionEngine(context); //TODO enable it.
 
 			configureApplicationServlets(ctx);
 
@@ -112,7 +109,7 @@ public class ApplicationListener implements ServletContextListener {
 	            Servlet servlet = context.createServlet(servletClass);
 				ServletRegistration.Dynamic d = context.addServlet(servletName, servlet);
 				d.setInitParameter("UI", appPackagePath+".AppUI");
-				d.setInitParameter("widgetset","apps.Widgetsets"); //TODO sofisticate it!!!!
+				d.setInitParameter("widgetset","apps.Widgetsets");
 				d.addMapping(servletMapping);
 				//it's necessary when it's a subpath...
 				if(!servletMapping.equals("/*")){
@@ -122,25 +119,11 @@ public class ApplicationListener implements ServletContextListener {
 		log("vaadin-productionMode: " + context.getInitParameter("productionMode"));
 	}
 
-	// TODO REVER SE AINDA SERÁ NECESSÁRIO...
-	//Compact Web Resource
-	private void compressWebTextRes() throws Exception {
-			String minifyMode = Apps.get("MINIFY_RESOURCE_MODE");
-			if (!minifyMode.equals("none")) {  //none, js, css, both
-				log("MINIFY RESOURCE MODE = " + minifyMode);
-				(new ResourceMinifier()).execute(minifyMode);
-				log("MINIFY RESOURCE DONE.");
-			}
-			if (Apps.get("DEPLOY_MODE").equals("production")
-			 || Apps.get("DEPLOY_MODE").equals("pre-production")) {
-				Apps.getInstance().removeFileAutomations();
-			}
-	}
 
 	private File[] loadAppsAndModules() {
-		//TODO Load only requireds motdules by apps???
 		log("Loading Apps and Modules...");
 
+		//TODO Load only requireds motdules by apps??? (need module-dependencies)
 		File[] appsAndModules = Apps.listModulesAndApps();
 
 		log("Apps and Modules OK");

@@ -28,7 +28,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import modules.global.model.entities.brasil.Cidade;
 import org.futurepages.core.control.vaadin.DefaultEventBus;
 import org.futurepages.core.control.vaadin.containers.PaginationSliceContainer;
-import org.futurepages.core.pagination.PaginationSlice;
+import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HQLField;
 import org.futurepages.core.persistence.HQLProvider;

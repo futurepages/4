@@ -2,7 +2,7 @@ package org.futurepages.core.control.vaadin.containers;
 
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItem;
-import org.futurepages.core.pagination.PaginationSlice;
+import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.HQLProvider;
 import org.futurepages.util.Is;
 

@@ -12,10 +12,8 @@ import modules.admin.model.exceptions.ExpiredPasswordException;
 import modules.admin.model.exceptions.DisabledUserException;
 import modules.admin.model.exceptions.InvalidUserOrPasswordException;
 import org.futurepages.core.admin.DefaultUser;
-import org.futurepages.core.control.vaadin.BrowserCookie;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.util.Is;
-import org.futurepages.util.Security;
 
 import java.util.List;
 

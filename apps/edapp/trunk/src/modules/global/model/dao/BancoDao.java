@@ -1,7 +1,7 @@
 package modules.global.model.dao;
 
 import modules.global.model.entities.Banco;
-import org.futurepages.core.pagination.PaginationSlice;
+import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
 
 import java.util.List;

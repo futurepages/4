@@ -4,7 +4,7 @@ import java.util.List;
 
 import modules.admin.model.entities.enums.ParamEnum;
 import modules.admin.model.entities.enums.ParamValueType;
-import org.futurepages.core.pagination.PaginationSlice;
+import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
 import modules.admin.model.entities.Param;
 import org.futurepages.core.persistence.HQLProvider;

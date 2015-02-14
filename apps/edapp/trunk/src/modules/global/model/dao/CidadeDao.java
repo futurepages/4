@@ -6,7 +6,7 @@ import java.util.Map;
 import modules.global.model.entities.Pais;
 import modules.global.model.entities.brasil.Cidade;
 import modules.global.model.entities.brasil.Estado;
-import org.futurepages.core.pagination.PaginationSlice;
+import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HQLProvider;
 import org.futurepages.util.The;

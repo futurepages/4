@@ -3,7 +3,7 @@ package modules.global.model.dao;
 import modules.global.model.entities.Orgao;
 import modules.global.model.entities.PessoaFisica;
 import modules.global.model.entities.TipoOrgao;
-import org.futurepages.core.pagination.PaginationSlice;
+import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HQLProvider;
 import org.futurepages.util.Is;

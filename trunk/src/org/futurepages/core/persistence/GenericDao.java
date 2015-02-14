@@ -1,6 +1,5 @@
 package org.futurepages.core.persistence;
 
-import org.futurepages.core.pagination.PaginationSlice;
 import org.futurepages.util.Is;
 import org.hibernate.Criteria;
 import org.hibernate.Query;

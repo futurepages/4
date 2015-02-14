@@ -9,7 +9,7 @@ import modules.admin.model.exceptions.ExpiredPasswordException;
 import modules.admin.model.exceptions.InvalidUserOrPasswordException;
 import modules.admin.model.services.UserServices;
 import org.futurepages.core.admin.DefaultUser;
-import org.futurepages.core.control.vaadin.BrowserCookie;
+import org.futurepages.core.control.vaadin.Cookies;
 import org.futurepages.core.control.vaadin.DefaultMenu;
 import org.futurepages.core.control.vaadin.DefaultUI;
 import org.futurepages.exceptions.UserException;
@@ -43,16 +43,16 @@ public class AppUI extends DefaultUI {
 
     @Override
     protected void storeUserLocally(DefaultUser user) {
-        BrowserCookie.setCookie(LOCAL_USER_KEY, ((User)user).identifiedHashToStore());
+        Cookies.set(LOCAL_USER_KEY, ((User) user).identifiedHashToStore());
     }
 
     @Override
     protected DefaultUser loadUserLocally() {
-       String loggedValue = BrowserCookie.getByName(LOCAL_USER_KEY);
+       String loggedValue = Cookies.get(LOCAL_USER_KEY);
         if (!Is.empty(loggedValue)) {
             User dbUser = UserServices.getByIdentiedHash(loggedValue);
             if(dbUser!=null){
-                BrowserCookie.setCookie(LOCAL_USER_KEY, loggedValue);
+                Cookies.set(LOCAL_USER_KEY, loggedValue);
                 UserServices.turnDetached(dbUser);
                 return dbUser;
             }
@@ -62,6 +62,6 @@ public class AppUI extends DefaultUI {
 
     @Override
     protected void removeUserLocally() {
-        BrowserCookie.removeCookie(LOCAL_USER_KEY);
+        Cookies.remove(LOCAL_USER_KEY);
     }
 }
