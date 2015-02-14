@@ -1,17 +1,23 @@
 package org.futurepages.core.control.vaadin;
 
 import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 
 @SuppressWarnings("serial")
 public class DefaultMainView extends HorizontalLayout {
 
-    public DefaultMainView(CustomComponent menu, ComponentContainer content) {
+    public DefaultMainView(DefaultMenu menu) {
+        ComponentContainer componentContainer;
+        componentContainer = new CssLayout();
+        componentContainer.addStyleName("view-content");
+        componentContainer.setSizeFull();
+        new DefaultNavigator(menu, componentContainer);
+
         setSizeFull();
         addStyleName("mainview");
         addComponent(menu);
-        addComponent(content);
-        setExpandRatio(content, 1.0f);
+        addComponent(componentContainer);
+        setExpandRatio(componentContainer, 1.0f);
     }
 }
