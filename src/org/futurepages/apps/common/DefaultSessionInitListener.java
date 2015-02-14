@@ -1,4 +1,4 @@
-package org.futurepages.core.control.vaadin;
+package org.futurepages.apps.common;
 
 import com.vaadin.server.BootstrapFragmentResponse;
 import com.vaadin.server.BootstrapListener;

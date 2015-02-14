@@ -1,4 +1,4 @@
-package org.futurepages.core.control.vaadin;
+package org.futurepages.apps.common;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -8,6 +8,8 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
+import org.futurepages.core.control.vaadin.Events;
+import org.futurepages.core.control.vaadin.EventsBus;
 import org.futurepages.core.view.ViewItem;
 import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
 
@@ -55,10 +57,10 @@ public class DefaultNavigator extends Navigator {
                 ViewItem itemView = menu.getItemViews().get(event.getViewName());
 
                 // Appropriate events get fired after the view is changed.
-                FuturepagesEventBus.post(new Events.PostViewChangeEvent(itemView));
+                EventsBus.post(new Events.PostViewChangeEvent(itemView));
 
-                FuturepagesEventBus.post(new Events.BrowserResizeEvent());
-                FuturepagesEventBus.post(new Events.CloseOpenWindowsEvent());
+                EventsBus.post(new Events.BrowserResizeEvent());
+                EventsBus.post(new Events.CloseOpenWindowsEvent());
 
                 if (gaTracker!= null) {
                     // The view change is submitted as a pageview for GA tracker

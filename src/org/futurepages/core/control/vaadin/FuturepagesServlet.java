@@ -2,9 +2,9 @@ package org.futurepages.core.control.vaadin;
 
 import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinServlet;
+import org.futurepages.apps.common.DefaultSessionInitListener;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.persistence.Dao;
-import org.futurepages.util.Is;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
