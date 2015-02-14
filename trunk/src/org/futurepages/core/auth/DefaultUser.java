@@ -1,4 +1,4 @@
-package org.futurepages.core.admin;
+package org.futurepages.core.auth;
 
 import java.util.Collection;
 

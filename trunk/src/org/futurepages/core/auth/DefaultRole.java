@@ -1,4 +1,4 @@
-package org.futurepages.core.admin;
+package org.futurepages.core.auth;
 
 public interface DefaultRole {
 

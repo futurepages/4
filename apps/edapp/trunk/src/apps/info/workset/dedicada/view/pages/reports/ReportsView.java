@@ -25,7 +25,7 @@ import com.vaadin.ui.TabSheet.CloseHandler;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-import org.futurepages.core.control.vaadin.DefaultEventBus;
+import org.futurepages.core.control.vaadin.FuturepagesEventBus;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,7 +42,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
         addStyleName("reports");
         addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
         setCloseHandler(this);
-        DefaultEventBus.register(this);
+        FuturepagesEventBus.register(this);
 
         addTab(buildDrafts());
     }
@@ -161,7 +161,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
             reportEditor.addWidget(ReportEditor.PaletteItemType.TRANSACTIONS, prefillData);
         }
 
-        DefaultEventBus.post(new AppEvents.ReportsCountUpdatedEvent(
+        FuturepagesEventBus.post(new AppEvents.ReportsCountUpdatedEvent(
                 getComponentCount() - 1));
         setSelectedTab(getComponentCount() - 1);
     }
@@ -201,7 +201,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
             public void buttonClick(final ClickEvent event) {
                 confirmDialog.close();
                 removeComponent(tabContent);
-                DefaultEventBus.post(new AppEvents.ReportsCountUpdatedEvent(
+                FuturepagesEventBus.post(new AppEvents.ReportsCountUpdatedEvent(
                         getComponentCount() - 1));
                 Notification
                         .show("The report was saved as a draft",
@@ -216,7 +216,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
             public void buttonClick(final ClickEvent event) {
                 confirmDialog.close();
                 removeComponent(tabContent);
-                DefaultEventBus.post(new AppEvents.ReportsCountUpdatedEvent(getComponentCount() - 1));
+                FuturepagesEventBus.post(new AppEvents.ReportsCountUpdatedEvent(getComponentCount() - 1));
             }
         });
         discard.addStyleName(ValoTheme.BUTTON_DANGER);

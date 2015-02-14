@@ -1,11 +1,11 @@
 package apps.info.workset.dedicada;
 
 import apps.info.workset.dedicada.model.entities.Transaction;
-import org.futurepages.core.control.vaadin.DefaultEvents;
+import org.futurepages.core.control.vaadin.Events;
 
 import java.util.Collection;
 
-public abstract class AppEvents extends DefaultEvents {
+public abstract class AppEvents extends Events {
 
     public static class NotificationsCountUpdatedEvent {}
 

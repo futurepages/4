@@ -1,4 +1,4 @@
-package org.futurepages.core.admin;
+package org.futurepages.core.auth;
 
 /**
  * Interface utilizada para definir que uma action protegida pelo ModulePermissionFilter

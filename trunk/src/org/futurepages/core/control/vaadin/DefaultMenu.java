@@ -1,14 +1,15 @@
 package org.futurepages.core.control.vaadin;
 
 import com.vaadin.ui.CustomComponent;
+import org.futurepages.core.view.ViewItem;
 
 import java.util.LinkedHashMap;
 
 public abstract class DefaultMenu  extends CustomComponent {
 
-  private final LinkedHashMap<String, DefaultViewItem> itemViews = new LinkedHashMap<>();
+  private final LinkedHashMap<String, ViewItem> itemViews = new LinkedHashMap<>();
 
-  private DefaultViewItem HOME_ITEM_VIEW;
+  private ViewItem HOME_ITEM_VIEW;
 
     public DefaultMenu(){
         HOME_ITEM_VIEW = homeViewItem();
@@ -17,22 +18,22 @@ public abstract class DefaultMenu  extends CustomComponent {
     }
 
 
-    protected void registerView(DefaultViewItem viewItem){
+    protected void registerView(ViewItem viewItem){
         itemViews.put(viewItem.getViewName(), viewItem);
     }
 
-    protected DefaultViewItem getHomeItemView(){
+    protected ViewItem getHomeItemView(){
         return HOME_ITEM_VIEW;
     }
 
-    protected DefaultViewItem getItemView(String name){
+    protected ViewItem getItemView(String name){
         return itemViews.get(name);
     }
 
     protected abstract void registerOtherItemViews();
-    protected abstract DefaultViewItem homeViewItem();
+    protected abstract ViewItem homeViewItem();
 
-    public LinkedHashMap<String, DefaultViewItem> getItemViews() {
+    public LinkedHashMap<String, ViewItem> getItemViews() {
         return itemViews;
     }
 

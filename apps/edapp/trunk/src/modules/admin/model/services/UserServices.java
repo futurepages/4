@@ -11,7 +11,7 @@ import modules.admin.model.entities.enums.LogType;
 import modules.admin.model.exceptions.ExpiredPasswordException;
 import modules.admin.model.exceptions.DisabledUserException;
 import modules.admin.model.exceptions.InvalidUserOrPasswordException;
-import org.futurepages.core.admin.DefaultUser;
+import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.util.Is;
 

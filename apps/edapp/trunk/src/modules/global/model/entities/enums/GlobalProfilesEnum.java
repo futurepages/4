@@ -7,12 +7,10 @@ import java.util.List;
 
 import modules.admin.model.core.AdminConstants;
 import modules.admin.model.core.DefaultProfile;
-import modules.admin.model.dao.ModuleDao;
-import modules.admin.model.dao.RoleDao;
 import modules.admin.model.entities.Module;
 import modules.admin.model.entities.Profile;
 import modules.admin.model.entities.Role;
-import org.futurepages.core.admin.DefaultRole;
+import org.futurepages.core.auth.DefaultRole;
 import org.futurepages.core.persistence.Dao;
 
 /**

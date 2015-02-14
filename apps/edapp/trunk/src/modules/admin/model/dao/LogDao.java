@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 import modules.admin.model.entities.Log;
 import modules.admin.model.entities.enums.LogType;
-import org.futurepages.core.admin.DefaultUser;
+import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HQLProvider;

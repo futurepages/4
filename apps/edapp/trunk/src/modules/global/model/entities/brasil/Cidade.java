@@ -1,9 +1,7 @@
 package modules.global.model.entities.brasil;
 
 import modules.global.model.entities.Pais;
-import org.futurepages.core.admin.DefaultUser;
-import org.futurepages.core.validation.Validator;
-import org.jboss.logging.Field;
+import org.futurepages.core.auth.DefaultUser;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 

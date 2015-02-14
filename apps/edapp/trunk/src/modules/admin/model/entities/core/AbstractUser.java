@@ -5,8 +5,8 @@ import java.util.Collection;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import modules.admin.model.entities.User;
-import org.futurepages.core.admin.DefaultRole;
-import org.futurepages.core.admin.DefaultUser;
+import org.futurepages.core.auth.DefaultRole;
+import org.futurepages.core.auth.DefaultUser;
 
 /**
  *

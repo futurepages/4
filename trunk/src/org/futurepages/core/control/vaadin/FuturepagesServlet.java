@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public class DefaultAppServlet extends VaadinServlet {
+public class FuturepagesServlet extends VaadinServlet {
 
 
 	@Override
@@ -53,7 +53,7 @@ public class DefaultAppServlet extends VaadinServlet {
 //		System.out.println("BEGIN "+url+" >>>>>>>>>>>>>>>>>>");
 //		long inicio = System.currentTimeMillis();
 		try {
-			Dao.getInstance().beginTransaction();
+			Dao.getInstance().beginTransaction(); //TODO Find where to put @Transactional
 			super.service(request, response);
 			if(Dao.getInstance().isTransactionActive()){
 				Dao.getInstance().commitTransaction();

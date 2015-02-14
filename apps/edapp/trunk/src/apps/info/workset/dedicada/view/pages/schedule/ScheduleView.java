@@ -37,7 +37,7 @@ import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
 import com.vaadin.ui.components.calendar.handler.BasicEventMoveHandler;
 import com.vaadin.ui.components.calendar.handler.BasicEventResizeHandler;
 import com.vaadin.ui.themes.ValoTheme;
-import org.futurepages.core.control.vaadin.DefaultEventBus;
+import org.futurepages.core.control.vaadin.FuturepagesEventBus;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +53,7 @@ public final class ScheduleView extends CssLayout implements View {
     public ScheduleView() {
         setSizeFull();
         addStyleName("schedule");
-        DefaultEventBus.register(this);
+        FuturepagesEventBus.register(this);
 
         TabSheet tabs = new TabSheet();
         tabs.setSizeFull();
@@ -75,7 +75,7 @@ public final class ScheduleView extends CssLayout implements View {
         super.detach();
         // A new instance of ScheduleView is created every time it's navigated
         // to so we'll need to clean up references to it on detach.
-        DefaultEventBus.unregister(this);
+        FuturepagesEventBus.unregister(this);
     }
 
     private void injectMovieCoverStyles() {

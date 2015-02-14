@@ -3,7 +3,7 @@ package modules.admin.model.entities.enums;
 import java.io.Serializable;
 import modules.admin.model.core.AdminConstants;
 import modules.admin.model.dao.RoleDao;
-import org.futurepages.core.admin.DefaultRole;
+import org.futurepages.core.auth.DefaultRole;
 
 /**
  *

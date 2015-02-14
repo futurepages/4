@@ -29,11 +29,11 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 import modules.admin.model.entities.User;
-import org.futurepages.core.admin.DefaultUser;
-import org.futurepages.core.control.vaadin.DefaultEventBus;
+import org.futurepages.core.auth.DefaultUser;
+import org.futurepages.core.control.vaadin.FuturepagesEventBus;
 import org.futurepages.core.control.vaadin.DefaultMenu;
 import org.futurepages.core.control.vaadin.DefaultUI;
-import org.futurepages.core.control.vaadin.DefaultViewItem;
+import org.futurepages.core.view.ViewItem;
 import org.futurepages.core.locale.Txt;
 
 import java.util.Collection;
@@ -61,7 +61,7 @@ public final class AppMenu extends DefaultMenu {
 
 		// There's only one DashboardMenu per UI so this doesn't need to be
 		// unregistered from the UI-scoped DashboardEventBus.
-		DefaultEventBus.register(this);
+		FuturepagesEventBus.register(this);
 
 		setCompositionRoot(buildContent());
 	}
@@ -101,7 +101,7 @@ public final class AppMenu extends DefaultMenu {
 		settingsItem.addItem(Txt.get("menu.edit_profile"), selectedItem -> ProfilePreferencesWindow.open(user, false));
 		settingsItem.addItem(Txt.get("menu.preferences"), selectedItem -> ProfilePreferencesWindow.open(user, true));
 		settingsItem.addSeparator();
-		settingsItem.addItem(Txt.get("menu.sign_out"), selectedItem -> DefaultEventBus.post(new AppEvents.UserLoggedOutEvent()));
+		settingsItem.addItem(Txt.get("menu.sign_out"), selectedItem -> FuturepagesEventBus.post(new AppEvents.UserLoggedOutEvent()));
 		return settings;
 	}
 
@@ -139,7 +139,7 @@ public final class AppMenu extends DefaultMenu {
 					public void drop(final DragAndDropEvent event) {
 						UI.getCurrent().getNavigator().navigateTo("reports");
 						Table table = (Table) event.getTransferable().getSourceComponent();
-						DefaultEventBus.post(new AppEvents.TransactionReportEvent((Collection<Transaction>) table.getValue()));
+						FuturepagesEventBus.post(new AppEvents.TransactionReportEvent((Collection<Transaction>) table.getValue()));
 					}
 
 					@Override
@@ -186,16 +186,16 @@ public final class AppMenu extends DefaultMenu {
 	}
 
    @Override
-    protected DefaultViewItem homeViewItem() {
-        return       new DefaultViewItem("home",    HomeView.class,         FontAwesome.HOME,        true);
+    protected ViewItem homeViewItem() {
+        return       new ViewItem("home",    HomeView.class,         FontAwesome.HOME,        true);
     }
 
     @Override
     protected void registerOtherItemViews() {
-        registerView(new DefaultViewItem("sales",        SalesView.class,        FontAwesome.BAR_CHART_O, false));
-        registerView(new DefaultViewItem("transactions", TransactionsView.class, FontAwesome.TABLE,       false));
-        registerView(new DefaultViewItem("reports",      ReportsView.class,      FontAwesome.FILE_TEXT_O, true));
-        registerView(new DefaultViewItem("schedule",     ScheduleView.class,     FontAwesome.CALENDAR_O,  false));
+        registerView(new ViewItem("sales",        SalesView.class,        FontAwesome.BAR_CHART_O, false));
+        registerView(new ViewItem("transactions", TransactionsView.class, FontAwesome.TABLE,       false));
+        registerView(new ViewItem("reports",      ReportsView.class,      FontAwesome.FILE_TEXT_O, true));
+        registerView(new ViewItem("schedule",     ScheduleView.class,     FontAwesome.CALENDAR_O,  false));
     }
 
 	@Subscribe
@@ -228,14 +228,14 @@ public final class AppMenu extends DefaultMenu {
 
 		private static final String STYLE_SELECTED = "selected";
 
-		private final DefaultViewItem view;
+		private final ViewItem view;
 
-		public ValoMenuItemButton(final DefaultViewItem view) {
+		public ValoMenuItemButton(final ViewItem view) {
 			this.view = view;
 			setPrimaryStyleName("valo-menu-item");
 			setIcon(view.getIcon());
 			setCaption(view.getViewName().substring(0, 1).toUpperCase() + view.getViewName().substring(1));
-			DefaultEventBus.register(this);
+			FuturepagesEventBus.register(this);
 			addClickListener(event -> UI.getCurrent().getNavigator().navigateTo(view.getViewName()));
 
 		}

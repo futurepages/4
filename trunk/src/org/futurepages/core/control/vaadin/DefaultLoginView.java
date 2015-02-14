@@ -30,7 +30,7 @@ public class DefaultLoginView extends VerticalLayout {
         addComponent(loginForm);
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
         signin.addClickListener(event ->
-            DefaultEventBus.post(new DefaultEvents.UserLoginRequestedEvent(accesskey.getValue(), password.getValue(),remember.getValue()))
+            FuturepagesEventBus.post(new Events.UserLoginRequestedEvent(accesskey.getValue(), password.getValue(), remember.getValue()))
         );
   }
 
@@ -79,7 +79,7 @@ public class DefaultLoginView extends VerticalLayout {
         signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
         signin.setClickShortcut(KeyCode.ENTER);
 
-        String cookieValue = Cookies.get(DefaultEvents.UserLoginRequestedEvent.LOGIN_KEY);
+        String cookieValue = Cookies.get(Events.UserLoginRequestedEvent.LOGIN_KEY);
         if (cookieValue!=null) {
             accesskey.setValue(cookieValue);
             password.focus();
@@ -93,7 +93,7 @@ public class DefaultLoginView extends VerticalLayout {
     }
 
     private Component buildRemember() {
-        String cookieValue = Cookies.get(DefaultEvents.UserLoginRequestedEvent.REMEMBER_KEY);
+        String cookieValue = Cookies.get(Events.UserLoginRequestedEvent.REMEMBER_KEY);
         if (cookieValue!=null) {
             remember.setValue(Boolean.valueOf(cookieValue));
             return remember;

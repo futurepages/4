@@ -8,7 +8,7 @@ import modules.admin.model.entities.Role;
 import modules.admin.model.entities.User;
 import modules.admin.model.core.AdminConstants;
 
-import org.futurepages.core.admin.DefaultRole;
+import org.futurepages.core.auth.DefaultRole;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HQLProvider;
 

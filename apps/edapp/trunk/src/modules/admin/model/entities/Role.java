@@ -5,8 +5,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import org.futurepages.core.admin.DefaultRole;
+
+import org.futurepages.core.auth.DefaultRole;
 
 @Entity
 public class Role implements DefaultRole, Serializable{

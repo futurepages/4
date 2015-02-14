@@ -33,7 +33,7 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-import org.futurepages.core.control.vaadin.DefaultEventBus;
+import org.futurepages.core.control.vaadin.FuturepagesEventBus;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -53,7 +53,7 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
     public HomeView() {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
         setSizeFull();
-        DefaultEventBus.register(this);
+        FuturepagesEventBus.register(this);
 
         root = new VerticalLayout();
         root.setSizeFull();
@@ -75,7 +75,7 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
         root.addLayoutClickListener(new LayoutClickListener() {
             @Override
             public void layoutClick(final LayoutClickEvent event) {
-                DefaultEventBus.post(new AppEvents.CloseOpenWindowsEvent());
+                FuturepagesEventBus.post(new AppEvents.CloseOpenWindowsEvent());
             }
         });
     }
@@ -266,7 +266,7 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
 
         Collection<EDNotification> notifications = AppUI
                 .getDataProvider().getNotifications();
-        DefaultEventBus.post(new AppEvents.NotificationsCountUpdatedEvent());
+        FuturepagesEventBus.post(new AppEvents.NotificationsCountUpdatedEvent());
 
         for (EDNotification notification : notifications) {
             VerticalLayout notificationLayout = new VerticalLayout();
@@ -363,7 +363,7 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
             setId(ID);
             addStyleName("notifications");
             addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-            DefaultEventBus.register(this);
+            FuturepagesEventBus.register(this);
         }
 
         @Subscribe

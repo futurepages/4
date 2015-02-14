@@ -7,7 +7,7 @@ import modules.admin.model.dao.RoleDao;
 import modules.admin.model.entities.Module;
 import modules.admin.model.entities.Profile;
 import modules.admin.model.entities.Role;
-import org.futurepages.core.admin.DefaultRole;
+import org.futurepages.core.auth.DefaultRole;
 import org.futurepages.core.persistence.Dao;
 
 import java.io.Serializable;

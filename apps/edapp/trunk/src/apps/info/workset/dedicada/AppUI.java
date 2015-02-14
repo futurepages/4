@@ -8,7 +8,7 @@ import modules.admin.model.entities.User;
 import modules.admin.model.exceptions.ExpiredPasswordException;
 import modules.admin.model.exceptions.InvalidUserOrPasswordException;
 import modules.admin.model.services.UserServices;
-import org.futurepages.core.admin.DefaultUser;
+import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.control.vaadin.Cookies;
 import org.futurepages.core.control.vaadin.DefaultMenu;
 import org.futurepages.core.control.vaadin.DefaultUI;
