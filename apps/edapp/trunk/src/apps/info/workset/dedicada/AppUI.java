@@ -10,8 +10,8 @@ import modules.admin.model.exceptions.InvalidUserOrPasswordException;
 import modules.admin.model.services.UserServices;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.control.vaadin.Cookies;
-import org.futurepages.core.control.vaadin.DefaultMenu;
-import org.futurepages.core.control.vaadin.DefaultUI;
+import org.futurepages.apps.common.DefaultMenu;
+import org.futurepages.apps.common.DefaultUI;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.util.Is;
 

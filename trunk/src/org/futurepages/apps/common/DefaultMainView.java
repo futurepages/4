@@ -1,4 +1,4 @@
-package org.futurepages.core.control.vaadin;
+package org.futurepages.apps.common;
 
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;

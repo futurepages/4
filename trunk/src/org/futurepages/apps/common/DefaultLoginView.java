@@ -1,4 +1,4 @@
-package org.futurepages.core.control.vaadin;
+package org.futurepages.apps.common;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
@@ -14,6 +14,9 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import org.futurepages.core.control.vaadin.Cookies;
+import org.futurepages.core.control.vaadin.Events;
+import org.futurepages.core.control.vaadin.EventsBus;
 import org.futurepages.core.locale.Txt;
 
 @SuppressWarnings("serial")
@@ -30,7 +33,7 @@ public class DefaultLoginView extends VerticalLayout {
         addComponent(loginForm);
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
         signin.addClickListener(event ->
-            FuturepagesEventBus.post(new Events.UserLoginRequestedEvent(accesskey.getValue(), password.getValue(), remember.getValue()))
+            EventsBus.post(new Events.UserLoginRequestedEvent(accesskey.getValue(), password.getValue(), remember.getValue()))
         );
   }
 

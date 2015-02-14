@@ -1,4 +1,4 @@
-package org.futurepages.core.control.vaadin;
+package org.futurepages.apps.common;
 
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.server.Page;
@@ -10,6 +10,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.auth.DefaultUser;
+import org.futurepages.core.control.vaadin.Events;
+import org.futurepages.core.control.vaadin.EventsBus;
 import org.futurepages.core.locale.LocaleManager;
 import org.futurepages.exceptions.UserException;
 
@@ -18,21 +20,21 @@ public abstract class DefaultUI extends UI {
 
     private static String LOGGED_USER_KEY = "loggedUser";
 
-    private final FuturepagesEventBus eventBus  = new FuturepagesEventBus();
+    private final EventsBus eventBus  = new EventsBus();
 
     protected abstract DefaultUser loadUserLocally();
     protected abstract DefaultMenu initAppMenu();
     protected abstract void removeUserLocally();
     protected abstract void storeUserLocally(DefaultUser user);
 
-    public static FuturepagesEventBus getEventBus() {
+    public static EventsBus getEventBus() {
         return ((DefaultUI) getCurrent()).eventBus;
     }
 
     @Override
 	protected void init(VaadinRequest request) {
         setLocale(LocaleManager.getInstance().getDesiredLocale(request.getLocale()));
-        FuturepagesEventBus.register(this);
+        EventsBus.register(this);
         Responsive.makeResponsive(this);
         addStyleName(ValoTheme.UI_WITH_MENU);
 
@@ -43,7 +45,7 @@ public abstract class DefaultUI extends UI {
         // Some views need to be aware of browser resize events so a
         // BrowserResizeEvent gets fired to the event bus on every occasion.
         Page.getCurrent().addBrowserWindowResizeListener(
-                event ->  FuturepagesEventBus.post(new Events.BrowserResizeEvent())
+                event ->  EventsBus.post(new Events.BrowserResizeEvent())
         );
 	}
 

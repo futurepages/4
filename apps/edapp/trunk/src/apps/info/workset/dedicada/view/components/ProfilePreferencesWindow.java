@@ -30,7 +30,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import modules.admin.model.entities.User;
-import org.futurepages.core.control.vaadin.FuturepagesEventBus;
+import org.futurepages.core.control.vaadin.EventsBus;
 
 @SuppressWarnings("serial")
 public class ProfilePreferencesWindow extends Window {
@@ -247,7 +247,7 @@ public class ProfilePreferencesWindow extends Window {
                     success.setPosition(Position.BOTTOM_CENTER);
                     success.show(Page.getCurrent());
 
-                    FuturepagesEventBus.post(new AppEvents.ProfileUpdatedEvent());
+                    EventsBus.post(new AppEvents.ProfileUpdatedEvent());
                     close();
                 } catch (CommitException e) {
                     Notification.show("Error while updating profile",
@@ -263,7 +263,7 @@ public class ProfilePreferencesWindow extends Window {
     }
 
     public static void open(final User user, final boolean preferencesTabActive) {
-        FuturepagesEventBus.post(new AppEvents.CloseOpenWindowsEvent());
+        EventsBus.post(new AppEvents.CloseOpenWindowsEvent());
         Window w = new ProfilePreferencesWindow(user, preferencesTabActive);
         UI.getCurrent().addWindow(w);
         w.focus();

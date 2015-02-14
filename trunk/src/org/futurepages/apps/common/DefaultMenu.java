@@ -1,4 +1,4 @@
-package org.futurepages.core.control.vaadin;
+package org.futurepages.apps.common;
 
 import com.vaadin.ui.CustomComponent;
 import org.futurepages.core.view.ViewItem;

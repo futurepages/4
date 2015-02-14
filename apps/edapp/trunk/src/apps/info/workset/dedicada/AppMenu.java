@@ -30,9 +30,9 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 import modules.admin.model.entities.User;
 import org.futurepages.core.auth.DefaultUser;
-import org.futurepages.core.control.vaadin.FuturepagesEventBus;
-import org.futurepages.core.control.vaadin.DefaultMenu;
-import org.futurepages.core.control.vaadin.DefaultUI;
+import org.futurepages.core.control.vaadin.EventsBus;
+import org.futurepages.apps.common.DefaultMenu;
+import org.futurepages.apps.common.DefaultUI;
 import org.futurepages.core.view.ViewItem;
 import org.futurepages.core.locale.Txt;
 
@@ -61,7 +61,7 @@ public final class AppMenu extends DefaultMenu {
 
 		// There's only one DashboardMenu per UI so this doesn't need to be
 		// unregistered from the UI-scoped DashboardEventBus.
-		FuturepagesEventBus.register(this);
+		EventsBus.register(this);
 
 		setCompositionRoot(buildContent());
 	}
@@ -101,7 +101,7 @@ public final class AppMenu extends DefaultMenu {
 		settingsItem.addItem(Txt.get("menu.edit_profile"), selectedItem -> ProfilePreferencesWindow.open(user, false));
 		settingsItem.addItem(Txt.get("menu.preferences"), selectedItem -> ProfilePreferencesWindow.open(user, true));
 		settingsItem.addSeparator();
-		settingsItem.addItem(Txt.get("menu.sign_out"), selectedItem -> FuturepagesEventBus.post(new AppEvents.UserLoggedOutEvent()));
+		settingsItem.addItem(Txt.get("menu.sign_out"), selectedItem -> EventsBus.post(new AppEvents.UserLoggedOutEvent()));
 		return settings;
 	}
 
@@ -139,7 +139,7 @@ public final class AppMenu extends DefaultMenu {
 					public void drop(final DragAndDropEvent event) {
 						UI.getCurrent().getNavigator().navigateTo("reports");
 						Table table = (Table) event.getTransferable().getSourceComponent();
-						FuturepagesEventBus.post(new AppEvents.TransactionReportEvent((Collection<Transaction>) table.getValue()));
+						EventsBus.post(new AppEvents.TransactionReportEvent((Collection<Transaction>) table.getValue()));
 					}
 
 					@Override
@@ -235,7 +235,7 @@ public final class AppMenu extends DefaultMenu {
 			setPrimaryStyleName("valo-menu-item");
 			setIcon(view.getIcon());
 			setCaption(view.getViewName().substring(0, 1).toUpperCase() + view.getViewName().substring(1));
-			FuturepagesEventBus.register(this);
+			EventsBus.register(this);
 			addClickListener(event -> UI.getCurrent().getNavigator().navigateTo(view.getViewName()));
 
 		}

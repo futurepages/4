@@ -26,7 +26,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import modules.global.model.entities.brasil.Cidade;
-import org.futurepages.core.control.vaadin.FuturepagesEventBus;
+import org.futurepages.core.control.vaadin.EventsBus;
 import org.futurepages.containers.PaginationSliceContainer;
 import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
@@ -56,7 +56,7 @@ public final class TransactionsView extends VerticalLayout implements View {
     public TransactionsView() {
         setSizeFull();
         addStyleName("transactions");
-        FuturepagesEventBus.register(this);
+        EventsBus.register(this);
 
         addComponent(buildToolbar());
 
@@ -70,7 +70,7 @@ public final class TransactionsView extends VerticalLayout implements View {
         super.detach();
         // A new instance of TransactionsView is created every time it's
         // navigated to so we'll need to clean up references to it on detach.
-        FuturepagesEventBus.unregister(this);
+        EventsBus.unregister(this);
     }
 
     private Component buildToolbar() {
@@ -248,7 +248,7 @@ public final class TransactionsView extends VerticalLayout implements View {
 
     void createNewReportFromSelection() {
         UI.getCurrent().getNavigator().navigateTo("reports");
-        FuturepagesEventBus.post(new AppEvents.TransactionReportEvent((Collection<Transaction>) table.getValue()));
+        EventsBus.post(new AppEvents.TransactionReportEvent((Collection<Transaction>) table.getValue()));
     }
 
     @Override
