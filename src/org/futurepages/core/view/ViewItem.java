@@ -3,33 +3,18 @@ package org.futurepages.core.view;
 import com.vaadin.navigator.View;
 import com.vaadin.server.Resource;
 
-public class ViewItem {
+public interface ViewItem {
 
-    private final String viewName;
-    private final Class<? extends View> viewClass;
-    private final Resource icon;
-    private final boolean stateful;
+	public String getViewName();
 
-	 public ViewItem(final String viewName, final Class<? extends View> viewClass, final Resource icon, final boolean stateful) {
-        this.viewName = viewName;
-        this.viewClass = viewClass;
-        this.icon = icon;
-        this.stateful = stateful;
-    }
+	public Class<? extends View> getViewClass();
 
-	public String getViewName() {
-		return viewName;
-	}
+	//try to use font icon: FontAwesome.SOMETHING.
+	//Choose what to use here:-->  http://fortawesome.github.io/Font-Awesome/icons/
+	public Resource getIcon();
 
-	public Class<? extends View> getViewClass() {
-		return viewClass;
-	}
+	public boolean isStateful(); //if true, the view will be cached by the navigator.
+	public boolean isNotifier(); //if true, the view will be cached by the navigator.
 
-	public Resource getIcon() {
-		return icon;
-	}
-
-	public boolean isStateful() {
-		return stateful;
-	}
+	public int getCountNotifications();
 }

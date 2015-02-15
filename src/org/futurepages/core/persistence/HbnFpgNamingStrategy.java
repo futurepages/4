@@ -1,5 +1,6 @@
 package org.futurepages.core.persistence;
 
+import org.futurepages.core.config.Apps;
 import org.futurepages.util.ModuleUtil;
 import org.futurepages.util.The;
 import org.hibernate.AssertionFailure;
@@ -25,7 +26,8 @@ public class HbnFpgNamingStrategy extends DefaultNamingStrategy {
 	public String classToTableName(String tableName) {
         tableName = StringHelper.unqualifyEntityName(tableName);
 		List<String> modules = mapOfClasses.get(tableName.toLowerCase());
-		tableName = modules.get(0)+"_"+tableName.toLowerCase();
+
+		tableName = The.concat((ModuleUtil.isAppId(modules.get(0))?modules.get(0).substring(Apps.APPS_PACK.length()):modules.get(0)),"_",tableName.toLowerCase());
 		modules.remove(0);
 //		System.out.println("TABLE_NAME: " + tableName);
 		return tableName;

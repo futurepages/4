@@ -1,4 +1,4 @@
-package org.futurepages.apps.common;
+package org.futurepages.apps.simple;
 
 import com.vaadin.server.BootstrapFragmentResponse;
 import com.vaadin.server.BootstrapListener;
@@ -9,7 +9,7 @@ import com.vaadin.server.SessionInitListener;
 import org.jsoup.nodes.Element;
 
 @SuppressWarnings("serial")
-public class DefaultSessionInitListener implements SessionInitListener {
+public class SimpleSessionInitListener implements SessionInitListener {
 
     @Override
     public final void sessionInit(final SessionInitEvent event)

@@ -1,16 +1,16 @@
-package org.futurepages.core.control.vaadin;
+package org.futurepages.core.event;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
-import org.futurepages.apps.common.DefaultUI;
+import org.futurepages.apps.simple.SimpleUI;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 
 /**
  * A simple wrapper for Guava event bus. Defines static convenience methods for
  * relevant actions.
  */
-public class EventsBus implements SubscriberExceptionHandler {
+public class Eventizer implements SubscriberExceptionHandler {
 
     private final EventBus eventBus = new EventBus(this);
 
@@ -28,7 +28,7 @@ public class EventsBus implements SubscriberExceptionHandler {
 
 
     private static EventBus currentEventBus() {
-        return DefaultUI.getEventBus().eventBus;
+        return SimpleUI.getEventizer().eventBus;
     }
 
     @Override

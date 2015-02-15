@@ -1,9 +1,6 @@
-package org.futurepages.core.control.vaadin;
+package org.futurepages.core.control;
 
-import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinServlet;
-import org.futurepages.apps.common.DefaultSessionInitListener;
-import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.persistence.Dao;
 
 import javax.servlet.ServletException;
@@ -12,37 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public class FuturepagesServlet extends VaadinServlet {
+public class AppServlet extends VaadinServlet {
 
 
 	@Override
 	protected final void servletInitialized() throws ServletException {
 		super.servletInitialized();
-		String customSessionListenerClassPath = getServletConfig().getInitParameter("session.listener.path");
-
-		if (customSessionListenerClassPath == null || !customSessionListenerClassPath.equals("none")) {
-			Class customSessionInitListenerClass = null;
-			if (customSessionListenerClassPath != null) {
-				try {
-					customSessionInitListenerClass = Class.forName(customSessionListenerClassPath);
-					if (!SessionInitListener.class.isAssignableFrom(customSessionInitListenerClass)) {
-						customSessionInitListenerClass = null;
-						throw new Exception("SessionInitListener not registered. It should implements com.vaadin.server.SessionInitListener");
-					}
-				} catch (Exception e) {
-					DefaultExceptionLogger.getInstance().execute(e);
-				}
-			}
-			if (customSessionInitListenerClass != null) {
-				try {
-					getService().addSessionInitListener((SessionInitListener) customSessionInitListenerClass.newInstance());
-				} catch (Exception e) {
-					throw new ServletException(e);
-				}
-			} else {
-				getService().addSessionInitListener(new DefaultSessionInitListener());
-			}
-		}
 	}
 
 
@@ -53,6 +25,7 @@ public class FuturepagesServlet extends VaadinServlet {
 //		System.out.println("BEGIN "+url+" >>>>>>>>>>>>>>>>>>");
 //		long inicio = System.currentTimeMillis();
 		try {
+			//TODO why beanTransaction necessary? A: org.hibernate.HibernateException: createQuery is not valid without active transaction
 			Dao.getInstance().beginTransaction(); //TODO Find where to put @Transactional
 			super.service(request, response);
 			if(Dao.getInstance().isTransactionActive()){
