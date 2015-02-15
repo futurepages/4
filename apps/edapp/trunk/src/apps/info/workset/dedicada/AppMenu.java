@@ -27,13 +27,9 @@ public final class AppMenu extends SimpleMenu {
 	@Override
 	protected Component userMenu() {
 		return new UserMenuBar(); //TODO bring to fpg3 with the picture as parameter.
-		//if you change fo...
+		//if you change for...
 //		return super.userMenu();  // returns simple login title with logout button
 	}
-
-//	public AppMenu() {
-//		Eventizer.register(this);
-//	}
 
 	@Override
 	protected Component customViewItemButton(ViewItemButton viewItemButton) {
