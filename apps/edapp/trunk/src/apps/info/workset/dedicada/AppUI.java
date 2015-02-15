@@ -9,26 +9,21 @@ import modules.admin.model.exceptions.ExpiredPasswordException;
 import modules.admin.model.exceptions.InvalidUserOrPasswordException;
 import modules.admin.model.services.UserServices;
 import org.futurepages.core.auth.DefaultUser;
-import org.futurepages.core.control.vaadin.Cookies;
-import org.futurepages.apps.common.DefaultMenu;
-import org.futurepages.apps.common.DefaultUI;
+import org.futurepages.core.cookie.Cookies;
+import org.futurepages.apps.simple.SimpleMenu;
+import org.futurepages.apps.simple.SimpleUI;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.util.Is;
 
 @Title("Workset Dedicada")
 @Theme("dashboard")
-public class AppUI extends DefaultUI {
+public class AppUI extends SimpleUI {
 
+    //abbreviation to local user key (proposital as it is a local key.
     private static final String LOCAL_USER_KEY = "_luserk";
 
-    //TODO tempo while learning, delete it soon...
-    private final DataProvider dataProvider = new DummyDataProvider();
-    public static DataProvider getDataProvider() {
-        return ((AppUI) getCurrent()).dataProvider;
-    }
-
     @Override
-    protected DefaultMenu initAppMenu() {
+    protected SimpleMenu appMenu() {
         return new AppMenu();
     }
 
@@ -53,8 +48,7 @@ public class AppUI extends DefaultUI {
             User dbUser = UserServices.getByIdentiedHash(loggedValue);
             if(dbUser!=null){
                 Cookies.set(LOCAL_USER_KEY, loggedValue);
-                UserServices.turnDetached(dbUser);
-                return dbUser;
+                return UserServices.detached(dbUser);
             }
         }
         return null;
@@ -63,5 +57,24 @@ public class AppUI extends DefaultUI {
     @Override
     protected void removeUserLocally() {
         Cookies.remove(LOCAL_USER_KEY);
+    }
+
+
+
+
+
+
+
+
+
+
+    //TODO TEMP-DELETE-SOON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //TODO TEMP-DELETE-SOON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //TODO TEMP-DELETE-SOON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //TODO TEMP-DELETE-SOON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //TODO TEMP-DELETE-SOON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    private final DataProvider dataProvider = new DummyDataProvider();
+    public static DataProvider getDataProvider() {
+        return ((AppUI) getCurrent()).dataProvider;
     }
 }

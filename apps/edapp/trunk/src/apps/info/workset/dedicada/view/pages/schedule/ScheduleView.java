@@ -1,7 +1,6 @@
 package apps.info.workset.dedicada.view.pages.schedule;
 
 import apps.info.workset.dedicada.AppUI;
-import apps.info.workset.dedicada.AppEvents;
 import apps.info.workset.dedicada.model.entities.Movie;
 import apps.info.workset.dedicada.model.entities.Transaction;
 import apps.info.workset.dedicada.view.components.MovieDetailsWindow;
@@ -37,7 +36,8 @@ import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
 import com.vaadin.ui.components.calendar.handler.BasicEventMoveHandler;
 import com.vaadin.ui.components.calendar.handler.BasicEventResizeHandler;
 import com.vaadin.ui.themes.ValoTheme;
-import org.futurepages.core.control.vaadin.EventsBus;
+import org.futurepages.core.event.Eventizer;
+import org.futurepages.core.event.Events;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +53,7 @@ public final class ScheduleView extends CssLayout implements View {
     public ScheduleView() {
         setSizeFull();
         addStyleName("schedule");
-        EventsBus.register(this);
+        Eventizer.register(this);
 
         TabSheet tabs = new TabSheet();
         tabs.setSizeFull();
@@ -75,7 +75,7 @@ public final class ScheduleView extends CssLayout implements View {
         super.detach();
         // A new instance of ScheduleView is created every time it's navigated
         // to so we'll need to clean up references to it on detach.
-        EventsBus.unregister(this);
+        Eventizer.unregister(this);
     }
 
     private void injectMovieCoverStyles() {
@@ -250,7 +250,7 @@ public final class ScheduleView extends CssLayout implements View {
     }
 
     @Subscribe
-    public void browserWindowResized(final AppEvents.BrowserResizeEvent event) {
+    public void browserWindowResized(final Events.BrowserResize event) {
         if (Page.getCurrent().getBrowserWindowWidth() < 800) {
             calendar.setEndDate(calendar.getStartDate());
         }

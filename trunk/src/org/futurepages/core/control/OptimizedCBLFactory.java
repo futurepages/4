@@ -1,4 +1,4 @@
-package org.futurepages.core.control.vaadin;
+package org.futurepages.core.control;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.vaadin.client.ui.button.ButtonConnector;
@@ -17,8 +17,7 @@ import com.vaadin.shared.ui.Connect.LoadStyle;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class OptimizedConnectorBundleLoaderFactory extends
-        ConnectorBundleLoaderFactory {
+public final class OptimizedCBLFactory extends ConnectorBundleLoaderFactory {
     private final Set<String> eagerConnectors = new HashSet<String>();
     {
         eagerConnectors.add(PasswordFieldConnector.class.getName());

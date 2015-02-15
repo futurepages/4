@@ -1,6 +1,5 @@
 package apps.info.workset.dedicada.view.components;
 
-import apps.info.workset.dedicada.AppEvents;
 import apps.info.workset.dedicada.model.entities.Movie;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.ExternalResource;
@@ -19,7 +18,8 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-import org.futurepages.core.control.vaadin.EventsBus;
+import org.futurepages.core.event.Eventizer;
+import org.futurepages.core.event.Events;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -165,7 +165,7 @@ public final class MovieDetailsWindow extends Window {
 
     public static void open(final Movie movie, final Date startTime,
             final Date endTime) {
-        EventsBus.post(new AppEvents.CloseOpenWindowsEvent());
+        Eventizer.post(new Events.CloseOpenWindows());
         Window w = new MovieDetailsWindow(movie, startTime, endTime);
         UI.getCurrent().addWindow(w);
         w.focus();

@@ -1,7 +1,6 @@
-package org.futurepages.core;
+package org.futurepages.core.control;
 
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.control.vaadin.FuturepagesServlet;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.install.InstallersManager;
 import org.futurepages.core.locale.Txt;
@@ -34,7 +33,7 @@ import java.util.Map;
  *  - etc.
  * @author leandro
  */
-public class ApplicationListener implements ServletContextListener {
+public class AppListener implements ServletContextListener {
 
 	private String contextName;
 
@@ -102,7 +101,7 @@ public class ApplicationListener implements ServletContextListener {
 
 			context.setInitParameter("productionMode", String.valueOf(!Apps.devMode())); // for VAADIN Production Mode
 			for(String appPackagePath : appsMapping.keySet()){
-				Class servletClass = FuturepagesServlet.class;
+				Class servletClass = AppServlet.class;
 				String servletName = appPackagePath.replaceAll("\\.","_")+"_Servlet";
 				String servletMapping = appsMapping.get(appPackagePath);
 

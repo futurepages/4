@@ -1,10 +1,14 @@
 package apps.info.workset.dedicada.model.entities;
 
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity
 public final class Movie {
 
+    @Id
     private long id;
     private String title;
     private String synopsis;

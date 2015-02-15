@@ -4,6 +4,7 @@ import apps.info.workset.dedicada.AppEvents;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
@@ -29,8 +30,14 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import modules.admin.model.dao.ProfileDao;
+import modules.admin.model.dao.UserDao;
+import modules.admin.model.entities.Profile;
 import modules.admin.model.entities.User;
-import org.futurepages.core.control.vaadin.EventsBus;
+import modules.admin.model.services.UserServices;
+import org.futurepages.core.event.Eventizer;
+import org.futurepages.core.event.Events;
+import org.futurepages.core.persistence.Dao;
 
 @SuppressWarnings("serial")
 public class ProfilePreferencesWindow extends Window {
@@ -49,12 +56,12 @@ public class ProfilePreferencesWindow extends Window {
     private TextField fullNameField;
     @PropertyId("email")
     private TextField emailField;
-    @PropertyId("title")
-    private ComboBox titleField;
+    @PropertyId("profile")
+    private ComboBox profileField;
+//    @PropertyId("title")
+//    private ComboBox titleField;
 //    @PropertyId("male")
 //    private OptionGroup sexField;
-//    @PropertyId("email")
-//    private TextField emailField;
 //    @PropertyId("location")
 //    private TextField locationField;
 //    @PropertyId("phone")
@@ -66,8 +73,8 @@ public class ProfilePreferencesWindow extends Window {
 //    @PropertyId("bio")
 //    private TextArea bioField;
 
-    private ProfilePreferencesWindow(final User user,
-            final boolean preferencesTabOpen) {
+    private ProfilePreferencesWindow(User user,final boolean preferencesTabOpen) {
+        user = UserDao.getByLogin(user.getLogin());
         addStyleName("profile-window");
         setId(ID);
         Responsive.makeResponsive(this);
@@ -134,17 +141,11 @@ public class ProfilePreferencesWindow extends Window {
         VerticalLayout pic = new VerticalLayout();
         pic.setSizeUndefined();
         pic.setSpacing(true);
-        Image profilePic = new Image(null, new ThemeResource(
-                "img/profile-pic-300px.jpg"));
+        Image profilePic = new Image(null, new ThemeResource("img/profile-pic-300px.jpg"));
         profilePic.setWidth(100.0f, Unit.PIXELS);
         pic.addComponent(profilePic);
 
-        Button upload = new Button("Change…", new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                Notification.show("Not implemented in this demo");
-            }
-        });
+        Button upload = new Button("Change…", event -> Notification.show("Not implemented in this demo"));
         upload.addStyleName(ValoTheme.BUTTON_TINY);
         pic.addComponent(upload);
 
@@ -155,18 +156,15 @@ public class ProfilePreferencesWindow extends Window {
         root.addComponent(details);
         root.setExpandRatio(details, 1);
 
-        fullNameField = new TextField("Full Name");
+        fullNameField = new TextField("Nome Completo");
         details.addComponent(fullNameField);
         emailField = new TextField("Email");
         details.addComponent(emailField);
 
-        titleField = new ComboBox("Title");
-        titleField.setInputPrompt("Please specify");
-        titleField.addItem("Mr.");
-        titleField.addItem("Mrs.");
-        titleField.addItem("Ms.");
-        titleField.setNewItemsAllowed(true);
-        details.addComponent(titleField);
+        profileField = new ComboBox("Perfil");
+        profileField.setInputPrompt("Defina o Perfil");
+        profileField.setContainerDataSource(new BeanItemContainer(Profile.class, ProfileDao.list()));
+        details.addComponent(profileField);
 
 //        sexField = new OptionGroup("Sex");
 //        sexField.addItem(Boolean.FALSE);
@@ -232,29 +230,29 @@ public class ProfilePreferencesWindow extends Window {
 
         Button ok = new Button("OK");
         ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        ok.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                try {
-                    fieldGroup.commit();
-                    // Updated user should also be persisted to database. But
-                    // not in this demo.
+        ok.addClickListener(event -> {
+            try {
+                fieldGroup.commit();
+                User user = fieldGroup.getItemDataSource().getBean();
+                //TODO we need to implement TransactionManager.
+                Dao.getInstance().update(user);
+                Dao.getInstance().flush();
+                // Updated user should also be persisted to database. But
+                // not in this demo.
 
-                    Notification success = new Notification(
-                            "Profile updated successfully");
-                    success.setDelayMsec(2000);
-                    success.setStyleName("bar success small");
-                    success.setPosition(Position.BOTTOM_CENTER);
-                    success.show(Page.getCurrent());
+                Notification success = new Notification("Profile updated successfully");
+                success.setDelayMsec(2000);
+                success.setStyleName("bar success small");
+                success.setPosition(Position.BOTTOM_CENTER);
+                success.show(Page.getCurrent());
 
-                    EventsBus.post(new AppEvents.ProfileUpdatedEvent());
-                    close();
-                } catch (CommitException e) {
-                    Notification.show("Error while updating profile",
-                            Type.ERROR_MESSAGE);
-                }
-
+                //TODO Need to evict object. We need to understand Hibernate 4 and the update behavior.
+                Eventizer.post(new Events.LoggedUserChanged(user));
+                close();
+            } catch (CommitException e) {
+                Notification.show("Error while updating profile",Type.ERROR_MESSAGE);
             }
+
         });
         ok.focus();
         footer.addComponent(ok);
@@ -263,7 +261,7 @@ public class ProfilePreferencesWindow extends Window {
     }
 
     public static void open(final User user, final boolean preferencesTabActive) {
-        EventsBus.post(new AppEvents.CloseOpenWindowsEvent());
+        Eventizer.post(new Events.CloseOpenWindows());
         Window w = new ProfilePreferencesWindow(user, preferencesTabActive);
         UI.getCurrent().addWindow(w);
         w.focus();

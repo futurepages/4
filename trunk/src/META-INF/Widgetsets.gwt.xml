@@ -14,7 +14,7 @@
 	 <!--<set-property name="user.agent" value="safari"/>-->
 
 	<!-- WidgetSetOptimizer -->
-	<generate-with class="org.futurepages.core.control.vaadin.OptimizedConnectorBundleLoaderFactory">
+	<generate-with class="org.futurepages.core.control.OptimizedCBLFactory">
 		<when-type-assignable class="com.vaadin.client.metadata.ConnectorBundleLoader" />
 	</generate-with>
 

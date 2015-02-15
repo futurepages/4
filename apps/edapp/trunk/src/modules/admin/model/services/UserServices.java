@@ -97,7 +97,7 @@ public class UserServices {
 
 	public static User authenticatedAndDetachedUser(User formUser) throws InvalidUserOrPasswordException, ExpiredPasswordException {
 		User tryUser = authenticatedUser(formUser);
-		turnDetached(tryUser);
+		detached(tryUser);
 		tryUser.setPlainPassword(formUser.getPlainPassword());
 		return tryUser;
 	}
@@ -106,7 +106,7 @@ public class UserServices {
 		Dao.getInstance().save(new Log(null, LogType.LOGIN, user, ipHost));
 	}
 
-	public static void turnDetached(User user) {
+	public static User detached(User user) {
 		if (user.getProfile() != null) {
 			user.getProfile().getRoles().size(); //touch
 			user.getProfile().getModules().size(); //touch
@@ -119,6 +119,7 @@ public class UserServices {
 		if (user.getProfile() != null) {
 			Dao.getInstance().evict(user.getProfile());
 		}
+		return user;
 	}
 
 	public static User updateEmailUser(String login, String newEmail) {

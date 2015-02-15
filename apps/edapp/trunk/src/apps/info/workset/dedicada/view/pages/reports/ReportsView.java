@@ -1,6 +1,7 @@
 package apps.info.workset.dedicada.view.pages.reports;
 
 import apps.info.workset.dedicada.AppEvents;
+import apps.info.workset.dedicada.AppMenuItems;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
@@ -25,7 +26,8 @@ import com.vaadin.ui.TabSheet.CloseHandler;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-import org.futurepages.core.control.vaadin.EventsBus;
+import org.futurepages.core.event.Eventizer;
+import org.futurepages.core.event.Events;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,7 +44,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
         addStyleName("reports");
         addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
         setCloseHandler(this);
-        EventsBus.register(this);
+        Eventizer.register(this);
 
         addTab(buildDrafts());
     }
@@ -161,8 +163,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
             reportEditor.addWidget(ReportEditor.PaletteItemType.TRANSACTIONS, prefillData);
         }
 
-        EventsBus.post(new AppEvents.ReportsCountUpdatedEvent(
-                getComponentCount() - 1));
+        Eventizer.post(new Events.NotifyViewItem(AppMenuItems.REPORTS, (getComponentCount() - 1)));
         setSelectedTab(getComponentCount() - 1);
     }
 
@@ -173,8 +174,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
 
     @Override
     public void onTabClose(final TabSheet tabsheet, final Component tabContent) {
-        Label message = new Label(
-                "You have not saved this report. Do you want to save or discard any changes you've made to this report?");
+        Label message = new Label("You have not saved this report. Do you want to save or discard any changes you've made to this report?");
         message.setWidth("25em");
 
         final Window confirmDialog = new Window("Unsaved Changes");
@@ -196,37 +196,25 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
 
         root.addComponents(message, footer);
 
-        Button ok = new Button("Save", new ClickListener() {
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                confirmDialog.close();
-                removeComponent(tabContent);
-                EventsBus.post(new AppEvents.ReportsCountUpdatedEvent(
-                        getComponentCount() - 1));
-                Notification
-                        .show("The report was saved as a draft",
-                                "Actually, the report was just closed and deleted forever. As this is only a demo, it doesn't persist any data.",
-                                Type.TRAY_NOTIFICATION);
-            }
+        Button ok = new Button("Save", event -> {
+            confirmDialog.close();
+            removeComponent(tabContent);
+            Eventizer.post(new Events.NotifyViewItem(AppMenuItems.REPORTS, (getComponentCount() - 1)));
+            Notification
+                    .show("The report was saved as a draft",
+                            "Actually, the report was just closed and deleted forever. As this is only a demo, it doesn't persist any data.",
+                            Type.TRAY_NOTIFICATION);
         });
         ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
-        Button discard = new Button("Discard Changes", new ClickListener() {
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                confirmDialog.close();
-                removeComponent(tabContent);
-                EventsBus.post(new AppEvents.ReportsCountUpdatedEvent(getComponentCount() - 1));
-            }
+        Button discard = new Button("Discard Changes", event -> {
+            confirmDialog.close();
+            removeComponent(tabContent);
+            Eventizer.post(new Events.NotifyViewItem(AppMenuItems.REPORTS, (getComponentCount() - 1)));
         });
         discard.addStyleName(ValoTheme.BUTTON_DANGER);
 
-        Button cancel = new Button("Cancel", new ClickListener() {
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                confirmDialog.close();
-            }
-        });
+        Button cancel = new Button("Cancel", event -> { confirmDialog.close(); });
 
         footer.addComponents(discard, cancel, ok);
         footer.setExpandRatio(discard, 1);

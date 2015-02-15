@@ -26,8 +26,9 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import modules.global.model.entities.brasil.Cidade;
-import org.futurepages.core.control.vaadin.EventsBus;
+import org.futurepages.core.event.Eventizer;
 import org.futurepages.containers.PaginationSliceContainer;
+import org.futurepages.core.event.Events;
 import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HQLField;
@@ -56,7 +57,7 @@ public final class TransactionsView extends VerticalLayout implements View {
     public TransactionsView() {
         setSizeFull();
         addStyleName("transactions");
-        EventsBus.register(this);
+        Eventizer.register(this);
 
         addComponent(buildToolbar());
 
@@ -70,7 +71,7 @@ public final class TransactionsView extends VerticalLayout implements View {
         super.detach();
         // A new instance of TransactionsView is created every time it's
         // navigated to so we'll need to clean up references to it on detach.
-        EventsBus.unregister(this);
+        Eventizer.unregister(this);
     }
 
     private Component buildToolbar() {
@@ -222,7 +223,7 @@ public final class TransactionsView extends VerticalLayout implements View {
     }
 
     @Subscribe
-    public void browserResized(final AppEvents.BrowserResizeEvent event) {
+    public void browserResized(final Events.BrowserResize event) {
         // Some columns are collapsed when browser window width gets small
         // enough to make the table fit better.
         if (defaultColumnsVisible()) {
@@ -248,7 +249,7 @@ public final class TransactionsView extends VerticalLayout implements View {
 
     void createNewReportFromSelection() {
         UI.getCurrent().getNavigator().navigateTo("reports");
-        EventsBus.post(new AppEvents.TransactionReportEvent((Collection<Transaction>) table.getValue()));
+        Eventizer.post(new AppEvents.TransactionReportEvent((Collection<Transaction>) table.getValue()));
     }
 
     @Override

@@ -17,6 +17,6 @@
     <!-- Listeners -->
     <listener>
         <description>Futurepages3 Application Listener</description>
-        <listener-class>org.futurepages.core.ApplicationListener</listener-class>
+        <listener-class>org.futurepages.core.control.AppListener</listener-class>
     </listener>
 </web-app>

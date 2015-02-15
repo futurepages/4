@@ -1,4 +1,4 @@
-package org.futurepages.apps.common;
+package org.futurepages.apps.simple;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -8,23 +8,23 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.control.vaadin.Events;
-import org.futurepages.core.control.vaadin.EventsBus;
+import org.futurepages.core.event.Events;
+import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.view.ViewItem;
 import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
 
 @SuppressWarnings("serial")
-public class DefaultNavigator extends Navigator {
+public class SimpleNavigator extends Navigator {
 
     protected GoogleAnalyticsTracker gaTracker;
     protected ViewProvider errorViewProvider;
     private final ViewItem HOME_ITEM_VIEW;
 
-    private DefaultMenu menu;
+    private SimpleMenu menu;
 
-    public DefaultNavigator(DefaultMenu menu, ComponentContainer container) {
+    public SimpleNavigator(SimpleMenu menu, ComponentContainer container) {
         super(UI.getCurrent(), container);
-        HOME_ITEM_VIEW = menu.getHomeItemView();
+        HOME_ITEM_VIEW = menu.getHome();
         this.menu = menu;
         initGATrackerIfTheCase();
         initViewChangeListener();
@@ -54,13 +54,12 @@ public class DefaultNavigator extends Navigator {
             @Override
             public void afterViewChange(final ViewChangeEvent event) {
 
-                ViewItem itemView = menu.getItemViews().get(event.getViewName());
+                ViewItem itemView = menu.getHome().getByName(event.getViewName());
 
                 // Appropriate events get fired after the view is changed.
-                EventsBus.post(new Events.PostViewChangeEvent(itemView));
-
-                EventsBus.post(new Events.BrowserResizeEvent());
-                EventsBus.post(new Events.CloseOpenWindowsEvent());
+                Eventizer.post(new Events.PostViewChange(itemView));
+                Eventizer.post(new Events.BrowserResize());
+                Eventizer.post(new Events.CloseOpenWindows());
 
                 if (gaTracker!= null) {
                     // The view change is submitted as a pageview for GA tracker
@@ -72,7 +71,7 @@ public class DefaultNavigator extends Navigator {
 
     protected void initViewProviders() {
         // A dedicated view provider is added for each separate view type
-        for (ViewItem viewItem : menu.getItemViews().values()) {
+        for (ViewItem viewItem : menu.viewItemMenuHome().getViewItems()) {
             ViewProvider viewProvider = new ClassBasedViewProvider(viewItem.getViewName(), viewItem.getViewClass()) {
 
                 // This field caches an already initialized view instance if the

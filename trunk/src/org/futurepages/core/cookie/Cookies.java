@@ -1,4 +1,4 @@
-package org.futurepages.core.control.vaadin;
+package org.futurepages.core.cookie;
 
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.JavaScript;

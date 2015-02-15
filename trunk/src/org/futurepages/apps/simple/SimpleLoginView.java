@@ -1,4 +1,4 @@
-package org.futurepages.apps.common;
+package org.futurepages.apps.simple;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
@@ -14,26 +14,26 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import org.futurepages.core.control.vaadin.Cookies;
-import org.futurepages.core.control.vaadin.Events;
-import org.futurepages.core.control.vaadin.EventsBus;
+import org.futurepages.core.cookie.Cookies;
+import org.futurepages.core.event.Events;
+import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.locale.Txt;
 
 @SuppressWarnings("serial")
-public class DefaultLoginView extends VerticalLayout {
+public class SimpleLoginView extends VerticalLayout {
 
     final TextField      accesskey = new TextField     (Txt.get("login.user.accesskey"));
     final PasswordField  password  = new PasswordField (Txt.get("login.user.password"));
     final Button         signin    = new Button        (Txt.get("login.enter"));
     final CheckBox       remember  = new CheckBox      (Txt.get("login.remember"), true);
 
-    public DefaultLoginView() {
+    public SimpleLoginView() {
         setSizeFull();
         Component loginForm = buildLoginForm();
         addComponent(loginForm);
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
         signin.addClickListener(event ->
-            EventsBus.post(new Events.UserLoginRequestedEvent(accesskey.getValue(), password.getValue(), remember.getValue()))
+            Eventizer.post(new Events.UserLoginRequested(accesskey.getValue(), password.getValue(), remember.getValue()))
         );
   }
 
@@ -82,7 +82,7 @@ public class DefaultLoginView extends VerticalLayout {
         signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
         signin.setClickShortcut(KeyCode.ENTER);
 
-        String cookieValue = Cookies.get(Events.UserLoginRequestedEvent.LOGIN_KEY);
+        String cookieValue = Cookies.get(Events.UserLoginRequested.LOGIN_KEY);
         if (cookieValue!=null) {
             accesskey.setValue(cookieValue);
             password.focus();
@@ -96,7 +96,7 @@ public class DefaultLoginView extends VerticalLayout {
     }
 
     private Component buildRemember() {
-        String cookieValue = Cookies.get(Events.UserLoginRequestedEvent.REMEMBER_KEY);
+        String cookieValue = Cookies.get(Events.UserLoginRequested.REMEMBER_KEY);
         if (cookieValue!=null) {
             remember.setValue(Boolean.valueOf(cookieValue));
             return remember;

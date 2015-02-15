@@ -1,7 +1,7 @@
 package apps.info.workset.dedicada.view.pages.dashboard;
 
+import apps.info.workset.dedicada.AppMenuItems;
 import apps.info.workset.dedicada.AppUI;
-import apps.info.workset.dedicada.AppEvents;
 import apps.info.workset.dedicada.model.data.dummy.DummyDataGenerator;
 import apps.info.workset.dedicada.model.entities.EDNotification;
 import apps.info.workset.dedicada.view.components.SparklineChart;
@@ -33,7 +33,8 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-import org.futurepages.core.control.vaadin.EventsBus;
+import org.futurepages.core.event.Eventizer;
+import org.futurepages.core.event.Events;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -53,7 +54,7 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
     public HomeView() {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
         setSizeFull();
-        EventsBus.register(this);
+        Eventizer.register(this);
 
         root = new VerticalLayout();
         root.setSizeFull();
@@ -75,7 +76,7 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
         root.addLayoutClickListener(new LayoutClickListener() {
             @Override
             public void layoutClick(final LayoutClickEvent event) {
-                EventsBus.post(new AppEvents.CloseOpenWindowsEvent());
+                Eventizer.post(new Events.CloseOpenWindows());
             }
         });
     }
@@ -264,9 +265,8 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
 
-        Collection<EDNotification> notifications = AppUI
-                .getDataProvider().getNotifications();
-        EventsBus.post(new AppEvents.NotificationsCountUpdatedEvent());
+        Collection<EDNotification> notifications = AppUI.getDataProvider().getNotifications();
+        Eventizer.post(new Events.NotifyViewItem(AppMenuItems.HOME));
 
         for (EDNotification notification : notifications) {
             VerticalLayout notificationLayout = new VerticalLayout();
@@ -363,12 +363,16 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
             setId(ID);
             addStyleName("notifications");
             addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-            EventsBus.register(this);
+            Eventizer.register(this);
         }
 
         @Subscribe
-        public void updateNotificationsCount(final AppEvents.NotificationsCountUpdatedEvent event) {
-               setUnreadCount(AppUI.getDataProvider().getUnreadNotificationsCount());
+        public void updateNotificationsCount(final Events.NotifyViewItem event) {
+            if(event!=null){
+                setUnreadCount(event.getCount());
+            }else{
+                setUnreadCount(AppMenuItems.HOME.getCountNotifications());
+            }
         }
 
         public void setUnreadCount(final int count) {
