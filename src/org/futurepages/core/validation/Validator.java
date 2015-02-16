@@ -1,27 +1,32 @@
 package org.futurepages.core.validation;
 
+import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.services.EntityServices;
+import org.futurepages.exceptions.UserException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.futurepages.core.exception.DefaultExceptionLogger;
-import org.futurepages.exceptions.UserException;
 
-public abstract class Validator {
+public abstract class Validator<SERVICES extends EntityServices>  {
 
 	/** mapa de validações (chave, mensagem)*/
-	protected LinkedHashMap<String, String> validationMap;
+	protected LinkedHashMap<String, String> validationMap = new LinkedHashMap<String, String>();
 
 	/** validadores chamados por esse validador.*/
-	private ArrayList<Validator> subValidators;
+	private ArrayList<Validator> subValidators = new ArrayList<>();
 
 	protected Boolean breakOnFirst;
 
-	public static <T extends Validator> T validate(Class<T> t, boolean breakOnFirst) {
+	protected SERVICES services;
+
+	private static <T extends Validator,SERVICES extends EntityServices> T validate(Class<T> t, SERVICES services, boolean breakOnFirst) {
 		T validator;
 		try {
 			validator = t.newInstance();
+			validator.services = services;
 			validator.setBreakOnFirst(breakOnFirst);
 			return validator;
 		} catch (Exception ex) {
@@ -30,13 +35,15 @@ public abstract class Validator {
 		return null;
 	}
 
-	public Validator() {
-		validationMap = new LinkedHashMap<String, String>();
-		subValidators = new ArrayList<Validator>();
+	public static <T extends Validator, SERVICES extends EntityServices> void validate(SERVICES services, Class<T> clss, Executor<T> executor){
+		T validator = validate(clss,services,false);
+		executor.execute(validator);
+		validator.validate();
 	}
 
+
 	protected <T extends Validator> T validate(Class<T> t) {
-		T validator = Validator.validate(t, breakOnFirst);
+		T validator = Validator.validate(t,null, breakOnFirst);
 		subValidators.add(validator);
 		return validator;
 	}
@@ -99,5 +106,10 @@ public abstract class Validator {
 		}
 		
 		return validationMap;
+	}
+
+	public interface Executor<V extends Validator> {
+
+		public abstract void execute(V validator);
 	}
 }

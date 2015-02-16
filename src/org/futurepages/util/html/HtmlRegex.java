@@ -1,7 +1,9 @@
 
 package org.futurepages.util.html;
+
 import java.util.regex.Pattern;
-import static org.futurepages.util.StringUtils.concat;
+
+import static org.futurepages.util.The.concat;
 
 /**
  * Gerador de Regex Patterns para capturar padrões de tags

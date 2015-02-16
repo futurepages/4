@@ -1,7 +1,6 @@
 package org.futurepages.core.persistence;
 
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.config.Modules;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.persistence.annotations.View;
 import org.futurepages.exceptions.ModuleWithoutBeanDirException;
@@ -55,7 +54,7 @@ public class HibernateConfigurationFactory {
 	public Map<String, Configurations> getApplicationConfigurations() throws IOException {
 
 		Map<String, Schema> schemasMap = new HashMap<String, Schema>();
-		File[] modulesDirs = Apps.listModulesAndApps(); //TODO modules and apps
+		File[] modulesDirs = ModuleUtil.listModulesAndApps(); //TODO modules and apps
 		if (modulesDirs != null) {
 			for (File module : modulesDirs) {
 				mapModule(module, schemasMap);
@@ -119,7 +118,7 @@ public class HibernateConfigurationFactory {
 	 * If "hibernate.schemaId" is undefined, the schemaId will be the moduleId.
 	 */
 	private String getSchemaId(File module, Properties properties, Map<String, Schema> schemasMap) throws FileNotFoundException, IOException {
-		boolean defaultModule = !Modules.hasOwnSchema(module);
+		boolean defaultModule = !ModuleUtil.hasOwnSchema(module);
 		if (defaultModule) { //default database
 			if(schemasMap.get(DEFAULT)==null){
 				schemasMap.put(DEFAULT, new Schema());

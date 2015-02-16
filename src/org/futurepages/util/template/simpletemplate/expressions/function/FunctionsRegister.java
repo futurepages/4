@@ -1,7 +1,7 @@
 package org.futurepages.util.template.simpletemplate.expressions.function;
 
 import java.util.HashMap;
-import static org.futurepages.util.StringUtils.concat;
+import static org.futurepages.util.The.concat;
 import org.futurepages.util.template.simpletemplate.expressions.exceptions.FunctionWithSameNameAlreadyExistsException;
 
 /**

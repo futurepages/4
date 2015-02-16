@@ -1,7 +1,7 @@
 package org.futurepages.emails;
 
 import org.futurepages.exceptions.EmailException;
-import org.futurepages.util.StringUtils;
+import org.futurepages.util.Is;
 
 // Revision: 155415
 
@@ -32,7 +32,7 @@ public class SimpleEmail extends Email {
      *  for defintions
      */
     public Email setMsg(String msg) throws EmailException {
-        if (StringUtils.isEmpty(msg)) {
+        if (Is.empty(msg)) {
             throw new EmailException("Invalid message supplied");
         }
 

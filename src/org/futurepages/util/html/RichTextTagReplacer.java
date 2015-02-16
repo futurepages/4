@@ -1,8 +1,7 @@
 package org.futurepages.util.html;
 
 
-import org.futurepages.util.StringUtils;
-
+import org.futurepages.util.Is;
 
 /**
  *
@@ -189,7 +188,7 @@ public class RichTextTagReplacer extends HtmlTagReplacer {
 	 */
 	@Override
 	public String treated(String tag) {
-		if(StringUtils.isEmpty(tag)){
+		if(Is.empty(tag)){
 			return "";
 		}
 		boolean isClosing = isClosingTag(tag);

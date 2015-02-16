@@ -1,21 +1,17 @@
 package org.futurepages.core.persistence;
 
+import org.futurepages.util.HQLUtil;
+import org.futurepages.util.Is;
+import org.futurepages.util.The;
+import org.futurepages.util.brazil.DateUtil;
+
+import javax.persistence.EnumType;
 import java.math.BigDecimal;
-
-import org.futurepages.util.StringUtils;
-
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import javax.persistence.EnumType;
-
-import org.futurepages.util.brazil.DateUtil;
-import org.futurepages.util.HQLUtil;
-import org.futurepages.util.Is;
-import org.futurepages.util.The;
 
 /**
  * @author leandro
@@ -514,6 +510,6 @@ public class HQLField implements HQLable {
 	}
 
 	private String concat(String... str) {
-		return StringUtils.concat(str);
+		return The.concat(str);
 	}
 }

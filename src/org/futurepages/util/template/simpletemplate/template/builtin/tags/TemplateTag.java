@@ -2,7 +2,7 @@ package org.futurepages.util.template.simpletemplate.template.builtin.tags;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
-import static org.futurepages.util.StringUtils.concat;
+import static org.futurepages.util.The.concat;
 import org.futurepages.util.template.simpletemplate.expressions.exceptions.BadExpression;
 import org.futurepages.util.template.simpletemplate.expressions.exceptions.ExpectedExpression;
 import org.futurepages.util.template.simpletemplate.expressions.exceptions.ExpectedOperator;

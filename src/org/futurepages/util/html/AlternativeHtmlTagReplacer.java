@@ -4,7 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.futurepages.formatters.SmartTextFormatter;
 import org.futurepages.util.Is;
-import org.futurepages.util.StringUtils;
 import org.futurepages.util.The;
 import static org.futurepages.util.html.HtmlRegex.*;
 import org.futurepages.util.iterator.string.IterableString;
@@ -215,7 +214,7 @@ public class AlternativeHtmlTagReplacer extends HtmlTagReplacer {
  */
 	@Override
 	public String treated(String tag) {
-		if (StringUtils.isEmpty(tag)) {
+		if (Is.empty(tag)) {
 			return "";
 		}
 		boolean isClosing = isClosingTag(tag);
@@ -339,7 +338,7 @@ public class AlternativeHtmlTagReplacer extends HtmlTagReplacer {
 				IterableString iterValue = new IterableString(Pattern.compile(HtmlRegex.attrValuesPattern(textAlign? new String[]{"padding-left","text-align"} : new String[]{"padding-left"})), attrValue);
 				String value="";
 				for (MatchedToken tokenValueAttr : iterValue) {
-					value=StringUtils.concat(value,tokenValueAttr.getMatched(),";");
+					value=The.concat(value,tokenValueAttr.getMatched(),";");
 				}
 				if(!Is.empty(value)){
 					sb.append("style=\"").append(value).append("\" ");

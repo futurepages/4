@@ -1,10 +1,9 @@
 package org.futurepages.core.exception;
 
 import org.futurepages.exceptions.PageNotFoundException;
-import org.futurepages.util.brazil.DateUtil;
 import org.futurepages.util.EncodingUtil;
-import org.futurepages.util.StringUtils;
 import org.futurepages.util.The;
+import org.futurepages.util.brazil.DateUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +35,7 @@ public class DefaultExceptionLogger implements ExceptionLogger{
 
 		String numeroProtocolo = System.currentTimeMillis()+"-"+Thread.currentThread().getId();
 
-		String exceptionId =  StringUtils.concat("[",errorType.toUpperCase(),"] ",numeroProtocolo);
+		String exceptionId =  The.concat("[",errorType.toUpperCase(),"] ",numeroProtocolo);
         log(exceptionId , "  ("  , DateUtil.viewDateTime(new Date()) , ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
 
@@ -107,7 +106,7 @@ public class DefaultExceptionLogger implements ExceptionLogger{
 
 
 	private void log(String... strs){
-		System.out.println(StringUtils.concat(strs));
+		System.out.println(The.concat(strs));
 	}
 	
 	private enum ExceptionLogType {

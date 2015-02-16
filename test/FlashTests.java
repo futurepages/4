@@ -15,8 +15,8 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
-import org.futurepages.util.StringUtils;
 import org.futurepages.util.The;
+import org.futurepages.util.brazil.PersonNamesUtil;
 
 public class FlashTests {
 
@@ -56,7 +56,7 @@ public class FlashTests {
 				String email = rs.getString("email");
 				System.out.println(email);
 				String nome = rs.getString("nomeCompleto");
-				updatesSQL.add("UPDATE contato SET nomeCompleto = '"+StringUtils.corrigeNomeCompleto(nome)+"' WHERE email = '"+email+"'");
+				updatesSQL.add("UPDATE contato SET nomeCompleto = '"+PersonNamesUtil.correctFullName(nome)+"' WHERE email = '"+email+"'");
 			}
 			rs.close();
 
@@ -115,7 +115,7 @@ public class FlashTests {
 
 
 					try {
-						nome = StringUtils.corrigeNomeCompleto(planilha.getCell(0, i).getContents());
+						nome = PersonNamesUtil.correctFullName(planilha.getCell(0, i).getContents());
 
 
 					} catch (Exception ex) {

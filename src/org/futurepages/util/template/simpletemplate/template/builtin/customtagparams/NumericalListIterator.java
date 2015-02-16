@@ -1,7 +1,7 @@
 package org.futurepages.util.template.simpletemplate.template.builtin.customtagparams;
 
 import java.util.Iterator;
-import org.futurepages.util.StringUtils;
+import org.futurepages.util.The;
 
 /**
  *
@@ -39,7 +39,7 @@ public class NumericalListIterator implements Iterator<Integer> {
 			return current;
 		}
 
-		throw new RuntimeException(StringUtils.concat("Iterating over the limit of list [", numList.getStart(), "..", numList.getLength(), "]"));
+		throw new RuntimeException(The.concat("Iterating over the limit of list [", numList.getStart(), "..", numList.getLength(), "]"));
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.futurepages.core.config.Apps;
 import org.futurepages.util.FileUtil;
+import org.futurepages.util.ModuleUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class BuildWidgetsets extends Task {
 	}
 
 	private String resultOfDeps() throws IOException {
-		File[] modulesAndApps = Apps.listModulesAndApps();
+		File[] modulesAndApps = ModuleUtil.listModulesAndApps();
 		LinkedHashSet<String> deps = new LinkedHashSet<>();
 		for(File f: modulesAndApps){
 			File moduleDeps = new File(f.getAbsolutePath()+"/"+Apps.MODULE_CONFIG_DIR_NAME+"/"+APP_DEPS_FILE_NAME);

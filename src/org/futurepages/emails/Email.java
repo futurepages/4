@@ -3,7 +3,7 @@ package org.futurepages.emails;
 import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.mail.DefaultAuthenticator;
 import org.futurepages.exceptions.EmailException;
-import org.futurepages.util.StringUtils;
+import org.futurepages.util.Is;
 import org.futurepages.util.The;
 
 import javax.mail.*;
@@ -342,7 +342,7 @@ public abstract class Email {
      */
     public void setContent(Object aObject, String aContentType) {
         this.content = aObject;
-        if (!StringUtils.isNotEmpty(aContentType)) {
+        if (Is.empty(aContentType)) {
             this.contentType = null;
         } else {
             // set the content type
@@ -416,11 +416,11 @@ public abstract class Email {
 	
 	            properties.setProperty( MAIL_TRANSPORT_PROTOCOL, SMTP );
 	
-	            if( !StringUtils.isNotEmpty( this.hostName ) ) {
+	            if(Is.empty(this.hostName) ) {
 	                this.hostName = properties.getProperty( MAIL_HOST );
 	            }
 	
-	            if( !StringUtils.isNotEmpty( this.hostName ) ) {
+	            if( Is.empty(this.hostName) ) {
 	                throw new EmailException( "Cannot find valid hostname for mail session" );
 	            }
 	
@@ -466,11 +466,11 @@ public abstract class Email {
 
         try {
             // check name input
-            if (!StringUtils.isNotEmpty(name)) {
+            if (Is.empty(name)) {
                 name = email;
             }
 
-            if (StringUtils.isNotEmpty(charset)) {
+            if (!Is.empty(charset)) {
                 address = new InternetAddress(email, name, charset);
             } else {
                 address = new InternetAddress(email, name);
@@ -679,10 +679,10 @@ public abstract class Email {
             String strName = iterKeyBad.next();
             String strValue = map.get(strName);
 
-            if (!StringUtils.isNotEmpty(strName)) {
+            if (Is.empty(strName)) {
                 throw new IllegalArgumentException("name can not be null");
             }
-            if (!StringUtils.isNotEmpty(strValue)) {
+            if (Is.empty(strValue)) {
                 throw new IllegalArgumentException("value can not be null");
             }
         }
@@ -698,10 +698,10 @@ public abstract class Email {
      * @param value A String with the value.
      */
     public void addHeader(String name, String value) {
-        if (!StringUtils.isNotEmpty(name)) {
+        if (Is.empty(name)) {
             throw new IllegalArgumentException("name can not be null");
         }
-        if (!StringUtils.isNotEmpty(value)) {
+        if (Is.empty(value)) {
             throw new IllegalArgumentException("value can not be null");
         }
 
@@ -756,8 +756,8 @@ public abstract class Email {
             this.getMailSession();
             this.message = new MimeMessage(this.session);
 
-            if (StringUtils.isNotEmpty(this.subject)) {
-                if (StringUtils.isNotEmpty(this.charset)) {
+            if (!Is.empty(this.subject)) {
+                if (!Is.empty(this.charset)) {
                     this.message.setSubject(this.subject, this.charset);
                 } else {
                     this.message.setSubject(this.subject);

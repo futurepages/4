@@ -17,6 +17,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
@@ -386,10 +387,6 @@ public class The {
 		return wIn;
 	}
 
-	public static String truncated(String in, int size){
-		return StringUtils.truncated(in, size);
-	}
-
 	public static String javascriptText(String value) {		
 		return HtmlRegex.javascriptText(value);
 	}
@@ -401,14 +398,6 @@ public class The {
 			c = (str.length() > 0 ? str.toCharArray() : null);
 		}
 		return str;
-	}
-
-	public static String concat(String... strs) {
-		return StringUtils.concat(strs);
-	}
-
-	public static String concat(Object... objs) {
-		return StringUtils.concat(objs);
 	}
 
 	public static String sequence(char ch, int len) {
@@ -579,5 +568,85 @@ public class The {
 			}
 		}
 		return obj;
+	}
+
+	public static String replace(String text, String textToBeReplaced, String replacement) {
+		return org.apache.commons.lang.StringUtils.replace(text, textToBeReplaced, replacement);
+	}
+
+	public static String concat(String... args) {
+		StringBuilder sb = new StringBuilder();
+		for (String string : args) {
+			sb.append(string);
+		}
+		return sb.toString();
+	}
+
+	public static String concat(Object... args) {
+		StringBuilder sb = new StringBuilder();
+		for (Object string : args) {
+			sb.append(string);
+		}
+		return sb.toString();
+	}
+
+	public static String concatWith(String inserted, String... array) {
+		if (inserted == null) {
+			return concat(array);
+		} else {
+			StringBuffer out = new StringBuffer();
+			for (int i = 0; i < array.length; i++) {
+				if (i != 0) {
+					out.append(inserted);
+				}
+				out.append(array[i]);
+			}
+			return out.toString();
+		}
+	}
+
+	public static String truncated(String in, int size) {
+		if (in == null || in.length() <= size) {
+			return in;
+		} else {
+			return in.substring(0, size);
+		}
+	}
+
+	public static String replace(String strIn, Map<Character, String> dirt) {
+		if (Is.empty(strIn)) return "";
+
+		StringBuilder outBuffer = new StringBuilder();
+		String clean;
+		for (Character charDirty : strIn.toCharArray()) {
+
+			if (dirt.containsKey(charDirty)) {
+				clean = dirt.get(charDirty);
+			} else {
+				clean = charDirty.toString();
+			}
+			outBuffer.append(clean);
+		}
+		return outBuffer.toString();
+	}
+
+	public static String replaceIntoByMap(String strIn, Map<String, String> map) {
+		if (Is.empty(strIn)) {
+			return "";
+		}
+
+		for (String key : map.keySet()) {
+			strIn = org.apache.commons.lang.StringUtils.replace(strIn, key, map.get(key));
+		}
+
+		return strIn;
+	}
+
+	public static String leftPad(String value, int qt, String token) {
+		return org.apache.commons.lang.StringUtils.leftPad(value, qt, token);
+	}
+
+	public static String rightPad(String value, int qt, String token) {
+		return org.apache.commons.lang.StringUtils.rightPad(value, qt, token);
 	}
 }

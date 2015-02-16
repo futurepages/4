@@ -1,7 +1,7 @@
 package org.futurepages.util.template.simpletemplate.template.builtin.customtagparams;
 
 import java.util.Iterator;
-import org.futurepages.util.StringUtils;
+import org.futurepages.util.The;
 import org.futurepages.util.template.simpletemplate.expressions.function.Function;
 import org.futurepages.util.template.simpletemplate.expressions.tree.Exp;
 import org.futurepages.util.template.simpletemplate.expressions.tree.Token;
@@ -76,7 +76,7 @@ public class NumericalList implements Iterable<Integer>, Exp {
 	
 	@Override
 	public String toString() {
-		return StringUtils.concat(" ", start, "..", length, "|", step, " ");
+		return The.concat(" ", start, "..", length, "|", step, " ");
 	}
 
 	@Override
