@@ -62,7 +62,7 @@ public abstract class Automations {
 
 						sortClassList(classes);
 						if(ModuleUtil.isApp(module.getAbsolutePath())){
-							modulesClasses.put("app "+getAppName(module.getAbsolutePath()), classes);
+							modulesClasses.put("app "+ModuleUtil.getAppName(module.getAbsolutePath()), classes);
 						}else{
 							modulesClasses.put("module "+module.getName(), classes);
 						}
@@ -74,11 +74,6 @@ public abstract class Automations {
 			}
 		}
 		return modulesClasses;
-	}
-
-	public static String getAppName(String dirPath) {
-		String classesPath = ModuleUtil.getClassesPath();
-		return dirPath.substring((classesPath + "apps/").length()).replaceAll("[\\\\/]","\\.");
 	}
 
 	private <S extends Object> void sortClassList(List<Class<S>> classes) {

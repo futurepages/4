@@ -23,6 +23,7 @@ import org.futurepages.core.view.ViewItemMenu;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings({ "serial", "unchecked" })
 public abstract class SimpleMenu extends CustomComponent {
 
   private final ViewItemMenu HOME_ITEM_MENU;

@@ -1,7 +1,7 @@
 package modules.global.model.entities;
 
 import org.futurepages.util.Is;
-import org.futurepages.util.StringUtils;
+import org.futurepages.util.The;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -119,7 +119,7 @@ public abstract class UnidadeOrganizacional implements Serializable{
 	}
 
 	public String getDescricaoInstituicao(){
-		return StringUtils.concat(this.getDescricao(),(this.getDescricaoAbreviada()!=null?StringUtils.concat(" - ",this.getDescricaoAbreviada()):""));
+		return The.concat(this.getDescricao(), (this.getDescricaoAbreviada() != null ? The.concat(" - ", this.getDescricaoAbreviada()) : ""));
 	}
 
 	public boolean isEhUmTipo(){

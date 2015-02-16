@@ -3,14 +3,12 @@ package modules.admin.model.entities;
 import modules.admin.model.core.NotLoggeable;
 import modules.admin.model.entities.enums.LogType;
 import net.vidageek.mirror.dsl.Mirror;
-import org.futurepages.util.ModuleUtil;
-import org.futurepages.util.brazil.DateUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.ObjectContainer;
 import org.futurepages.util.ReflectionUtil;
-import org.futurepages.util.StringUtils;
+import org.futurepages.util.The;
+import org.futurepages.util.brazil.DateUtil;
 import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.Index;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,7 +18,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -92,7 +89,7 @@ public class Log implements Serializable {
 		this.logContent = logContent;
 		this.logType = LogType.SYSTEM;
 		this.obs = obs;
-		System.out.println(StringUtils.concat("[", DateUtil.viewDateTime(dateTime, "dd/MM/yyyy - HH:mm:ss"), "] SYSTEM: ", logContent, ((obs != null) ? " (" + obs + ")" : "")));
+		System.out.println(The.concat("[", DateUtil.viewDateTime(dateTime, "dd/MM/yyyy - HH:mm:ss"), "] SYSTEM: ", logContent, ((obs != null) ? " (" + obs + ")" : "")));
 	}
 
 	/**
@@ -458,7 +455,7 @@ public class Log implements Serializable {
 
 						// concatena em conteudo (log)
 						if (ReflectionUtil.isAnnotationPresentInHierarchy(fieldObj.getClass(), Entity.class)) { // caso seja uma entidade concatena o valor do id junto ao valor retornado pelo toString
-							conteudo.append(toLog(field.getName(), StringUtils.concat("{", procuraNaHierarquia(fieldObj), ":", (String) toString.invoke(fieldObj), "}")));
+							conteudo.append(toLog(field.getName(), The.concat("{", procuraNaHierarquia(fieldObj), ":", (String) toString.invoke(fieldObj), "}")));
 						} else { // caso contrario, concatena apenas o valor retornado por toString
 							conteudo.append(toLog(field.getName(), (String) toString.invoke(fieldObj)));
 						}

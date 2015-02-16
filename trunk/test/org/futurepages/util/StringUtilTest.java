@@ -35,7 +35,7 @@ public class StringUtilTest {
 	}
 
 	private void replaceTestProcedure(String in, String expected) {
-		String result = StringUtils.replace(in, create());
+		String result = The.replace(in, create());
 		Assert.assertEquals(expected, result);
 	}
 
@@ -50,13 +50,13 @@ public class StringUtilTest {
 	
 	@Test
 	public void testConcatWith(){
-		String result = StringUtils.concatWith(" - ","A","B","C");
+		String result = The.concatWith(" - ","A","B","C");
 		Assert.assertEquals("A strings não foram concatenadas corretamente", "A - B - C", result );
 	}
 
 	@Test
 	public void testConcatWith_nenhumaString(){
-		String result = StringUtils.concatWith(" - ");
+		String result = The.concatWith(" - ");
 		Assert.assertEquals("A strings não foram concatenadas corretamente","", result );
 	}
 

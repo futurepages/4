@@ -11,6 +11,7 @@ import org.futurepages.core.persistence.SchemaGeneration;
 import org.futurepages.core.quartz.QuartzManager;
 import org.futurepages.exceptions.NotModuleException;
 import org.futurepages.util.Is;
+import org.futurepages.util.ModuleUtil;
 import org.quartz.SchedulerException;
 
 import javax.servlet.Servlet;
@@ -123,7 +124,7 @@ public class AppListener implements ServletContextListener {
 		log("Loading Apps and Modules...");
 
 		//TODO Load only requireds motdules by apps??? (need module-dependencies)
-		File[] appsAndModules = Apps.listModulesAndApps();
+		File[] appsAndModules = ModuleUtil.listModulesAndApps();
 
 		log("Apps and Modules OK");
 		return 	appsAndModules;

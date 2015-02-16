@@ -1,10 +1,10 @@
 package org.futurepages.formatters;
 
+import org.futurepages.util.The;
 import org.futurepages.util.html.HtmlMapChars;
 import java.util.Locale;
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.formatter.Formatter;
-import org.futurepages.util.StringUtils;
 import org.futurepages.util.html.HtmlRegex;
 import org.futurepages.util.iterator.string.IterableString;
 import org.futurepages.util.iterator.string.MatchedToken;
@@ -51,7 +51,7 @@ import org.futurepages.util.iterator.string.MatchedToken;
 				return url;
 			}else{
 				String sufix = url.substring(url.length()-8,url.length());
-				return StringUtils.concat(url.substring(0, MAX_CHARS),"...",sufix);
+				return The.concat(url.substring(0, MAX_CHARS), "...", sufix);
 			}
 		}else{
 			return url;

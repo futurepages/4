@@ -4,6 +4,7 @@ import modules.admin.model.entities.User;
 import modules.global.model.entities.core.AbstractPessoaFisica;
 import modules.global.model.enums.TipoContatoEnum;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,15 +25,15 @@ public class PessoaFisica extends AbstractPessoaFisica implements Serializable {
 	private String cpf;
 
 	@OneToOne
-	@Cascade(org.hibernate.annotations.CascadeType.EVICT)
+	@Cascade(CascadeType.DETACH)
 	private User user;
 
 	@OneToMany
-	@Cascade(org.hibernate.annotations.CascadeType.EVICT)
+	@Cascade(CascadeType.DETACH)
 	private List<Contato> contatos;
 
 	@OneToMany(fetch=FetchType.LAZY)
-	 @Cascade(org.hibernate.annotations.CascadeType.EVICT)
+	 @Cascade(CascadeType.DETACH)
 	private List<ContaBancaria> contasBancarias;
 
 	public PessoaFisica() {}

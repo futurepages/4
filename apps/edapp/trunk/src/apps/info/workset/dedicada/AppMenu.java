@@ -17,6 +17,7 @@ import org.futurepages.core.view.ViewItemMenu;
 
 import java.util.Collection;
 
+@SuppressWarnings({ "serial", "unchecked" })
 public final class AppMenu extends SimpleMenu {
 
 	@Override

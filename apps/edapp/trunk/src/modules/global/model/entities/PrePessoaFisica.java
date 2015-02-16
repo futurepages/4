@@ -2,16 +2,14 @@ package modules.global.model.entities;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
+
 import modules.global.model.entities.core.AbstractPessoaFisica;
 import modules.global.model.enums.TipoContatoEnum;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  *
@@ -22,12 +20,12 @@ public class PrePessoaFisica extends AbstractPessoaFisica implements Serializabl
 
 	private String cpf;
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade=javax.persistence.CascadeType.ALL)
 	private List<Contato> contatos;
 
 
 	@OneToMany(fetch=FetchType.LAZY)
-	@Cascade(org.hibernate.annotations.CascadeType.EVICT)
+	@Cascade(CascadeType.DETACH)
 	private List<ContaBancaria> contasBancarias;
 
 

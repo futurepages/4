@@ -1,14 +1,14 @@
 package modules.global.model.entities;
 
-import java.io.Serializable;
+import org.futurepages.util.Is;
+import org.futurepages.util.The;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import org.futurepages.util.Is;
-import org.futurepages.util.StringUtils;
+import java.io.Serializable;
 
 /**
  *
@@ -38,7 +38,7 @@ public class ContaBancaria  implements Serializable{
 	@Override
 	public String toString() {
 		if(this.getBanco()!=null){
-			return StringUtils.concat("C/C: ",this.getCc(),", Agência: ",this.getBancoAgencia(),", ",(!Is.empty(this.getOp())? "OP: "+Integer.parseInt(this.getOp())+", ":""),this.getBanco().toString());
+			return The.concat("C/C: ", this.getCc(), ", Agência: ", this.getBancoAgencia(), ", ", (!Is.empty(this.getOp()) ? "OP: " + Integer.parseInt(this.getOp()) + ", " : ""), this.getBanco().toString());
 		}else{
 			return "";
 		}

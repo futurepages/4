@@ -33,6 +33,12 @@ public class GenericDao extends HQLProvider {
 		this.schemaId = sessionFactoryKey;
 	}
 
+
+
+	public GenericDao(Class<EntityDao> entityDaoClass){
+
+	}
+
 	public Session session() {
 		return HibernateManager.getInstance().getSession(schemaId);
 	}
@@ -57,7 +63,10 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public <T extends Serializable> void evict(Class<T> entity){
-		session().getSessionFactory().evict(entity);
+		Session sess = session();
+		if(sess.getSessionFactory().getCache().containsEntity(entity.getClass(),getIdValue(entity))){
+			sess.getSessionFactory().getCache().evictEntity(entity.getClass(),getIdValue(entity));
+		}
 	}
 
 	public Criteria createCriteria(Class entityClass) {
@@ -102,11 +111,11 @@ public class GenericDao extends HQLProvider {
 	}
 
 
-	public Object getIdValue(Object obj) {
+	public Serializable getIdValue(Object obj) {
 		try {
 			Field field = obj.getClass().getDeclaredField(getIdName(obj.getClass()));
 			field.setAccessible(true);
-			return field.get(obj);
+			return (Serializable) field.get(obj);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -267,6 +276,10 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public void beginTransaction() {
+		Session session = session();
+		if(session.getTransaction().isActive()){
+			session.getTransaction().commit();
+		}
 		session().getTransaction().begin();
 	}
 

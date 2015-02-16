@@ -16,7 +16,10 @@ import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Events;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.locale.LocaleManager;
+import org.futurepages.core.locale.Txt;
 import org.futurepages.exceptions.UserException;
+
+import java.util.Map;
 
 public abstract class SimpleUI extends UI {
 
@@ -33,13 +36,6 @@ public abstract class SimpleUI extends UI {
     protected SessionInitListener sessionInitListener() { return new SimpleSessionInitListener(); }
     protected Component loginView() { return new SimpleLoginView(); }
 
-    protected void showAuthenticatingError(UserException ue) {
-        Notification errorNotification = new Notification(ue.getMessage());
-        errorNotification.setDelayMsec(2000);
-        errorNotification.setStyleName("bar failure small");
-        errorNotification.setPosition(Position.TOP_CENTER);
-        errorNotification.show(Page.getCurrent());
-    }
     // END methods user need to implements or can override:
 
 
@@ -93,8 +89,49 @@ public abstract class SimpleUI extends UI {
                 getNavigator().navigateTo(getNavigator().getState());
             }
         }catch(UserException errEx){
-            showAuthenticatingError(errEx);
+            notifyError(errEx.getMessage());
         }
+    }
+
+    public void notifySuccess(String msg){
+            Notification success = new Notification(msg);
+            success.setDelayMsec(2000);
+            success.setStyleName("bar success small");
+            success.setPosition(Position.BOTTOM_CENTER);
+            success.show(Page.getCurrent());
+    }
+
+    public void notifyError(String msg){
+        Notification errorNotification = new Notification(msg);
+        errorNotification.setDelayMsec(5000);
+        errorNotification.setStyleName("bar failure small");
+        errorNotification.setPosition(Position.TOP_CENTER);
+        errorNotification.show(Page.getCurrent());
+    }
+
+    public void notifyErrors(UserException e) {
+        Map<String,String> map = e.getValidationMap();
+        String msg;
+        if(map.size()>1){
+            StringBuilder sb = new StringBuilder(Txt.get("some_errors_found")+"<ul>");
+            for(String msgMap : map.values()){
+                sb.append("<li>").append(msgMap).append("</li>");
+            }
+            sb.append("</ul>");
+            msg = sb.toString();
+        }else{
+            msg = e.getMessage();
+        }
+        Notification errorNotification = new Notification(msg);
+        errorNotification.setDelayMsec(5000);
+        errorNotification.setHtmlContentAllowed(true);
+        errorNotification.setStyleName("bar failure small");
+        errorNotification.setPosition(Position.TOP_CENTER);
+        errorNotification.show(Page.getCurrent());
+    }
+
+    public void notifyFailure(String msg){
+        Notification.show(msg, Notification.Type.ERROR_MESSAGE); //it's another way to notify.
     }
 
     /**

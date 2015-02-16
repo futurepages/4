@@ -13,7 +13,8 @@ import java.util.Set;
  *
  * @author thiago
  */
-// @TODO: Adicionar leitura ao mapa do Params
+// @TODO: add the Apps' map reading
+@SuppressWarnings({ "serial", "unchecked" })
 public class ContextTemplateTag implements Map<String, Object> {
 	
 	private static interface HashMapAcces {

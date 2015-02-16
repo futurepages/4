@@ -15,60 +15,59 @@ import edu.vt.middleware.password.RepeatCharacterRegexRule;
 import edu.vt.middleware.password.Rule;
 import edu.vt.middleware.password.RuleResult;
 import edu.vt.middleware.password.WhitespaceRule;
+import modules.admin.model.core.AdminConstants;
+import modules.admin.model.entities.User;
+import modules.admin.model.services.UserServices;
+import org.futurepages.core.config.Apps;
+import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.validation.EntityValidator;
+import org.futurepages.util.FileUtil;
+import org.futurepages.util.Is;
+import org.futurepages.util.The;
+
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import modules.admin.model.entities.User;
-import modules.admin.model.core.AdminConstants;
-import modules.admin.model.dao.UserDao;
-import org.futurepages.core.exception.DefaultExceptionLogger;
-import org.futurepages.core.validation.Validator;
-import org.futurepages.util.FileUtil;
-import org.futurepages.util.Is;
-import org.futurepages.util.StringUtils;
 
-/**
- *
- * @author diogenes
- */
-public class UserValidator extends Validator {
+public class UserValidator extends EntityValidator<UserServices,User> {
 
-    public static final String SECUTIRY_ERROR = "A senha digitada não é segura. Evite sequências numéricas, caracteres repetidos, sequência de teclas vizinhas, espaços em branco e palavras conhecidas do dicionário.";
-
-	public void validateCreate(User user) { 
-		validateFullName(user);
-		validateEmail(user);
-		validateLogin(user);
-		validatePasswordSecurity(user);
-		
-		validate();
-	}
-	
-	public void validateUpdate(User user, User logado, String newPassword) {
-		validateFullName(user);
-
-		user = UserDao.get(user.getLogin());
-		if (!logado.canUpdate(user)) {
-			error("Seu perfil não permite alterar este usuário.");
-		}
-		if(newPassword!=null){
-			user.setPassword(newPassword);
-			validatePasswordSecurity(user);
-		}
-		validate();
+	@Override
+	public void create(User user) {
+		fullName(user);
+		email(user);
+		login(user);
+		passwordSecurity(user);
 	}
 
-	public void validateFullName(User user) {
+	@Override
+	public void read(User user) {
+	}
+
+	@Override
+	public void update(User user) {
+		fullName(user);
+		email(user);
+		if(user.getPlainPassword()!=null){
+			passwordSecurity(user);
+		}
+	}
+
+	@Override
+	public void delete(User user) {
+	}
+
+	public void fullName(User user) {
 		if (Is.empty(user.getFullName())) {
 			error("fullName", "Preencha o nome do usuário");
 		}
 	}
 
-	public void validateEmail(User user) {
+	public void email(User user) {
 		if (Is.empty(user.getEmail())) {
 			error("email", "Preencha o email do usuário");
 		} else {
-			User userWithEmail = UserDao.getByEmail(user.getEmail());
+			User userWithEmail = services.dao().getByEmail(user.getEmail());
 			if (userWithEmail != null && !userWithEmail.getLogin().equals(user.getLogin())) {
 				error("email", "Este email já está cadastrado no sistema para outro usuário.");
 			} else if (!Is.validMail(user.getEmail())) {
@@ -77,25 +76,25 @@ public class UserValidator extends Validator {
 		}
 	}
 
-	public void validateLogin(User user) {
-//		if (Is.empty(user.getLogin())) {
-//			error("login", "Preencha o campo do login");
-//		} else if (!Is.validStringKey(user.getLogin())) {
-//			error("login", "O login digitado é inválido");
-//		} else if (UserDao.get(user.getLogin()) != null) {
-//			error("login", "Login digitado já existe");
-//		}
+	public void confirmatedPasswords(User user, String confirmPassword) {
+		if (!user.getPlainPassword().equals(confirmPassword)) {
+			error("confirmPassword", "Senha de confirmação inválida");
+		}
+
 	}
 
-//	public void confirmatedPasswords(User user, String confirmPassword) {
-//		if (!user.getPlainPassword().equals(confirmPassword)) {
-//			error("confirmPassword", "Senha de confirmação inválida");
-//		}
-//
-//	}
+	public void login(User user) {
+		if (Is.empty(user.getLogin())) {
+			error("login", "Preencha o campo do login");
+		} else if (!Is.validStringKey(user.getLogin())) {
+			error("login", "O login digitado é inválido");
+		} else if (services.dao().get(user.getLogin()) != null) {
+			error("login", "Login digitado já existe");
+		}
+	}
+
 
 	public void newPassword(User userDB, String password, String newPassword, String confirmNewPassword) {
-
 		if (Is.empty(password) || Is.empty(newPassword) || Is.empty(confirmNewPassword)) {
 			error("Preencha todos os campos do formulário");
 		}
@@ -109,10 +108,7 @@ public class UserValidator extends Validator {
 		}
 
 		userDB.setPlainPassword(newPassword); //parece que é desnecessário este método aqui.
-		validatePasswordSecurity(userDB);
-
-//		validate(); //comentado pq na action deve estar breakOnFirst = true
-
+		passwordSecurity(userDB);
 	}
 
 	public void newPasswordToForgottenPassword(User usuarioPersistente, String newPassword, String confirmNewPassword) {
@@ -126,19 +122,18 @@ public class UserValidator extends Validator {
 		}
 
 		usuarioPersistente.setPlainPassword(newPassword);
-		validatePasswordSecurity(usuarioPersistente);
+		passwordSecurity(usuarioPersistente);
 
 	}
 
 	public void email(String login, String newEmail) {
-//
-//		if (Is.empty(newEmail) || !Is.validMail(newEmail)) {
-//			error("Email inválido. Informe um email válido.");
-//		}
-//
-//		if ((UserDao.getByEmail(newEmail) != null) && (!UserDao.isMailMine(login, newEmail))) {
-//			error("O email informado já está cadastrado para outro usuário. Informe outro email válido.");
-//		}
+		if (Is.empty(newEmail) || !Is.validMail(newEmail)) {
+			error("Email inválido. Informe um email válido.");
+		}
+
+		if ((services.dao().getByEmail(newEmail) != null) && (!services.dao().isMailMine(login, newEmail))) {
+			error("O email informado já está cadastrado para outro usuário. Informe outro email válido.");
+		}
 	}
 
 	/*
@@ -150,7 +145,7 @@ public class UserValidator extends Validator {
 		String[] tokensNome;
 		boolean hasError = false;
 		String error = null;
-		String errorSegurancaMinima = StringUtils.concat("Por questões de segurança, a senha deve possuir pelo menos ",
+		String errorSegurancaMinima = The.concat("Por questões de segurança, a senha deve possuir pelo menos ",
 				String.valueOf(AdminConstants.MIN_SIZE_PASSWORD),
 				" caracteres e não pode ser igual ao login e nem a um dos nomes do usuário.");
 
@@ -175,7 +170,7 @@ public class UserValidator extends Validator {
 		}
 		if(!hasError){
 			if(!passwordIsSecure(user.getPlainPassword(), 4)){ //busca tokens com pelo menos len-4 caracteres.
-				error =  SECUTIRY_ERROR;
+				error =  "A senha digitada não é segura. Evite sequências numéricas, caracteres repetidos, sequência de teclas vizinhas, espaços em branco e palavras conhecidas do dicionário.";
 			}
 		}
 		return error;
@@ -238,8 +233,12 @@ public class UserValidator extends Validator {
         try {
             // Criacao do dicionario atraves do arquivo de texto que precisa ser no formato UTF-8
             ArrayWordList awl;
-            awl = WordLists.createFromReader(
-                new FileReader[] {new FileReader(FileUtil.classRealPath(UserValidator.class)+"/res/wordlist_pt_br.txt")},
+	        String dicPath = FileUtil.classRealPath(UserValidator.class)+"/res/dictionary_"+ Apps.get("LOCALE")+".txt";
+            if(!(new File(dicPath)).exists()){
+	            throw new Exception("Dictionary words for the locale '"+Apps.get("LOCALE")+"' not found: "+dicPath,null);
+            }
+	        awl = WordLists.createFromReader(
+                new FileReader[] {new FileReader(dicPath)},
                 true,
                 new ArraysSort());
             WordListDictionary dict = new WordListDictionary(awl);
@@ -252,7 +251,7 @@ public class UserValidator extends Validator {
         }
     }
 
-	private void validatePasswordSecurity(User user) {
+	private void passwordSecurity(User user) {
 		String invalidErrorMsg = invalidPasswordMsg(user);
 		if(invalidErrorMsg!=null){
 			error("password",invalidErrorMsg);

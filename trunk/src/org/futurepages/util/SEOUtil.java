@@ -84,23 +84,19 @@ public class SEOUtil {
 
     /**
      * Devolve a string informada sem acentuacao e pontuacao
-     * @see urlMappingAlphabetics
-     * @see urlMappingEspeciais
      */
 	public static String replaceSpecialAlphas(String strIn){
         strIn = strIn.toLowerCase().trim();
-        return StringUtils.replace(strIn, alphabetics);
+        return The.replace(strIn, alphabetics);
     }
 
 	
 	/**
 	 * Devolve a string informada sem acentuacao, pontuacao e sem caracteres especiais
-	 * @see urlMappingAlphabetics
-	 * @see urlMappingEspeciais
 	 */
 	public static String urlFormat(String strIn){
 		strIn = strIn.toLowerCase().trim();
-		return StringUtils.replace(strIn, urlDirt);
+		return The.replace(strIn, urlDirt);
 	}
 
 	public static String noAccent(String in){

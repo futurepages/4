@@ -1,6 +1,7 @@
 package org.futurepages.util.template.simpletemplate.template.exceptions;
 
-import org.futurepages.util.StringUtils;
+
+import org.futurepages.util.The;
 
 /**
  *
@@ -92,6 +93,6 @@ public class TemplateException extends Exception {
 			htmlMessageCache = sb.toString();
 		}
 		
-		return StringUtils.concat("<pre>", htmlMessageCache, "</pre>");
+		return The.concat("<pre>", htmlMessageCache, "</pre>");
 	}
 }

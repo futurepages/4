@@ -1,7 +1,7 @@
 package org.futurepages.core.persistence;
 
 import org.futurepages.util.Is;
-import org.futurepages.util.StringUtils;
+import org.futurepages.util.The;
 
 import java.io.Serializable;
 
@@ -328,7 +328,7 @@ public class HQLProvider implements HQLable {
 	}
 
 	public static String concat(String... args) {
-		return StringUtils.concat(args);
+		return The.concat(args);
 	}
 
 	public static String concatWithComma(Object... fields) {

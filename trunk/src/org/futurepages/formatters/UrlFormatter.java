@@ -2,7 +2,7 @@ package org.futurepages.formatters;
 
 import java.util.Locale;
 import org.futurepages.core.formatter.Formatter;
-import org.futurepages.util.StringUtils;
+import org.futurepages.util.The;
 
 public class UrlFormatter implements Formatter {
 
@@ -27,7 +27,7 @@ public class UrlFormatter implements Formatter {
 			boolean contemHttps = contains(url.toLowerCase(), "https://");
 
 			if (!(contemHttp || contemHttps)) {
-				return StringUtils.concat("http://", url);
+				return The.concat("http://", url);
 			}
 
 			return url;

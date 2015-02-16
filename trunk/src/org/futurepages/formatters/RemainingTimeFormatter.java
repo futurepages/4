@@ -3,12 +3,12 @@ package org.futurepages.formatters;
 import java.util.Calendar;
 import java.util.Locale;
 
+import org.futurepages.util.The;
 import org.futurepages.util.brazil.enums.UnitTimeEnum;
 import org.futurepages.util.brazil.CalendarUtil;
 import org.futurepages.util.brazil.DateUtil;
 import org.futurepages.core.formatter.Formatter;
 import org.futurepages.util.brazil.enums.MonthEnum;
-import org.futurepages.util.StringUtils;
 
 //TODO - falta contemplar o "amanhã"
 public class RemainingTimeFormatter implements Formatter<Calendar> {
@@ -43,7 +43,7 @@ public class RemainingTimeFormatter implements Formatter<Calendar> {
 			}else{
 				ano = "";
 			}
-			return StringUtils.concat("em ",dia," de ",mes, ano);
+			return The.concat("em ", dia, " de ", mes, ano);
 		}
 	}
 }

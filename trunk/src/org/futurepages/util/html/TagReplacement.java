@@ -2,7 +2,7 @@ package org.futurepages.util.html;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import static org.futurepages.util.StringUtils.*;
+import static org.futurepages.util.The.*;
 
 public class TagReplacement {
 

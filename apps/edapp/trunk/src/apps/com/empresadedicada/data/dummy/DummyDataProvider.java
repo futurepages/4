@@ -391,7 +391,7 @@ public class DummyDataProvider implements DataProvider, Serializable {
         tryUser.setAccessKey(userName);
         tryUser.setPlainPassword(password);
         try {
-            modules.admin.model.entities.User userAuth = UserServices.authenticatedAndDetachedUser(tryUser);
+            modules.admin.model.entities.User userAuth = UserServices.getInstance().authenticatedAndDetachedUser(tryUser);
             String[] namesOfName = userAuth.getFullName().split(" ");
             user.setFirstName(namesOfName[0]);
             user.setLastName(namesOfName[namesOfName.length-1]);

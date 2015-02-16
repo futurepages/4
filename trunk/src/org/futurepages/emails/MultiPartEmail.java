@@ -15,7 +15,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 
-import org.futurepages.util.StringUtils;
+import org.futurepages.util.Is;
 
 // Revision: 192948
 
@@ -160,11 +160,11 @@ public class MultiPartEmail extends Email {
      */
     public Email setMsg(String msg) throws EmailException {
         // throw exception on null message
-        if (StringUtils.isEmpty(msg)) {
+        if (Is.empty(msg)) {
             throw new EmailException("Invalid message supplied");
         }
         try {
-            if (StringUtils.isNotEmpty(charset)) {
+            if (!Is.empty(charset)) {
                 getPrimaryBodyPart().setText(msg, charset);
             } else {
                 getPrimaryBodyPart().setText(msg);
@@ -349,7 +349,7 @@ public class MultiPartEmail extends Email {
         String description,
         String disposition)
         throws EmailException {
-        if (StringUtils.isEmpty(name)) {
+        if (Is.empty(name)) {
             name = ds.getName();
         }
         MimeBodyPart mbp = new MimeBodyPart();

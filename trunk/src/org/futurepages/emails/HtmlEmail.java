@@ -1,6 +1,7 @@
 package org.futurepages.emails;
 
 
+import org.futurepages.util.Is;
 import org.futurepages.util.RandomStringUtils;
 import org.futurepages.exceptions.EmailException;
 import java.io.IOException;
@@ -18,8 +19,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import org.futurepages.core.config.Apps;
-
-import org.futurepages.util.StringUtils;
 import org.futurepages.util.The;
 import org.futurepages.util.html.HtmlStripper;
 
@@ -107,7 +106,7 @@ public class HtmlEmail extends MultiPartEmail {
      *  for defintions
      */
     public HtmlEmail setTextMsg(String aText) throws EmailException {
-        if (StringUtils.isEmpty(aText)) {
+        if (Is.empty(aText)) {
             throw new EmailException("Invalid message supplied");
         }
 
@@ -124,7 +123,7 @@ public class HtmlEmail extends MultiPartEmail {
      *  for defintions
      */
     public HtmlEmail setHtmlMsg(String aHtml) throws EmailException {
-        if (StringUtils.isEmpty(aHtml)) {
+        if (Is.empty(aHtml)) {
             throw new EmailException("Invalid message supplied");
         }
 
@@ -148,7 +147,7 @@ public class HtmlEmail extends MultiPartEmail {
      */
 	@Override
     public Email setMsg(String msg) throws EmailException {
-        if (StringUtils.isEmpty(msg)) {
+        if (Is.empty(msg)) {
             throw new EmailException("Invalid message supplied");
         }
 		setTextMsg(new HtmlStripper(msg).text());
@@ -264,11 +263,11 @@ public class HtmlEmail extends MultiPartEmail {
         container.setSubType("mixed");
         subContainer = new MimeMultipart("alternative");
 
-        if (StringUtils.isNotEmpty(this.text)) {
+        if (!Is.empty(this.text)) {
             msgText = new MimeBodyPart();
             subContainer.addBodyPart(msgText);
 
-            if (StringUtils.isNotEmpty(this.charset)) {
+            if (!Is.empty(this.charset)) {
                 msgText.setContent(
                     this.text,
                     Email.TEXT_PLAIN + "; charset=" + this.charset);
@@ -277,7 +276,7 @@ public class HtmlEmail extends MultiPartEmail {
             }
         }
 
-        if (StringUtils.isNotEmpty(this.html)) {
+        if (!Is.empty(this.html)) {
             if (this.inlineImages.size() > 0) {
                 msgHtml = new MimeBodyPart();
                 subContainerHTML.addBodyPart(msgHtml);
@@ -286,7 +285,7 @@ public class HtmlEmail extends MultiPartEmail {
                 subContainer.addBodyPart(msgHtml);
             }
 
-            if (StringUtils.isNotEmpty(this.charset)) {
+            if (!Is.empty(this.charset)) {
                 msgHtml.setContent(
                     this.html,
                     Email.TEXT_HTML + "; charset=" + this.charset);
@@ -323,9 +322,9 @@ public class HtmlEmail extends MultiPartEmail {
         BodyPart msgText = null;
         BodyPart msgHtml = null;
 
-        if (StringUtils.isNotEmpty(this.text)) {
+        if (!Is.empty(this.text)) {
             msgText = this.getPrimaryBodyPart();
-            if (StringUtils.isNotEmpty(this.charset)) {
+            if (!Is.empty(this.charset)) {
                 msgText.setContent(
                     this.text,
                     Email.TEXT_PLAIN + "; charset=" + this.charset);
@@ -334,7 +333,7 @@ public class HtmlEmail extends MultiPartEmail {
             }
         }
 
-        if (StringUtils.isNotEmpty(this.html)) {
+        if (!Is.empty(this.html)) {
             // if the txt part of the message was null, then the html part
             // will become the primary body part
             if (msgText == null) {
@@ -349,7 +348,7 @@ public class HtmlEmail extends MultiPartEmail {
                 }
             }
 
-            if (StringUtils.isNotEmpty(this.charset)) {
+            if (!Is.empty(this.charset)) {
                 msgHtml.setContent(
                     this.html,
                     Email.TEXT_HTML + "; charset=" + this.charset);

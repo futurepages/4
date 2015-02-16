@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 
+@SuppressWarnings({ "serial", "unchecked" })
 public class AssertUtil {
 
 	

@@ -1,21 +1,17 @@
 package apps.info.workset.dedicada.view.components;
 
-import apps.info.workset.dedicada.AppEvents;
+import apps.info.workset.dedicada.AppUI;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
@@ -23,7 +19,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -31,13 +26,14 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import modules.admin.model.dao.ProfileDao;
-import modules.admin.model.dao.UserDao;
 import modules.admin.model.entities.Profile;
 import modules.admin.model.entities.User;
 import modules.admin.model.services.UserServices;
+import org.futurepages.apps.simple.SimpleUI;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
-import org.futurepages.core.persistence.Dao;
+import org.futurepages.core.locale.Txt;
+import org.futurepages.exceptions.UserException;
 
 @SuppressWarnings("serial")
 public class ProfilePreferencesWindow extends Window {
@@ -74,7 +70,7 @@ public class ProfilePreferencesWindow extends Window {
 //    private TextArea bioField;
 
     private ProfilePreferencesWindow(User user,final boolean preferencesTabOpen) {
-        user = UserDao.getByLogin(user.getLogin());
+        user = UserServices.getInstance().read(user.getLogin());
         addStyleName("profile-window");
         setId(ID);
         Responsive.makeResponsive(this);
@@ -234,25 +230,15 @@ public class ProfilePreferencesWindow extends Window {
             try {
                 fieldGroup.commit();
                 User user = fieldGroup.getItemDataSource().getBean();
-                //TODO we need to implement TransactionManager.
-                Dao.getInstance().update(user);
-                Dao.getInstance().flush();
-                // Updated user should also be persisted to database. But
-                // not in this demo.
-
-                Notification success = new Notification("Profile updated successfully");
-                success.setDelayMsec(2000);
-                success.setStyleName("bar success small");
-                success.setPosition(Position.BOTTOM_CENTER);
-                success.show(Page.getCurrent());
-
-                //TODO Need to evict object. We need to understand Hibernate 4 and the update behavior.
+                UserServices.getInstance().update(user);
+                AppUI.getCurrent().notifySuccess(Txt.get("profile_successfully_updated"));
                 Eventizer.post(new Events.LoggedUserChanged(user));
                 close();
+            } catch (UserException e) {
+                AppUI.getCurrent().notifyErrors(e);
             } catch (CommitException e) {
-                Notification.show("Error while updating profile",Type.ERROR_MESSAGE);
+                AppUI.getCurrent().notifyFailure(e.getMessage());
             }
-
         });
         ok.focus();
         footer.addComponent(ok);

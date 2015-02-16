@@ -30,7 +30,7 @@ public class AppUI extends SimpleUI {
     @Override
     protected DefaultUser authenticate(String login, String password) {
         try {
-            return UserServices.authenticatedAndDetachedUser(login, password);
+            return UserServices.getInstance().authenticatedAndDetachedUser(login, password);
         } catch (InvalidUserOrPasswordException | ExpiredPasswordException e) {
             throw new UserException(e);
         }
@@ -45,10 +45,10 @@ public class AppUI extends SimpleUI {
     protected DefaultUser loadUserLocally() {
        String loggedValue = Cookies.get(LOCAL_USER_KEY);
         if (!Is.empty(loggedValue)) {
-            User dbUser = UserServices.getByIdentiedHash(loggedValue);
+            User dbUser = UserServices.getInstance().getByIdentifiedHash(loggedValue);
             if(dbUser!=null){
                 Cookies.set(LOCAL_USER_KEY, loggedValue);
-                return UserServices.detached(dbUser);
+                return UserServices.getInstance().detached(dbUser);
             }
         }
         return null;

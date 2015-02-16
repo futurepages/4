@@ -8,3 +8,5 @@ login.user.password = Senha
 login.enter = Entrar
 login.remember = Manter Conectado
 login.authentication_required = Autenticação Requerida
+profile_successfully_updated = Perfil atualizado com sucesso
+error_while_updating_profile = Erro ao atualizar perfil
