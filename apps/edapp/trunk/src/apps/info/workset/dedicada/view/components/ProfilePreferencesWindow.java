@@ -33,6 +33,7 @@ import modules.admin.model.services.UserServices;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
 import org.futurepages.core.locale.Txt;
+import org.futurepages.core.resource.UploadedResource;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.util.Is;
 
@@ -151,7 +152,7 @@ public class ProfilePreferencesWindow extends Window {
         VerticalLayout pic = new VerticalLayout();
         pic.setSizeUndefined();
         pic.setSpacing(true);
-        Image profilePic = new Image(null, new ThemeResource("img/profile-pic-300px.jpg"));
+        Image profilePic = new Image(null, new UploadedResource("avatar.jpg"));
         profilePic.setWidth(100.0f, Unit.PIXELS);
         pic.addComponent(profilePic);
 
