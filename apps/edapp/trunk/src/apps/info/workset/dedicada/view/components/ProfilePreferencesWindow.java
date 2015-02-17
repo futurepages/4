@@ -12,13 +12,14 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -29,11 +30,11 @@ import modules.admin.model.dao.ProfileDao;
 import modules.admin.model.entities.Profile;
 import modules.admin.model.entities.User;
 import modules.admin.model.services.UserServices;
-import org.futurepages.apps.simple.SimpleUI;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.exceptions.UserException;
+import org.futurepages.util.Is;
 
 @SuppressWarnings("serial")
 public class ProfilePreferencesWindow extends Window {
@@ -50,11 +51,23 @@ public class ProfilePreferencesWindow extends Window {
      */
     @PropertyId("fullName")
     private TextField fullNameField;
+
     @PropertyId("email")
     private TextField emailField;
-    @PropertyId("profile")
-    private ComboBox profileField;
-//    @PropertyId("title")
+
+    @PropertyId("oldPassword")
+    private PasswordField oldPassword;
+
+    @PropertyId("newPassword")
+    private PasswordField newPassword;
+
+    @PropertyId("newPasswordAgain")
+    private PasswordField newPasswordAgain;
+//
+//    @PropertyId("profile")
+//    private OptionGroup profileField;
+//
+//  @PropertyId("title")
 //    private ComboBox titleField;
 //    @PropertyId("male")
 //    private OptionGroup sexField;
@@ -94,7 +107,7 @@ public class ProfilePreferencesWindow extends Window {
         content.addComponent(detailsWrapper);
         content.setExpandRatio(detailsWrapper, 1f);
 
-        detailsWrapper.addComponent(buildProfileTab());
+        detailsWrapper.addComponent(buildProfileTab(user));
         detailsWrapper.addComponent(buildPreferencesTab());
 
         if (preferencesTabOpen) {
@@ -102,10 +115,11 @@ public class ProfilePreferencesWindow extends Window {
         }
 
         content.addComponent(buildFooter());
-
         fieldGroup = new BeanFieldGroup<User>(User.class);
         fieldGroup.bindMemberFields(this);
         fieldGroup.setItemDataSource(user);
+
+
     }
 
     private Component buildPreferencesTab() {
@@ -125,7 +139,7 @@ public class ProfilePreferencesWindow extends Window {
         return root;
     }
 
-    private Component buildProfileTab() {
+    private Component buildProfileTab(User user) {
         HorizontalLayout root = new HorizontalLayout();
         root.setCaption("Profile");
         root.setIcon(FontAwesome.USER);
@@ -152,15 +166,33 @@ public class ProfilePreferencesWindow extends Window {
         root.addComponent(details);
         root.setExpandRatio(details, 1);
 
+        Label lbLogin = new Label(user.getLogin());
+        lbLogin.setCaption("Login");
+        details.addComponent(lbLogin);
+
         fullNameField = new TextField("Nome Completo");
         details.addComponent(fullNameField);
         emailField = new TextField("Email");
         details.addComponent(emailField);
 
-        profileField = new ComboBox("Perfil");
-        profileField.setInputPrompt("Defina o Perfil");
-        profileField.setContainerDataSource(new BeanItemContainer(Profile.class, ProfileDao.list()));
-        details.addComponent(profileField);
+        oldPassword = new PasswordField("Senha Atual");
+        details.addComponent(oldPassword);
+
+        newPassword = new PasswordField("Nova Senha");
+        details.addComponent(newPassword);
+        newPasswordAgain = new PasswordField("Nova Senha (Repetir)");
+        details.addComponent(newPasswordAgain);
+
+//        profileField = new OptionGroup("Perfil");
+//        profileField.setInputPrompt("Defina o Perfil"); //se combobox
+//        profileField.setReadOnly(true); // TODO Descobrir pq não pegou.
+//        profileField.setEnabled(false);
+//        profileField.setContainerDataSource(new BeanItemContainer(Profile.class, ProfileDao.list()));
+//        profileField.setTextInputAllowed(false); //se combobox
+//        details.addComponent(profileField);
+        Label lbProfile = new Label(user.getProfile().getLabel());
+        lbProfile.setCaption("Perfil");
+        details.addComponent(lbProfile);
 
 //        sexField = new OptionGroup("Sex");
 //        sexField.addItem(Boolean.FALSE);
@@ -226,11 +258,15 @@ public class ProfilePreferencesWindow extends Window {
 
         Button ok = new Button("OK");
         ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        UserServices.getInstance().dao().session().clear();
         ok.addClickListener(event -> {
             try {
-                fieldGroup.commit();
                 User user = fieldGroup.getItemDataSource().getBean();
+                fieldGroup.commit();
                 UserServices.getInstance().update(user);
+                if(!Is.empty(user.getNewPassword())){
+                    UserServices.getInstance().applyNewPassword(user);
+                }
                 AppUI.getCurrent().notifySuccess(Txt.get("profile_successfully_updated"));
                 Eventizer.post(new Events.LoggedUserChanged(user));
                 close();

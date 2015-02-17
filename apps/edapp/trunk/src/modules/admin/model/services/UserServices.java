@@ -15,6 +15,7 @@ import modules.admin.model.validators.UserValidator;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.services.EntityServices;
 import org.futurepages.util.Is;
+import org.futurepages.util.ReflectionUtil;
 
 import java.util.List;
 
@@ -112,11 +113,11 @@ public class UserServices extends EntityServices<UserDao, User> {
 				user.getProfile().getAllowedProfiles().size(); //touch
 			}
 		}
-		dao.evict(user);
 
 		if (user.getProfile() != null) {
 			dao.evict(user.getProfile());
 		}
+		dao.evict(user);
 		return user;
 	}
 
@@ -148,5 +149,10 @@ public class UserServices extends EntityServices<UserDao, User> {
 			return dbUser;
 		}
 		return null;
+	}
+
+	public void applyNewPassword(User user) {
+		user.setPassword(user.getNewPassword());
+		dao.merge(user);
 	}
 }

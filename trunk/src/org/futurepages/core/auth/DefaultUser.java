@@ -1,5 +1,6 @@
 package org.futurepages.core.auth;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Collection;
  * 
  * @author leandro
  */
-public interface DefaultUser {
+public interface DefaultUser extends Serializable{
 	
 	public String getLogin();
 	

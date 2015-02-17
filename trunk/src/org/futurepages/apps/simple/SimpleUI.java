@@ -97,7 +97,7 @@ public abstract class SimpleUI extends UI {
             Notification success = new Notification(msg);
             success.setDelayMsec(2000);
             success.setStyleName("bar success small");
-            success.setPosition(Position.BOTTOM_CENTER);
+            success.setPosition(Position.TOP_CENTER);
             success.show(Page.getCurrent());
     }
 
@@ -113,9 +113,12 @@ public abstract class SimpleUI extends UI {
         Map<String,String> map = e.getValidationMap();
         String msg;
         if(map.size()>1){
-            StringBuilder sb = new StringBuilder(Txt.get("some_errors_found")+"<ul>");
-            for(String msgMap : map.values()){
-                sb.append("<li>").append(msgMap).append("</li>");
+            StringBuilder sb = new StringBuilder(Txt.get("some_errors_found")+":<ul>");
+
+            int i = 0;
+            for(String errorMsg : map.values()){
+                i++;
+                sb.append("<li>").append(errorMsg).append(i<map.values().size()?";":".").append("</li>");
             }
             sb.append("</ul>");
             msg = sb.toString();
@@ -123,7 +126,7 @@ public abstract class SimpleUI extends UI {
             msg = e.getMessage();
         }
         Notification errorNotification = new Notification(msg);
-        errorNotification.setDelayMsec(5000);
+        errorNotification.setDelayMsec(2000 + (400 * map.size()));
         errorNotification.setHtmlContentAllowed(true);
         errorNotification.setStyleName("bar failure small");
         errorNotification.setPosition(Position.TOP_CENTER);

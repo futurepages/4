@@ -34,9 +34,9 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 
 	@Override
 	public void create(User user) {
+		login(user);
 		fullName(user);
 		email(user);
-		login(user);
 		passwordSecurity(user);
 	}
 
@@ -48,8 +48,8 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 	public void update(User user) {
 		fullName(user);
 		email(user);
-		if(user.getPlainPassword()!=null){
-			passwordSecurity(user);
+		if(!Is.empty(user.getNewPassword())){
+			newPassword(user);
 		}
 	}
 
@@ -69,18 +69,11 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 		} else {
 			User userWithEmail = services.dao().getByEmail(user.getEmail());
 			if (userWithEmail != null && !userWithEmail.getLogin().equals(user.getLogin())) {
-				error("email", "Este email já está cadastrado no sistema para outro usuário.");
+				error("email", "Este email já está cadastrado no sistema para outro usuário");
 			} else if (!Is.validMail(user.getEmail())) {
 				error("email", "E-mail inválido");
 			}
 		}
-	}
-
-	public void confirmatedPasswords(User user, String confirmPassword) {
-		if (!user.getPlainPassword().equals(confirmPassword)) {
-			error("confirmPassword", "Senha de confirmação inválida");
-		}
-
 	}
 
 	public void login(User user) {
@@ -94,24 +87,23 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 	}
 
 
-	public void newPassword(User userDB, String password, String newPassword, String confirmNewPassword) {
-		if (Is.empty(password) || Is.empty(newPassword) || Is.empty(confirmNewPassword)) {
-			error("Preencha todos os campos do formulário");
-		}
+	public void newPassword(User user) {
+		if (Is.empty(user.getOldPassword()) || Is.empty(user.getNewPassword()) || Is.empty(user.getNewPasswordAgain())) {
+			error("Se deseja alterar a senha, preencha todos os campos relativos a senha");
+		}else{
+			if (!(user.getPassword().equals(user.encryptedPassword(user.getOldPassword())))) {
+				error("senhaAtual", "Senha Atual não é válida");
+			}
 
-		if (!(userDB.getPassword().equals(userDB.encryptedPassword(password)))) {
-			error("senhaAtual", "Senha Atual Inválida");
+			if (!user.getNewPassword().equals(user.getNewPasswordAgain())) {
+				error("novaSenha", "Senha de confirmação não confere");
+			}
 		}
-
-		if (!newPassword.equals(confirmNewPassword)) {
-			error("novaSenha", "Senha de confirmação não confere");
-		}
-
-		userDB.setPlainPassword(newPassword); //parece que é desnecessário este método aqui.
-		passwordSecurity(userDB);
+		user.setPlainPassword(user.getNewPassword());
+		passwordSecurity(user);
 	}
 
-	public void newPasswordToForgottenPassword(User usuarioPersistente, String newPassword, String confirmNewPassword) {
+	public void newPasswordToForgottenPassword(User user, String newPassword, String confirmNewPassword) {
 
 		if (Is.empty(newPassword) || Is.empty(confirmNewPassword)) {
 			error("Preencha todos os dados");
@@ -121,18 +113,18 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 			error("Senha de confirmação não confere");
 		}
 
-		usuarioPersistente.setPlainPassword(newPassword);
-		passwordSecurity(usuarioPersistente);
+		user.setPlainPassword(newPassword);
+		passwordSecurity(user);
 
 	}
 
 	public void email(String login, String newEmail) {
 		if (Is.empty(newEmail) || !Is.validMail(newEmail)) {
-			error("Email inválido. Informe um email válido.");
+			error("Email inválido. Informe um email válido");
 		}
 
 		if ((services.dao().getByEmail(newEmail) != null) && (!services.dao().isMailMine(login, newEmail))) {
-			error("O email informado já está cadastrado para outro usuário. Informe outro email válido.");
+			error("O email informado já está cadastrado para outro usuário. Informe outro email válido");
 		}
 	}
 
@@ -147,7 +139,7 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 		String error = null;
 		String errorSegurancaMinima = The.concat("Por questões de segurança, a senha deve possuir pelo menos ",
 				String.valueOf(AdminConstants.MIN_SIZE_PASSWORD),
-				" caracteres e não pode ser igual ao login e nem a um dos nomes do usuário.");
+				" caracteres e não pode ser igual ao login e nem a um dos nomes do usuário");
 
 		if (Is.empty(user.getPlainPassword())) {
 			error =  "Preencha o campo da senha";
@@ -170,7 +162,7 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 		}
 		if(!hasError){
 			if(!passwordIsSecure(user.getPlainPassword(), 4)){ //busca tokens com pelo menos len-4 caracteres.
-				error =  "A senha digitada não é segura. Evite sequências numéricas, caracteres repetidos, sequência de teclas vizinhas, espaços em branco e palavras conhecidas do dicionário.";
+				error =  "A senha digitada não é segura. Evite sequências numéricas, caracteres repetidos, sequência de teclas vizinhas, espaços em branco e palavras conhecidas do dicionário";
 			}
 		}
 		return error;

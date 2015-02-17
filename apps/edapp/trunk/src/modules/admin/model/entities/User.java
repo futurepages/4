@@ -44,7 +44,17 @@ public class User implements DefaultUser, Serializable {
 	private boolean status;
 
 	@Transient
-	private String plainPassword;
+	private String plainPassword = "";
+
+	@Transient
+	private String oldPassword = "";
+
+	@Transient
+	private String newPassword = "";
+
+	@Transient
+	private String newPasswordAgain = "";
+
 
 	@Transient
 	private String accessKey;
@@ -59,16 +69,16 @@ public class User implements DefaultUser, Serializable {
 	private Profile profile;
 
 	@Transient
-	private List<Log> ultimosAcessos;
+	private List<Log> lastAccesses;
 	
 	
 	public List<Log> getLastAccesses() {
 
-		if (ultimosAcessos == null) {
-			ultimosAcessos = LogDao.topLastAccessesByUser(5, this.login);
+		if (lastAccesses == null) {
+			lastAccesses = LogDao.topLastAccessesByUser(5, this.login);
 		}
 
-		return ultimosAcessos;
+		return lastAccesses;
 	}
 
 	public User() {
@@ -78,17 +88,6 @@ public class User implements DefaultUser, Serializable {
 		this.login = defaultUser.getLogin();
 	}
 	
-	public static User newInstance(String fullName, String login, String plainPassword, String email) {
-		User user = new User();
-		user.setFullName(fullName);
-		user.setLogin(login);
-		user.setPassword(plainPassword);
-		user.setEmail(email);
-		user.setStatus(true);
-		user.setProfile(null);
-		return user;
-	}		
-
 	public static User fromDefault(DefaultUser defaultUser) {
 		return new User(defaultUser);
 	}
@@ -406,6 +405,30 @@ public class User implements DefaultUser, Serializable {
 			sb.append(" OR ").append(field).append(" = '").append(module.getModuleId()).append("'");
 		}
 		return sb.toString();
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+	public String getNewPasswordAgain() {
+		return newPasswordAgain;
+	}
+
+	public void setNewPasswordAgain(String newPasswordAgain) {
+		this.newPasswordAgain = newPasswordAgain;
+	}
+
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
 	}
 
 	public String getInfo() {

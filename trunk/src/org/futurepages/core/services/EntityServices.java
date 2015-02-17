@@ -50,7 +50,7 @@ public abstract class EntityServices<DAO extends EntityDao<BEAN>,BEAN extends Se
 
 	public BEAN update(BEAN bean){
 		validate(validatorClass, val -> val.update(bean));
-		return dao.update(bean);
+		return dao.merge(bean);
 	}
 
 	public BEAN delete(BEAN bean){
