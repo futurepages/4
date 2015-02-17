@@ -63,10 +63,7 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public <T extends Serializable> void evict(Class<T> entity){
-		Session sess = session();
-		if(sess.getSessionFactory().getCache().containsEntity(entity.getClass(),getIdValue(entity))){
-			sess.getSessionFactory().getCache().evictEntity(entity.getClass(),getIdValue(entity));
-		}
+		session().getSessionFactory().getCache().evictEntityRegion(entity);
 	}
 
 	public Criteria createCriteria(Class entityClass) {
