@@ -1,12 +1,19 @@
-login.caption = Workset Dedicada
+system.internal_failure = Falha Interna
+system.some_errors_found = Alguns erros foram encontrados
+
 menu.app_title = Workset <strong>Dedicada</strong>
-menu.preferences = Preferências
-menu.sign_out = Sair
-menu.edit_profile = Editar Perfil
+
+user-menu.basic_info = Usuário
+user-menu.profile_roles = Perfil
+user-menu.sign_out = Sair
+
+login.caption = Workset Dedicada
 login.user.accesskey = Login
 login.user.password = Senha
 login.enter = Entrar
 login.remember = Manter Conectado
 login.authentication_required = Autenticação Requerida
-profile_successfully_updated = Perfil atualizado com sucesso
-error_while_updating_profile = Erro ao atualizar perfil
+
+user.basic_info = Usuário
+user.profile_roles = Perfil de Acessos
+user.profile_successfully_updated = Perfil atualizado com sucesso

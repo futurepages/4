@@ -20,13 +20,10 @@ public class AppServlet extends VaadinServlet {
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-//		String url = request.getRequestURL()+(!Is.empty(request.getQueryString())? "?" +request.getQueryString() :"");
-//		System.out.println("BEGIN "+url+" >>>>>>>>>>>>>>>>>>");
-//		long inicio = System.currentTimeMillis();
 		try {
-			//TODO why beanTransaction necessary? A: org.hibernate.HibernateException: createQuery is not valid without active transaction
-			Dao.getInstance().beginTransaction(); //TODO Find where to put @Transactional
+			// TODO Find where to put @Transactional
+			// TODO MultiTransactional - how?
+			Dao.getInstance().beginTransaction();
 			super.service(request, response);
 			if(Dao.getInstance().isTransactionActive()){
 				Dao.getInstance().commitTransaction();
@@ -39,8 +36,6 @@ public class AppServlet extends VaadinServlet {
 		} finally {
 			Dao.getInstance().close();
 		}
-//		System.out.println((System.currentTimeMillis()-inicio)+"ms");
-//		System.out.println("END   "+url+" <<<<<<<<<<<<<<<<<<");
 	}
 
 	@Override

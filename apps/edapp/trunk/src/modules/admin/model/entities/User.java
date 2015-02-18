@@ -1,5 +1,7 @@
 package modules.admin.model.entities;
 
+import com.vaadin.server.Resource;
+import com.vaadin.server.ThemeResource;
 import modules.admin.model.core.AdminConstants;
 import modules.admin.model.dao.LogDao;
 import modules.admin.model.dao.ModuleDao;
@@ -8,6 +10,10 @@ import modules.admin.model.entities.enums.AdminProfilesEnum;
 import modules.admin.model.entities.enums.AdminRolesEnum;
 import org.futurepages.core.auth.DefaultRole;
 import org.futurepages.core.auth.DefaultUser;
+import org.futurepages.core.resource.UploadedResource;
+import org.futurepages.core.resource.UploadedTempResource;
+import org.futurepages.core.services.EntityForServices;
+import org.futurepages.util.FileUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.Security;
 import org.futurepages.util.The;
@@ -17,13 +23,15 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class User implements DefaultUser, Serializable {
+public class User implements DefaultUser, Serializable, EntityForServices {
 
     private static final String KEY = "kqEZES2uIKMLLSds343edHjnpKW6HwlhR5WcPiq8t0hrz92sAfq";
 
@@ -70,8 +78,11 @@ public class User implements DefaultUser, Serializable {
 
 	@Transient
 	private List<Log> lastAccesses;
-	
-	
+
+
+	private String avatarValue;
+
+
 	public List<Log> getLastAccesses() {
 
 		if (lastAccesses == null) {
@@ -466,7 +477,7 @@ public class User implements DefaultUser, Serializable {
 			|| this.hasRole(AdminRolesEnum.USER_STATUS)
 			|| this.hasRole(AdminRolesEnum.USER_PASSWORD)	
 			|| this.hasRole(AdminRolesEnum.USER_PROFILE)
-			|| this.hasRole(AdminRolesEnum.PROFILER)		){
+			|| this.hasRole(AdminRolesEnum.PROFILER)){
 			    
 				if(this.getProfile().getAllowedProfiles()==null || this.getProfile().getAllowedProfiles().isEmpty()){
 					return true;
@@ -474,9 +485,7 @@ public class User implements DefaultUser, Serializable {
 				else if (this.getProfile().getAllowedProfiles().contains(user.getProfile())) {
 				         return true;
 			    }
-				
 			}
-				
 		 }	
 		
 		return false;
@@ -556,5 +565,61 @@ public class User implements DefaultUser, Serializable {
 
 	public String identifiedHashToStore() {
 		return The.concat(this.getLogin() , "#" , Security.md5(The.concat(this.getLogin() , "||" , this.getPassword())));
+	}
+
+	private void applyNewPasswordIfNecessary() {
+		if(!Is.empty(this.getNewPassword())){
+			this.setPassword(this.getNewPassword());
+        }
+	}
+
+	@Override
+	public void prepareToCreate() {
+
+	}
+
+	@Override
+	public void prepareToUpdate() {
+		applyNewPasswordIfNecessary();
+		moveAvatarFileWithNecessary();
+	}
+
+	private void moveAvatarFileWithNecessary() {
+		File endFile = (new UploadedResource(this,avatarValue)).getSourceFile();
+		if(!endFile.exists()){
+			File tempFile = new UploadedTempResource(avatarValue).getSourceFile();
+			if(tempFile.exists()){
+				try {
+					FileUtil.copy(tempFile.getAbsolutePath(), endFile.getAbsolutePath());
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void prepareToRead() {
+
+	}
+
+	@Override
+	public void prepareToDelete() {
+
+	}
+
+	public Resource getAvatarRes() {
+		if(!Is.empty(avatarValue)){
+			return new UploadedResource(this, this.getAvatarValue());
+		}
+		return new ThemeResource("img/profile-pic-300px.jpg");
+	}
+
+	public String getAvatarValue() {
+		return avatarValue;
+	}
+
+	public void setAvatarValue(String avatarValue) {
+		this.avatarValue = avatarValue;
 	}
 }

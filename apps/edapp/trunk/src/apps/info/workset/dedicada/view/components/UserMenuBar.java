@@ -3,7 +3,6 @@ package apps.info.workset.dedicada.view.components;
 import apps.info.workset.dedicada.AppUI;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.MenuBar;
@@ -12,7 +11,6 @@ import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
 import org.futurepages.core.locale.Txt;
-import org.futurepages.core.resource.UploadedResource;
 
 public class UserMenuBar extends CustomComponent {
 
@@ -27,13 +25,14 @@ public class UserMenuBar extends CustomComponent {
 		final MenuBar settings = new MenuBar();
 		settings.addStyleName("user-menu");
 		final User user = (User) AppUI.getCurrent().getLoggedUser();
-//		settingsItem = settings.addItem("", new ThemeResource("img/profile-pic-300px.jpg"), null);
-		settingsItem = settings.addItem("", new UploadedResource("avatar.jpg"), null);
+		settingsItem = settings.addItem("", user.getAvatarRes(), null);
 		updateUserName(user);
-		settingsItem.addItem(Txt.get("menu.edit_profile"), selectedItem -> ProfilePreferencesWindow.open(user, false));
-		settingsItem.addItem(Txt.get("menu.preferences") , selectedItem -> ProfilePreferencesWindow.open(user, true));
+		settingsItem.addItem(Txt.get("user-menu.basic_info"), selectedItem -> UserWindow.open(user, false));
+		if(user.getProfile()!=null){
+			settingsItem.addItem(Txt.get("user-menu.profile_roles") , selectedItem -> UserWindow.open(user, true));
+		}
 		settingsItem.addSeparator();
-		settingsItem.addItem(Txt.get("menu.sign_out")    , FontAwesome.POWER_OFF,selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
+		settingsItem.addItem(Txt.get("user-menu.sign_out")    , FontAwesome.POWER_OFF,selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
 		return settings;
 	}
 
@@ -45,6 +44,7 @@ public class UserMenuBar extends CustomComponent {
 	@Subscribe
 	public void updateUserName(final Events.LoggedUserChanged event) {
 		updateUserName(event.getLoggedUser());
+		settingsItem.setIcon(((User)event.getLoggedUser()).getAvatarRes());
 	}
 
 }

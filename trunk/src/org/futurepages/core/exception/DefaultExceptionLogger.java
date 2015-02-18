@@ -22,11 +22,11 @@ public class DefaultExceptionLogger implements ExceptionLogger{
 	private DefaultExceptionLogger() {}
 
 	public String execute(Throwable throwable) {
-		return execute(throwable, ExceptionLogType.SILENT_EXCEPTION.name(),null);
+		return execute(throwable, ExceptionLogType.INTERNAL_FAIL.name(),null);
 	}
 
 	public String execute(String msg) {
-		return execute(new Exception(msg), ExceptionLogType.SILENT_EXCEPTION.name(),null);
+		return execute(new Exception(msg), ExceptionLogType.INTERNAL_FAIL.name(),null);
 	}
 
 	public String execute(Throwable throwable, String errorType, HttpServletRequest req) {
@@ -36,6 +36,7 @@ public class DefaultExceptionLogger implements ExceptionLogger{
 		String numeroProtocolo = System.currentTimeMillis()+"-"+Thread.currentThread().getId();
 
 		String exceptionId =  The.concat("[",errorType.toUpperCase(),"] ",numeroProtocolo);
+		//TODO remove brazilian date and put it acoording to the app locale. App.get("LOCALE")
         log(exceptionId , "  ("  , DateUtil.viewDateTime(new Date()) , ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
 
@@ -106,12 +107,10 @@ public class DefaultExceptionLogger implements ExceptionLogger{
 
 
 	private void log(String... strs){
-		System.out.println(The.concat(strs));
+		System.err.println(The.concat(strs));
 	}
 	
 	private enum ExceptionLogType {
-		EXCEPTION,
-		SERVLET_500,
-		SILENT_EXCEPTION
+		INTERNAL_FAIL
 	}
 }

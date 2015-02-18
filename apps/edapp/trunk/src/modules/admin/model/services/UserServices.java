@@ -1,12 +1,8 @@
 package modules.admin.model.services;
 
-import modules.admin.model.core.AdminConstants;
-import modules.admin.model.dao.ProfileDao;
 import modules.admin.model.dao.UserDao;
 import modules.admin.model.entities.Log;
-import modules.admin.model.entities.Profile;
 import modules.admin.model.entities.User;
-import modules.admin.model.entities.enums.AdminRolesEnum;
 import modules.admin.model.entities.enums.LogType;
 import modules.admin.model.exceptions.DisabledUserException;
 import modules.admin.model.exceptions.ExpiredPasswordException;
@@ -15,9 +11,6 @@ import modules.admin.model.validators.UserValidator;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.services.EntityServices;
 import org.futurepages.util.Is;
-import org.futurepages.util.ReflectionUtil;
-
-import java.util.List;
 
 /**
  *
@@ -121,20 +114,20 @@ public class UserServices extends EntityServices<UserDao, User> {
 		return user;
 	}
 
-	public User updateEmail(String login, String newEmail) {
-		User user = read(login);
-		user.setEmail(newEmail);
-		dao.update(user);
-		return user;
-	}
+//	public User updateEmail(String login, String newEmail) {
+//		User user = read(login);
+//		user.setEmail(newEmail);
+//		dao.update(user);
+//		return user;
+//	}
 	
-	public List<Profile> getReallyAllowedProfiles(User user) {
-		if (user.hasRole(AdminConstants.SUPER_ID) || ((user.hasRole(AdminRolesEnum.USER_PROFILE) || user.hasRole(AdminRolesEnum.PROFILER)) && user.getProfile().getAllowedProfiles().isEmpty())) {
-			return (ProfileDao.listAllOrderByLabel());
-		}else{
-			return (user.getProfile().getAllowedProfiles());
-		}
-	}
+//	public List<Profile> getReallyAllowedProfiles(User user) {
+//		if (user.hasRole(AdminConstants.SUPER_ID) || ((user.hasRole(AdminRolesEnum.USER_PROFILE) || user.hasRole(AdminRolesEnum.PROFILER)) && user.getProfile().getAllowedProfiles().isEmpty())) {
+//			return (ProfileDao.listAllOrderByLabel());
+//		}else{
+//			return (user.getProfile().getAllowedProfiles());
+//		}
+//	}
 
 	public DefaultUser authenticatedAndDetachedUser(String login, String password) throws InvalidUserOrPasswordException, ExpiredPasswordException {
 		User user = new User();
@@ -149,10 +142,5 @@ public class UserServices extends EntityServices<UserDao, User> {
 			return dbUser;
 		}
 		return null;
-	}
-
-	public void applyNewPassword(User user) {
-		user.setPassword(user.getNewPassword());
-		dao.merge(user);
 	}
 }
