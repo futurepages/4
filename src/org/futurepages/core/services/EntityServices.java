@@ -37,6 +37,9 @@ public abstract class EntityServices<DAO extends EntityDao<BEAN>,BEAN extends Se
 
 	public BEAN create(BEAN bean){
 		validate(validatorClass, val -> val.create(bean));
+		if(bean instanceof EntityForServices){
+			((EntityForServices)bean).prepareToCreate();
+		}
 		return dao.save(bean);
 	}
 
@@ -45,16 +48,25 @@ public abstract class EntityServices<DAO extends EntityDao<BEAN>,BEAN extends Se
 		validate(validatorClass, val -> {
 				val.read(bean);
 		});
+		if(bean instanceof EntityForServices){
+			((EntityForServices)bean).prepareToRead();
+		}
 		return bean;
 	}
 
 	public BEAN update(BEAN bean){
 		validate(validatorClass, val -> val.update(bean));
+		if(bean instanceof EntityForServices){
+			((EntityForServices)bean).prepareToUpdate();
+		}
 		return dao.merge(bean);
 	}
 
 	public BEAN delete(BEAN bean){
 		validate(validatorClass, val -> val.delete(bean));
+		if(bean instanceof EntityForServices){
+			((EntityForServices)bean).prepareToDelete();
+		}
 		return dao.delete(bean);
 	}
 

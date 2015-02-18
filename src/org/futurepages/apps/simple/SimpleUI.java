@@ -1,6 +1,7 @@
 package org.futurepages.apps.simple;
 
 import com.google.common.eventbus.Subscribe;
+import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.SessionInitListener;
@@ -8,15 +9,18 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.Position;
+import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.auth.DefaultUser;
-import org.futurepages.core.event.Events;
 import org.futurepages.core.event.Eventizer;
+import org.futurepages.core.event.Events;
+import org.futurepages.core.exception.DefaultExceptionLogger;
 import org.futurepages.core.locale.LocaleManager;
 import org.futurepages.core.locale.Txt;
+import org.futurepages.core.persistence.Dao;
 import org.futurepages.exceptions.UserException;
 
 import java.util.Map;
@@ -51,10 +55,41 @@ public abstract class SimpleUI extends UI {
 
         // Some views need to be aware of browser resize events so a
         // BrowserResizeEvent gets fired to the event bus on every occasion.
+        initErrorHandler();
         Page.getCurrent().addBrowserWindowResizeListener(event ->  Eventizer.post(new Events.BrowserResize()));
 	}
 
-   private void renderContent() {
+    private void initErrorHandler() {
+        		UI.getCurrent().setErrorHandler(new DefaultErrorHandler() {
+			@Override
+			public void error(com.vaadin.server.ErrorEvent event) {
+				if (Dao.getInstance().isTransactionActive()) {
+					Dao.getInstance().rollBackTransaction();
+				}
+
+				Throwable originalCause = event.getThrowable();
+				while(originalCause.getCause()!=null){
+					originalCause = originalCause.getCause();
+				}
+                if(originalCause instanceof UserException){
+                        UserException ue = (UserException) originalCause;
+                        getCurrent().notifyErrors(ue);
+                }else{
+                    AbstractComponent component = findAbstractComponent(event);
+                    String errorNumber = DefaultExceptionLogger.getInstance().execute(originalCause);
+                    getCurrent().notifyFailure(Txt.get("system.internal_failure")+" "+errorNumber);
+                     //Esta a seguir era a forma default que o vaadin jogava os erros nos componentes.
+//                    if (component != null) {
+                        // Shows the error in AbstractComponent
+//                        ErrorMessage errorMessage = new UserError(Txt.get("system.internal_failure")+" "+errorNumber);
+//                        component.setComponentError(errorMessage);
+//                    }
+                }
+			}
+		});
+    }
+
+    private void renderContent() {
         DefaultUser user = (DefaultUser) VaadinSession.getCurrent().getAttribute(loggedUserKey());
         if(user==null){
             user = loadUserLocally();
@@ -103,7 +138,7 @@ public abstract class SimpleUI extends UI {
 
     public void notifyError(String msg){
         Notification errorNotification = new Notification(msg);
-        errorNotification.setDelayMsec(5000);
+        errorNotification.setDelayMsec(2000);
         errorNotification.setStyleName("bar failure small");
         errorNotification.setPosition(Position.TOP_CENTER);
         errorNotification.show(Page.getCurrent());
@@ -113,7 +148,7 @@ public abstract class SimpleUI extends UI {
         Map<String,String> map = e.getValidationMap();
         String msg;
         if(map.size()>1){
-            StringBuilder sb = new StringBuilder(Txt.get("some_errors_found")+":<ul>");
+            StringBuilder sb = new StringBuilder(Txt.get("system.some_errors_found")+":<ul>");
 
             int i = 0;
             for(String errorMsg : map.values()){
@@ -123,14 +158,9 @@ public abstract class SimpleUI extends UI {
             sb.append("</ul>");
             msg = sb.toString();
         }else{
-            msg = e.getMessage();
+            msg = !e.getMessage().endsWith(".")? e.getMessage()+".":e.getMessage();
         }
-        Notification errorNotification = new Notification(msg);
-        errorNotification.setDelayMsec(2000 + (400 * map.size()));
-        errorNotification.setHtmlContentAllowed(true);
-        errorNotification.setStyleName("bar failure small");
-        errorNotification.setPosition(Position.TOP_CENTER);
-        errorNotification.show(Page.getCurrent());
+        notifyError(msg);
     }
 
     public void notifyFailure(String msg){
