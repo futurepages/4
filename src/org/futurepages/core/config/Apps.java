@@ -1,10 +1,9 @@
 package org.futurepages.core.config;
 
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.exceptions.AppsPropertiesException;
 import org.futurepages.util.FileUtil;
 import org.futurepages.util.The;
-import org.futurepages.util.template.simpletemplate.expressions.primitivehandle.Null;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,9 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -64,7 +61,7 @@ public class Apps {
 		try {
 			init(null);
 		} catch (UnsupportedEncodingException e) {
-			DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
 		}
 	}
 

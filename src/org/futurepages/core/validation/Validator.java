@@ -1,6 +1,6 @@
 package org.futurepages.core.validation;
 
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.services.EntityServices;
 import org.futurepages.exceptions.UserException;
 
@@ -30,7 +30,7 @@ public abstract class Validator<SERVICES extends EntityServices>  {
 			validator.setBreakOnFirst(breakOnFirst);
 			return validator;
 		} catch (Exception ex) {
-			DefaultExceptionLogger.getInstance().execute(ex);
+			AppLogger.getInstance().execute(ex);
 		}
 		return null;
 	}

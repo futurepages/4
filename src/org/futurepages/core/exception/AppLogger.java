@@ -11,15 +11,15 @@ import java.util.Date;
 import java.util.Enumeration;
 
 
-public class DefaultExceptionLogger implements ExceptionLogger{
+public class AppLogger implements ExceptionLogger{
 
-    private static final DefaultExceptionLogger INSTANCE = new DefaultExceptionLogger();
+    private static final AppLogger INSTANCE = new AppLogger();
 
-    public static DefaultExceptionLogger getInstance() {
+    public static AppLogger getInstance() {
         return INSTANCE;
     }
 
-	private DefaultExceptionLogger() {}
+	private AppLogger() {}
 
 	public String execute(Throwable throwable) {
 		return execute(throwable, ExceptionLogType.INTERNAL_FAIL.name(),null);

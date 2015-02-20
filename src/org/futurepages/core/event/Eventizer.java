@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
 import org.futurepages.apps.simple.SimpleUI;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 
 /**
  * A simple wrapper for Guava event bus. Defines static convenience methods for
@@ -35,6 +35,6 @@ public class Eventizer implements SubscriberExceptionHandler {
     public final void handleException(final Throwable exception, final SubscriberExceptionContext context) {
         //TODO use context too.
         //TODO understand it.
-        DefaultExceptionLogger.getInstance().execute(exception);
+        AppLogger.getInstance().execute(exception);
     }
 }

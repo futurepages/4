@@ -4,7 +4,7 @@ import java.io.File;
 import java.lang.annotation.Annotation;
 
 import org.apache.commons.lang.StringUtils;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 
 class ClassFileParser<K extends Object> extends FileParser<Class<K>> {
 
@@ -76,7 +76,7 @@ class ClassFileParser<K extends Object> extends FileParser<Class<K>> {
 				}
 			} catch (ClassNotFoundException e) {
 				System.out.println("Não foi possível carregar a classe em " + classFile.getAbsolutePath() + "\n class:" + className);
-				DefaultExceptionLogger.getInstance().execute(e);
+				AppLogger.getInstance().execute(e);
 			}
 		}
 		return null;

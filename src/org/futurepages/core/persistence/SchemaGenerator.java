@@ -2,7 +2,7 @@ package org.futurepages.core.persistence;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.FileUtil;
 
 /**
@@ -19,7 +19,7 @@ public abstract class SchemaGenerator {
 			this.execute();
 		} catch (Exception ex) {
 			System.out.println("[::schema-generator::] Error exporting... " + this.getClass().getName());
-			DefaultExceptionLogger.getInstance().execute(ex);
+			AppLogger.getInstance().execute(ex);
 		}
 	}
 

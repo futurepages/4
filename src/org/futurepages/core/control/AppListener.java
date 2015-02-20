@@ -1,7 +1,7 @@
 package org.futurepages.core.control;
 
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.install.InstallersManager;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.mail.MailConfig;
@@ -65,7 +65,7 @@ public class AppListener implements ServletContextListener {
 
 		} catch (Exception ex) {
 			log("Error trying to start context.");
-			DefaultExceptionLogger.getInstance().execute(ex);
+			AppLogger.getInstance().execute(ex);
 		}
 	}
 
@@ -230,7 +230,7 @@ public class AppListener implements ServletContextListener {
 				log("Quartz Schedulers stopped.");
 			} catch (SchedulerException ex) {
 				log("Quartz Schedulers ERROR: " + ex.getMessage());
-				DefaultExceptionLogger.getInstance().execute(ex);
+				AppLogger.getInstance().execute(ex);
 			}
 		}
 		if (HibernateManager.isRunning()) {

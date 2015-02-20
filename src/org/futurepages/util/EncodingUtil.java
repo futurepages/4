@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 
 public class EncodingUtil {
 
@@ -88,7 +88,7 @@ public class EncodingUtil {
 				String decodedUrl = URLDecoder.decode(strIn, "UTF-8");
 				return decodedUrl.replaceAll("&frasl;", "/"); //bug - tomcat não reconhece barra.
 			} catch (Exception ex) {
-				DefaultExceptionLogger.getInstance().execute(ex);
+				AppLogger.getInstance().execute(ex);
 			}
 		}
 		return null;
@@ -99,7 +99,7 @@ public class EncodingUtil {
 			try {
 				return URLEncoder.encode(strIn, "UTF-8");
 			} catch (Exception ex) {
-				DefaultExceptionLogger.getInstance().execute(ex);
+				AppLogger.getInstance().execute(ex);
 			}
 		}
 		return null;
@@ -110,7 +110,7 @@ public class EncodingUtil {
 			try {
 				return convert(str, "UTF-8", "ISO-8859-1");
 			} catch (IOException ex) {
-				DefaultExceptionLogger.getInstance().execute(ex);
+				AppLogger.getInstance().execute(ex);
 			}
 		}
 		return null;
@@ -121,7 +121,7 @@ public class EncodingUtil {
 			try {
 				return convert(str, "ISO-8859-1", "UTF-8");
 			} catch (IOException ex) {
-				DefaultExceptionLogger.getInstance().execute(ex);
+				AppLogger.getInstance().execute(ex);
 			}
 		}
 		return null;

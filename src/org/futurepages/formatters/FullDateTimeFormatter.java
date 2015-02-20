@@ -2,7 +2,7 @@ package org.futurepages.formatters;
 
 import java.util.Calendar;
 import java.util.Locale;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.formatter.Formatter;
 import org.futurepages.util.brazil.enums.MonthEnum;
 import org.futurepages.util.brazil.NumberUtil;
@@ -91,7 +91,7 @@ public class FullDateTimeFormatter implements Formatter<Calendar> {
 
 			return sb.toString();
 		} catch (Exception ex) {
-			DefaultExceptionLogger.getInstance().execute(ex);
+			AppLogger.getInstance().execute(ex);
 			return "";
 		}
 	}

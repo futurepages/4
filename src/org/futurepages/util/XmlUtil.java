@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 import com.sun.org.apache.xpath.internal.XPathAPI;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 /**
  * Classe útil para manipulação XML
  * @author Danilo
@@ -46,7 +46,7 @@ public class XmlUtil {
 		try {
 			result = XPathAPI.selectNodeList(node, xPathQuery);
 		} catch (TransformerException e) {
-			DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
 		}
 		return result;
 	}
@@ -67,9 +67,9 @@ public class XmlUtil {
 		try {
 			parser.parse(new InputSource(new StringReader(source)));			
 		} catch (SAXException e) {
-			DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
 		} catch (IOException e) {
-			DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
 		}
 
 		return parser.getDocument();

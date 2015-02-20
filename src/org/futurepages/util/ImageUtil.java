@@ -31,7 +31,7 @@ import org.apache.commons.lang.NotImplementedException;
  * Utilidades para manipulação de JPEG - Utiliza o Leitor da biblioteca JAI
  * Ler arquivos que fogem da especificação padrão do JPEG
  */
-public class JPEGUtil2 {
+public class ImageUtil {
 
 	static {
 		//necessário para que nunca se busque bibliotecas nativas do SO.
@@ -51,16 +51,16 @@ public class JPEGUtil2 {
 	 *
 	 */
 	public static BufferedImage bufferedImgWithNoAlpha(BufferedImage image) {
-		if (image.getTransparency() != Transparency.OPAQUE) {
 			BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
 			Graphics2D graphics2D = outputImage.createGraphics();
-			graphics2D.setBackground(Color.WHITE);
-			graphics2D.setComposite(AlphaComposite.SrcOver);
+			if (image.getTransparency() != Transparency.OPAQUE) {
+				graphics2D.setBackground(Color.WHITE);
+				graphics2D.setComposite(AlphaComposite.SrcOver);
+			}
 			graphics2D.fill(new Rectangle2D.Double(0, 0, image.getWidth(), image.getHeight()));
 			graphics2D.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
 			image.getGraphics().dispose();
 			image = outputImage;
-		}
 		return image;
 	}
 
@@ -114,18 +114,24 @@ public class JPEGUtil2 {
 		BufferedImage image = getBufferedImage(file);
 		resize(image, width, height, quality, pathNewFile, true, true, null);
 		image.flush();
+		image = null;
+		System.gc();
 	}
 
 	public static void resizeImage(File file, int width, int height, int quality, String pathNewFile, int[] subimage) throws MalformedURLException, FileNotFoundException, IOException {
 		BufferedImage image = getBufferedImage(file);
 		resize(image, width, height, quality, pathNewFile, true, true, subimage);
 		image.flush();
+		image = null;
+		System.gc();
 	}
 
 	public static void resizeImagePriorHeight(File file, int width, int height, int quality, String pathNewFile) throws MalformedURLException, FileNotFoundException, IOException {
 		BufferedImage image = getBufferedImage(file);
 		resize(image, width, height, quality, pathNewFile, false, true, null);
 		image.flush();
+		image = null;
+		System.gc();
 	}
 
 	private static void resize(BufferedImage image, int thumbW, int thumbH, int quality, String pathNewFile, boolean priorWidth, boolean stretchWhenSmaller, int[] subimage) throws FileNotFoundException, IOException {
@@ -178,11 +184,74 @@ public class JPEGUtil2 {
 	}
 
 	public static void resizeImageByOneDimension(Color colorSquare, boolean byWidth, byte[] bytesOfImageFile, int theDimension, int quality, String pathNewFile, boolean stretchWhenSmaller) throws MalformedURLException, FileNotFoundException, IOException {
-
 		BufferedImage image = getBufferedImage(bytesOfImageFile);
-
 		resizeByWidth(byWidth, colorSquare, image, theDimension, quality, pathNewFile, stretchWhenSmaller);
 		image.flush();
+	}
+
+	public static void resizeCropping(File file,int thumbW, int thumbH, String pathNewFile, boolean stretchWhenSmaller) throws IOException {
+		SeekableStream seekableStream = new FileSeekableStream(file);
+		ParameterBlock pb = new ParameterBlock();
+		pb.add(seekableStream);
+		BufferedImage image = bufferedCutInRatioWithNoAlpha(JAI.create("stream", pb).getAsBufferedImage(), thumbW, thumbH);
+
+		if (thumbW >= image.getWidth() || thumbH >= image.getHeight()) {
+			//quando imagem é menor que o resultado final, faz um esticamento para crescer até o tamanho desejado.
+			//quando imagem é menor que o resultado final, faz um resizer pobre
+			if (stretchWhenSmaller) {
+				poorResize(image, null, thumbW, thumbH, 100, pathNewFile);
+			} else {
+				poorResize(image, null, image.getWidth(), image.getHeight(), 100, pathNewFile);
+			}
+		} else {
+			image = GraphicsUtilities.createThumbnail(image, thumbW, thumbH);
+
+			createJPEG(image, 100, pathNewFile);
+		}
+		image.flush();
+		image = null;
+		System.gc();
+	}
+
+	public static BufferedImage bufferedCutInRatioWithNoAlpha(BufferedImage image, int w, int h) {
+
+		int oH = image.getHeight();
+		int oW = image.getWidth();
+
+		float r = h / (float) w;
+
+		float oR = oH / (float) oW;
+		int hN, wN, xN, yN;
+		if (r < oR) {
+			wN = oW;
+			hN = Math.round(oW * r);
+			yN = Math.round((oH - hN) / 2f);
+			xN = 0;
+		} else {
+			hN = oH;
+			wN = Math.round(oH / r);
+			xN = Math.round((oW - wN) / 2f);
+			yN = 0;
+		}
+
+		BufferedImage oldImage;
+		if (image.getTransparency() != Transparency.OPAQUE) {
+			BufferedImage outputImage = new BufferedImage(wN, hN, BufferedImage.TYPE_INT_RGB);
+			Graphics2D graphics2D = outputImage.createGraphics();
+			graphics2D.setBackground(Color.WHITE);
+			graphics2D.setComposite(AlphaComposite.SrcOver);
+			graphics2D.fill(new Rectangle2D.Double(0, 0, wN, hN));
+			graphics2D.drawImage(image.getSubimage(xN, yN, wN, hN), 0, 0, wN, hN, null);
+			oldImage = image;
+			image = outputImage;
+			graphics2D.dispose();
+		} else {
+			oldImage = image;
+			image = image.getSubimage(xN, yN, wN, hN);
+		}
+		oldImage.flush();
+		oldImage = null;
+		return image;
 	}
 
 	/**

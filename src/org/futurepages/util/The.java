@@ -1,7 +1,7 @@
 package org.futurepages.util;
 
 import org.apache.commons.lang.math.RandomUtils;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.html.HtmlMapChars;
 import org.futurepages.util.html.HtmlRegex;
 import org.futurepages.util.iterator.string.IterableString;
@@ -514,19 +514,19 @@ public class The {
 				out.writeObject(obj);
 				objBytes = bos.toByteArray();
 			}catch(IOException ex){
-				DefaultExceptionLogger.getInstance().execute(ex);
+				AppLogger.getInstance().execute(ex);
 			} finally {
 				try {
 					if (out != null) {
 						out.close();
 					}
 				} catch (IOException ex) {
-					DefaultExceptionLogger.getInstance().execute(ex);
+					AppLogger.getInstance().execute(ex);
 				}
 				try {
 					bos.close();
 				} catch (IOException ex) {
-					DefaultExceptionLogger.getInstance().execute(ex);
+					AppLogger.getInstance().execute(ex);
 				}
 			}
 		}
@@ -550,11 +550,11 @@ public class The {
 				obj = in.readObject();
 			} catch (IOException e)
 			{
-				DefaultExceptionLogger.getInstance().execute(e);
+				AppLogger.getInstance().execute(e);
 			}
 			catch (ClassNotFoundException e)
 			{
-				DefaultExceptionLogger.getInstance().execute(e);
+				AppLogger.getInstance().execute(e);
 			}
 			finally {
 				try {
@@ -563,7 +563,7 @@ public class The {
 						in.close();
 					}
 				} catch (IOException e) {
-					DefaultExceptionLogger.getInstance().execute(e);
+					AppLogger.getInstance().execute(e);
 				}
 			}
 		}
