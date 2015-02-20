@@ -1,7 +1,7 @@
 package org.futurepages.core.persistence;
 
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.persistence.annotations.View;
 import org.futurepages.exceptions.ModuleWithoutBeanDirException;
 import org.futurepages.util.ClassesUtil;
@@ -43,7 +43,7 @@ public class HibernateConfigurationFactory {
 			return new File(EncodingUtil.correctPath(classPath));
 		} catch (UnsupportedEncodingException ex) {
 			System.out.println("Error try refering to rootDir.");
-			DefaultExceptionLogger.getInstance().execute(ex);
+			AppLogger.getInstance().execute(ex);
 			return null;
 		}
 	}

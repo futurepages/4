@@ -1,6 +1,6 @@
 package org.futurepages.emails;
 
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.mail.DefaultAuthenticator;
 import org.futurepages.exceptions.EmailException;
 import org.futurepages.util.Is;
@@ -203,7 +203,7 @@ public abstract class Email {
         try {
             def_from = createInternetAddress(email, name, def_charset);
         } catch(EmailException e) {
-			DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
         }
     }
     
@@ -442,7 +442,7 @@ public abstract class Email {
 	            }
 	            
         	} catch(AccessControlException e) {
-        			DefaultExceptionLogger.getInstance().execute(e);
+        			AppLogger.getInstance().execute(e);
         	}
 
             // changed this (back) to getInstance due to security exceptions

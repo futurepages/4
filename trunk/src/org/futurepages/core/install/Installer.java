@@ -1,6 +1,6 @@
 package org.futurepages.core.install;
 
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 
 /**
  * Instalador. Herde essa classe e coloque dentro do pacote install
@@ -19,7 +19,7 @@ public abstract class Installer implements Installation {
 			timeCount = (System.currentTimeMillis() - timeCount) / 1000l;
 		} catch (Exception ex) {
 			System.out.println("[::install::] Error installing... " + this.getClass().getName());
-			DefaultExceptionLogger.getInstance().execute(ex);
+			AppLogger.getInstance().execute(ex);
 		}
 	}
 
@@ -32,7 +32,7 @@ public abstract class Installer implements Installation {
 			installer.execute();
 		} catch (Exception ex) {
 			System.out.println("     ----> ERROR DURING INSTALLATION.");
-			DefaultExceptionLogger.getInstance().execute(ex);
+			AppLogger.getInstance().execute(ex);
 		}
 		long endTime = (System.currentTimeMillis() / 1000l);
 		System.out.println("     ----> installed in " + (endTime - initTime) + " secs.\n");

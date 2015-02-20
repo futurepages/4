@@ -10,10 +10,10 @@ import modules.admin.model.entities.enums.AdminProfilesEnum;
 import modules.admin.model.entities.enums.AdminRolesEnum;
 import org.futurepages.core.auth.DefaultRole;
 import org.futurepages.core.auth.DefaultUser;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.resource.UploadedResource;
 import org.futurepages.core.resource.UploadedTempResource;
 import org.futurepages.core.services.EntityForServices;
-import org.futurepages.util.FileUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.Security;
 import org.futurepages.util.The;
@@ -82,11 +82,14 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 
 	private String avatarValue;
 
+	@Transient
+	private String oldAvatarValue;
 
-	public List<Log> getLastAccesses() {
+
+	public List<Log> getLastAccesses(int size) {
 
 		if (lastAccesses == null) {
-			lastAccesses = LogDao.topLastAccessesByUser(5, this.login);
+			lastAccesses = LogDao.topLastAccessesByUser(size, this.login);
 		}
 
 		return lastAccesses;
@@ -567,7 +570,7 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 		return The.concat(this.getLogin() , "#" , Security.md5(The.concat(this.getLogin() , "||" , this.getPassword())));
 	}
 
-	private void applyNewPasswordIfNecessary() {
+	private void treatNewPassword() {
 		if(!Is.empty(this.getNewPassword())){
 			this.setPassword(this.getNewPassword());
         }
@@ -580,19 +583,25 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 
 	@Override
 	public void prepareToUpdate() {
-		applyNewPasswordIfNecessary();
-		moveAvatarFileWithNecessary();
+		treatNewPassword();
+		treatAvatarFiles();
 	}
 
-	private void moveAvatarFileWithNecessary() {
+	private void treatAvatarFiles() {
 		File endFile = (new UploadedResource(this,avatarValue)).getSourceFile();
 		if(!endFile.exists()){
 			File tempFile = new UploadedTempResource(avatarValue).getSourceFile();
 			if(tempFile.exists()){
-				try {
-					FileUtil.copy(tempFile.getAbsolutePath(), endFile.getAbsolutePath());
-				} catch (IOException e) {
-					throw new RuntimeException(e);
+				boolean renamed = tempFile.renameTo(endFile);
+				if (!renamed) {
+					throw new RuntimeException(new IOException("Unable to rename file " + tempFile.getAbsolutePath() + " to " + endFile.getAbsolutePath()));
+				}
+				UploadedResource oldAvatarRes = getOldAvatarRes();
+				if (oldAvatarRes != null) {
+					boolean deleted = oldAvatarRes.getSourceFile().delete();
+					if (!deleted) {
+						AppLogger.getInstance().execute(new IOException("Unable to delete " + oldAvatarRes.getSourceFile().getAbsolutePath()));
+					}
 				}
 			}
 		}
@@ -615,11 +624,25 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 		return new ThemeResource("img/profile-pic-300px.jpg");
 	}
 
+	public UploadedResource getOldAvatarRes() {
+		if (!Is.empty(oldAvatarValue)) {
+			return new UploadedResource(this, this.getOldAvatarValue());
+		}
+		return null;
+	}
+
+
+
 	public String getAvatarValue() {
 		return avatarValue;
 	}
 
 	public void setAvatarValue(String avatarValue) {
+		this.oldAvatarValue = this.avatarValue;
 		this.avatarValue = avatarValue;
+	}
+
+	public String getOldAvatarValue() {
+		return oldAvatarValue;
 	}
 }

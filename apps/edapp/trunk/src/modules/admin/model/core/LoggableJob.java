@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import modules.admin.model.entities.Log;
 import modules.admin.model.entities.enums.LogType;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.util.brazil.DateUtil;
 import org.quartz.Job;
@@ -40,7 +40,7 @@ public abstract class LoggableJob implements Job {
 		try {
 			run();
 		} catch (Exception ex) {
-			DefaultExceptionLogger.getInstance().execute(ex);
+			AppLogger.getInstance().execute(ex);
 			obs = ex.getMessage();
 		}
 		tempoDeFinalizacao = System.currentTimeMillis();

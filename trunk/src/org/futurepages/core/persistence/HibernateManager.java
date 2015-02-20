@@ -1,6 +1,6 @@
 package org.futurepages.core.persistence;
 
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -53,7 +53,7 @@ public class HibernateManager {
 			}
 		} catch (Exception e) {
 			log("Hibernate couldn´t be started: " + e.getMessage());
-			DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
 		}
 	}
 
@@ -140,7 +140,7 @@ public class HibernateManager {
 			log("Hibernate Sessions killed.");
 		} catch (Exception ex) {
 			log("Impossible to Kill hibernate-sessions:");
-			DefaultExceptionLogger.getInstance().execute(ex);
+			AppLogger.getInstance().execute(ex);
 		}
 
 		// This manually deregisters JDBC drivers

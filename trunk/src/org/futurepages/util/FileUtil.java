@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 
 /**
  * Encapsulates all file operations.
@@ -135,7 +135,7 @@ public class FileUtil {
 			target.write(content);
 			target.flush();
 		} catch (Exception e) {
-			DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
 		} finally {
 			if (target != null) {
 				target.close();
@@ -236,7 +236,7 @@ public class FileUtil {
 			target = new FileOutputStream(targetUrl);
 			target.write(content);
 		} catch (Exception e) {
-			DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
 		} finally {
 			if (target != null) {
 				target.close();
@@ -251,7 +251,7 @@ public class FileUtil {
 			target = new FileOutputStream(targetUrl);
 			target.write(contentBytes);
 		} catch (Exception e) {
-			DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
 		} finally {
 			if (target != null) {
 				target.close();
@@ -322,14 +322,14 @@ public class FileUtil {
 				try {
 					from.close();
 				} catch (IOException e) {
-					DefaultExceptionLogger.getInstance().execute(e);
+					AppLogger.getInstance().execute(e);
 				}
 			}
 			if (to != null) {
 				try {
 					to.close();
 				} catch (IOException e) {
-					DefaultExceptionLogger.getInstance().execute(e);
+					AppLogger.getInstance().execute(e);
 				}
 			}
 		}
@@ -427,12 +427,12 @@ public class FileUtil {
 				sb.append(line).append("\n");
 			}
 		} catch (IOException e) {
-			DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
 		} finally {
 			try {
 				is.close();
 			} catch (IOException e) {
-				DefaultExceptionLogger.getInstance().execute(e);
+				AppLogger.getInstance().execute(e);
 			}
 		}
 

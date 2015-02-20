@@ -2,7 +2,7 @@ package org.futurepages.core.locale;
 
 import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.ModuleUtil;
 import org.futurepages.util.The;
 
@@ -58,7 +58,7 @@ public class Txt {
 		}
 		String str = getInstance().localesMap.get(localeId).get(txtKey);
 		if (str == null) {
-			DefaultExceptionLogger.getInstance().execute(new LocaleManagerException("Txt property '" + txtKey + "' not present for locale " + localeId + "."));
+			AppLogger.getInstance().execute(new LocaleManagerException("Txt property '" + txtKey + "' not present for locale " + localeId + "."));
 			return The.capitalizedWord(The.lastTokenOf(txtKey,"\\.").replaceAll("_", " "));
 		}
 		return str;

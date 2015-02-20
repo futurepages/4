@@ -17,15 +17,18 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.locale.LocaleManager;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.exceptions.UserException;
+import org.futurepages.util.The;
 
 import java.util.Map;
 
 public abstract class SimpleUI extends UI {
+
+    private static final int NOTIFICATIONS_TIMEOUT_MS = 2000;
 
     private final Eventizer eventizer = new Eventizer();
 
@@ -75,10 +78,9 @@ public abstract class SimpleUI extends UI {
                         UserException ue = (UserException) originalCause;
                         getCurrent().notifyErrors(ue);
                 }else{
-                    AbstractComponent component = findAbstractComponent(event);
-                    String errorNumber = DefaultExceptionLogger.getInstance().execute(originalCause);
-                    getCurrent().notifyFailure(Txt.get("system.internal_failure")+" "+errorNumber);
-                     //Esta a seguir era a forma default que o vaadin jogava os erros nos componentes.
+                      getCurrent().notifyFailure(originalCause);
+//                    AbstractComponent component = findAbstractComponent(event);
+                     //Default way of handling component failures. Putting an exclamation point in it.
 //                    if (component != null) {
                         // Shows the error in AbstractComponent
 //                        ErrorMessage errorMessage = new UserError(Txt.get("system.internal_failure")+" "+errorNumber);
@@ -130,7 +132,7 @@ public abstract class SimpleUI extends UI {
 
     public void notifySuccess(String msg){
             Notification success = new Notification(msg);
-            success.setDelayMsec(2000);
+            success.setDelayMsec(NOTIFICATIONS_TIMEOUT_MS);
             success.setStyleName("bar success small");
             success.setPosition(Position.TOP_CENTER);
             success.show(Page.getCurrent());
@@ -138,7 +140,8 @@ public abstract class SimpleUI extends UI {
 
     public void notifyError(String msg){
         Notification errorNotification = new Notification(msg);
-        errorNotification.setDelayMsec(2000);
+        errorNotification.setDelayMsec(NOTIFICATIONS_TIMEOUT_MS);
+        errorNotification.setHtmlContentAllowed(true);
         errorNotification.setStyleName("bar failure small");
         errorNotification.setPosition(Position.TOP_CENTER);
         errorNotification.show(Page.getCurrent());
@@ -163,8 +166,13 @@ public abstract class SimpleUI extends UI {
         notifyError(msg);
     }
 
-    public void notifyFailure(String msg){
+    private void notifyFailure(String msg){
         Notification.show(msg, Notification.Type.ERROR_MESSAGE); //it's another way to notify.
+    }
+
+    public void notifyFailure(Throwable originalCause) {
+        String errorNumber = AppLogger.getInstance().execute(originalCause);
+        getCurrent().notifyFailure(The.concat(Txt.get("system.internal_failure"), " ", errorNumber, "  (", Txt.get("system.press_esc_to_exit"),")"));
     }
 
     /**
@@ -200,6 +208,18 @@ public abstract class SimpleUI extends UI {
 
     public static Eventizer getEventizer() {
         return getCurrent().eventizer;
+    }
+
+    public String getIpsFromClient(){
+        VaadinRequest req =VaadinService.getCurrentRequest();
+        String ipClientReal = req.getHeader("x-forwarded-for");
+		String ipResult;
+		if (ipClientReal == null) {
+			ipResult = req.getRemoteAddr();
+		} else {
+			ipResult = ipClientReal;
+		}
+		return ipResult;
     }
     //END GETs AND UTILs METHODs
 }

@@ -10,7 +10,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.util.encoders.UrlBase64;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 
 /**
  *
@@ -67,7 +67,7 @@ public class CryptoUtil {
 
 			return ub64encode(encryptedBin);
 		} catch (Exception ex) {
-			DefaultExceptionLogger.getInstance().execute(ex);
+			AppLogger.getInstance().execute(ex);
 			return null;
 		}
 	}
@@ -89,7 +89,7 @@ public class CryptoUtil {
 
 			return new String(decryptedBin);
 		} catch (Exception ex) {
-			DefaultExceptionLogger.getInstance().execute(ex);
+			AppLogger.getInstance().execute(ex);
 			return null;
 		}
 	}

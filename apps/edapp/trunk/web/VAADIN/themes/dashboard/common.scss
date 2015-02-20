@@ -18,7 +18,10 @@
   .valo-menu-item {
     overflow: hidden;
   }
-
+  // to correct bug with upload component @byLeandro
+  input[type=file]{
+    display: none;
+  }
   .v-ui[width-range~="0-800px"] {
     .valo-menu-title {
       @include valo-gradient($color: $valo-menu-background-color);

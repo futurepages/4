@@ -94,8 +94,8 @@ public class UserServices extends EntityServices<UserDao, User> {
 		return tryUser;
 	}
 
-	public void logAccess(User user, String ipHost) {
-		dao.save(new Log(null, LogType.LOGIN, user, ipHost));
+	public void logAccess(DefaultUser user, String ipHost) {
+		dao.save(new Log(null, LogType.LOGIN, dao.get(user.getLogin()), ipHost));
 	}
 
 	public User detached(User user) {

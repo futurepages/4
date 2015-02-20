@@ -5,11 +5,11 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Page;
-import com.vaadin.server.Resource;
 import com.vaadin.server.Responsive;
+import com.vaadin.server.UploadException;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -19,7 +19,6 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.ProgressBar;
 import com.vaadin.ui.TabSheet;
@@ -30,29 +29,30 @@ import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import modules.admin.model.entities.Log;
 import modules.admin.model.entities.Role;
 import modules.admin.model.entities.User;
 import modules.admin.model.services.UserServices;
-import org.apache.xpath.SourceTree;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.resource.UploadedTempResource;
 import org.futurepages.exceptions.UserException;
+import org.futurepages.formatters.DateTimeFormatter;
 import org.futurepages.util.FileUtil;
+import org.futurepages.util.ImageUtil;
 import org.futurepages.util.Is;
-import org.futurepages.util.JPEGUtil2;
 import org.futurepages.util.Security;
 import org.futurepages.util.The;
 
-import javax.xml.bind.SchemaOutputResolver;
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class UserWindow extends Window {
@@ -78,9 +78,9 @@ public class UserWindow extends Window {
     private TextField avatarValue;
 
 
-    private UserWindow(User user, final boolean preferencesTabOpen) {
+    private UserWindow(User user, final int tabIdx) {
         user = UserServices.getInstance().read(user.getLogin());
-        addStyleName("profile-window");
+//        addStyleName("profile-window"); //deixo aqui para estudo posterior. Este style aparentemente só dava o width e height e padding.
         setId("profilepreferenceswindow");
         Responsive.makeResponsive(this);
 
@@ -88,7 +88,8 @@ public class UserWindow extends Window {
         setCloseShortcut(KeyCode.ESCAPE, null);
         setResizable(false);
         setClosable(true);
-        setHeight(90.0f, Unit.PERCENTAGE);
+        setWidth(50.0f, Unit.PERCENTAGE);
+        setHeight(82.0f, Unit.PERCENTAGE);
 
         VerticalLayout content = new VerticalLayout();
         content.setSizeFull();
@@ -107,10 +108,13 @@ public class UserWindow extends Window {
         if(user.getProfile()!=null){
             tabSheet.addComponent(buildProfileTab(user));
         }
+        tabSheet.addComponent(buildLogAccessesTab(user));
 
-        if (preferencesTabOpen) {
-            tabSheet.setSelectedTab(1);
+
+        if(Is.selected(tabIdx)){
+            tabSheet.setSelectedTab(tabIdx);
         }
+
 
         fieldGroup = new BeanFieldGroup<>(User.class);
         fieldGroup.bindMemberFields(this);
@@ -118,14 +122,14 @@ public class UserWindow extends Window {
         content.addComponent(buildFooter());
     }
 
-    private final Component buildUserTab(User user) {
+    private Component buildUserTab(User user) {
         final HorizontalLayout root = new HorizontalLayout();
         root.setCaption(Txt.get("user.basic_info"));
         root.setIcon(FontAwesome.USER);
         root.setWidth(100.0f, Unit.PERCENTAGE);
         root.setSpacing(true);
         root.setMargin(true);
-        root.addStyleName("profile-form");
+//        root.addStyleName("profile-form");
 
         final VerticalLayout picLayout = new VerticalLayout();
         picLayout.setSizeUndefined();
@@ -136,118 +140,112 @@ public class UserWindow extends Window {
         picLayout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
 
         final UploadReceiver receiver = new UploadReceiver();
-        final Upload uploadButton = new Upload(null,receiver);
+        final Upload upload = new Upload(null,receiver);
 
         final HorizontalLayout uploadingContainer = new HorizontalLayout();
         uploadingContainer.setVisible(false);
         uploadingContainer.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         final ProgressBar progressBar = new ProgressBar();
-//        final Button cancelButton = new Button("");
-//        cancelButton.setIcon(FontAwesome.TIMES);
-//        cancelButton.setStyleName(ValoTheme.BUTTON_TINY + " " + ValoTheme.BUTTON_BORDERLESS);
         uploadingContainer.addComponent(progressBar);
-//        uploadingContainer.addComponent(cancelButton);
         progressBar.setVisible(true);
         progressBar.setValue(0.0f);
         progressBar.setIndeterminate(false);
         picLayout.addComponent(uploadingContainer);
-//        uploadingContainer.setExpandRatio(progressBar, 5);
-//        uploadingContainer.setExpandRatio(cancelButton, 1);
+        Button uploadFakeButton = new Button("Trocar Foto");
+        uploadFakeButton.setVisible(false);
 
-        uploadButton.setImmediate(true);
-        uploadButton.setButtonCaption("Trocar Foto");
-        uploadButton.addFailedListener(event -> {
-            System.out.print("FAILED");
-            System.out.println(Thread.currentThread());
-            System.out.println(event.getReason());
-            System.out.println(event.getReason().getCause()!=null?event.getReason().getCause():"---");
+        uploadFakeButton.setStyleName(ValoTheme.BUTTON_DANGER);
+        uploadFakeButton.addFocusListener(event -> {
+            uploadFakeButton.setVisible(false);
+            upload.setVisible(true);
+            upload.setDescription("");
         });
-        uploadButton.addSucceededListener(event -> {
-            System.out.println("SUCCESS");
+        picLayout.addComponent(uploadFakeButton);
+        upload.setImmediate(true);
+        upload.setButtonCaption("Trocar Foto");
+        upload.addFailedListener(event -> {
+            upload.setErrorHandler(new DefaultErrorHandler(){
+                @Override
+                public void error(com.vaadin.server.ErrorEvent ev) {
+                    Throwable originalCause = ev.getThrowable();
+                    while(originalCause.getCause()!=null){
+                        originalCause = originalCause.getCause();
+                    }
+                    if(originalCause instanceof UserException){
+                        if(!Is.empty(upload.getDescription())){
+                            uploadFakeButton.setVisible(true);
+                            uploadFakeButton.setDescription(upload.getDescription());
+                            AppUI.getCurrent().notifyErrors((UserException) originalCause);
+                            uploadFakeButton.focus();
+                        }
+                    }else{
+                        if(!(originalCause instanceof  UploadException)){
+                            upload.setVisible(false);
+                            uploadFakeButton.setVisible(true);
+                            uploadFakeButton.setDescription("");
+                            AppUI.getCurrent().notifyFailure(originalCause);
+                        }
+                    }
+			    }
+            });
+        });
+        upload.addSucceededListener(event -> {
             File file = receiver.getNewFileResource().getSourceFile();
             try {
-                JPEGUtil2.resizeImage(file, 300, 300, 100, file.getAbsolutePath());
-//                JPEGUtil2.resizeImageByOneDimension(Color.WHITE,false, file, 300, 100, file.getAbsolutePath(),false);
+                ImageUtil.resizeCropping(file, 300, 300, file.getAbsolutePath(), false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             profilePic.setSource(receiver.getNewFileResource());
             avatarValue.setValue(receiver.getNewFileName());
         });
-            uploadButton.addStartedListener(event -> {
-//             cancelButton.addClickListener(eventX -> {
-//                System.out.print("cancel Button");
-//                System.out.println(Thread.currentThread());
-//                uploadButton.interruptUpload();
-//            });
-            System.out.print("START ");
-            System.out.println(Thread.currentThread());
-
-//             //testing long files
-//             if(true){
-//                System.out.println("começou a enviar");
-//                AppUI.getCurrent().setPollInterval(10);
-//                event.getUpload().setVisible(false);
-//                uploadingContainer.setVisible(true);
-//                 return;
-//             }
-            if(Is.empty(uploadButton.getDescription())){
-                System.out.println("START-ERROR-ENTER");
-                Thread turnAround = new Thread(()-> {
-                        try {
-                            Thread.sleep(1000);
-                            uploadButton.setDescription("");
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
+            upload.addStartedListener(event -> {
+                    if (Is.empty(upload.getDescription())) {
+                        if (!event.getMIMEType().equals("image/png") && !event.getMIMEType().equals("image/jpg") && !event.getMIMEType().equals("image/jpeg") && !event.getMIMEType().equals("image/pjpeg")) {
+                            upload.setDescription("Somente arquivos de imagem são permitidos para seu avatar. Você tentou enviar um arquivo do tipo " + event.getMIMEType());
+                            String errorMsg = upload.getDescription();
+                            upload.setVisible(false);
+                            throw new UserException(errorMsg);
+                        } else if (((event.getContentLength() / 1024f / 1024f) > 10)) {
+                            upload.setDescription("Arquivos com mais de 10MB não são aceitos");
+                            String errorMsg = upload.getDescription();
+                            upload.setVisible(false);
+                            throw new UserException(errorMsg);
+                        } else {
+                            AppUI.getCurrent().setPollInterval(500);
+                            uploadingContainer.setVisible(true);
                         }
+                    } else {
+                        upload.interruptUpload();
                     }
-                    );
-                if (!event.getMIMEType().equals("image/png") && !event.getMIMEType().equals("image/jpg") && !event.getMIMEType().equals("image/jpeg")) {
-                    uploadButton.setDescription("Somente arquivos de imagem são permitidos para seu avatar. Você tentou enviar um arquivo do tipo "+event.getMIMEType());
-                    turnAround.start();
-                    String errorMsg = uploadButton.getDescription();
-                    AppUI.getCurrent().accessSynchronously(turnAround);
-                    throw new UserException(errorMsg);
-                } else if (((event.getContentLength() / 1024f / 1024f) > 10)) {
-                    uploadButton.setDescription("Arquivos com mais de 10MB não são aceitos");
-                    String errorMsg = uploadButton.getDescription();
-                    turnAround.start();
-                    AppUI.getCurrent().accessSynchronously(turnAround);
-                    throw new UserException(errorMsg);
-                } else {
-                    System.out.println("começou a enviar");
-                    AppUI.getCurrent().setPollInterval(5);
-                    event.getUpload().setVisible(false);
-                    uploadingContainer.setVisible(true);
-                }
-            }else{
-                uploadButton.interruptUpload();
-            }
-        });
-        uploadButton.addProgressListener((readBytes, contentLength) -> {
-            System.out.print("PROGRESS ");
-            System.out.println(Thread.currentThread());
+            });
+        upload.addProgressListener((readBytes, contentLength) -> {
             progressBar.setValue(readBytes / (float) contentLength);
         });
-        uploadButton.addFinishedListener(event -> {
-            System.out.println("FINISHED");
+        upload.addFinishedListener(event -> {
             uploadingContainer.setVisible(false);
-            uploadButton.setVisible(true);
             if (AppUI.getCurrent().getPollInterval() > -1) {
                 AppUI.getCurrent().setPollInterval(-1);
             }
         });
-        picLayout.addComponent(uploadButton);
+        picLayout.addComponent(upload);
         root.addComponent(picLayout);
         VerticalLayout verticalLayout = new VerticalLayout();
         root.addComponent(verticalLayout);
         root.setExpandRatio(verticalLayout, 1);
+
 
         FormLayout details = new FormLayout();
         details.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         details.setMargin(false);
         verticalLayout.addComponent(details);
         verticalLayout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
+
+        Label labelPrincipal = new Label("Informações Principais");
+        labelPrincipal.setStyleName(ValoTheme.LABEL_COLORED);
+        labelPrincipal.setIcon(FontAwesome.USER);
+        details.addComponent(labelPrincipal);
+
 
         Label lbLogin = new Label(user.getLogin());
         lbLogin.setCaption("Login");
@@ -269,22 +267,20 @@ public class UserWindow extends Window {
         lbX.setStyleName(ValoTheme.LABEL_LARGE);
         details.addComponent(lbX);
 
-//        Label label = new Label("Alterar Senha");
-//        label.setStyleName(ValoTheme.LABEL_COLORED);
-//        verticalLayout.addComponent(label);
+        Label labelAlterarSenha = new Label("Definição de Nova Senha");
+        labelAlterarSenha.setStyleName(ValoTheme.LABEL_COLORED);
+        labelAlterarSenha.setIcon(FontAwesome.LOCK);
+        details.addComponent(labelAlterarSenha);
 
-        FormLayout detailsPsswd = new FormLayout();
-        detailsPsswd.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-        verticalLayout.addComponent(detailsPsswd);
         oldPassword = new PasswordField("Senha Atual");
-        detailsPsswd.addComponent(oldPassword);
+        details.addComponent(oldPassword);
 
         newPassword = new PasswordField("Nova Senha");
-        detailsPsswd.addComponent(newPassword);
+        details.addComponent(newPassword);
         newPasswordAgain = new PasswordField("Nova Senha (Repetir)");
-        detailsPsswd.addComponent(newPasswordAgain);
+        details.addComponent(newPasswordAgain);
 
-        avatarValue = new TextField("Avatar Value");
+        avatarValue = new TextField("Avatar Hidden Value");
         avatarValue.setVisible(false);
 
 
@@ -295,7 +291,7 @@ public class UserWindow extends Window {
 
     private Component buildProfileTab(User user) {
         VerticalLayout root = new VerticalLayout();
-        root.setCaption(Txt.get("user.profile_roles"));
+        root.setCaption(Txt.get("user.profile"));
         root.setIcon(FontAwesome.UNLOCK);
         root.setSpacing(true);
         root.setMargin(true);
@@ -320,7 +316,7 @@ public class UserWindow extends Window {
         details.addComponent(profileDescription);
         details.setComponentAlignment(perfilLabel, Alignment.MIDDLE_CENTER);
         Label lbPapeis = new Label();
-        lbPapeis.setCaption("Permissões");
+        lbPapeis.setCaption("Permissões ("+user.getRoles().size()+")");
         lbPapeis.addStyleName(ValoTheme.LABEL_BOLD);
         lbPapeis.setEnabled(true);
         details.addComponent(lbPapeis);
@@ -328,6 +324,31 @@ public class UserWindow extends Window {
             Label labelRole = new Label(role.getTitle(), ContentMode.TEXT);
             labelRole.setIcon(FontAwesome.CHECK_CIRCLE);
             details.addComponent(labelRole);
+        }
+        return root;
+    }
+
+    private Component buildLogAccessesTab(User user) {
+        VerticalLayout root = new VerticalLayout();
+        root.setCaption(Txt.get("user.log_accesses"));
+        root.setIcon(FontAwesome.TH_LIST);
+        root.setSpacing(true);
+        root.setMargin(true);
+        root.setSizeFull();
+        root.setHeightUndefined();
+
+        FormLayout details = new FormLayout();
+        Label label = new Label("Últimos Acessos Realizados:");
+        label.setStyleName(ValoTheme.LABEL_COLORED);
+        label.setIcon(FontAwesome.TH);
+        details.addComponent(label);
+        details.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+        root.addComponent(details);
+        List<Log> accesses = user.getLastAccesses(20);
+        for(Log access : accesses){
+            Label labelAccess = new Label(new DateTimeFormatter().format(access.getDateTime(),getLocale())+ (access.getIpHost()!=null? " (a partir de "+access.getIpHost()+")":""));
+            labelAccess.setIcon(FontAwesome.CLOCK_O);
+            details.addComponent(labelAccess);
         }
         return root;
     }
@@ -344,9 +365,8 @@ public class UserWindow extends Window {
     }
 
     private Button buildOkButton() {
-        Button ok = new Button("Salvar");
+        Button ok = new Button(Txt.get("save"));
         ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        UserServices.getInstance().dao().session().clear();
         ok.addClickListener(event -> {
             try {
                 User user = fieldGroup.getItemDataSource().getBean();
@@ -358,18 +378,16 @@ public class UserWindow extends Window {
             } catch (UserException e) {
                 AppUI.getCurrent().notifyErrors(e);
             } catch (CommitException e) {
-                AppUI.getCurrent().notifyFailure(e.getMessage());
-            } catch (Exception exx) {
-                throw new RuntimeException(exx);
+                AppUI.getCurrent().notifyFailure(e);
             }
         });
         ok.focus();
         return ok;
     }
 
-    public static void open(final User user, final boolean preferencesTabActive) {
+    public static void open(final User user, final int tabIdx) {
         Eventizer.post(new Events.CloseOpenWindows());
-        Window w = new UserWindow(user, preferencesTabActive);
+        Window w = new UserWindow(user, tabIdx);
         UI.getCurrent().addWindow(w);
         w.focus();
     }

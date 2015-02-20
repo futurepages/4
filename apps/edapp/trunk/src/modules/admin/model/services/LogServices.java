@@ -1,12 +1,5 @@
 package modules.admin.model.services;
 
-import java.util.Calendar;
-import modules.admin.model.entities.Log;
-import modules.admin.model.entities.User;
-import modules.admin.model.entities.enums.LogType;
-import org.futurepages.core.exception.DefaultExceptionLogger;
-import org.futurepages.core.persistence.Dao;
-
 public class LogServices {
 
 //	public static Log saveLog(Object objeto, LogType logType, User agent, String ipHost, String logContent, String obs, boolean withId, String ...fieldsNames) {

@@ -19,7 +19,7 @@ import modules.admin.model.core.AdminConstants;
 import modules.admin.model.entities.User;
 import modules.admin.model.services.UserServices;
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.exception.DefaultExceptionLogger;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.validation.EntityValidator;
 import org.futurepages.util.FileUtil;
 import org.futurepages.util.Is;
@@ -239,7 +239,7 @@ public class UserValidator extends EntityValidator<UserServices,User> {
             dictRule.setMatchBackwards(true);// com isso as palavras tambem sao colocadas ao contrario
         }
         catch (Exception e) {
-			DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
         }
     }
 

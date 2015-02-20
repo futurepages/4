@@ -1,10 +1,14 @@
 system.internal_failure = Falha Interna
+system.press_esc_to_exit = Pressione ESC para fechar
 system.some_errors_found = Alguns erros foram encontrados
+
+save = Salvar
 
 menu.app_title = Workset <strong>Dedicada</strong>
 
 user-menu.basic_info = Usuário
-user-menu.profile_roles = Perfil
+user-menu.profile = Perfil
+user-menu.log_accesses = Acessos
 user-menu.sign_out = Sair
 
 login.caption = Workset Dedicada
@@ -15,5 +19,7 @@ login.remember = Manter Conectado
 login.authentication_required = Autenticação Requerida
 
 user.basic_info = Usuário
-user.profile_roles = Perfil de Acessos
+user.profile = Perfil
+user.log_accesses = Acessos
 user.profile_successfully_updated = Perfil atualizado com sucesso
+

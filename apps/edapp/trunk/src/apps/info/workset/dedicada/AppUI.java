@@ -4,6 +4,7 @@ import apps.info.workset.dedicada.model.data.DataProvider;
 import apps.info.workset.dedicada.model.data.dummy.DummyDataProvider;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
+import com.vaadin.server.VaadinService;
 import modules.admin.model.entities.User;
 import modules.admin.model.exceptions.ExpiredPasswordException;
 import modules.admin.model.exceptions.InvalidUserOrPasswordException;
@@ -30,7 +31,10 @@ public class AppUI extends SimpleUI {
     @Override
     protected DefaultUser authenticate(String login, String password) {
         try {
-            return UserServices.getInstance().authenticatedAndDetachedUser(login, password);
+            UserServices services = UserServices.getInstance();
+            DefaultUser user = services.authenticatedAndDetachedUser(login, password);
+            services.logAccess(user, getIpsFromClient());
+            return user;
         } catch (InvalidUserOrPasswordException | ExpiredPasswordException e) {
             throw new UserException(e);
         }
@@ -45,10 +49,13 @@ public class AppUI extends SimpleUI {
     protected DefaultUser loadUserLocally() {
        String loggedValue = Cookies.get(LOCAL_USER_KEY);
         if (!Is.empty(loggedValue)) {
-            User dbUser = UserServices.getInstance().getByIdentifiedHash(loggedValue);
+            UserServices services = UserServices.getInstance();
+            User dbUser = services.getByIdentifiedHash(loggedValue);
             if(dbUser!=null){
                 Cookies.set(LOCAL_USER_KEY, loggedValue);
-                return UserServices.getInstance().detached(dbUser);
+                DefaultUser user = services.detached(dbUser);
+                services.logAccess(user, getIpsFromClient());
+                return user;
             }
         }
         return null;
@@ -58,13 +65,6 @@ public class AppUI extends SimpleUI {
     protected void removeUserLocally() {
         Cookies.remove(LOCAL_USER_KEY);
     }
-
-
-
-
-
-
-
 
 
 

@@ -27,10 +27,16 @@ public class UserMenuBar extends CustomComponent {
 		final User user = (User) AppUI.getCurrent().getLoggedUser();
 		settingsItem = settings.addItem("", user.getAvatarRes(), null);
 		updateUserName(user);
-		settingsItem.addItem(Txt.get("user-menu.basic_info"), selectedItem -> UserWindow.open(user, false));
-		if(user.getProfile()!=null){
-			settingsItem.addItem(Txt.get("user-menu.profile_roles") , selectedItem -> UserWindow.open(user, true));
+		settingsItem.addItem(Txt.get("user-menu.basic_info"), selectedItem -> UserWindow.open(user, 0));
+		final int logAccessIdx;
+		if(user.getProfile()==null){
+			logAccessIdx = 1;
+		}else{
+			settingsItem.addItem(Txt.get("user-menu.profile") , selectedItem -> UserWindow.open(user, 1));
+			logAccessIdx = 2;
 		}
+		settingsItem.addItem(Txt.get("user-menu.log_accesses") , selectedItem -> UserWindow.open(user, logAccessIdx));
+
 		settingsItem.addSeparator();
 		settingsItem.addItem(Txt.get("user-menu.sign_out")    , FontAwesome.POWER_OFF,selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
 		return settings;
@@ -46,5 +52,4 @@ public class UserMenuBar extends CustomComponent {
 		updateUserName(event.getLoggedUser());
 		settingsItem.setIcon(((User)event.getLoggedUser()).getAvatarRes());
 	}
-
 }
