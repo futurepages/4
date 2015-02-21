@@ -2,6 +2,9 @@ system.internal_failure = Falha Interna
 system.press_esc_to_exit = Pressione ESC para fechar
 system.some_errors_found = Alguns erros foram encontrados
 
+upload.file_type_not_allowed = Somente arquivos "%s" são permitidos. Você tentou enviar um arquivo do tipo "%s"
+upload.file_size_not_allowed = Arquivos com mais de %dMB não são permitidos
+
 save = Salvar
 
 menu.app_title = Workset <strong>Dedicada</strong>

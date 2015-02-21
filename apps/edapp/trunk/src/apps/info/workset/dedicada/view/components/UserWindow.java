@@ -5,11 +5,8 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.server.DefaultErrorHandler;
-import com.vaadin.server.FileResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
-import com.vaadin.server.UploadException;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -20,12 +17,10 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.ProgressBar;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
@@ -35,23 +30,15 @@ import modules.admin.model.entities.User;
 import modules.admin.model.services.UserServices;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
-import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.locale.Txt;
-import org.futurepages.core.resource.UploadedTempResource;
+import org.futurepages.core.upload.UploadField;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.formatters.DateTimeFormatter;
-import org.futurepages.util.FileUtil;
 import org.futurepages.util.ImageUtil;
 import org.futurepages.util.Is;
-import org.futurepages.util.Security;
-import org.futurepages.util.The;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("serial")
@@ -85,7 +72,7 @@ public class UserWindow extends Window {
         Responsive.makeResponsive(this);
 
         setModal(true);
-        setCloseShortcut(KeyCode.ESCAPE, null);
+        setCloseShortcut(KeyCode.ESCAPE);
         setResizable(false);
         setClosable(true);
         setWidth(50.0f, Unit.PERCENTAGE);
@@ -114,8 +101,6 @@ public class UserWindow extends Window {
         if(Is.selected(tabIdx)){
             tabSheet.setSelectedTab(tabIdx);
         }
-
-
         fieldGroup = new BeanFieldGroup<>(User.class);
         fieldGroup.bindMemberFields(this);
         fieldGroup.setItemDataSource(user);
@@ -139,96 +124,19 @@ public class UserWindow extends Window {
         picLayout.addComponent(profilePic);
         picLayout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
 
-        final UploadReceiver receiver = new UploadReceiver();
-        final Upload upload = new Upload(null,receiver);
+        UploadField uploadField = new UploadField("Trocar Foto", 10, UploadField.AllowedTypes.IMAGES,
+        event -> {
+            File file = event.getReceiver().getNewFileResource().getSourceFile();
+                try {
+                    ImageUtil.resizeCropping(file, 300, 300, file.getAbsolutePath(), false);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                profilePic.setSource(event.getReceiver().getNewFileResource());
+                avatarValue.setValue(event.getReceiver().getNewFileName());
+        });
+        picLayout.addComponent(uploadField);
 
-        final HorizontalLayout uploadingContainer = new HorizontalLayout();
-        uploadingContainer.setVisible(false);
-        uploadingContainer.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-        final ProgressBar progressBar = new ProgressBar();
-        uploadingContainer.addComponent(progressBar);
-        progressBar.setVisible(true);
-        progressBar.setValue(0.0f);
-        progressBar.setIndeterminate(false);
-        picLayout.addComponent(uploadingContainer);
-        Button uploadFakeButton = new Button("Trocar Foto");
-        uploadFakeButton.setVisible(false);
-
-        uploadFakeButton.setStyleName(ValoTheme.BUTTON_DANGER);
-        uploadFakeButton.addFocusListener(event -> {
-            uploadFakeButton.setVisible(false);
-            upload.setVisible(true);
-            upload.setDescription("");
-        });
-        picLayout.addComponent(uploadFakeButton);
-        upload.setImmediate(true);
-        upload.setButtonCaption("Trocar Foto");
-        upload.addFailedListener(event -> {
-            upload.setErrorHandler(new DefaultErrorHandler(){
-                @Override
-                public void error(com.vaadin.server.ErrorEvent ev) {
-                    Throwable originalCause = ev.getThrowable();
-                    while(originalCause.getCause()!=null){
-                        originalCause = originalCause.getCause();
-                    }
-                    if(originalCause instanceof UserException){
-                        if(!Is.empty(upload.getDescription())){
-                            uploadFakeButton.setVisible(true);
-                            uploadFakeButton.setDescription(upload.getDescription());
-                            AppUI.getCurrent().notifyErrors((UserException) originalCause);
-                            uploadFakeButton.focus();
-                        }
-                    }else{
-                        if(!(originalCause instanceof  UploadException)){
-                            upload.setVisible(false);
-                            uploadFakeButton.setVisible(true);
-                            uploadFakeButton.setDescription("");
-                            AppUI.getCurrent().notifyFailure(originalCause);
-                        }
-                    }
-			    }
-            });
-        });
-        upload.addSucceededListener(event -> {
-            File file = receiver.getNewFileResource().getSourceFile();
-            try {
-                ImageUtil.resizeCropping(file, 300, 300, file.getAbsolutePath(), false);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            profilePic.setSource(receiver.getNewFileResource());
-            avatarValue.setValue(receiver.getNewFileName());
-        });
-            upload.addStartedListener(event -> {
-                    if (Is.empty(upload.getDescription())) {
-                        if (!event.getMIMEType().equals("image/png") && !event.getMIMEType().equals("image/jpg") && !event.getMIMEType().equals("image/jpeg") && !event.getMIMEType().equals("image/pjpeg")) {
-                            upload.setDescription("Somente arquivos de imagem são permitidos para seu avatar. Você tentou enviar um arquivo do tipo " + event.getMIMEType());
-                            String errorMsg = upload.getDescription();
-                            upload.setVisible(false);
-                            throw new UserException(errorMsg);
-                        } else if (((event.getContentLength() / 1024f / 1024f) > 10)) {
-                            upload.setDescription("Arquivos com mais de 10MB não são aceitos");
-                            String errorMsg = upload.getDescription();
-                            upload.setVisible(false);
-                            throw new UserException(errorMsg);
-                        } else {
-                            AppUI.getCurrent().setPollInterval(500);
-                            uploadingContainer.setVisible(true);
-                        }
-                    } else {
-                        upload.interruptUpload();
-                    }
-            });
-        upload.addProgressListener((readBytes, contentLength) -> {
-            progressBar.setValue(readBytes / (float) contentLength);
-        });
-        upload.addFinishedListener(event -> {
-            uploadingContainer.setVisible(false);
-            if (AppUI.getCurrent().getPollInterval() > -1) {
-                AppUI.getCurrent().setPollInterval(-1);
-            }
-        });
-        picLayout.addComponent(upload);
         root.addComponent(picLayout);
         VerticalLayout verticalLayout = new VerticalLayout();
         root.addComponent(verticalLayout);
@@ -378,7 +286,7 @@ public class UserWindow extends Window {
             } catch (UserException e) {
                 AppUI.getCurrent().notifyErrors(e);
             } catch (CommitException e) {
-                AppUI.getCurrent().notifyFailure(e);
+                throw new RuntimeException(e);
             }
         });
         ok.focus();
@@ -390,37 +298,5 @@ public class UserWindow extends Window {
         Window w = new UserWindow(user, tabIdx);
         UI.getCurrent().addWindow(w);
         w.focus();
-    }
-
-    private static class UploadReceiver implements Upload.Receiver {
-
-        private String newFileName;
-        private FileResource newFileResource;
-
-        /**
-         * return an OutputStream that simply counts lineends
-         */
-        @Override
-        public OutputStream receiveUpload(final String fileName, final String MIMEType) {
-            String prefix = The.concat(Thread.currentThread().getId(), "_", String.valueOf((new Date()).getTime()));
-            this.newFileName = The.concat(prefix, "_", Security.md5(prefix + fileName).substring(0, 10), ".", FileUtil.extensionFormat(fileName));
-            this.newFileResource = new UploadedTempResource(newFileName);
-            File file =  newFileResource.getSourceFile();
-            final FileOutputStream fos;
-            try {
-                fos = new FileOutputStream(file);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            return fos;
-       }
-
-        public String getNewFileName() {
-            return newFileName;
-        }
-
-        public FileResource getNewFileResource() {
-            return newFileResource;
-        }
     }
 }

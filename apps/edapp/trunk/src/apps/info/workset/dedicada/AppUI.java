@@ -4,7 +4,6 @@ import apps.info.workset.dedicada.model.data.DataProvider;
 import apps.info.workset.dedicada.model.data.dummy.DummyDataProvider;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.server.VaadinService;
 import modules.admin.model.entities.User;
 import modules.admin.model.exceptions.ExpiredPasswordException;
 import modules.admin.model.exceptions.InvalidUserOrPasswordException;
@@ -20,8 +19,7 @@ import org.futurepages.util.Is;
 @Theme("dashboard")
 public class AppUI extends SimpleUI {
 
-    //abbreviation to local user key (proposital as it is a local key.
-    private static final String LOCAL_USER_KEY = "_luserk";
+    private static final String LOCAL_USER_KEY = "_luserk"; //abbreviation to local user key (proposital as it is a local key.
 
     @Override
     protected SimpleMenu appMenu() {
