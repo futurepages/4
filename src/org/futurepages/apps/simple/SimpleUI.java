@@ -9,7 +9,6 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.Position;
-import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
@@ -111,24 +110,6 @@ public abstract class SimpleUI extends UI {
     }
 
 
-    @Subscribe
-    public void login(final Events.UserLoginRequested event) {
-        try{
-            DefaultUser user = authenticate(event.getLogin(), event.getPassword());
-            if(user!=null){
-                VaadinSession.getCurrent().setAttribute(loggedUserKey(), user);
-                if(event.isRemember()){
-                    storeUserLocally(user);
-                }
-            }
-            renderContent();
-            if(user!=null){
-                getNavigator().navigateTo(getNavigator().getState());
-            }
-        }catch(UserException errEx){
-            notifyError(errEx.getMessage());
-        }
-    }
 
     public void notifySuccess(String msg){
             Notification success = new Notification(msg);
@@ -166,7 +147,7 @@ public abstract class SimpleUI extends UI {
         notifyError(msg);
     }
 
-    private void notifyFailure(String msg){
+    public void notifyFailure(String msg){
         Notification.show(msg, Notification.Type.ERROR_MESSAGE); //it's another way to notify.
     }
 
@@ -175,6 +156,26 @@ public abstract class SimpleUI extends UI {
         getCurrent().notifyFailure(The.concat(Txt.get("system.internal_failure"), " ", errorNumber, "  (", Txt.get("system.press_esc_to_exit"),")"));
     }
 
+
+
+    @Subscribe
+    public void login(final Events.UserLoginRequested event) {
+        try{
+            DefaultUser user = authenticate(event.getLogin(), event.getPassword());
+            if(user!=null){
+                VaadinSession.getCurrent().setAttribute(loggedUserKey(), user);
+                if(event.isRemember()){
+                    storeUserLocally(user);
+                }
+            }
+            renderContent();
+            if(user!=null){
+                getNavigator().navigateTo(getNavigator().getState());
+            }
+        }catch(UserException errEx){
+            notifyError(errEx.getMessage());
+        }
+    }
     /**
      * When the user logs out, current VaadinSession gets closed and the
      * page gets reloaded on the login screen. Do notice the this doesn't
