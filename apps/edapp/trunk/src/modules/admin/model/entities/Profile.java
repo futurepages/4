@@ -162,6 +162,21 @@ public class Profile implements DefaultProfile, Serializable {
 		return false;
 	}
 
+	public boolean hasModule(String moduleId) {
+		if(this.getModules()!=null && !this.getModules().isEmpty()){
+		  if (this.getModules().get(0).getModuleId().equals(AdminConstants.SUPER_ID)) {
+			return true;
+		  } else {
+			for (Module module : this.getModules()) {
+				if (module.getModuleId().equals(moduleId)) {
+					return true;
+				}
+			}
+		  }
+		}
+		return false;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {

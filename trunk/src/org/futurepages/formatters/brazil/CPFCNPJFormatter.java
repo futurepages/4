@@ -1,11 +1,11 @@
-package org.futurepages.formatters;
+package org.futurepages.formatters.brazil;
 
 import org.futurepages.util.brazil.CNPJUtil;
 import org.futurepages.util.brazil.CPFUtil;
 import java.util.Locale;
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
  
- public class CPFCNPJFormatter implements Formatter {
+ public class CPFCNPJFormatter extends AbstractFormatter {
  	
  	public String format(Object value, Locale loc) {
 		String cpfCnpj = (String) value;

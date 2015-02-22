@@ -1,40 +1,24 @@
 package modules.admin.model.entities;
 
 import com.vaadin.server.Resource;
-import com.vaadin.server.ThemeResource;
-import modules.admin.model.core.AdminConstants;
 import modules.admin.model.dao.LogDao;
-import modules.admin.model.dao.ModuleDao;
-import modules.admin.model.dao.RoleDao;
-import modules.admin.model.entities.enums.AdminProfilesEnum;
-import modules.admin.model.entities.enums.AdminRolesEnum;
+import modules.admin.model.services.UserServices;
 import org.futurepages.core.auth.DefaultRole;
 import org.futurepages.core.auth.DefaultUser;
-import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.resource.UploadedResource;
-import org.futurepages.core.resource.UploadedTempResource;
 import org.futurepages.core.services.EntityForServices;
 import org.futurepages.util.Is;
-import org.futurepages.util.Security;
-import org.futurepages.util.The;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class User implements DefaultUser, Serializable, EntityForServices {
-
-    private static final String KEY = "kqEZES2uIKMLLSds343edHjnpKW6HwlhR5WcPiq8t0hrz92sAfq";
-
+public class User implements DefaultUser, Serializable, EntityForServices<UserServices> {
 
 	@Id
 	@Column(length = 30, nullable = false)
@@ -87,11 +71,9 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 
 
 	public List<Log> getLastAccesses(int size) {
-
 		if (lastAccesses == null) {
 			lastAccesses = LogDao.topLastAccessesByUser(size, this.login);
 		}
-
 		return lastAccesses;
 	}
 
@@ -102,10 +84,6 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 		this.login = defaultUser.getLogin();
 	}
 	
-	public static User fromDefault(DefaultUser defaultUser) {
-		return new User(defaultUser);
-	}
-
 	public String getAccessKey() {
 		return this.accessKey;
 	}
@@ -168,16 +146,6 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 		setPassword(plainPassword);
 	}
 
-	/**
-	 * 'set' para valor da senha já criptografada.
-	 *
-	 * @param password
-	 */
-	@Deprecated
-	public void setPersistentPassword(String password) {
-		this.encriptPassword = password;
-	}
-
 	public String getEmail() {
 		return this.email;
 	}
@@ -188,15 +156,7 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 
 	public List<Module> getModules() {
 		if (modules == null) {
-			if(this.getProfile()!=null){
-				modules = this.getProfile().getModules();
-				//Possui Módulo(*) - Retorna Todos os Módulos
-				if (this.hasModule(AdminConstants.SUPER_ID)) {
-					modules = ModuleDao.listOrderByTitle();
-				}
-			}else{
-				modules = new ArrayList<Module>();
-			}
+			modules = services().getModules(this);
 		}
 		return modules;
 	}
@@ -207,15 +167,7 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 
 	public List<Role> getRoles() {
 		if (roles == null) {
-			if(this.getProfile()!=null){
-				roles = this.getProfile().getRoles();
-				//Possui Role (*) - Retorna Todos os Roles
-				if (this.hasRole(AdminConstants.SUPER_ID)) {
-					roles = (RoleDao.listOrderByTitle());
-				}
-			}else{
-				roles = new ArrayList<Role>();
-			}
+			roles = services().getRoles(this);
 		}
 		return roles;
 	}
@@ -238,7 +190,7 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 	}
 
 	public String encryptedPassword(String plainPassword) {
-		return Security.md5(The.concat(login, KEY, plainPassword));
+		return services().encriptedPassword(this);
 	}
 
 	public String encryptedPassword() {
@@ -246,127 +198,27 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 	}
 
 	public boolean hasProfile() {
-		if (profile != null) {
-			return true;
-		}
-		return false;
+		return profile != null;
 	}
 
-	public boolean hasProfile(String profileId) {
-		if (profile != null) {
-			if (profile.getProfileId().equals(profileId)) {
-				return true;
-			}
-		}
-		return false;
+	public boolean hasTheModule(String moduleId) {
+		return services().hasTheModule(this,moduleId);
 	}
 
-	/**
-	 * @param moduleId
-	 * @return true if user has moduleId
-	 */
-	public boolean hasOneModule(String moduleId) {
-		if (moduleId != null) {
-			if (getModules() == null) {
-				return false;
-			}
-			for (Module module : getModules()) {
-				if (module.getModuleId().equals(moduleId)) {
-					return true;
-				}
-			}
-		} else { // quando não for especificado nenhum módulo
-			return true;
-		}
-		return false;
+	public boolean hasTheRole(String roleId) {
+		return services().hasTheRole(this,roleId);
 	}
 
 	public boolean hasModule(String moduleId){
-			boolean allowModuleId = true;
-			if (!Is.empty(moduleId)) {
-			allowModuleId = false;
-			if(moduleId.contains(",")){
-				String[] modulesIds = moduleId.split(",");
-				for(String moduleOne : modulesIds){
-					allowModuleId = allowModuleId || this.hasOneModule(moduleOne);
-					if(allowModuleId){
-						break;
-					}
-				}
-			}else{
-				allowModuleId = this.hasOneModule(moduleId);
-			}
-		}
-		return allowModuleId;
+		return services().hasModule(this, moduleId);
 	}
 
 	public boolean hasRole(String roleId){
-		boolean allowRoleId = true;
-		if (!Is.empty(roleId)) {
-			allowRoleId = false;
-			if(roleId.contains(",")){
-				String[] roleIds = roleId.split(",");
-				for(String roleOne : roleIds){
-					allowRoleId = allowRoleId || this.hasOneRole(roleOne);
-					if(allowRoleId){
-						break;
-					}
-				}
-			}else{
-				allowRoleId = this.hasOneRole(roleId);
-			}
-		}
-		return allowRoleId;
+		return services().hasRole(this, roleId);
 	}
 
-	/**
-	 *
-	 * @return true se o usuário é diferente de nulo e não possui módulos.
-	 */
 	public boolean hasModules() {
-		if (this.getModules() != null) {
-			if (getModules().size() > 0) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * You can find using '*'. Only one in the 3 possible cases: - in the
-	 * beginning, ex.: "*aaa" - in the middle, ex.: "aaa*bbbb" - or in the end
-	 * of the parameter. ex.: "aaaa*"
-	 *
-	 * WARNING: Get the roles from the profile, but need to be proc
-	 *
-	 * @param roleId
-	 * @return true if user has roleId
-	 */
-	private boolean hasOneRole(String roleId) {
-
-		if (roleId != null) {
-			if (getRoles() == null) {
-				return false;
-			}
-			if (!roleId.contains("*")) {
-				if (containsRole(roleId)) {
-					return true;
-				}
-			} else { //contains '*'
-				if (roleId.length() > 1) { //that means: not equals '*' but contains '*'
-					if (hasRolesThatMatches(roleId)) {
-						return true;
-					}
-				} else {
-					if (hasSuperRole()) {
-						return true;
-					}
-				}
-			}
-		} else { // roleId == null
-			return true;
-		}
-		return false;
+		return services().hasModules(this);
 	}
 
 	public boolean profileHasRole(String roleId) {
@@ -378,47 +230,6 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 			}
 		}
 		return false;
-
-	}
-
-	/**
-	 * @param field
-	 * @return the hql string corresponding to: field = role[0] OR field =
-	 * role[1] OR ... OR field = role[n]
-	 */
-	public String rolesLikeField(String field) {
-		return User.rolesLikeField(getRoles(), field);
-	}
-
-	/**
-	 * @param field
-	 * @return the hql string corresponding to: field = role[0] OR field =
-	 * role[1] OR ... OR field = role[n]
-	 */
-	public static String rolesLikeField(Collection<Role> roles, String field) {
-		Role role;
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < roles.size(); i++) {
-			role = ((List<Role>) roles).get(i);
-			sb.append((i > 0 ? " OR " + field : field)).append(" = '").append(role.getRoleId()).append("'");
-		}
-		sb.append((roles.size() > 0 ? " OR " + field + " = '*'" : " " + field + " = '*'"));
-		return sb.toString();
-	}
-
-	/**
-	 * @param field
-	 * @return the hql string corresponding to: field = module[0] OR field =
-	 * module[1] OR ... OR field = module[n]
-	 */
-	public String modulesLikeField(String field) {
-		Module module = this.getModules().get(0);
-		StringBuilder sb = new StringBuilder(field + " = '" + module.getModuleId() + "'");
-		for (int i = 1; i < getModules().size(); i++) {
-			module = getModules().get(i);
-			sb.append(" OR ").append(field).append(" = '").append(module.getModuleId()).append("'");
-		}
-		return sb.toString();
 	}
 
 	public String getNewPassword() {
@@ -457,41 +268,8 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 		return this.hasRole(role.getRoleId());
 	}
 
-
-	/**
-	 * Indica se o usuário está apto a alterar outro
-	 *
-	 * Só pode alterar se possui o módulo admin (o que já é implícito)
-	 * e se for do mesmo perfil ou seu perfil pode alterar aquele perfil ou é SUPER.
-	 *
-	 * @param user
-	 * @return
-	 */
-	
-	
 	public boolean canUpdate(User user) {
-		if(this.hasModule("admin")){
-			
-			if (this.getProfile().getProfileId().equals(AdminProfilesEnum.SYSTEM_SUPER.getProfileId())){
-				return true;
-			}
-
-			if(this.hasRole(AdminRolesEnum.USER_CHANGE)
-			|| this.hasRole(AdminRolesEnum.USER_STATUS)
-			|| this.hasRole(AdminRolesEnum.USER_PASSWORD)	
-			|| this.hasRole(AdminRolesEnum.USER_PROFILE)
-			|| this.hasRole(AdminRolesEnum.PROFILER)){
-			    
-				if(this.getProfile().getAllowedProfiles()==null || this.getProfile().getAllowedProfiles().isEmpty()){
-					return true;
-				}
-				else if (this.getProfile().getAllowedProfiles().contains(user.getProfile())) {
-				         return true;
-			    }
-			}
-		 }	
-		
-		return false;
+		return services().canUpdate(this, user);
 	}
 
 	@Override
@@ -503,21 +281,10 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 			return false;
 		}
 		final User other = (User) obj;
-		if ((this.login == null) ? (other.login != null) : !this.login.equals(other.login)) {
-			return false;
-		}
-		return true;
+		return !((this.login == null) ? (other.login != null) : !this.login.equals(other.login));
 	}
 
-	@Override
-	public int hashCode() {
-		int hash = 7;
-		hash = 97 * hash + (this.login != null ? this.login.hashCode() : 0);
-		return hash;
-	}
-
-
-	private boolean containsRole(String roleId) {
+	public boolean containsRole(String roleId) {
 		for (Role role : getRoles()) {
 			if (role.getRoleId().equals(roleId)) {
 				return true;
@@ -526,48 +293,21 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 		return false;
 	}
 
-	private boolean hasRolesThatMatches(String roleId) {
-		if (roleId.startsWith("*")) {
-			String sufix = roleId.substring(roleId.indexOf("*") + 1, roleId.length());
-			for (Role role : getRoles()) {
-				if (role.getRoleId().endsWith(sufix)) {
-					return true;
-				}
-			}
-		} else if (roleId.endsWith("*")) {
-			String prefixRole = roleId.substring(0, roleId.indexOf("*"));
-			for (Role role : getRoles()) {
-				if (role.getRoleId().startsWith(prefixRole)) {
-					return true;
-				}
-			}
-		} else { // '*' in the middle
-			String prefix = roleId.substring(0, roleId.indexOf("*"));
-			String sufix = roleId.substring(roleId.indexOf("*") + 1, roleId.length());
-			for (Role role : getRoles()) {
-				if (role.getRoleId().startsWith(prefix) && role.getRoleId().endsWith(sufix)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	private boolean isSuperRole(String roleId) {
-		return roleId.equals(AdminConstants.SUPER_ID);
-	}
-
-	public boolean hasSuperRole() {
-		for (Role role : getRoles()) {
-			if (isSuperRole(role.getRoleId())) {
+	public boolean containsModule(String moduleId) {
+		for (Module module : getModules()) {
+			if (module.getModuleId().equals(moduleId)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
+	public boolean hasSuperRole() {
+		return services().hasSuperRole(this);
+	}
+
 	public String identifiedHashToStore() {
-		return The.concat(this.getLogin() , "#" , Security.md5(The.concat(this.getLogin() , "||" , this.getPassword())));
+		return services().getIdentifiedHashToStore(this);
 	}
 
 	private void treatNewPassword() {
@@ -578,7 +318,6 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 
 	@Override
 	public void prepareToCreate() {
-
 	}
 
 	@Override
@@ -588,40 +327,24 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 	}
 
 	private void treatAvatarFiles() {
-		File endFile = (new UploadedResource(this,avatarValue)).getSourceFile();
-		if(!endFile.exists()){
-			File tempFile = new UploadedTempResource(avatarValue).getSourceFile();
-			if(tempFile.exists()){
-				boolean renamed = tempFile.renameTo(endFile);
-				if (!renamed) {
-					throw new RuntimeException(new IOException("Unable to rename file " + tempFile.getAbsolutePath() + " to " + endFile.getAbsolutePath()));
-				}
-				UploadedResource oldAvatarRes = getOldAvatarRes();
-				if (oldAvatarRes != null) {
-					boolean deleted = oldAvatarRes.getSourceFile().delete();
-					if (!deleted) {
-						AppLogger.getInstance().execute(new IOException("Unable to delete " + oldAvatarRes.getSourceFile().getAbsolutePath()));
-					}
-				}
-			}
-		}
+		services().treatAvatarFiles(this);
 	}
 
 	@Override
 	public void prepareToRead() {
-
 	}
 
 	@Override
 	public void prepareToDelete() {
+	}
 
+	@Override
+	public UserServices services() {
+		return UserServices.getInstance();
 	}
 
 	public Resource getAvatarRes() {
-		if(!Is.empty(avatarValue)){
-			return new UploadedResource(this, this.getAvatarValue());
-		}
-		return new ThemeResource("img/profile-pic-300px.jpg");
+		return services().avatarRes(this);
 	}
 
 	public UploadedResource getOldAvatarRes() {
@@ -630,8 +353,6 @@ public class User implements DefaultUser, Serializable, EntityForServices {
 		}
 		return null;
 	}
-
-
 
 	public String getAvatarValue() {
 		return avatarValue;

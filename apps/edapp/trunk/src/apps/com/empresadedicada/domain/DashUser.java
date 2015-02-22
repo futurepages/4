@@ -1,6 +1,6 @@
 package apps.com.empresadedicada.domain;
 
-public final class User {
+public final class DashUser {
     private String role;
     private String firstName;
     private String lastName;

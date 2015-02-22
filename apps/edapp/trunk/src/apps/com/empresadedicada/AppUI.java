@@ -2,7 +2,7 @@ package apps.com.empresadedicada;
 
 import apps.com.empresadedicada.data.DataProvider;
 import apps.com.empresadedicada.data.dummy.DummyDataProvider;
-import apps.com.empresadedicada.domain.User;
+import apps.com.empresadedicada.domain.DashUser;
 import apps.com.empresadedicada.event.EDEvent.BrowserResizeEvent;
 import apps.com.empresadedicada.event.EDEvent.CloseOpenWindowsEvent;
 import apps.com.empresadedicada.event.EDEvent.UserLoggedOutEvent;
@@ -62,7 +62,7 @@ public class AppUI extends UI {
      * Otherwise login view is shown.
      */
     private void updateContent() {
-        User user = (User) VaadinSession.getCurrent().getAttribute(User.class.getName());
+        DashUser user = (DashUser) VaadinSession.getCurrent().getAttribute(DashUser.class.getName());
         if (user != null && "admin".equals(user.getRole())) {
             // Authenticated user
             setContent(new MainView());
@@ -76,8 +76,8 @@ public class AppUI extends UI {
 
     @Subscribe
     public void userLoginRequested(final UserLoginRequestedEvent event) {
-        User user = getDataProvider().authenticate(event.getUserName(),  event.getPassword());
-        VaadinSession.getCurrent().setAttribute(User.class.getName(), user);
+        DashUser user = getDataProvider().authenticate(event.getUserName(),  event.getPassword());
+        VaadinSession.getCurrent().setAttribute(DashUser.class.getName(), user);
         updateContent();
     }
 

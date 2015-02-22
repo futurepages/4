@@ -1,10 +1,10 @@
-package org.futurepages.formatters;
+package org.futurepages.formatters.brazil;
 
 import org.futurepages.util.The;
 import org.futurepages.util.html.HtmlMapChars;
 import java.util.Locale;
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.html.HtmlRegex;
 import org.futurepages.util.iterator.string.IterableString;
 import org.futurepages.util.iterator.string.MatchedToken;
@@ -12,7 +12,7 @@ import org.futurepages.util.iterator.string.MatchedToken;
 /**
  * Formata o texto escrito em textaerea em texto com quebras de linhas de html.
  */
- public class SmartTextFormatter implements Formatter {
+ public class SmartTextFormatter extends AbstractFormatter {
 
 	private static final int MAX_CHARS = 28;
 

@@ -1,7 +1,7 @@
 package org.futurepages.formatters;
 
 import java.util.Locale;
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.The;
 
 /**
@@ -9,10 +9,10 @@ import org.futurepages.util.The;
  * retira só as aspas para não quebrar dentro de atributos de tags html.
  * .
  */
-public class JavascriptFormatter implements Formatter {
+public class JavascriptFormatter extends AbstractFormatter<String> {
     
 	@Override
-    public String format(Object value, Locale loc) {
-        return The.javascriptText(String.valueOf(value));
+    public String format(String value, Locale loc) {
+        return The.javascriptText(value);
     }
 }

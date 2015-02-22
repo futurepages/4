@@ -5,7 +5,7 @@ import java.util.Collection;
 import apps.com.empresadedicada.AppUI;
 import apps.com.empresadedicada.component.ProfilePreferencesWindow;
 import apps.com.empresadedicada.domain.Transaction;
-import apps.com.empresadedicada.domain.User;
+import apps.com.empresadedicada.domain.DashUser;
 import apps.com.empresadedicada.event.EDEvent.NotificationsCountUpdatedEvent;
 import apps.com.empresadedicada.event.EDEvent.PostViewChangeEvent;
 import apps.com.empresadedicada.event.EDEvent.ProfileUpdatedEvent;
@@ -93,15 +93,15 @@ public final class EDMenu extends CustomComponent {
         return logoWrapper;
     }
 
-    private User getCurrentUser() {
-        return (User) VaadinSession.getCurrent().getAttribute(
-                User.class.getName());
+    private DashUser getCurrentUser() {
+        return (DashUser) VaadinSession.getCurrent().getAttribute(
+                DashUser.class.getName());
     }
 
     private Component buildUserMenu() {
         final MenuBar settings = new MenuBar();
         settings.addStyleName("user-menu");
-        final User user = getCurrentUser();
+        final DashUser user = getCurrentUser();
         settingsItem = settings.addItem("", new ThemeResource(
                 "img/profile-pic-300px.jpg"), null);
         updateUserName(null);
@@ -240,7 +240,7 @@ public final class EDMenu extends CustomComponent {
 
     @Subscribe
     public void updateUserName(final ProfileUpdatedEvent event) {
-        User user = getCurrentUser();
+        DashUser user = getCurrentUser();
         settingsItem.setText(user.getFirstName() + " " + user.getLastName());
     }
 

@@ -1,6 +1,6 @@
 package org.futurepages.util.template.simpletemplate.template.builtin.tags;
 
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.core.formatter.FormatterManager;
 import org.futurepages.util.template.simpletemplate.expressions.exceptions.BadExpression;
 import org.futurepages.util.template.simpletemplate.expressions.exceptions.ExpectedExpression;
@@ -50,9 +50,9 @@ public class ValueFormatterTemplateTag extends TemplateTag {
 			Object max;
 			
 			if (frmttr != null && (formatter = frmttr.eval(context)) != null) {
-				Formatter f = FormatterManager.getFormatter((String)formatter);
+				AbstractFormatter f = FormatterManager.getFormatter((String)formatter);
 
-				String result = f.format(object, null);
+				String result = f.format(object);
 
 				if (mx != null && (max = mx.eval(context)) != null) {
 					result = result.length() > (Integer)max ? result.substring(0, ((Integer)max) - 3) + "..." : result;

@@ -22,6 +22,8 @@ public class UploadField extends CustomComponent {
 	private String caption;
 	private int maxFileSizeMB;
 	private UploadSuccessListener successListener;
+	private UploadStartListener startListener;
+	private UploadFinishListener finishListener;
 	private AllowedTypes allowedTypes;
 
 	public UploadField(String caption, int maxFileSizeMB, AllowedTypes allowedTypes, UploadSuccessListener successListener) {
@@ -66,6 +68,9 @@ public class UploadField extends CustomComponent {
 
 	private Upload.FinishedListener finishedListener(HorizontalLayout uploadingContainer) {
 		return event -> {
+			if(finishListener!=null){
+					finishListener.execute();
+				}
 			uploadingContainer.setVisible(false);
 			if (SimpleUI.getCurrent().getPollInterval() > -1) {
 				SimpleUI.getCurrent().setPollInterval(-1);
@@ -94,6 +99,9 @@ public class UploadField extends CustomComponent {
 					throw new UserException(errorMsg);
 				} else {
 					SimpleUI.getCurrent().setPollInterval(500);
+					if(startListener!=null){
+						startListener.execute();
+					}
 					uploadingContainer.setVisible(true);
 				}
 			} else {
@@ -189,5 +197,21 @@ public class UploadField extends CustomComponent {
 		public String[] getMimeTypes() {
 			return mimeTypes;
 		}
+	}
+
+	public void setFinishListener(UploadFinishListener finishListener) {
+		this.finishListener = finishListener;
+	}
+
+	public void setStartListener(UploadStartListener startListener) {
+		this.startListener = startListener;
+	}
+
+	public static interface UploadStartListener {
+		public void execute();
+	}
+
+	public static interface UploadFinishListener {
+		public void execute();
 	}
 }

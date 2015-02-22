@@ -1,5 +1,7 @@
 package modules.admin.model.dao;
 
+import modules.admin.model.entities.Module;
+import modules.admin.model.entities.Role;
 import modules.admin.model.entities.User;
 import org.futurepages.core.persistence.EntityDao;
 import org.futurepages.core.persistence.PaginationSlice;
@@ -65,6 +67,40 @@ public class UserDao extends EntityDao<User> {
 
 	public List<User> listAllUsersWithAProfile(String profileId) {
 		return list(hql(User.class, ands(field("profile.profileId").equalsTo(profileId), field("status").isTrue()),asc("login")));
+	}
+
+	/**
+	 * @return the hql string corresponding to: fieldName = role[0] OR field = role[1] OR ... OR field = role[n]
+	 */
+	public static String whereRolesLikeField(User user, String fieldName) {
+		List<Role> roles = user.getRoles();
+		if(roles.size()>0){
+			StringBuilder sb = new StringBuilder(field(fieldName).equalsTo(roles.get(0).getRoleId()));
+			if(roles.size()>1){
+				for (int i = 1; i < roles.size(); i++) {
+					sb.append(or(field(fieldName).equalsTo(roles.get(i).getRoleId())));
+				}
+			}
+			return sb.toString();
+		}
+		return "";
+	}
+
+	/**
+	 * @return the hql string corresponding to: field = module[0] OR field = module[1] OR ... OR field = module[n]
+	 */
+	public static String whereModulesLikeField(User user, String fieldName) {
+		List<Module> modules = user.getModules();
+		if(modules.size()>0){
+			StringBuilder sb = new StringBuilder(field(fieldName).equalsTo(modules.get(0).getModuleId()));
+			if(modules.size()>1){
+				for (int i = 1; i < modules.size(); i++) {
+					sb.append(or(field(fieldName).equalsTo(modules.get(i).getModuleId())));
+				}
+			}
+			return sb.toString();
+		}
+		return "";
 	}
 
 	@Override

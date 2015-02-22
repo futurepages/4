@@ -1,16 +1,16 @@
-package org.futurepages.formatters;
+package org.futurepages.formatters.brazil;
 
 import java.util.Calendar;
 import java.util.Date;
 import org.futurepages.util.brazil.DateUtil;
 import java.util.Locale;
 import org.futurepages.util.brazil.CalendarUtil;
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
  
 /**
  * Formata a data no formato DD/MM/YYYY
  */
- public class LiteralDateTimeFormatter implements Formatter {
+ public class LiteralDateTimeFormatter extends AbstractFormatter {
  	
  	public String format(Object value, Locale loc) {
 			String time = "";

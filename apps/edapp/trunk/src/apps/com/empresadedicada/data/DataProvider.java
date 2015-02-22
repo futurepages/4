@@ -7,7 +7,7 @@ import apps.com.empresadedicada.domain.EDNotification;
 import apps.com.empresadedicada.domain.Movie;
 import apps.com.empresadedicada.domain.MovieRevenue;
 import apps.com.empresadedicada.domain.Transaction;
-import apps.com.empresadedicada.domain.User;
+import apps.com.empresadedicada.domain.DashUser;
 
 /**
  * QuickTickets Dashboard backend API.
@@ -37,7 +37,7 @@ public interface DataProvider {
      * @param password
      * @return Authenticated used.
      */
-    User authenticate(String userName, String password);
+    DashUser authenticate(String userName, String password);
 
     /**
      * @return The number of unread notifications for the current user.

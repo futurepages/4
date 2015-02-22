@@ -1,6 +1,7 @@
 package org.futurepages.formatters;
 
 import junit.framework.Assert;
+import org.futurepages.formatters.brazil.RemainingTimeFormatter;
 import org.futurepages.util.brazil.DateUtil;
 import org.junit.Test;
 

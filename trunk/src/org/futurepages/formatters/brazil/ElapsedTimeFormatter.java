@@ -1,4 +1,4 @@
-package org.futurepages.formatters;
+package org.futurepages.formatters.brazil;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -7,10 +7,10 @@ import org.futurepages.util.The;
 import org.futurepages.util.brazil.enums.UnitTimeEnum;
 import org.futurepages.util.brazil.CalendarUtil;
 import org.futurepages.util.brazil.DateUtil;
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.brazil.enums.MonthEnum;
 
-public class ElapsedTimeFormatter implements Formatter<Calendar> {
+public class ElapsedTimeFormatter extends AbstractFormatter<Calendar> {
 
 	@Override
 	public String format(Calendar momentoNoPassado, Locale loc) {

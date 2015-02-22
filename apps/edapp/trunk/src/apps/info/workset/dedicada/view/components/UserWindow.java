@@ -4,10 +4,7 @@ import apps.info.workset.dedicada.AppUI;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Responsive;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -17,23 +14,23 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import jdk.nashorn.internal.ir.ContinueNode;
+import modules.admin.model.core.AdminConstants;
 import modules.admin.model.entities.Log;
 import modules.admin.model.entities.Role;
 import modules.admin.model.entities.User;
 import modules.admin.model.services.UserServices;
+import org.futurepages.apps.simple.SimpleWindow;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.upload.UploadField;
 import org.futurepages.exceptions.UserException;
-import org.futurepages.formatters.DateTimeFormatter;
+import org.futurepages.formatters.brazil.DateTimeFormatter;
 import org.futurepages.util.ImageUtil;
 import org.futurepages.util.Is;
 
@@ -41,8 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-@SuppressWarnings("serial")
-public class UserWindow extends Window {
+public class UserWindow extends SimpleWindow {
 
     private final BeanFieldGroup<User> fieldGroup;
 
@@ -65,66 +61,47 @@ public class UserWindow extends Window {
     private TextField avatarValue;
 
 
-    private UserWindow(User user, final int tabIdx) {
+    private UserWindow(User user) {
         user = UserServices.getInstance().read(user.getLogin());
 //        addStyleName("profile-window"); //deixo aqui para estudo posterior. Este style aparentemente só dava o width e height e padding.
-        setId("profilepreferenceswindow");
-        Responsive.makeResponsive(this);
+//        setId("profilepreferenceswindow");
 
-        setModal(true);
-        setCloseShortcut(KeyCode.ESCAPE);
-        setResizable(false);
-        setClosable(true);
-        setWidth(50.0f, Unit.PERCENTAGE);
+        setWidth (50.0f, Unit.PERCENTAGE);
         setHeight(82.0f, Unit.PERCENTAGE);
 
-        VerticalLayout content = new VerticalLayout();
-        content.setSizeFull();
-        content.setMargin(new MarginInfo(true, false, false, false));
-        setContent(content);
+        addTab(buildUserTab(user));
 
-        TabSheet tabSheet = new TabSheet();
-        tabSheet.setSizeFull();
-        tabSheet.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
-        tabSheet.addStyleName(ValoTheme.TABSHEET_ICONS_ON_TOP);
-        tabSheet.addStyleName(ValoTheme.TABSHEET_CENTERED_TABS);
-        content.addComponent(tabSheet);
-        content.setExpandRatio(tabSheet, 1f);
-
-        tabSheet.addComponent(buildUserTab(user));
-        if(user.getProfile()!=null){
-            tabSheet.addComponent(buildProfileTab(user));
+        if(user.hasProfile()){
+            addTab(buildProfileTab(user));
         }
-        tabSheet.addComponent(buildLogAccessesTab(user));
+        addTab(buildLogAccessesTab(user));
 
-
-        if(Is.selected(tabIdx)){
-            tabSheet.setSelectedTab(tabIdx);
-        }
         fieldGroup = new BeanFieldGroup<>(User.class);
         fieldGroup.bindMemberFields(this);
         fieldGroup.setItemDataSource(user);
-        content.addComponent(buildFooter());
+        addFooter(buildFooter());
     }
 
     private Component buildUserTab(User user) {
         final HorizontalLayout root = new HorizontalLayout();
+        final VerticalLayout picLayout = new VerticalLayout();
+        final Image profilePic = new Image(null, user.getAvatarRes());
+        final FormLayout details = new FormLayout();
+
         root.setCaption(Txt.get("user.basic_info"));
         root.setIcon(FontAwesome.USER);
         root.setWidth(100.0f, Unit.PERCENTAGE);
         root.setSpacing(true);
         root.setMargin(true);
-//        root.addStyleName("profile-form");
+        // root.addStyleName("profile-form");
 
-        final VerticalLayout picLayout = new VerticalLayout();
         picLayout.setSizeUndefined();
         picLayout.setSpacing(true);
-        final Image profilePic = new Image(null, user.getAvatarRes());
         profilePic.setWidth(118.0f, Unit.PIXELS);
         picLayout.addComponent(profilePic);
         picLayout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
 
-        UploadField uploadField = new UploadField("Trocar Foto", 10, UploadField.AllowedTypes.IMAGES,
+        final UploadField uploadField = new UploadField("Trocar Foto", AdminConstants.AVATAR_MAX_SIZE, UploadField.AllowedTypes.IMAGES,
         event -> {
             File file = event.getReceiver().getNewFileResource().getSourceFile();
                 try {
@@ -137,13 +114,32 @@ public class UserWindow extends Window {
         });
         picLayout.addComponent(uploadField);
 
+        final Button removerAvatar = new Button("");
+        removerAvatar.setDescription("Remover Avatar");
+        removerAvatar.setIcon(FontAwesome.TIMES);
+        removerAvatar.setStyleName(ValoTheme.BUTTON_TINY);
+
+         if(Is.empty(user.getAvatarValue())){
+           removerAvatar.setVisible(false);
+        }
+
+        removerAvatar.addClickListener(event -> {
+            profilePic.setSource(AdminConstants.AVATAR_DEFAULT_RES);
+            avatarValue.setValue("");
+            removerAvatar.setVisible(false);
+        });
+        uploadField.setStartListener(()  ->  removerAvatar.setVisible(false));
+        uploadField.setFinishListener(() ->{  if(!Is.empty(avatarValue.getValue())) removerAvatar.setVisible(true); });
+        picLayout.addComponent(removerAvatar);
+        removerAvatar.setStyleName("user-no-avatar-button " + ValoTheme.BUTTON_TINY + " " + ValoTheme.BUTTON_ICON_ONLY);
+
+
         root.addComponent(picLayout);
         VerticalLayout verticalLayout = new VerticalLayout();
         root.addComponent(verticalLayout);
         root.setExpandRatio(verticalLayout, 1);
 
 
-        FormLayout details = new FormLayout();
         details.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         details.setMargin(false);
         verticalLayout.addComponent(details);
@@ -159,7 +155,7 @@ public class UserWindow extends Window {
         lbLogin.setCaption("Login");
         details.addComponent(lbLogin);
 
-        if(user.getProfile()!=null){
+        if(user.hasProfile()){
             Label lbProfile = new Label(user.getProfile().getLabel());
             lbProfile.setCaption("Perfil");
             details.addComponent(lbProfile);
@@ -185,13 +181,12 @@ public class UserWindow extends Window {
 
         newPassword = new PasswordField("Nova Senha");
         details.addComponent(newPassword);
+
         newPasswordAgain = new PasswordField("Nova Senha (Repetir)");
         details.addComponent(newPasswordAgain);
 
         avatarValue = new TextField("Avatar Hidden Value");
         avatarValue.setVisible(false);
-
-
         details.addComponent(avatarValue);
 
         return root;
@@ -294,9 +289,6 @@ public class UserWindow extends Window {
     }
 
     public static void open(final User user, final int tabIdx) {
-        Eventizer.post(new Events.CloseOpenWindows());
-        Window w = new UserWindow(user, tabIdx);
-        UI.getCurrent().addWindow(w);
-        w.focus();
+        (new UserWindow(user)).openTab(tabIdx);
     }
 }

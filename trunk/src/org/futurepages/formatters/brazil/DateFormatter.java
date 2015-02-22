@@ -1,13 +1,13 @@
-package org.futurepages.formatters;
+package org.futurepages.formatters.brazil;
 
 import org.futurepages.util.brazil.DateUtil;
 import java.util.Locale;
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
  
 /**
  * Formata uma data String como entrada "YYYY-MM-DD"  e retorna no formato formato DD/MM/YYYY
  */
- public class DateFormatter implements Formatter {
+ public class DateFormatter extends AbstractFormatter {
  	
  	public String format(Object value, Locale loc) {
             return DateUtil.viewDate(value);

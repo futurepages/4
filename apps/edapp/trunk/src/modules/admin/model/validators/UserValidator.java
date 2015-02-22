@@ -48,7 +48,7 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 	public void update(User user) {
 		fullName(user);
 		email(user);
-		if(!Is.empty(user.getNewPassword())){
+		if(!Is.empty(user.getOldPassword()) || !Is.empty(user.getNewPassword())){
 			newPassword(user);
 		}
 	}
@@ -100,7 +100,9 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 			}
 		}
 		user.setPlainPassword(user.getNewPassword());
-		passwordSecurity(user);
+		if(!Is.empty(user.getNewPassword())){
+			passwordSecurity(user);
+		}
 	}
 
 	public void newPasswordToForgottenPassword(User user, String newPassword, String confirmNewPassword) {

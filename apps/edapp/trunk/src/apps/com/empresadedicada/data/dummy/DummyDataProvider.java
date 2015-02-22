@@ -29,7 +29,7 @@ import apps.com.empresadedicada.domain.EDNotification;
 import apps.com.empresadedicada.domain.Movie;
 import apps.com.empresadedicada.domain.MovieRevenue;
 import apps.com.empresadedicada.domain.Transaction;
-import apps.com.empresadedicada.domain.User;
+import apps.com.empresadedicada.domain.DashUser;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -384,8 +384,8 @@ public class DummyDataProvider implements DataProvider, Serializable {
     }
 
     @Override
-    public User authenticate(String userName, String password) {
-        User user = new User();
+    public DashUser authenticate(String userName, String password) {
+        DashUser user = new DashUser();
 
         modules.admin.model.entities.User tryUser = new modules.admin.model.entities.User();
         tryUser.setAccessKey(userName);

@@ -4,13 +4,13 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
 
 /**
  * Exibe a quantidade de elementos da coleção.
  * .
  */
-public class CollectionSizeFormatter implements Formatter {
+public class CollectionSizeFormatter extends AbstractFormatter {
     
     public String format(Object value, Locale loc) {
 		if(value instanceof Object[]){

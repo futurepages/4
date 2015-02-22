@@ -1,10 +1,10 @@
 package org.futurepages.formatters;
 
 import java.util.Locale;
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.The;
 
-public class UrlFormatter implements Formatter {
+public class UrlFormatter extends AbstractFormatter<String> {
 
 	private boolean contains(String src, String compare) {
 		if (src.length() > compare.length()) {
@@ -19,18 +19,17 @@ public class UrlFormatter implements Formatter {
 	}
 
 	@Override
-	public String format(Object value, Locale loc) {
-		String url = (String) value;
+	public String format(String value, Locale loc) {
 
-		if (url != null && !url.equals("")) {
-			boolean contemHttp = contains(url.toLowerCase(), "http://");
-			boolean contemHttps = contains(url.toLowerCase(), "https://");
+		if (value != null && !value.equals("")) {
+			boolean contemHttp = contains(value.toLowerCase(), "http://");
+			boolean contemHttps = contains(value.toLowerCase(), "https://");
 
 			if (!(contemHttp || contemHttps)) {
-				return The.concat("http://", url);
+				return The.concat("http://", value);
 			}
 
-			return url;
+			return value;
 		}
 
 		return "";

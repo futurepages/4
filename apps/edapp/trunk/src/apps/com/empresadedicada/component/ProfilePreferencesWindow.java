@@ -1,6 +1,6 @@
 package apps.com.empresadedicada.component;
 
-import apps.com.empresadedicada.domain.User;
+import apps.com.empresadedicada.domain.DashUser;
 import apps.com.empresadedicada.event.EDEvent.CloseOpenWindowsEvent;
 import apps.com.empresadedicada.event.EDEvent.ProfileUpdatedEvent;
 import apps.com.empresadedicada.event.EDEventBus;
@@ -41,7 +41,7 @@ public class ProfilePreferencesWindow extends Window {
 
     public static final String ID = "profilepreferenceswindow";
 
-    private final BeanFieldGroup<User> fieldGroup;
+    private final BeanFieldGroup<DashUser> fieldGroup;
     /*
      * Fields for editing the User object are defined here as class members.
      * They are later bound to a FieldGroup by calling
@@ -70,7 +70,7 @@ public class ProfilePreferencesWindow extends Window {
     @PropertyId("bio")
     private TextArea bioField;
 
-    private ProfilePreferencesWindow(final User user,
+    private ProfilePreferencesWindow(final DashUser user,
             final boolean preferencesTabOpen) {
         addStyleName("profile-window");
         setId(ID);
@@ -104,7 +104,7 @@ public class ProfilePreferencesWindow extends Window {
 
         content.addComponent(buildFooter());
 
-        fieldGroup = new BeanFieldGroup<User>(User.class);
+        fieldGroup = new BeanFieldGroup<DashUser>(DashUser.class);
         fieldGroup.bindMemberFields(this);
         fieldGroup.setItemDataSource(user);
     }
@@ -266,7 +266,7 @@ public class ProfilePreferencesWindow extends Window {
         return footer;
     }
 
-    public static void open(final User user, final boolean preferencesTabActive) {
+    public static void open(final DashUser user, final boolean preferencesTabActive) {
         EDEventBus.post(new CloseOpenWindowsEvent());
         Window w = new ProfilePreferencesWindow(user, preferencesTabActive);
         UI.getCurrent().addWindow(w);
