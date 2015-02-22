@@ -8,7 +8,7 @@ import java.util.Locale;
  *
  * @author leandro
  */
-public class BigLongFormatter extends AbstractFormatter<Long>{
+public class BigLongFormatter extends AbstractFormatter<Long> {
 
 
 	@Override
@@ -45,40 +45,40 @@ public class BigLongFormatter extends AbstractFormatter<Long>{
 	}
 
 	public static void main(String[] args) {
-		System.out.println((new BigLongFormatter()).format(3l, null)); //3
-		System.out.println((new BigLongFormatter()).format(30l, null)); //30
-		System.out.println((new BigLongFormatter()).format(300l, null)); //300
-		System.out.println((new BigLongFormatter()).format(3000l, null)); //3K
-		System.out.println((new BigLongFormatter()).format(3500l, null)); //3K
-		System.out.println((new BigLongFormatter()).format(35000l, null)); //35K
-		System.out.println((new BigLongFormatter()).format(350000l, null)); //350K
-		System.out.println((new BigLongFormatter()).format(3500000l, null)); //3M
-		System.out.println((new BigLongFormatter()).format(35000000l, null)); //35M
-		System.out.println((new BigLongFormatter()).format(350000000l, null));  //350M
-		System.out.println((new BigLongFormatter()).format(3500000000l, null)); //3B
-		System.out.println((new BigLongFormatter()).format(35000000000l, null)); //35B
+		System.out.println((new BigLongFormatter()).format(3l)); //3
+		System.out.println((new BigLongFormatter()).format(30l)); //30
+		System.out.println((new BigLongFormatter()).format(300l)); //300
+		System.out.println((new BigLongFormatter()).format(3000l)); //3K
+		System.out.println((new BigLongFormatter()).format(3500l)); //3K
+		System.out.println((new BigLongFormatter()).format(35000l)); //35K
+		System.out.println((new BigLongFormatter()).format(350000l)); //350K
+		System.out.println((new BigLongFormatter()).format(3500000l)); //3M
+		System.out.println((new BigLongFormatter()).format(35000000l)); //35M
+		System.out.println((new BigLongFormatter()).format(350000000l));  //350M
+		System.out.println((new BigLongFormatter()).format(3500000000l)); //3B
+		System.out.println((new BigLongFormatter()).format(35000000000l)); //35B
 
-		System.out.println((new BigLongFormatter()).format(999l, null)); //999
-		System.out.println((new BigLongFormatter()).format(9999l, null)); //9K
+		System.out.println((new BigLongFormatter()).format(999l)); //999
+		System.out.println((new BigLongFormatter()).format(9999l)); //9K
 
-		System.out.println((new BigLongFormatter()).format(1l, null)); //1
-		System.out.println((new BigLongFormatter()).format(10l, null)); //10
-		System.out.println((new BigLongFormatter()).format(100l, null)); //100
-		System.out.println((new BigLongFormatter()).format(1000l, null)); //1K
-		System.out.println((new BigLongFormatter()).format(10000l, null)); //10K
-		System.out.println((new BigLongFormatter()).format(100000l, null)); //100K
-		System.out.println((new BigLongFormatter()).format(1000000l, null)); //1M
-		System.out.println((new BigLongFormatter()).format(10000000l, null)); //10M
-		System.out.println((new BigLongFormatter()).format(100000000l, null)); //100M
-		System.out.println((new BigLongFormatter()).format(1000000000l, null)); //1B
-		System.out.println((new BigLongFormatter()).format(10000000000l, null)); //10B
-		System.out.println((new BigLongFormatter()).format(100000000000l, null)); //100B
-		System.out.println((new BigLongFormatter()).format(1000000000000l, null)); //1T
-		System.out.println((new BigLongFormatter()).format(10000000000000l, null)); //10T
-		System.out.println((new BigLongFormatter()).format(100000000000000l, null)); //100T
-		System.out.println((new BigLongFormatter()).format(1000000000000000l, null)); //+100T
-		System.out.println((new BigLongFormatter()).format(100000000000000000l, null)); //+100T
-		System.out.println((new BigLongFormatter()).format(1000000000000000000l, null)); //+100T
-		System.out.println((new BigLongFormatter()).format(Long.MAX_VALUE, null)); //+100T
+		System.out.println((new BigLongFormatter()).format(1l)); //1
+		System.out.println((new BigLongFormatter()).format(10l)); //10
+		System.out.println((new BigLongFormatter()).format(100l)); //100
+		System.out.println((new BigLongFormatter()).format(1000l)); //1K
+		System.out.println((new BigLongFormatter()).format(10000l)); //10K
+		System.out.println((new BigLongFormatter()).format(100000l)); //100K
+		System.out.println((new BigLongFormatter()).format(1000000l)); //1M
+		System.out.println((new BigLongFormatter()).format(10000000l)); //10M
+		System.out.println((new BigLongFormatter()).format(100000000l)); //100M
+		System.out.println((new BigLongFormatter()).format(1000000000l)); //1B
+		System.out.println((new BigLongFormatter()).format(10000000000l)); //10B
+		System.out.println((new BigLongFormatter()).format(100000000000l)); //100B
+		System.out.println((new BigLongFormatter()).format(1000000000000l)); //1T
+		System.out.println((new BigLongFormatter()).format(10000000000000l)); //10T
+		System.out.println((new BigLongFormatter()).format(100000000000000l)); //100T
+		System.out.println((new BigLongFormatter()).format(1000000000000000l)); //+100T
+		System.out.println((new BigLongFormatter()).format(100000000000000000l)); //+100T
+		System.out.println((new BigLongFormatter()).format(1000000000000000000l)); //+100T
+		System.out.println((new BigLongFormatter()).format(Long.MAX_VALUE)); //+100T
 	}
 }

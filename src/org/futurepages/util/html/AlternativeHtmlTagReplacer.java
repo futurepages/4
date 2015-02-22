@@ -2,7 +2,7 @@ package org.futurepages.util.html;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.futurepages.formatters.SmartTextFormatter;
+import org.futurepages.formatters.brazil.SmartTextFormatter;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
 import static org.futurepages.util.html.HtmlRegex.*;

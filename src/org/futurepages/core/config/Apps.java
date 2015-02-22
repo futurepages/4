@@ -69,7 +69,7 @@ public class Apps {
 		INSTANCE = new Apps();
 		String contextName = null;
 		String classesRealPath = INSTANCE.defineMainParams(contextNameOrClassesPath);
-		if(!contextNameOrClassesPath.contains("/") && !contextNameOrClassesPath.contains("\\")){
+		if(contextNameOrClassesPath !=null && !contextNameOrClassesPath.contains("/") && !contextNameOrClassesPath.contains("\\")){
 			contextName = contextNameOrClassesPath;
 		}
 		if(contextName!=null){

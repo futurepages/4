@@ -2,6 +2,7 @@ package org.futurepages.core.locale;
 
 import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
+import org.futurepages.exceptions.AppsPropertiesException;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -31,7 +32,10 @@ public class LocaleManager {
 		if(requestLocale!=null && getAvailableLocales().contains(requestLocale.toString())){
 			return requestLocale;
 		}else{
-			Locale appsLocale = getAppsLocale();
+			Locale appsLocale = null;
+			try {
+				appsLocale = getAppsLocale();
+			} catch(AppsPropertiesException ignored){}
 			if(appsLocale!=null){
 				return appsLocale; // from futurepages.properties
 			}else{

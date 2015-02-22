@@ -1,8 +1,8 @@
-package org.futurepages.formatters;
+package org.futurepages.formatters.brazil;
 
 import org.futurepages.util.brazil.DateUtil;
 import java.util.Locale;
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
  
 /**
  * Formatação de data e hora:
@@ -10,7 +10,7 @@ import org.futurepages.core.formatter.Formatter;
  * - saída: DD/MM/YYYY HH:MM:SS
  *
  */
- public class DateTimeFormatter implements Formatter {
+ public class DateTimeFormatter extends AbstractFormatter {
  	
  	public String format(Object value, Locale loc) {
 			return DateUtil.viewDateTime(value);

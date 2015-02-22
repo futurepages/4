@@ -4,7 +4,7 @@
  */
 package org.futurepages.formatters;
 
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
 import java.util.Locale;
 import org.futurepages.util.html.HtmlStripper;
 
@@ -12,7 +12,7 @@ import org.futurepages.util.html.HtmlStripper;
  *
  * @author diogenes
  */
-public class PoorTextFormatter implements Formatter {
+public class PoorTextFormatter extends AbstractFormatter {
 
     @Override
     public String format(Object value, Locale loc) {

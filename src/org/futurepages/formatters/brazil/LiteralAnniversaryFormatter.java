@@ -1,8 +1,8 @@
-package org.futurepages.formatters;
+package org.futurepages.formatters.brazil;
 
 import java.util.Calendar;
 import java.util.Locale;
-import org.futurepages.core.formatter.Formatter;
+import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.The;
 import org.futurepages.util.brazil.enums.MonthEnum;
 
@@ -10,7 +10,7 @@ import org.futurepages.util.brazil.enums.MonthEnum;
  *
  * @author leandro
  */
-public class LiteralAnniversaryFormatter implements Formatter {
+public class LiteralAnniversaryFormatter extends AbstractFormatter {
 
 	@Override
     public String format(Object value, Locale loc) {

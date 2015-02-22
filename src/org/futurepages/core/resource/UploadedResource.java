@@ -13,6 +13,7 @@ public class UploadedResource extends FileResource {
 	public UploadedResource(String internalPath) {
 		super(new File(The.concat(Apps.get("UPLOADS_REAL_PATH"), "/", internalPath)));
 	}
+
 	public UploadedResource(EntityForServices entity, String internalPath) {
 		super(new File(The.concat(Apps.get("UPLOADS_REAL_PATH"), "/", ModuleUtil.moduleId(entity.getClass()), "/",  internalPath)));
 	}
