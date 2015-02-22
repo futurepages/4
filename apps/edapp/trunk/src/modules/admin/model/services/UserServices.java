@@ -284,8 +284,8 @@ public class UserServices extends EntityServices<UserDao, User> implements Admin
 		return false;
 	}
 
-	public String encriptedPassword(User user) {
-		return Security.md5(The.concat(user.getLogin(), SECURITY_KEY, user.getPlainPassword()));
+	public String encriptedPassword(User user, String inputPassword) {
+		return Security.md5(The.concat(user.getLogin(), SECURITY_KEY, inputPassword));
 	}
 
 	/**
@@ -328,18 +328,18 @@ public class UserServices extends EntityServices<UserDao, User> implements Admin
 				if (!renamed) {
 					throw new RuntimeException(new IOException("Unable to rename file " + tempFile.getAbsolutePath() + " to " + endFile.getAbsolutePath()));
 				}
-				try{
-					UploadedResource oldAvatarRes = user.getOldAvatarRes();
-					if (oldAvatarRes != null) {
-						boolean deleted = oldAvatarRes.getSourceFile().delete();
-						if (!deleted) {
-							AppLogger.getInstance().execute(new IOException("Unable to delete " + oldAvatarRes.getSourceFile().getAbsolutePath()));
-						}
-					}
-				}catch(Exception ex){
-							AppLogger.getInstance().execute(ex);
+			}
+		}
+		try{
+			UploadedResource oldAvatarRes = user.getOldAvatarRes();
+			if (oldAvatarRes != null) {
+				boolean deleted = oldAvatarRes.getSourceFile().delete();
+				if (!deleted) {
+					AppLogger.getInstance().execute(new IOException("Unable to delete " + oldAvatarRes.getSourceFile().getAbsolutePath()));
 				}
 			}
+		}catch(Exception ex){
+					AppLogger.getInstance().execute(ex);
 		}
 	}
 

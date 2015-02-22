@@ -190,7 +190,7 @@ public class User implements DefaultUser, Serializable, EntityForServices<UserSe
 	}
 
 	public String encryptedPassword(String plainPassword) {
-		return services().encriptedPassword(this);
+		return services().encriptedPassword(this, plainPassword);
 	}
 
 	public String encryptedPassword() {

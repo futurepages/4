@@ -91,15 +91,14 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 		if (Is.empty(user.getOldPassword()) || Is.empty(user.getNewPassword()) || Is.empty(user.getNewPasswordAgain())) {
 			error("Se deseja alterar a senha, preencha todos os campos relativos a senha");
 		}else{
-			if (!(user.getPassword().equals(user.encryptedPassword(user.getOldPassword())))) {
-				error("senhaAtual", "Senha Atual não é válida");
+			if (!(user.getEncriptPassword().equals(services.encriptedPassword(user, user.getOldPassword())))) {
+				error("senhaAtual", "Senha atual não é válida");
 			}
 
 			if (!user.getNewPassword().equals(user.getNewPasswordAgain())) {
 				error("novaSenha", "Senha de confirmação não confere");
 			}
 		}
-		user.setPlainPassword(user.getNewPassword());
 		if(!Is.empty(user.getNewPassword())){
 			passwordSecurity(user);
 		}
@@ -246,9 +245,11 @@ public class UserValidator extends EntityValidator<UserServices,User> {
     }
 
 	private void passwordSecurity(User user) {
-		String invalidErrorMsg = invalidPasswordMsg(user);
-		if(invalidErrorMsg!=null){
-			error("password",invalidErrorMsg);
+		if(!Is.empty(user.getPlainPassword())){
+			String invalidErrorMsg = invalidPasswordMsg(user);
+			if(invalidErrorMsg!=null){
+				error("password",invalidErrorMsg);
+			}
 		}
 	}
 }
