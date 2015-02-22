@@ -9,8 +9,6 @@ import apps.info.workset.dedicada.view.components.TopGrossingMoviesChart;
 import apps.info.workset.dedicada.view.components.TopSixTheatersChart;
 import apps.info.workset.dedicada.view.components.TopTenMoviesTable;
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.event.LayoutEvents.LayoutClickEvent;
-import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -73,11 +71,8 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
 
         // All the open sub-windows should be closed whenever the root layout
         // gets clicked.
-        root.addLayoutClickListener(new LayoutClickListener() {
-            @Override
-            public void layoutClick(final LayoutClickEvent event) {
-                Eventizer.post(new Events.CloseOpenWindows());
-            }
+        root.addLayoutClickListener(event -> {
+            Eventizer.post(new Events.CloseOpenWindows());
         });
     }
 
@@ -292,11 +287,8 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
         footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
         footer.setWidth("100%");
         Button showAll = new Button("View All Notifications",
-                new ClickListener() {
-                    @Override
-                    public void buttonClick(final ClickEvent event) {
-                        Notification.show("Not implemented in this demo");
-                    }
+                event1 -> {
+                    Notification.show("Not implemented in this demo");
                 });
         showAll.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
         showAll.addStyleName(ValoTheme.BUTTON_SMALL);

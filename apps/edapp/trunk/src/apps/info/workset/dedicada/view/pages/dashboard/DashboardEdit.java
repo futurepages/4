@@ -3,8 +3,6 @@ package apps.info.workset.dedicada.view.pages.dashboard;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
@@ -57,24 +55,16 @@ public class DashboardEdit extends Window {
         footer.setWidth(100.0f, Unit.PERCENTAGE);
 
         Button cancel = new Button("Cancel");
-        cancel.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                close();
-            }
-        });
-        cancel.setClickShortcut(KeyCode.ESCAPE, null);
+        cancel.addClickListener(event ->  close() );
+        cancel.setClickShortcut(KeyCode.ESCAPE);
 
         Button save = new Button("Save");
         save.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        save.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                listener.dashboardNameEdited(nameField.getValue());
-                close();
-            }
+        save.addClickListener(event -> {
+            listener.dashboardNameEdited(nameField.getValue());
+            close();
         });
-        save.setClickShortcut(KeyCode.ENTER, null);
+        save.setClickShortcut(KeyCode.ENTER);
 
         footer.addComponents(cancel, save);
         footer.setExpandRatio(cancel, 1);
