@@ -18,7 +18,4 @@ public abstract class AppEvents extends Events {
             return transactions;
         }
     }
-
-    public static class ProfileUpdatedEvent {}
-
 }
