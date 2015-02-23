@@ -3,7 +3,6 @@ package modules.admin.model.validators;
 import java.util.List;
 import modules.admin.model.entities.Profile;
 import modules.admin.model.dao.ProfileDao;
-import org.apache.commons.collections.CollectionUtils;
 import org.futurepages.core.validation.Validator;
 import org.futurepages.util.Is;
 
@@ -17,9 +16,8 @@ public class ProfileValidator extends Validator {
 		List<Profile> allProfiles = ProfileDao.listAllOrderByLabel();
 		if (p.getModules() != null) {
 			for (Profile profile : allProfiles) {
-				if (!profile.getProfileId().equals(p.getProfileId())
-						&& CollectionUtils.isEqualCollection(profile.getModules(), p.getModules())) { // possui mesmos modules
-					if (CollectionUtils.isEqualCollection(profile.getRoles(), p.getRoles()) && CollectionUtils.isEqualCollection(profile.getAllowedProfiles(), p.getAllowedProfiles())) { // possui mesmas roles	
+				if (!profile.getProfileId().equals(p.getProfileId()) && profile.getModules().equals(p.getModules())) { // possui mesmos modules
+					if (profile.getRoles().equals(p.getRoles()) && (profile.getAllowedProfiles().equals(p.getAllowedProfiles()))) { // possui mesmas roles
 						error("Perfil possui mesma configuração de '" + profile.getLabel()+"'");
 					}
 				}

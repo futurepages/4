@@ -8,45 +8,56 @@ import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.resource.UploadedResource;
 import org.futurepages.core.services.EntityForServices;
 import org.futurepages.util.Is;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 
 @Entity
 public class User implements DefaultUser, Serializable, EntityForServices<UserServices> {
 
 	@Id
-	@Column(length = 30, nullable = false)
+	@Size(max=30)
 	private String login;
 
-	@Column(length = 120, nullable = false)
+	@NotEmpty
+	@Size(max=120)
 	private String fullName;
 
-	@Column(length = 255, nullable = false)
+	@NotEmpty
 	private String encriptPassword;
 
-	@Column(length = 100, unique = true, nullable = false)
-	private String email;
+	@NotEmpty
+	@Email
+ 	private String email;
+
+	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar birthDate;
 
 	private boolean status;
 
 	@Transient
-	private String plainPassword = "";
+	private String plainPassword;
 
 	@Transient
-	private String oldPassword = "";
+	private String oldPassword;
 
 	@Transient
-	private String newPassword = "";
+	private String newPassword;
 
 	@Transient
 	private String newPasswordAgain = "";
-
 
 	@Transient
 	private String accessKey;
@@ -62,7 +73,6 @@ public class User implements DefaultUser, Serializable, EntityForServices<UserSe
 
 	@Transient
 	private List<Log> lastAccesses;
-
 
 	private String avatarValue;
 
@@ -144,6 +154,14 @@ public class User implements DefaultUser, Serializable, EntityForServices<UserSe
 
 	public void generatePassword() {
 		setPassword(plainPassword);
+	}
+
+	public Calendar getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Calendar birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	public String getEmail() {

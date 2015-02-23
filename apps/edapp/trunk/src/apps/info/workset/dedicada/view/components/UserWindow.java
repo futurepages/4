@@ -1,14 +1,20 @@
 package apps.info.workset.dedicada.view.components;
 
 import apps.info.workset.dedicada.AppUI;
+import com.vaadin.data.Property;
+import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.converter.Converter;
+import com.vaadin.data.validator.BeanValidator;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -18,7 +24,6 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import jdk.nashorn.internal.ir.ContinueNode;
 import modules.admin.model.core.AdminConstants;
 import modules.admin.model.entities.Log;
 import modules.admin.model.entities.Role;
@@ -33,10 +38,18 @@ import org.futurepages.exceptions.UserException;
 import org.futurepages.formatters.brazil.DateTimeFormatter;
 import org.futurepages.util.ImageUtil;
 import org.futurepages.util.Is;
+import org.futurepages.util.ReflectionUtil;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class UserWindow extends SimpleWindow {
 
@@ -57,6 +70,9 @@ public class UserWindow extends SimpleWindow {
     @PropertyId("newPasswordAgain")
     private PasswordField newPasswordAgain;
 
+    @PropertyId("birthDate")
+    private DateField birthDateField;
+
     @PropertyId("avatarValue")
     private TextField avatarValue;
 
@@ -67,7 +83,9 @@ public class UserWindow extends SimpleWindow {
 //        setId("profilepreferenceswindow");
 
         setWidth (50.0f, Unit.PERCENTAGE);
-        setHeight(82.0f, Unit.PERCENTAGE);
+        setHeight(90.0f, Unit.PERCENTAGE);
+
+        fieldGroup = new BeanFieldGroup<>(User.class);
 
         addTab(buildUserTab(user));
 
@@ -76,7 +94,6 @@ public class UserWindow extends SimpleWindow {
         }
         addTab(buildLogAccessesTab(user));
 
-        fieldGroup = new BeanFieldGroup<>(User.class);
         fieldGroup.bindMemberFields(this);
         fieldGroup.setItemDataSource(user);
         addFooter(buildFooter());
@@ -162,9 +179,96 @@ public class UserWindow extends SimpleWindow {
         }
 
         fullNameField = new TextField("Nome Completo");
+        fullNameField.setImmediate(true);
         details.addComponent(fullNameField);
         emailField = new TextField("Email");
         details.addComponent(emailField);
+        fullNameField.addBlurListener(event -> {
+            Collection<Validator> validators = fullNameField.getValidators();
+            if (validators == null || validators.isEmpty()) {
+                fullNameField.addValidator(new BeanValidator(User.class, "fullName"));
+            }
+        });
+        emailField.addBlurListener(event -> {
+            Collection<Validator> validators = emailField.getValidators();
+            if (validators == null || validators.isEmpty()) {
+                emailField.addValidator(new BeanValidator(User.class, "email"));
+                emailField.setNullRepresentation("");
+            }
+        });
+
+        Property calendarProperty = new Property<Calendar>() {
+
+            private Calendar value;
+
+            @Override
+            public Calendar getValue() {
+                return value;
+            }
+
+            @Override
+            public void setValue(Calendar newValue) throws ReadOnlyException {
+                value = newValue;
+            }
+
+            @Override
+            public Class getType() {
+                return Calendar.class;
+            }
+
+            @Override
+            public boolean isReadOnly() {
+                return false;
+            }
+
+            @Override
+            public void setReadOnly(boolean newStatus) {
+
+            }
+        };
+        birthDateField = new DateField("Data de Nascimento");
+        Temporal tempA = ReflectionUtil.getObjectField("birthDate",User.class).getDeclaredAnnotation(Temporal.class);
+        if(tempA.value()==TemporalType.DATE){
+            birthDateField.setResolution(Resolution.DAY);
+            birthDateField.setDateFormat("dd/MM/yyyy");
+        } else {
+            birthDateField.setResolution(Resolution.MINUTE);
+            birthDateField.setDateFormat("dd/MM/yyyy HH:mm");
+        }
+        birthDateField.setConverter(new Converter<Date, Calendar>() {
+            @Override
+            public Calendar convertToModel(Date value, Class<? extends Calendar> targetType, Locale locale) throws ConversionException {
+                if (value == null) {
+                    return null;
+                }
+                Calendar newCal = Calendar.getInstance(locale);
+                newCal.setTime(value);
+                return newCal;
+            }
+
+            @Override
+            public Date convertToPresentation(Calendar value, Class<? extends Date> targetType, Locale locale) throws ConversionException {
+                return (value == null) ? null : value.getTime();
+            }
+
+            @Override
+            public Class<Calendar> getModelType() {
+                return Calendar.class;
+            }
+
+            @Override
+            public Class<Date> getPresentationType() {
+                return Date.class;
+            }
+        });
+        birthDateField.setPropertyDataSource(calendarProperty);
+        birthDateField.addBlurListener(event -> {
+            Collection<Validator> validators = birthDateField.getValidators();
+            if (validators == null || validators.isEmpty()) {
+                birthDateField.addValidator(new BeanValidator(User.class, "birthDate"));
+            }
+        });
+        details.addComponent(birthDateField);
 
         Label lbX = new Label("");
 
@@ -177,16 +281,20 @@ public class UserWindow extends SimpleWindow {
         details.addComponent(labelAlterarSenha);
 
         oldPassword = new PasswordField("Senha Atual");
+        oldPassword.setNullRepresentation("");
         details.addComponent(oldPassword);
 
         newPassword = new PasswordField("Nova Senha");
+        newPassword.setNullRepresentation("");
         details.addComponent(newPassword);
 
         newPasswordAgain = new PasswordField("Nova Senha (Repetir)");
+        newPasswordAgain.setNullRepresentation("");
         details.addComponent(newPasswordAgain);
 
         avatarValue = new TextField("Avatar Hidden Value");
         avatarValue.setVisible(false);
+        avatarValue.setNullRepresentation("");
         details.addComponent(avatarValue);
 
         return root;
@@ -249,7 +357,7 @@ public class UserWindow extends SimpleWindow {
         root.addComponent(details);
         List<Log> accesses = user.getLastAccesses(20);
         for(Log access : accesses){
-            Label labelAccess = new Label(new DateTimeFormatter().format(access.getDateTime(),getLocale())+ (access.getIpHost()!=null? " (a partir de "+access.getIpHost()+")":""));
+            Label labelAccess = new Label(new DateTimeFormatter().format(access.getDateTime())+ (access.getIpHost()!=null? " (a partir de "+access.getIpHost()+")":""));
             labelAccess.setIcon(FontAwesome.CLOCK_O);
             details.addComponent(labelAccess);
         }
@@ -280,9 +388,11 @@ public class UserWindow extends SimpleWindow {
                 close();
             } catch (UserException e) {
                 AppUI.getCurrent().notifyErrors(e);
-            } catch (CommitException e) {
-                throw new RuntimeException(e);
+            } catch (CommitException e1) {
+                AppUI.getCurrent().notifyErrors(new UserException(e1));
+//                throw new RuntimeException(e);
             }
+
         });
         ok.focus();
         return ok;

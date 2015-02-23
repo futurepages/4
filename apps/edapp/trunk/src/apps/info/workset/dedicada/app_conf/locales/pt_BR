@@ -2,17 +2,12 @@ system.internal_failure = Falha Interna
 system.press_esc_to_exit = Pressione ESC para fechar
 system.some_errors_found = Alguns erros foram encontrados
 
+save = Salvar
+
 upload.file_type_not_allowed = Somente arquivos "%s" são permitidos. Você tentou enviar um arquivo do tipo "%s"
 upload.file_size_not_allowed = Arquivos com mais de %dMB não são permitidos
 
-save = Salvar
-
 menu.app_title = Workset <strong>Dedicada</strong>
-
-user-menu.basic_info = Usuário
-user-menu.profile = Perfil
-user-menu.log_accesses = Acessos
-user-menu.sign_out = Sair
 
 login.caption = Workset Dedicada
 login.user.accesskey = Login
@@ -21,8 +16,15 @@ login.enter = Entrar
 login.remember = Manter Conectado
 login.authentication_required = Autenticação Requerida
 
+# module admin candidates @##############################
+#########################################################
+
+user-menu.basic_info = Usuário
+user-menu.profile = Perfil
+user-menu.log_accesses = Acessos
+user-menu.sign_out = Sair
+
 user.basic_info = Usuário
 user.profile = Perfil
 user.log_accesses = Acessos
 user.profile_successfully_updated = Perfil atualizado com sucesso
-

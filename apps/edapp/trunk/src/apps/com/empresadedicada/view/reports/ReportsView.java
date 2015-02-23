@@ -1,17 +1,11 @@
 package apps.com.empresadedicada.view.reports;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import apps.com.empresadedicada.event.EDEvent.ReportsCountUpdatedEvent;
 import apps.com.empresadedicada.event.EDEvent.TransactionReportEvent;
 import apps.com.empresadedicada.event.EDEventBus;
 import apps.com.empresadedicada.view.reports.ReportEditor.PaletteItemType;
 import apps.com.empresadedicada.view.reports.ReportEditor.ReportEditorListener;
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.event.LayoutEvents.LayoutClickEvent;
-import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -33,6 +27,10 @@ import com.vaadin.ui.TabSheet.CloseHandler;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @SuppressWarnings("serial")
 public final class ReportsView extends TabSheet implements View, CloseHandler,
@@ -104,21 +102,15 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
         final Button delete = new Button("×");
         delete.setDescription("Delete draft");
         delete.setPrimaryStyleName("delete-button");
-        delete.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                Notification.show("Not implemented in this demo");
-            }
+        delete.addClickListener(event -> {
+            Notification.show("Not implemented in this demo");
         });
         draftThumb.addComponent(delete);
 
-        draftThumb.addLayoutClickListener(new LayoutClickListener() {
-            @Override
-            public void layoutClick(final LayoutClickEvent event) {
-                if (event.getButton() == MouseButton.LEFT
-                        && event.getChildComponent() != delete) {
-                    addReport(ReportType.MONTHLY, null);
-                }
+        draftThumb.addLayoutClickListener(event -> {
+            if (event.getButton() == MouseButton.LEFT
+                    && event.getChildComponent() != delete) {
+                addReport(ReportType.MONTHLY, null);
             }
         });
 
@@ -199,18 +191,15 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
 
         root.addComponents(message, footer);
 
-        Button ok = new Button("Save", new ClickListener() {
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                confirmDialog.close();
-                removeComponent(tabContent);
-                EDEventBus.post(new ReportsCountUpdatedEvent(
-                        getComponentCount() - 1));
-                Notification
-                        .show("The report was saved as a draft",
-                                "Actually, the report was just closed and deleted forever. As this is only a demo, it doesn't persist any data.",
-                                Type.TRAY_NOTIFICATION);
-            }
+        Button ok = new Button("Save", event -> {
+            confirmDialog.close();
+            removeComponent(tabContent);
+            EDEventBus.post(new ReportsCountUpdatedEvent(
+                    getComponentCount() - 1));
+            Notification
+                    .show("The report was saved as a draft",
+                            "Actually, the report was just closed and deleted forever. As this is only a demo, it doesn't persist any data.",
+                            Type.TRAY_NOTIFICATION);
         });
         ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
 

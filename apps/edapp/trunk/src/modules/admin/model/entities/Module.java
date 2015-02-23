@@ -1,5 +1,7 @@
 package modules.admin.model.entities;
 
+import org.futurepages.core.auth.DefaultModule;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class Module implements Serializable{
+public class Module implements DefaultModule, Serializable{
     
     @Id
     @Column(length=30,nullable=false)
