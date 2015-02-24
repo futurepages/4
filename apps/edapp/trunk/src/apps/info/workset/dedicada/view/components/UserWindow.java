@@ -1,18 +1,17 @@
 package apps.info.workset.dedicada.view.components;
 
 import apps.info.workset.dedicada.AppUI;
-import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.validator.BeanValidator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
@@ -25,31 +24,30 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import modules.admin.model.core.AdminConstants;
+import modules.admin.model.dao.ProfileDao;
 import modules.admin.model.entities.Log;
 import modules.admin.model.entities.Role;
 import modules.admin.model.entities.User;
 import modules.admin.model.services.UserServices;
 import org.futurepages.apps.simple.SimpleWindow;
+import org.futurepages.components.CalendarDateField;
+import org.futurepages.components.UploadField;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
 import org.futurepages.core.locale.Txt;
-import org.futurepages.core.upload.UploadField;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.formatters.brazil.DateTimeFormatter;
 import org.futurepages.util.ImageUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.ReflectionUtil;
+import org.vaadin.viritin.ListContainer;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class UserWindow extends SimpleWindow {
 
@@ -60,6 +58,9 @@ public class UserWindow extends SimpleWindow {
 
     @PropertyId("email")
     private TextField emailField;
+
+    @PropertyId("profile")
+    private ComboBox profileField;
 
     @PropertyId("oldPassword")
     private PasswordField oldPassword;
@@ -74,7 +75,7 @@ public class UserWindow extends SimpleWindow {
     private DateField birthDateField;
 
     @PropertyId("avatarValue")
-    private TextField avatarValue;
+    private TextField avatarValueField;
 
 
     private UserWindow(User user) {
@@ -127,7 +128,7 @@ public class UserWindow extends SimpleWindow {
                     throw new RuntimeException(e);
                 }
                 profilePic.setSource(event.getReceiver().getNewFileResource());
-                avatarValue.setValue(event.getReceiver().getNewFileName());
+                avatarValueField.setValue(event.getReceiver().getNewFileName());
         });
         picLayout.addComponent(uploadField);
 
@@ -142,11 +143,11 @@ public class UserWindow extends SimpleWindow {
 
         removerAvatar.addClickListener(event -> {
             profilePic.setSource(AdminConstants.AVATAR_DEFAULT_RES);
-            avatarValue.setValue("");
+            avatarValueField.setValue("");
             removerAvatar.setVisible(false);
         });
         uploadField.setStartListener(()  ->  removerAvatar.setVisible(false));
-        uploadField.setFinishListener(() ->{  if(!Is.empty(avatarValue.getValue())) removerAvatar.setVisible(true); });
+        uploadField.setFinishListener(() ->{  if(!Is.empty(avatarValueField.getValue())) removerAvatar.setVisible(true); });
         picLayout.addComponent(removerAvatar);
         removerAvatar.setStyleName("user-no-avatar-button " + ValoTheme.BUTTON_TINY + " " + ValoTheme.BUTTON_ICON_ONLY);
 
@@ -172,10 +173,16 @@ public class UserWindow extends SimpleWindow {
         lbLogin.setCaption("Login");
         details.addComponent(lbLogin);
 
-        if(user.hasProfile()){
-            Label lbProfile = new Label(user.getProfile().getLabel());
-            lbProfile.setCaption("Perfil");
-            details.addComponent(lbProfile);
+        if(AppUI.getCurrent().getLoggedUser().hasModule("admin")){
+            profileField = new ComboBox("Perfil");
+            profileField.setContainerDataSource(new ListContainer(ProfileDao.listAllOrderByLabel()));
+            details.addComponent(profileField);
+        }else{
+            if(user.hasProfile()){
+                Label lbProfile = new Label(user.getProfile().getLabel());
+                lbProfile.setCaption("Perfil");
+                details.addComponent(lbProfile);
+            }
         }
 
         fullNameField = new TextField("Nome Completo");
@@ -197,71 +204,18 @@ public class UserWindow extends SimpleWindow {
             }
         });
 
-        Property calendarProperty = new Property<Calendar>() {
+        birthDateField = new CalendarDateField("Data de Nascimento");
 
-            private Calendar value;
-
-            @Override
-            public Calendar getValue() {
-                return value;
-            }
-
-            @Override
-            public void setValue(Calendar newValue) throws ReadOnlyException {
-                value = newValue;
-            }
-
-            @Override
-            public Class getType() {
-                return Calendar.class;
-            }
-
-            @Override
-            public boolean isReadOnly() {
-                return false;
-            }
-
-            @Override
-            public void setReadOnly(boolean newStatus) {
-
-            }
-        };
-        birthDateField = new DateField("Data de Nascimento");
+        //a bind stuff. MIGRATE TO AUTOMATED SCREEN
         Temporal tempA = ReflectionUtil.getObjectField("birthDate",User.class).getDeclaredAnnotation(Temporal.class);
         if(tempA.value()==TemporalType.DATE){
             birthDateField.setResolution(Resolution.DAY);
-            birthDateField.setDateFormat("dd/MM/yyyy");
+//            birthDateField.setDateFormat("dd/MM/yyyy");
         } else {
             birthDateField.setResolution(Resolution.MINUTE);
-            birthDateField.setDateFormat("dd/MM/yyyy HH:mm");
+//            birthDateField.setDateFormat("dd/MM/yyyy HH:mm");
         }
-        birthDateField.setConverter(new Converter<Date, Calendar>() {
-            @Override
-            public Calendar convertToModel(Date value, Class<? extends Calendar> targetType, Locale locale) throws ConversionException {
-                if (value == null) {
-                    return null;
-                }
-                Calendar newCal = Calendar.getInstance(locale);
-                newCal.setTime(value);
-                return newCal;
-            }
 
-            @Override
-            public Date convertToPresentation(Calendar value, Class<? extends Date> targetType, Locale locale) throws ConversionException {
-                return (value == null) ? null : value.getTime();
-            }
-
-            @Override
-            public Class<Calendar> getModelType() {
-                return Calendar.class;
-            }
-
-            @Override
-            public Class<Date> getPresentationType() {
-                return Date.class;
-            }
-        });
-        birthDateField.setPropertyDataSource(calendarProperty);
         birthDateField.addBlurListener(event -> {
             Collection<Validator> validators = birthDateField.getValidators();
             if (validators == null || validators.isEmpty()) {
@@ -292,10 +246,10 @@ public class UserWindow extends SimpleWindow {
         newPasswordAgain.setNullRepresentation("");
         details.addComponent(newPasswordAgain);
 
-        avatarValue = new TextField("Avatar Hidden Value");
-        avatarValue.setVisible(false);
-        avatarValue.setNullRepresentation("");
-        details.addComponent(avatarValue);
+        avatarValueField = new TextField("Avatar Hidden Value");
+        avatarValueField.setVisible(false);
+        avatarValueField.setNullRepresentation("");
+        details.addComponent(avatarValueField);
 
         return root;
     }
@@ -382,15 +336,18 @@ public class UserWindow extends SimpleWindow {
             try {
                 User user = fieldGroup.getItemDataSource().getBean();
                 fieldGroup.commit();
-                UserServices.getInstance().update(user);
+                UserServices services = UserServices.getInstance();
+                user = services.update(user);
+                services.dao().flush();
+//                services.dao().evict(user.getProfile());
                 AppUI.getCurrent().notifySuccess(Txt.get("user.profile_successfully_updated"));
-                Eventizer.post(new Events.LoggedUserChanged(user));
+                Eventizer.post(new Events.LoggedUserChanged(services.detached(user)));
                 close();
             } catch (UserException e) {
                 AppUI.getCurrent().notifyErrors(e);
             } catch (CommitException e1) {
-                AppUI.getCurrent().notifyErrors(new UserException(e1));
-//                throw new RuntimeException(e);
+                AppUI.getCurrent().notifyErrors(new UserException("O formulário não foi preenchido devidamente. Revise os alertas"));
+                //throw new RuntimeException(e);
             }
 
         });

@@ -1,4 +1,4 @@
-package org.futurepages.core.upload;
+package org.futurepages.components;
 
 import com.vaadin.event.FieldEvents;
 import com.vaadin.server.DefaultErrorHandler;
@@ -14,6 +14,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.apps.simple.SimpleUI;
 import org.futurepages.core.locale.Txt;
+import org.futurepages.core.upload.UploadReceiver;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.util.Is;
 
