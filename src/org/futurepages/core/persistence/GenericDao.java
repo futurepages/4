@@ -412,7 +412,7 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public <T extends Serializable> void evict(T obj) {
-		session().evict(obj);
+		session().getSessionFactory().getCache().evictEntity(obj.getClass(),getIdValue(obj));
 	}
 
 	public <T extends Serializable> void persist(T obj) {
