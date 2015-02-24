@@ -122,6 +122,8 @@ public class UserServices extends EntityServices<UserDao, User> implements Admin
 
 	public User detached(User user) {
 		if (user.hasProfile()) {
+			Profile profile = dao.get(Profile.class,user.getProfile().getId());
+			user.setProfile(profile);
 			user.getProfile().getRoles().size(); //touch
 			user.getProfile().getModules().size(); //touch
 			if (user.getProfile().getAllowedProfiles() != null) {
@@ -333,10 +335,15 @@ public class UserServices extends EntityServices<UserDao, User> implements Admin
 		try{
 			UploadedResource oldAvatarRes = user.getOldAvatarRes();
 			if (oldAvatarRes != null) {
-				boolean deleted = oldAvatarRes.getSourceFile().delete();
-				if (!deleted) {
-					AppLogger.getInstance().execute(new IOException("Unable to delete " + oldAvatarRes.getSourceFile().getAbsolutePath()));
+				if(!oldAvatarRes.getSourceFile().exists()){
+					AppLogger.getInstance().execute(new IOException("Old avatar file " + oldAvatarRes.getSourceFile().getAbsolutePath()+" doesnt exists"));
+				}else{
+					boolean deleted = oldAvatarRes.getSourceFile().delete();
+					if (!deleted) {
+						AppLogger.getInstance().execute(new IOException("Unable to delete " + oldAvatarRes.getSourceFile().getAbsolutePath()));
+					}
 				}
+
 			}
 		}catch(Exception ex){
 					AppLogger.getInstance().execute(ex);

@@ -377,7 +377,9 @@ public class User implements DefaultUser, Serializable, EntityForServices<UserSe
 	}
 
 	public void setAvatarValue(String avatarValue) {
-		this.oldAvatarValue = this.avatarValue;
+		if(oldAvatarValue!=null && !oldAvatarValue.equals(avatarValue)){
+			this.oldAvatarValue = this.avatarValue;
+		}
 		this.avatarValue = avatarValue;
 	}
 
