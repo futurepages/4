@@ -2,6 +2,7 @@ package org.futurepages.components;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.converter.Converter;
+import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.DateField;
 import org.futurepages.core.locale.LocaleManager;
 
@@ -23,12 +24,25 @@ public class CalendarDateField extends DateField {
 
 	public void setFormatDateStyle(FormatStyle formatStyle){
 		String datePattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(formatStyle, formatStyle, IsoChronology.INSTANCE, LocaleManager.getDefaultLocale());
+		if(formatStyle==FormatStyle.MEDIUM && getResolution()==Resolution.MINUTE && datePattern.endsWith(":ss")){
+			datePattern = datePattern.substring(0,datePattern.length()-3);
+		}
 		this.setDateFormat(datePattern);
 	}
 
 	public CalendarDateField(String caption){
 		this();
 		this.setCaption(caption);
+	}
+
+	@Override
+	public void setResolution(Resolution resolution) {
+		super.setResolution(resolution);
+		if(getResolution()==Resolution.MINUTE && this.getDateFormat().endsWith(":ss")){
+			this.setDateFormat(this.getDateFormat().substring(0, this.getDateFormat().length()-3));
+		}else if(getResolution()==Resolution.DAY && this.getDateFormat().endsWith(" HH:mm:ss")){
+			this.setDateFormat(this.getDateFormat().substring(0, this.getDateFormat().length()-9));
+		}
 	}
 
 	public CalendarDateField(String caption, Calendar value) {

@@ -2,6 +2,8 @@ package org.futurepages.core.event;
 
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.cookie.Cookies;
+import org.futurepages.core.persistence.Dao;
+import org.futurepages.core.persistence.GenericDao;
 import org.futurepages.core.view.ViewItem;
 
 public abstract class Events {
@@ -52,10 +54,16 @@ public abstract class Events {
     }
 
     public static final class LoggedUserChanged {
+        private GenericDao dao;
         private DefaultUser loggedUser;
 
         public LoggedUserChanged(DefaultUser loggedUser) {
-            this.loggedUser = loggedUser;
+            this(loggedUser, Dao.getInstance());
+        }
+
+        public LoggedUserChanged(DefaultUser loggedUser, GenericDao theDao) {
+            this.dao = theDao;
+            this.loggedUser = dao.detached(loggedUser);
         }
 
         public DefaultUser getLoggedUser() {

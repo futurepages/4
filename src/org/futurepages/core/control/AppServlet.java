@@ -24,6 +24,7 @@ public class AppServlet extends VaadinServlet {
 			// TODO Find where to put @Transactional
 			// TODO MultiTransactional - how?
 			Dao.getInstance().beginTransaction();
+//			System.out.println("TRANSACTION START THREAD#"+Thread.currentThread().getId());
 			super.service(request, response);
 			if(Dao.getInstance().isTransactionActive()){
 				Dao.getInstance().commitTransaction();

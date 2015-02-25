@@ -59,7 +59,7 @@ public abstract class EntityServices<DAO extends EntityDao<BEAN>,BEAN extends Se
 		if(bean instanceof EntityForServices){
 			((EntityForServices)bean).prepareToUpdate();
 		}
-		return dao.merge(bean);
+		return dao.update(bean);
 	}
 
 	public BEAN delete(BEAN bean){
