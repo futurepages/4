@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import modules.global.model.entities.Feriado;
 import modules.global.model.entities.Periodo;
-import modules.global.model.enums.TipoFeriadoEnum;
-//import modules.global.model.services.FeriadoServices;
+import modules.global.model.entities.enums.TipoFeriadoEnum;
 import org.futurepages.core.install.Installer;
 import org.futurepages.core.persistence.Dao;
 

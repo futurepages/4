@@ -224,7 +224,7 @@ public class HQLProvider implements HQLable {
 		return new HQLQuery(entityFrom);
 	}
 
-	public static <T extends Serializable> HQLQuery<T> hql(Class<T> entityFrom, String where) {
+	public static <T extends Serializable> HQLQuery<T>  hql(Class<T> entityFrom, String where) {
 		return new HQLQuery(entityFrom, where);
 	}
 

@@ -1,19 +1,17 @@
 package modules.admin.model.entities;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import modules.admin.model.core.AdminConstants;
+import modules.admin.model.core.DefaultProfile;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import modules.admin.model.core.AdminConstants;
-import modules.admin.model.core.DefaultProfile;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -36,29 +34,14 @@ public class Profile implements DefaultProfile, Serializable {
 
 	@OrderBy("smallTitle asc")
 	@ManyToMany
-//	@JoinTable(name = "admin_profile_module",
-//	joinColumns =
-//	@JoinColumn(name = "profileId"),
-//	inverseJoinColumns =
-//	@JoinColumn(name = "moduleId"))
 	private List<Module> modules;
 
 	@OrderBy("title asc")
 	@ManyToMany
-//	@JoinTable(name = "admin_profile_role",
-//	joinColumns =
-//	@JoinColumn(name = "profileId"),
-//	inverseJoinColumns =
-//	@JoinColumn(name = "roleId"))
 	private List<Role> roles;
 
 	@OrderBy("label asc")
 	@ManyToMany
-//	@JoinTable(name = "admin_profile_allowedprofiles",
-//	joinColumns =
-//	@JoinColumn(name = "profileId"),
-//	inverseJoinColumns =
-//	@JoinColumn(name = "allowedId"))
 	private List<Profile> allowedProfiles;
 
 	public Profile() {
@@ -198,5 +181,4 @@ public class Profile implements DefaultProfile, Serializable {
 		hash = 89 * hash + (this.profileId != null ? this.profileId.hashCode() : 0);
 		return hash;
 	}
-	
 }

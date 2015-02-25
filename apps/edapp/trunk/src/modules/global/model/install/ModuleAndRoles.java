@@ -13,7 +13,7 @@ public class ModuleAndRoles extends Installer{
 
     @Override
     public void execute() throws Exception {
-//		ModuleDao.save("global","Global","Entidades Globais");
+		ModuleDao.save("global","Global","Entidades Globais");
 
 		GlobalRolesEnum.install();
 		GlobalProfilesEnum.install();

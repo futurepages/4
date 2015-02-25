@@ -1,5 +1,6 @@
 package modules.admin.model.entities;
 
+import modules.admin.model.dao.RoleDao;
 import org.futurepages.core.auth.DefaultModule;
 
 import javax.persistence.Column;
@@ -10,8 +11,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Module implements DefaultModule, Serializable{
@@ -43,10 +46,14 @@ public class Module implements DefaultModule, Serializable{
 	private List<Role> roles;
 
 	public List<Role> getRoles(){
-//		if(roles == null){
-//			roles = RoleDao.listByModule(this.getModuleId());
-//		}
+		if(roles == null){
+			roles = RoleDao.listByModule(this.getModuleId());
+		}
 		return roles;
+	}
+
+	public List<Role> getRoles(User user){
+		return user.getRoles().stream().filter(role -> role.getModule().equals(this)).collect(Collectors.toList());
 	}
 
     @Override

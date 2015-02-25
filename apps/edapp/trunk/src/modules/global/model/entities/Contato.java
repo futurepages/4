@@ -1,6 +1,6 @@
 package modules.global.model.entities;
 
-import modules.global.model.enums.TipoContatoEnum;
+import modules.global.model.entities.enums.TipoContatoEnum;
 import org.apache.commons.lang.NotImplementedException;
 
 import javax.persistence.Entity;
@@ -9,7 +9,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 /**

@@ -3,6 +3,7 @@ package modules.admin.model.entities;
 import com.vaadin.server.Resource;
 import modules.admin.model.dao.LogDao;
 import modules.admin.model.services.UserServices;
+import modules.global.model.entities.brasil.Cidade;
 import org.futurepages.core.auth.DefaultRole;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.resource.UploadedResource;
@@ -42,8 +43,11 @@ public class User implements DefaultUser, Serializable, EntityForServices<UserSe
  	private String email;
 
 	@Past
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Calendar birthDate;
+
+	@ManyToOne
+	private Cidade birthCity;
 
 	private boolean status;
 
@@ -199,6 +203,10 @@ public class User implements DefaultUser, Serializable, EntityForServices<UserSe
 	}
 
 	public void setProfile(Profile profile) {
+		if(profile==null ||  !services().dao().areEqualsById(profile,this.profile)){
+			roles = null;
+			modules = null;
+		}
 		this.profile = profile;
 	}
 
@@ -300,6 +308,14 @@ public class User implements DefaultUser, Serializable, EntityForServices<UserSe
 		}
 		final User other = (User) obj;
 		return !((this.login == null) ? (other.login != null) : !this.login.equals(other.login));
+	}
+
+	public Cidade getBirthCity() {
+		return birthCity;
+	}
+
+	public void setBirthCity(Cidade birthCity) {
+		this.birthCity = birthCity;
 	}
 
 	public boolean containsRole(String roleId) {

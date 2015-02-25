@@ -111,31 +111,13 @@ public class UserServices extends EntityServices<UserDao, User> implements Admin
 
 	public User authenticatedAndDetachedUser(User formUser) throws InvalidUserOrPasswordException, ExpiredPasswordException {
 		User tryUser = authenticatedUser(formUser);
-		detached(tryUser);
+		dao.detached(tryUser);
 		tryUser.setPlainPassword(formUser.getPlainPassword());
 		return tryUser;
 	}
 
-	public void logAccess(DefaultUser user, String ipHost) {
-		dao.save(new Log(null, LogType.LOGIN, dao.get(user.getLogin()), ipHost));
-	}
-
-	public User detached(User user) {
-		if (user.hasProfile()) {
-			Profile profile = dao.get(Profile.class,user.getProfile().getId());
-			user.setProfile(profile);
-			user.getProfile().getRoles().size(); //touch
-			user.getProfile().getModules().size(); //touch
-			if (user.getProfile().getAllowedProfiles() != null) {
-				user.getProfile().getAllowedProfiles().size(); //touch
-			}
-		}
-
-		if (user.hasProfile()) {
-			dao.evict(user.getProfile());
-		}
-		dao.evict(user);
-		return user;
+	public void logAccess(User user, String ipHost) {
+		dao.save(new Log(null, LogType.LOGIN, user, ipHost));
 	}
 
 	public User updateEmail(String login, String newEmail) {
@@ -153,7 +135,7 @@ public class UserServices extends EntityServices<UserDao, User> implements Admin
 		}
 	}
 
-	public DefaultUser authenticatedAndDetachedUser(String login, String password) throws InvalidUserOrPasswordException, ExpiredPasswordException {
+	public User authenticatedAndDetachedUser(String login, String password) throws InvalidUserOrPasswordException, ExpiredPasswordException {
 		User user = new User();
 		user.setAccessKey(login);
 		user.setPassword(password);

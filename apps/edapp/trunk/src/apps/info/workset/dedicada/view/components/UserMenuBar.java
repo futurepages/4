@@ -14,7 +14,7 @@ import org.futurepages.core.locale.Txt;
 
 public class UserMenuBar extends CustomComponent {
 
-	private MenuBar.MenuItem settingsItem;
+	private final MenuBar settings = new MenuBar();
 
 	public UserMenuBar(){
 		Eventizer.register(this);
@@ -22,11 +22,18 @@ public class UserMenuBar extends CustomComponent {
 	}
 
 	private Component build() {
-		final MenuBar settings = new MenuBar();
 		settings.addStyleName("user-menu");
-		final User user = (User) AppUI.getCurrent().getLoggedUser();
-		settingsItem = settings.addItem("", user.getAvatarRes(), null);
-		updateUserName(user);
+		buldContextMenu((User) AppUI.getCurrent().getLoggedUser());
+		return settings;
+	}
+
+	private void buldContextMenu(User user) {
+		settings.removeItems();
+		MenuBar.MenuItem settingsItem = settings.addItem("", user.getAvatarRes(), null);
+
+		String[] names = user.getFullName().split("\\s+");
+		settingsItem.setText(names.length > 1 ? names[0] + " " + names[names.length - 1] : names[0]);
+
 		settingsItem.addItem(Txt.get("user-menu.basic_info"), selectedItem -> UserWindow.open(user, 0));
 		final int logAccessIdx;
 		if(user.getProfile()==null){
@@ -39,17 +46,10 @@ public class UserMenuBar extends CustomComponent {
 
 		settingsItem.addSeparator();
 		settingsItem.addItem(Txt.get("user-menu.sign_out")    , FontAwesome.POWER_OFF,selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
-		return settings;
-	}
-
-	private void updateUserName(DefaultUser user){
-		String[] names = user.getFullName().split("\\s+");
-		settingsItem.setText(names.length>1? names[0]+" "+names[names.length-1]: names[0]);
 	}
 
 	@Subscribe
 	public void updateUserName(final Events.LoggedUserChanged event) {
-		updateUserName(event.getLoggedUser());
-		settingsItem.setIcon(((User)event.getLoggedUser()).getAvatarRes());
+		buldContextMenu((User) event.getLoggedUser());
 	}
 }

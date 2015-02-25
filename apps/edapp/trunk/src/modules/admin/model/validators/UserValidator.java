@@ -67,11 +67,10 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 		if (Is.empty(user.getEmail())) {
 			error("email", "Preencha o email do usuário");
 		} else {
-			User userWithEmail = services.dao().getByEmail(user.getEmail());
-			if (userWithEmail != null && !userWithEmail.getLogin().equals(user.getLogin())) {
-				error("email", "Este email já está cadastrado no sistema para outro usuário");
-			} else if (!Is.validMail(user.getEmail())) {
+			if (!Is.validMail(user.getEmail())) {
 				error("email", "E-mail inválido");
+			}else if (services.dao().hasOtherWithEmail(user)) {
+				error("email", "Este email já está cadastrado no sistema para outro usuário");
 			}
 		}
 	}
@@ -81,7 +80,7 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 			error("login", "Preencha o campo do login");
 		} else if (!Is.validStringKey(user.getLogin())) {
 			error("login", "O login digitado é inválido");
-		} else if (services.dao().get(user.getLogin()) != null) {
+		} else if (services.dao().hasOtherWithLogin(user)) {
 			error("login", "Login digitado já existe");
 		}
 	}
@@ -117,16 +116,6 @@ public class UserValidator extends EntityValidator<UserServices,User> {
 		user.setPlainPassword(newPassword);
 		passwordSecurity(user);
 
-	}
-
-	public void email(String login, String newEmail) {
-		if (Is.empty(newEmail) || !Is.validMail(newEmail)) {
-			error("Email inválido. Informe um email válido");
-		}
-
-		if ((services.dao().getByEmail(newEmail) != null) && (!services.dao().isMailMine(login, newEmail))) {
-			error("O email informado já está cadastrado para outro usuário. Informe outro email válido");
-		}
 	}
 
 	/*

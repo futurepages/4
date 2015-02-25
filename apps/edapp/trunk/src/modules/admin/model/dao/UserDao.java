@@ -107,4 +107,12 @@ public class UserDao extends EntityDao<User> {
 	public Class<User> getEntityClass() {
 		return User.class;
 	}
+
+	public boolean hasOtherWithEmail(User user) {
+		return numRows(hql(count("*"),User.class, ands(field("email").equalsTo(user.getEmail()),field("login").differentFrom(user.getLogin()))))>0;
+	}
+
+	public boolean hasOtherWithLogin(User user) {
+		return numRows(hql(count("*"),User.class, field("login").equalsTo(user.getEmail())))>0;
+	}
 }

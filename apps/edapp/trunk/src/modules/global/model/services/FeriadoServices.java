@@ -6,7 +6,7 @@ import java.util.List;
 import modules.global.model.entities.Feriado;
 import modules.global.model.entities.Periodo;
 import modules.global.model.dao.FeriadoDao;
-import modules.global.model.enums.TipoFeriadoEnum;
+import modules.global.model.entities.enums.TipoFeriadoEnum;
 import org.futurepages.core.persistence.Dao;
 
 /**

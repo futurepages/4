@@ -14,6 +14,7 @@ import modules.admin.model.entities.enums.ParamValueType;
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.install.Installer;
 import org.futurepages.core.persistence.Dao;
+import org.futurepages.util.brazil.CalendarUtil;
 
 /**
  * Inserções Iniciais Padrões do Módulo Admin
@@ -32,6 +33,7 @@ public class AdminInstaller extends Installer implements AdminConstants {
         userAdmin.setLogin("admin");
         userAdmin.setFullName("Administrador Padrão do Sistema");
         userAdmin.setEmail("admin@admin.com");
+	    userAdmin.setBirthDate(CalendarUtil.buildCalendar(1985,1,16));
 
 		if(Apps.get("DEPLOY_MODE").equals("none")){
 			userAdmin.setPassword("admin.senha");

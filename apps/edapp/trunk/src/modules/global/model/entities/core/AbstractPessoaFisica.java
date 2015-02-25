@@ -5,10 +5,10 @@ import modules.global.model.entities.Contato;
 import modules.global.model.entities.Endereco;
 import modules.global.model.entities.brasil.Cidade;
 import modules.global.model.entities.brasil.Estado;
-import modules.global.model.enums.EstadoCivilEnum;
-import modules.global.model.enums.NivelEscolaridadeEnum;
-import modules.global.model.enums.SexoEnum;
-import modules.global.model.enums.TipoContatoEnum;
+import modules.global.model.entities.enums.EstadoCivilEnum;
+import modules.global.model.entities.enums.NivelEscolaridadeEnum;
+import modules.global.model.entities.enums.SexoEnum;
+import modules.global.model.entities.enums.TipoContatoEnum;
 import org.futurepages.util.Is;
 
 import javax.persistence.CascadeType;

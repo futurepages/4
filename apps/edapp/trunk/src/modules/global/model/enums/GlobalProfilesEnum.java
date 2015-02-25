@@ -38,13 +38,12 @@ public enum GlobalProfilesEnum implements DefaultProfile, AdminConstants, Serial
 
 	public static void install(){
 		for(GlobalProfilesEnum profileEnum : GlobalProfilesEnum.values()){
-
 			Profile profile = new Profile();
 			profile.setProfileId(profileEnum.getProfileId());
 			profile.setDescription(profileEnum.getDescription());
 			profile.setLabel(profileEnum.getLabel());
-			profile.setModules(new ArrayList<Module>());
-			profile.setRoles(new ArrayList<Role>());
+			profile.setModules(new ArrayList<>());
+			profile.setRoles(new ArrayList<>());
 			profile.getModules().add(ModuleDao.getById("global"));
 
 			for(DefaultRole role : profileEnum.roles){

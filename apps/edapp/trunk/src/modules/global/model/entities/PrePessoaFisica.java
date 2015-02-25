@@ -7,7 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import modules.global.model.entities.core.AbstractPessoaFisica;
-import modules.global.model.enums.TipoContatoEnum;
+import modules.global.model.entities.enums.TipoContatoEnum;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 

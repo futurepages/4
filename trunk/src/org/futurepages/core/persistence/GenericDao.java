@@ -2,18 +2,33 @@ package org.futurepages.core.persistence;
 
 import org.futurepages.util.Is;
 import org.hibernate.Criteria;
+import org.hibernate.EntityMode;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.engine.spi.EntityKey;
+import org.hibernate.engine.spi.PersistenceContext;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.transform.Transformers;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GenericDao extends HQLProvider {
 
@@ -359,6 +374,18 @@ public class GenericDao extends HQLProvider {
 		return obj;
 	}
 
+//	public <T extends Serializable> T getFromSession(Serializable identifier, Class<T> clazz) {
+//		String entityName = clazz.getName();
+//		if (identifier == null) {
+//			return null;
+//		}
+//		SessionImplementor sessionImpl = (SessionImplementor) session();
+//		EntityPersister entityPersister = sessionImpl.getFactory().getEntityPersister(entityName);
+//		PersistenceContext persistenceContext = sessionImpl.getPersistenceContext();
+//		EntityKey entityKey = new EntityKey(identifier, entityPersister, EntityMode.POJO.toString());
+//		return (T) persistenceContext.getEntity(entityKey);
+//	}
+
 	public <T extends Serializable> void update(T[] arr) {
 		for (T obj : arr) {
 			session().update(obj);
@@ -412,7 +439,103 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public <T extends Serializable> void evict(T obj) {
-		session().getSessionFactory().getCache().evictEntity(obj.getClass(),getIdValue(obj));
+		session().evict(obj);
+		session().getSessionFactory().getCache().evictEntity(obj.getClass(),getIdValue(obj)); //TODO verify if it's really necessary.
+	}
+
+	//alreadyDeatached is necessary because of possible duplicate references in the object tree. If it happens, it will be detached just the first time.
+	private <T extends Serializable> T detachedObject(HashMap<Class<? extends Serializable>,HashMap<Serializable,Serializable>> alreadyDetached, T object, boolean detachCollectionElements){
+		if(alreadyDetached.get(object.getClass())!=null){
+			Serializable alreadyOne = alreadyDetached.get(object.getClass()).get(getIdValue(object));
+			if(alreadyOne!=null){
+				return (T) alreadyOne;
+			}
+		}else{
+			alreadyDetached.put(object.getClass(),new HashMap<>());
+		}
+		if(!session().contains(object)){
+			object = get((Class<T>) object.getClass(), getIdValue(object));
+		}
+		alreadyDetached.get(object.getClass()).put(getIdValue(object),object);
+
+		Field[] fields = object.getClass().getDeclaredFields();
+		for (Field field : fields) {
+			try {
+				field.setAccessible(true);
+				Object fieldValue = field.get(object);
+				if(fieldValue!=null && !field.isAnnotationPresent(Transient.class)){
+					if(field.isAnnotationPresent(ManyToOne.class) || field.isAnnotationPresent(OneToOne.class)){
+						field.set(object,detachedObject(alreadyDetached, (Serializable) field.get(object),detachCollectionElements));
+					}
+					else //if collection or map...
+					if(field.isAnnotationPresent(OneToMany.class)|| field.isAnnotationPresent(ManyToMany.class) || field.isAnnotationPresent(ElementCollection.class)){
+						if(fieldValue instanceof Collection){
+							if(detachCollectionElements){
+								Collection col = ((Collection)fieldValue); //just touch
+								if(col.size()>0){
+									for(Object obj : col){
+										if((obj != null) && obj.getClass().isAnnotationPresent(Entity.class)){
+											field.set(object,detachedObject(alreadyDetached, (Serializable) field.get(obj),false)); //just one level with detached lists. not list inside a object list.
+										}
+									}
+								}
+							}else{
+								((Collection)fieldValue).size(); //just touch
+							}
+						}else if(fieldValue instanceof Map){
+							if(detachCollectionElements){
+								Map map = ((Map) fieldValue); //just touch
+								if (map.size() > 0) {
+									for (Object obj : map.values()) {
+										if ((obj != null) && obj.getClass().isAnnotationPresent(Entity.class)) {
+											field.set(object, detachedObject(alreadyDetached, (Serializable) field.get(obj), false)); //just one level with detached lists. to not have list inside a object list.
+										}
+									}
+									for (Object obj : map.keySet()) {
+										if (obj.getClass().isAnnotationPresent(Entity.class)) {
+											field.set(object, detachedObject(alreadyDetached, (Serializable) field.get(obj), false)); //just one level with detached lists. to not have list inside a object list.
+										}
+									}
+								}
+							}else{
+								((Map)fieldValue).size(); //just touch
+							}
+						}
+					}
+				}
+			} catch (Exception ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		evict(object);
+
+//		if (user.hasProfile()) {
+//			if(!dao.session().contains(user.getProfile())){
+//				Profile profile = dao.get(Profile.class,user.getProfile().getId());
+//				user.setProfile(profile);
+//			}
+//			user.getProfile().getRoles().size(); //touch
+//			user.getProfile().getModules().size(); //touch
+//			if (user.getProfile().getAllowedProfiles() != null) {
+//				user.getProfile().getAllowedProfiles().size(); //touch
+//			}
+//		}
+//
+//		if (user.hasProfile()) {
+//			dao.evict(user.getProfile());
+//		}
+//		dao.evict(user);
+//		return user;
+		return object;
+	}
+
+	public <T extends Serializable> T detached(T object, boolean detachCollectionElements){
+		HashMap<Class<? extends Serializable>, HashMap<Serializable, Serializable>> alreadyDetached = new HashMap<>();
+		return detachedObject(alreadyDetached, object, detachCollectionElements);
+	}
+
+	public <T extends Serializable> T detached(T object){
+		return detached(object,false);
 	}
 
 	public <T extends Serializable> void persist(T obj) {

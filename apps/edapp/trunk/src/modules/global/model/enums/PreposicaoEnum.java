@@ -1,5 +1,7 @@
 package modules.global.model.enums;
 
+import modules.global.model.entities.enums.SexoEnum;
+
 import java.io.Serializable;
 
 public enum PreposicaoEnum implements Serializable{

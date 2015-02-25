@@ -2,7 +2,7 @@ package modules.global.model.entities;
 
 import modules.admin.model.entities.User;
 import modules.global.model.entities.core.AbstractPessoaFisica;
-import modules.global.model.enums.TipoContatoEnum;
+import modules.global.model.entities.enums.TipoContatoEnum;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 

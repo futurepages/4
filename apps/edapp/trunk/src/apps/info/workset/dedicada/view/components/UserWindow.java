@@ -8,12 +8,10 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.validator.BeanValidator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.datefield.Resolution;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -26,6 +24,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import modules.admin.model.core.AdminConstants;
 import modules.admin.model.dao.ProfileDao;
 import modules.admin.model.entities.Log;
+import modules.admin.model.entities.Module;
 import modules.admin.model.entities.Role;
 import modules.admin.model.entities.User;
 import modules.admin.model.services.UserServices;
@@ -72,7 +71,7 @@ public class UserWindow extends SimpleWindow {
     private PasswordField newPasswordAgain;
 
     @PropertyId("birthDate")
-    private DateField birthDateField;
+    private CalendarDateField birthDateField;
 
     @PropertyId("avatarValue")
     private TextField avatarValueField;
@@ -210,11 +209,10 @@ public class UserWindow extends SimpleWindow {
         Temporal tempA = ReflectionUtil.getObjectField("birthDate",User.class).getDeclaredAnnotation(Temporal.class);
         if(tempA.value()==TemporalType.DATE){
             birthDateField.setResolution(Resolution.DAY);
-//            birthDateField.setDateFormat("dd/MM/yyyy");
         } else {
             birthDateField.setResolution(Resolution.MINUTE);
-//            birthDateField.setDateFormat("dd/MM/yyyy HH:mm");
         }
+//        birthDateField.setFormatDateStyle(FormatStyle.MEDIUM); //podia ser lá dentro no próprio construtor.
 
         birthDateField.addBlurListener(event -> {
             Collection<Validator> validators = birthDateField.getValidators();
@@ -271,8 +269,8 @@ public class UserWindow extends SimpleWindow {
 
         Label perfilLabel = new Label(user.getProfile().getLabel());
         perfilLabel.setCaption("Perfil");
+        perfilLabel.setStyleName(ValoTheme.LABEL_COLORED);
         perfilLabel.setSizeUndefined();
-        perfilLabel.addStyleName(ValoTheme.LABEL_LIGHT);
         details.addComponent(perfilLabel);
 
         TextArea profileDescription = new TextArea("Descrição", user.getProfile().getDescription());
@@ -281,16 +279,32 @@ public class UserWindow extends SimpleWindow {
         details.addComponent(profileDescription);
         details.setComponentAlignment(perfilLabel, Alignment.MIDDLE_CENTER);
         Label lbPapeis = new Label();
-        lbPapeis.setCaption("Permissões ("+user.getRoles().size()+")");
         lbPapeis.addStyleName(ValoTheme.LABEL_BOLD);
         lbPapeis.setEnabled(true);
         details.addComponent(lbPapeis);
-        for(Role role : user.getRoles()){
-            Label labelRole = new Label(role.getTitle(), ContentMode.TEXT);
-            labelRole.setIcon(FontAwesome.CHECK_CIRCLE);
-            details.addComponent(labelRole);
+        int countPermissions = 0;
+        for(Module module : user.getModules()){
+            Label moduleLabel = new Label(module.getTitle());
+            moduleLabel.setStyleName(ValoTheme.LABEL_COLORED);
+            details.addComponent(moduleLabel);
+            moduleLabel.setIcon(FontAwesome.FOLDER_O);
+            List<Role> moduleRoles = module.getRoles(user);
+            if(moduleRoles.size()==0){
+                Label roleLabel = new Label("Permissão total do módulo (*)");
+                roleLabel.setStyleName(ValoTheme.LABEL_LIGHT);
+                details.addComponent(roleLabel);
+                countPermissions++;
+            }else{
+                for(Role role : moduleRoles){
+                    Label roleLabel = new Label(role.getTitle());
+                    details.addComponent(roleLabel);
+                    countPermissions++;
+                }
+            }
         }
+        lbPapeis.setCaption("Permissões (" + countPermissions + ")");
         return root;
+
     }
 
     private Component buildLogAccessesTab(User user) {
@@ -338,10 +352,9 @@ public class UserWindow extends SimpleWindow {
                 fieldGroup.commit();
                 UserServices services = UserServices.getInstance();
                 user = services.update(user);
-                services.dao().flush();
-//                services.dao().evict(user.getProfile());
+                services.dao().flush(); //flush is here because of the deached below
                 AppUI.getCurrent().notifySuccess(Txt.get("user.profile_successfully_updated"));
-                Eventizer.post(new Events.LoggedUserChanged(services.detached(user)));
+                Eventizer.post(new Events.LoggedUserChanged(user));
                 close();
             } catch (UserException e) {
                 AppUI.getCurrent().notifyErrors(e);
