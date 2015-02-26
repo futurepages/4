@@ -5,9 +5,12 @@ import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.BeanContainer;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.validator.BeanValidator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.datefield.Resolution;
+import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -29,6 +32,7 @@ import modules.admin.model.entities.Role;
 import modules.admin.model.entities.User;
 import modules.admin.model.services.UserServices;
 import modules.global.model.dao.CidadeDao;
+import modules.global.model.entities.brasil.Cidade;
 import modules.global.model.entities.brasil.Estado;
 import org.futurepages.apps.simple.SimpleWindow;
 import org.futurepages.components.CalendarDateField;
@@ -261,10 +265,12 @@ public class UserWindow extends SimpleWindow {
         details.addComponent(birthDateField);
         final ComboBox birthStateField = new ComboBox("Estado de Nascimento");
         birthCityField = new ComboBox("Cidade de Nascimento");
+        birthCityField.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+        birthCityField.setItemCaptionPropertyId("nome");
         birthStateField.addValueChangeListener(event -> {
             if(birthStateField.getValue()!=null){
                 birthCityField.setValue(null);
-                birthCityField.setContainerDataSource(new ListContainer<>(CidadeDao.listByUF(((Estado)birthStateField.getValue()).getSigla())));
+                birthCityField.setContainerDataSource(new ListContainer<>(CidadeDao.listByUF(((Estado) birthStateField.getValue()).getSigla())));
                 birthCityField.setEnabled(true);
                 birthCityField.setReadOnly(false);
             }else{
@@ -275,6 +281,9 @@ public class UserWindow extends SimpleWindow {
         });
 
         birthStateField.setContainerDataSource(new ListContainer(Dao.getInstance().list(new HQLQuery<Estado>(Estado.class, null, "nome asc"))));
+        birthStateField.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+        birthStateField.setItemCaptionPropertyId("nome");
+        birthStateField.setTextInputAllowed(false);
         if(user.getBirthCity()!=null){
             birthStateField.setValue(user.getBirthCity().getEstado());
             birthCityField.setContainerDataSource(new ListContainer(CidadeDao.listByUF(user.getBirthCity().getEstado().getSigla())));
