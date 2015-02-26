@@ -2,6 +2,7 @@ package org.futurepages.containers;
 
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItem;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.HQLProvider;
 import org.futurepages.util.Is;
@@ -120,7 +121,7 @@ public class PaginationSliceContainer<BEANTYPE> extends BeanContainer {
                 sb.append((i!=0? "," : "")).append(ascending[i] ? HQLProvider.asc(propertyIds[i].toString()) : HQLProvider.desc(propertyIds[i].toString()));
                 removeAllItems();
             } catch (NoSuchFieldException e) {
-//                DefaultExceptionLogger.getInstance().execute(propertyIds[i] + "'s not a entity field! Just a method. Remove when ordering " + paginationSlice.getHqlQuery().getEntity().getName());
+                AppLogger.getInstance().execute(new NoSuchFieldError(propertyIds[i] + "'s not a entity field! Just a method. Remove when ordering " + paginationSlice.getHqlQuery().getEntity().getName()));
             }
         }
         newOrder = sb.toString();

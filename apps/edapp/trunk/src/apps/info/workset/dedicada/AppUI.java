@@ -15,6 +15,8 @@ import org.futurepages.apps.simple.SimpleUI;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.util.Is;
 
+import java.lang.reflect.Field;
+
 @Title("Workset Dedicada")
 @Theme("dashboard")
 public class AppUI extends SimpleUI {
@@ -73,5 +75,11 @@ public class AppUI extends SimpleUI {
     private final DataProvider dataProvider = new DummyDataProvider();
     public static DataProvider getDataProvider() {
         return ((AppUI) getCurrent()).dataProvider;
+    }
+
+    public static void main(String[] args) {
+        for(Field f : User.class.getDeclaredFields()){
+            System.out.println(f.getName());
+        }
     }
 }

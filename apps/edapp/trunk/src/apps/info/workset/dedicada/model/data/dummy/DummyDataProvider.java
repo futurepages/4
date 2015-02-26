@@ -17,6 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.UI;
 import com.vaadin.util.CurrentInstance;
 import modules.admin.model.exceptions.ExpiredPasswordException;
 import modules.admin.model.exceptions.InvalidUserOrPasswordException;

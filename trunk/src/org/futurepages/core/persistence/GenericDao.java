@@ -440,7 +440,8 @@ public class GenericDao extends HQLProvider {
 
 	public <T extends Serializable> void evict(T obj) {
 		session().evict(obj);
-		session().getSessionFactory().getCache().evictEntity(obj.getClass(),getIdValue(obj)); //TODO verify if it's really necessary.
+//		session().getSessionFactory().getCache().evictEntity(obj.getClass(),getIdValue(obj)); //TODO verify if it's really necessary.
+//		System.out.println("Evicted: "+obj.getClass()+"#"+getIdValue(obj));
 	}
 
 	//alreadyDeatached is necessary because of possible duplicate references in the object tree. If it happens, it will be detached just the first time.
@@ -453,9 +454,7 @@ public class GenericDao extends HQLProvider {
 		}else{
 			alreadyDetached.put(object.getClass(),new HashMap<>());
 		}
-		if(!session().contains(object)){
-			object = get((Class<T>) object.getClass(), getIdValue(object));
-		}
+		object = get((Class<T>) object.getClass(), getIdValue(object));
 		alreadyDetached.get(object.getClass()).put(getIdValue(object),object);
 
 		Field[] fields = object.getClass().getDeclaredFields();
@@ -465,6 +464,7 @@ public class GenericDao extends HQLProvider {
 				Object fieldValue = field.get(object);
 				if(fieldValue!=null && !field.isAnnotationPresent(Transient.class)){
 					if(field.isAnnotationPresent(ManyToOne.class) || field.isAnnotationPresent(OneToOne.class)){
+						//System.out.println(field.getName()+" --> "+fieldValue.toString());
 						field.set(object,detachedObject(alreadyDetached, (Serializable) field.get(object),detachCollectionElements));
 					}
 					else //if collection or map...
@@ -475,11 +475,13 @@ public class GenericDao extends HQLProvider {
 								if(col.size()>0){
 									for(Object obj : col){
 										if((obj != null) && obj.getClass().isAnnotationPresent(Entity.class)){
-											field.set(object,detachedObject(alreadyDetached, (Serializable) field.get(obj),false)); //just one level with detached lists. not list inside a object list.
+											//System.out.println("ELEMENTS_OF_THE_LIST>" + field.getName() + " --> " + fieldValue.toString());
+											field.set(object, detachedObject(alreadyDetached, (Serializable) field.get(obj), false)); //just one level with detached lists. not list inside a object list.
 										}
 									}
 								}
 							}else{
+								//System.out.println("LIST.SIZE>" + field.getName() + " --> " + fieldValue.toString());
 								((Collection)fieldValue).size(); //just touch
 							}
 						}else if(fieldValue instanceof Map){
@@ -488,16 +490,19 @@ public class GenericDao extends HQLProvider {
 								if (map.size() > 0) {
 									for (Object obj : map.values()) {
 										if ((obj != null) && obj.getClass().isAnnotationPresent(Entity.class)) {
+											//System.out.println("MAP-KEYS-EL.DETACH>" + field.getName() + " --> " + fieldValue.toString());
 											field.set(object, detachedObject(alreadyDetached, (Serializable) field.get(obj), false)); //just one level with detached lists. to not have list inside a object list.
 										}
 									}
 									for (Object obj : map.keySet()) {
 										if (obj.getClass().isAnnotationPresent(Entity.class)) {
+											//System.out.println("MAP-VALUES-EL.DETACH>" + field.getName() + " --> " + fieldValue.toString());
 											field.set(object, detachedObject(alreadyDetached, (Serializable) field.get(obj), false)); //just one level with detached lists. to not have list inside a object list.
 										}
 									}
 								}
 							}else{
+								//System.out.println("MAP-SIZE>" + field.getName() + " --> " + fieldValue.toString());
 								((Map)fieldValue).size(); //just touch
 							}
 						}
@@ -507,8 +512,6 @@ public class GenericDao extends HQLProvider {
 				throw new RuntimeException(ex);
 			}
 		}
-		evict(object);
-
 //		if (user.hasProfile()) {
 //			if(!dao.session().contains(user.getProfile())){
 //				Profile profile = dao.get(Profile.class,user.getProfile().getId());
@@ -531,7 +534,11 @@ public class GenericDao extends HQLProvider {
 
 	public <T extends Serializable> T detached(T object, boolean detachCollectionElements){
 		HashMap<Class<? extends Serializable>, HashMap<Serializable, Serializable>> alreadyDetached = new HashMap<>();
-		return detachedObject(alreadyDetached, object, detachCollectionElements);
+		T detachedObject = detachedObject(alreadyDetached, object, detachCollectionElements);
+		for(HashMap<Serializable, Serializable> map : alreadyDetached.values()){
+			map.values().forEach(this::evict);
+		}
+		return detachedObject;
 	}
 
 	public <T extends Serializable> T detached(T object){

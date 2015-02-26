@@ -7,11 +7,13 @@ import com.vaadin.server.Responsive;
 import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
+import com.vaadin.server.VaadinServletRequest;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
@@ -152,7 +154,7 @@ public abstract class SimpleUI extends UI {
     }
 
     public void notifyFailure(Throwable originalCause) {
-        String errorNumber = AppLogger.getInstance().execute(originalCause);
+        String errorNumber = AppLogger.getInstance().execute(originalCause, VaadinService.getCurrentRequest());
         getCurrent().notifyFailure(The.concat(Txt.get("system.internal_failure"), " ", errorNumber, "  (", Txt.get("system.press_esc_to_exit"),")"));
     }
 
@@ -190,7 +192,10 @@ public abstract class SimpleUI extends UI {
 
     @Subscribe
     public void closeOpenWindows(final Events.CloseOpenWindows event) {
-        getWindows().forEach(com.vaadin.ui.Window::close);
+        for(Window window : getWindows()){
+           window.close();
+        }
+        // getWindows().forEach(com.vaadin.ui.Window::close); //could i change the code above for <-- this??
     }
 
 	@Subscribe

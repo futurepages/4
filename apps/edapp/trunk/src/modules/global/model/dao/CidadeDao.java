@@ -38,7 +38,8 @@ public class CidadeDao extends HQLProvider {
 		return Dao.getInstance().uniqueResult(hql(Cidade.class, ands(whereBuscaByParam("nomeBusca", nomeId), ATIVO)));
 	}
 
-	public static List<Cidade> listByEstadoSigla(String estadoSigla) {
+
+	public static List<Cidade> listByUF(String estadoSigla) {
 		return Dao.getInstance().list(hql(Cidade.class, ands(field("estado.sigla").equalsTo(estadoSigla), ATIVO), asc("nome")));
 	}
 
@@ -62,10 +63,6 @@ public class CidadeDao extends HQLProvider {
 
 	public static List<Cidade> listByNomeEstadoBusca(String nomeCidade, String estadoSigla) {
 		return Dao.getInstance().list(hql(Cidade.class, ands(ATIVO, whereBuscaByParam("nome", nomeCidade), field("estado.sigla").equalsTo(estadoSigla)), asc("nome")));
-	}
-
-	public static List<Cidade> listByUF(String estadoSigla) {
-		return Dao.getInstance().list(hql(Cidade.class, ands(ATIVO, field("estado.sigla").equalsTo(estadoSigla)), asc("nome")));
 	}
 
 	public static Map<Long, String> mapByEstadoSiglaCapitalPrimeiro(String estadoSigla) {

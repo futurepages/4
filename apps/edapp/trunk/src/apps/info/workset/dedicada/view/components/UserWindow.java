@@ -28,12 +28,16 @@ import modules.admin.model.entities.Module;
 import modules.admin.model.entities.Role;
 import modules.admin.model.entities.User;
 import modules.admin.model.services.UserServices;
+import modules.global.model.dao.CidadeDao;
+import modules.global.model.entities.brasil.Estado;
 import org.futurepages.apps.simple.SimpleWindow;
 import org.futurepages.components.CalendarDateField;
 import org.futurepages.components.UploadField;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
 import org.futurepages.core.locale.Txt;
+import org.futurepages.core.persistence.Dao;
+import org.futurepages.core.persistence.HQLQuery;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.formatters.brazil.DateTimeFormatter;
 import org.futurepages.util.ImageUtil;
@@ -61,6 +65,9 @@ public class UserWindow extends SimpleWindow {
     @PropertyId("profile")
     private ComboBox profileField;
 
+    @PropertyId("birthCity")
+    private ComboBox birthCityField;
+
     @PropertyId("oldPassword")
     private PasswordField oldPassword;
 
@@ -83,11 +90,13 @@ public class UserWindow extends SimpleWindow {
 //        setId("profilepreferenceswindow");
 
         setWidth (50.0f, Unit.PERCENTAGE);
-        setHeight(90.0f, Unit.PERCENTAGE);
+        setHeight(80.0f, Unit.PERCENTAGE);
 
         fieldGroup = new BeanFieldGroup<>(User.class);
 
         addTab(buildUserTab(user));
+
+        addTab(buildPasswordTab(user));
 
         if(user.hasProfile()){
             addTab(buildProfileTab(user));
@@ -97,6 +106,39 @@ public class UserWindow extends SimpleWindow {
         fieldGroup.bindMemberFields(this);
         fieldGroup.setItemDataSource(user);
         addFooter(buildFooter());
+    }
+
+    private Component buildPasswordTab(User user) {
+        final HorizontalLayout root = new HorizontalLayout();
+        root.setCaption(Txt.get("user.new_password"));
+        root.setIcon(FontAwesome.KEY);
+        root.setWidth(100.0f, Unit.PERCENTAGE);
+        root.setSpacing(true);
+        root.setMargin(true);
+        final FormLayout details = new FormLayout();
+
+        details.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+        details.setMargin(false);
+        root.addComponent(details);
+        root.setDefaultComponentAlignment(Alignment.TOP_CENTER);
+
+        Label labelAlterarSenha = new Label("Definição de Nova Senha");
+        labelAlterarSenha.setStyleName(ValoTheme.LABEL_COLORED);
+        labelAlterarSenha.setIcon(FontAwesome.LOCK);
+        details.addComponent(labelAlterarSenha);
+
+        oldPassword = new PasswordField("Senha Atual");
+        oldPassword.setNullRepresentation("");
+        details.addComponent(oldPassword);
+
+        newPassword = new PasswordField("Nova Senha");
+        newPassword.setNullRepresentation("");
+        details.addComponent(newPassword);
+
+        newPasswordAgain = new PasswordField("Nova Senha (Repetir)");
+        newPasswordAgain.setNullRepresentation("");
+        details.addComponent(newPasswordAgain);
+        return root;
     }
 
     private Component buildUserTab(User user) {
@@ -167,7 +209,6 @@ public class UserWindow extends SimpleWindow {
         labelPrincipal.setIcon(FontAwesome.USER);
         details.addComponent(labelPrincipal);
 
-
         Label lbLogin = new Label(user.getLogin());
         lbLogin.setCaption("Login");
         details.addComponent(lbLogin);
@@ -204,7 +245,6 @@ public class UserWindow extends SimpleWindow {
         });
 
         birthDateField = new CalendarDateField("Data de Nascimento");
-
         //a bind stuff. MIGRATE TO AUTOMATED SCREEN
         Temporal tempA = ReflectionUtil.getObjectField("birthDate",User.class).getDeclaredAnnotation(Temporal.class);
         if(tempA.value()==TemporalType.DATE){
@@ -212,8 +252,6 @@ public class UserWindow extends SimpleWindow {
         } else {
             birthDateField.setResolution(Resolution.MINUTE);
         }
-//        birthDateField.setFormatDateStyle(FormatStyle.MEDIUM); //podia ser lá dentro no próprio construtor.
-
         birthDateField.addBlurListener(event -> {
             Collection<Validator> validators = birthDateField.getValidators();
             if (validators == null || validators.isEmpty()) {
@@ -221,28 +259,38 @@ public class UserWindow extends SimpleWindow {
             }
         });
         details.addComponent(birthDateField);
+        final ComboBox birthStateField = new ComboBox("Estado de Nascimento");
+        birthCityField = new ComboBox("Cidade de Nascimento");
+        birthStateField.addValueChangeListener(event -> {
+            if(birthStateField.getValue()!=null){
+                birthCityField.setValue(null);
+                birthCityField.setContainerDataSource(new ListContainer<>(CidadeDao.listByUF(((Estado)birthStateField.getValue()).getSigla())));
+                birthCityField.setEnabled(true);
+                birthCityField.setReadOnly(false);
+            }else{
+                birthCityField.setValue(null);
+                birthCityField.setEnabled(false);
+                birthCityField.setReadOnly(true);
+            }
+        });
+
+        birthStateField.setContainerDataSource(new ListContainer(Dao.getInstance().list(new HQLQuery<Estado>(Estado.class, null, "nome asc"))));
+        if(user.getBirthCity()!=null){
+            birthStateField.setValue(user.getBirthCity().getEstado());
+            birthCityField.setContainerDataSource(new ListContainer(CidadeDao.listByUF(user.getBirthCity().getEstado().getSigla())));
+            birthCityField.setEnabled(true);
+            birthCityField.setReadOnly(false);
+        }else{
+            birthCityField.setEnabled(false);
+            birthCityField.setReadOnly(true);
+        }
+        details.addComponent(birthStateField);
+        details.addComponent(birthCityField);
 
         Label lbX = new Label("");
 
         lbX.setStyleName(ValoTheme.LABEL_LARGE);
         details.addComponent(lbX);
-
-        Label labelAlterarSenha = new Label("Definição de Nova Senha");
-        labelAlterarSenha.setStyleName(ValoTheme.LABEL_COLORED);
-        labelAlterarSenha.setIcon(FontAwesome.LOCK);
-        details.addComponent(labelAlterarSenha);
-
-        oldPassword = new PasswordField("Senha Atual");
-        oldPassword.setNullRepresentation("");
-        details.addComponent(oldPassword);
-
-        newPassword = new PasswordField("Nova Senha");
-        newPassword.setNullRepresentation("");
-        details.addComponent(newPassword);
-
-        newPasswordAgain = new PasswordField("Nova Senha (Repetir)");
-        newPasswordAgain.setNullRepresentation("");
-        details.addComponent(newPasswordAgain);
 
         avatarValueField = new TextField("Avatar Hidden Value");
         avatarValueField.setVisible(false);

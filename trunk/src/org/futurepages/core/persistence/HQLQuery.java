@@ -85,11 +85,15 @@ public class HQLQuery<T> extends HQLProvider {
 	}
 
 	public String getSelectHQL(){
-		return The.concat(select(select),from(entity),as(alias),join(join),where(where),groupBy(group),having(having),orderBy(order));
+		String hql = The.concat(select(select),from(entity),as(alias),join(join),where(where),groupBy(group),having(having),orderBy(order));
+		System.out.println(hql);
+		return hql;
 	}
 
 	public String getUpdateHQL(){
-		return The.concat(updateSetting(entity), fieldToUpdate, EQUALS, expression,join(join),where(where));
+		String hql = The.concat(updateSetting(entity), fieldToUpdate, EQUALS, expression,join(join),where(where));
+		System.out.println(hql);
+		return hql;
 	}
 
 	public String getFieldToUpdate() {

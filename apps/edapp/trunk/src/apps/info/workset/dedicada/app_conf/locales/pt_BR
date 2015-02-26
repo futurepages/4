@@ -20,11 +20,13 @@ login.authentication_required = Autenticação Requerida
 #########################################################
 
 user-menu.basic_info = Usuário
+user-menu.new_password = Senha
 user-menu.profile = Perfil
 user-menu.log_accesses = Acessos
 user-menu.sign_out = Sair
 
 user.basic_info = Usuário
+user.new_password = Senha
 user.profile = Perfil
 user.log_accesses = Acessos
 user.profile_successfully_updated = Perfil atualizado com sucesso

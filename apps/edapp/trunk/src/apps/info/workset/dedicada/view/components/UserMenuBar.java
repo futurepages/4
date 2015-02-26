@@ -7,7 +7,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.MenuBar;
 import modules.admin.model.entities.User;
-import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
 import org.futurepages.core.locale.Txt;
@@ -36,11 +35,12 @@ public class UserMenuBar extends CustomComponent {
 
 		settingsItem.addItem(Txt.get("user-menu.basic_info"), selectedItem -> UserWindow.open(user, 0));
 		final int logAccessIdx;
+		settingsItem.addItem(Txt.get("user-menu.new_password") , selectedItem -> UserWindow.open(user, 1));
 		if(user.getProfile()==null){
-			logAccessIdx = 1;
-		}else{
-			settingsItem.addItem(Txt.get("user-menu.profile") , selectedItem -> UserWindow.open(user, 1));
 			logAccessIdx = 2;
+		}else{
+			settingsItem.addItem(Txt.get("user-menu.profile") , selectedItem -> UserWindow.open(user, 2));
+			logAccessIdx = 3;
 		}
 		settingsItem.addItem(Txt.get("user-menu.log_accesses") , selectedItem -> UserWindow.open(user, logAccessIdx));
 

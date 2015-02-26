@@ -84,8 +84,7 @@ public final class ScheduleView extends CssLayout implements View {
         for (Movie m : AppUI.getDataProvider().getMovies()) {
             WebBrowser webBrowser = Page.getCurrent().getWebBrowser();
 
-            String bg = "url(VAADIN/themes/" + UI.getCurrent().getTheme()
-                    + "/img/event-title-bg.png), url(" + m.getThumbUrl() + ")";
+            String bg = "url(VAADIN/themes/" + UI.getCurrent().getTheme()+ "/img/event-title-bg.png), url(" + m.getThumbUrl() + ")";
 
             // IE8 doesn't support multiple background images
             if (webBrowser.isIE() && webBrowser.getBrowserMajorVersion() == 8) {
@@ -272,10 +271,8 @@ public final class ScheduleView extends CssLayout implements View {
                             endDate);
             List<CalendarEvent> result = new ArrayList<CalendarEvent>();
             for (Transaction transaction : transactions) {
-                Movie movie = AppUI.getDataProvider().getMovie(
-                        transaction.getMovieId());
-                Date end = new Date(transaction.getTime().getTime()
-                        + movie.getDuration() * 60 * 1000);
+                Movie movie = AppUI.getDataProvider().getMovie(transaction.getMovieId());
+                Date end = new Date(transaction.getTime().getTime() + movie.getDuration() * 60 * 1000);
                 result.add(new MovieEvent(transaction.getTime(), end, movie));
             }
             return result;
