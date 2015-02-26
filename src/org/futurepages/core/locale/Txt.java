@@ -58,7 +58,7 @@ public class Txt {
 		}
 		String str = getInstance().localesMap.get(localeId).get(txtKey);
 		if (str == null) {
-			AppLogger.getInstance().execute(new LocaleManagerException("Txt property '" + txtKey + "' not present for locale " + localeId + "."));
+			AppLogger.getInstance().execute(new TxtNotFoundException(txtKey,localeId));
 			return The.capitalizedWord(The.lastTokenOf(txtKey,"\\.").replaceAll("_", " "));
 		}
 		return str;
