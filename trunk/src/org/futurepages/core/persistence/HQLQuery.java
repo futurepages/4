@@ -86,13 +86,13 @@ public class HQLQuery<T> extends HQLProvider {
 
 	public String getSelectHQL(){
 		String hql = The.concat(select(select),from(entity),as(alias),join(join),where(where),groupBy(group),having(having),orderBy(order));
-		System.out.println(hql);
+//		System.out.println(hql);
 		return hql;
 	}
 
 	public String getUpdateHQL(){
 		String hql = The.concat(updateSetting(entity), fieldToUpdate, EQUALS, expression,join(join),where(where));
-		System.out.println(hql);
+//		System.out.println(hql);
 		return hql;
 	}
 

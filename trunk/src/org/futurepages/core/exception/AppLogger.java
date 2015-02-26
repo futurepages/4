@@ -48,10 +48,10 @@ public class AppLogger implements ExceptionLogger{
 		String exceptionId =  The.concat("[",logType,"] ",failNumber);
 
 		DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM, LocaleManager.getDefaultLocale());
-        log(exceptionId, "  (", formatter.format(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log(exceptionId, "  (", formatter.format(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 
 		if(logType==ExceptionLogType.TXT_NOT_FOUND){
-			log("\n",throwable.getMessage());
+			log(throwable.getMessage());
 			for(StackTraceElement el : throwable.getStackTrace()){
 				if(!el.getClassName().equals(Txt.class.getName())){
 					log("\tat "+el);
@@ -62,7 +62,7 @@ public class AppLogger implements ExceptionLogger{
 			throwable.printStackTrace();
 		}
 		if(req!=null){
-			log(">[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():""));
+			log("\n>[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():""));
 			log(">[state  ]  ", SimpleUI.getCurrent() != null && SimpleUI.getCurrent().getNavigator() != null ? SimpleUI.getCurrent().getNavigator().getState():"<< null >>");
 			log(">[referer]  ", req.getHeader("referer"));
 			log(">[browser]  ", req.getHeader("user-agent"));
@@ -86,7 +86,7 @@ public class AppLogger implements ExceptionLogger{
 					"last access: ", DateUtil.viewDateTime(new Date(req.getSession().getLastAccessedTime())), "; ",
 					"max inative interval: ", String.valueOf(req.getSession().getMaxInactiveInterval() / 60), " minutes;"
 			);
-			logInline(">[session]  ");
+			logInline(">[session] ");
 			Enumeration ralist = req.getSession().getAttributeNames();
 			while (ralist.hasMoreElements()) {
 				String name = (String) ralist.nextElement();
@@ -97,14 +97,14 @@ public class AppLogger implements ExceptionLogger{
 				if(toStringValue.contains("\n")){
 					toStringValue = toStringValue.replaceAll("\\s+"," ");
 				}
-				log(name, ": '", toStringValue, "';");
+				logInline(name, ": '", toStringValue, "';");
 			}
 			System.err.println();
 
 			if (req.getCookies() != null) {
-				log(">[cookies]  (", req.getCookies().length, ") ");
+				logInline(">[cookies]  (", req.getCookies().length, ") ");
 				for (Cookie cookie : req.getCookies()) {
-					log(cookie.getName(), ": '", EncodingUtil.decodeUrl(cookie.getValue()), "'; ");
+					logInline(cookie.getName(), ": '", EncodingUtil.decodeUrl(cookie.getValue()), "'; ");
 				}
 				System.err.println();
 			}
