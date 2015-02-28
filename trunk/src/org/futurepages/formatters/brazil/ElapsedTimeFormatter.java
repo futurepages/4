@@ -3,10 +3,10 @@ package org.futurepages.formatters.brazil;
 import java.util.Calendar;
 import java.util.Locale;
 
+import org.futurepages.util.DateUtil;
 import org.futurepages.util.The;
 import org.futurepages.util.brazil.enums.UnitTimeEnum;
-import org.futurepages.util.brazil.CalendarUtil;
-import org.futurepages.util.brazil.DateUtil;
+import org.futurepages.util.brazil.BrazilCalendarUtil;
 import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.brazil.enums.MonthEnum;
 
@@ -20,13 +20,13 @@ public class ElapsedTimeFormatter extends AbstractFormatter<Calendar> {
 
 	public static String formatValue(Calendar agora, Calendar momentoNoPassado){
 		try {
-			if(CalendarUtil.isNeighborDays(momentoNoPassado, agora) && CalendarUtil.getDifferenceInDays(momentoNoPassado, agora)>0){
-					return "ontem às "+ DateUtil.viewDateTime(momentoNoPassado, "HH:mm");
+			if(BrazilCalendarUtil.isNeighborDays(momentoNoPassado, agora) && BrazilCalendarUtil.getDifferenceInDays(momentoNoPassado, agora)>0){
+					return "ontem às "+ DateUtil.getInstance().viewDateTime(momentoNoPassado, "HH:mm");
 			}else{
-				int[] time = CalendarUtil.getElapsedTime(momentoNoPassado, agora);
-				return "há ± " + CalendarUtil.getElapsedTimeStatement(time, UnitTimeEnum.HOUR, 24, false);
+				int[] time = BrazilCalendarUtil.getElapsedTime(momentoNoPassado, agora);
+				return "há ± " + BrazilCalendarUtil.getElapsedTimeStatement(time, UnitTimeEnum.HOUR, 24, false);
 			}
-		} catch (CalendarUtil.TooBigDateException e) {
+		} catch (BrazilCalendarUtil.TooBigDateException e) {
 			int mesAtual = agora.get(Calendar.MONTH)+1;
 			int anoAtual = agora.get(Calendar.YEAR);
 			int diaPassado = momentoNoPassado.get(Calendar.DAY_OF_MONTH);

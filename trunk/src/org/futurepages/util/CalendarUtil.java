@@ -1,13 +1,16 @@
-package org.futurepages.util.brazil;
+package org.futurepages.util;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
+import org.futurepages.core.locale.LocaleManager;
+import org.futurepages.util.brazil.BrazilDateUtil;
 import org.futurepages.util.brazil.enums.DayOfWeek;
 import org.futurepages.util.brazil.enums.MonthEnum;
-import org.futurepages.util.brazil.enums.UnitTimeEnum;
-import org.futurepages.util.Is;
 import org.futurepages.util.iterator.months.MonthYear;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Brazilian format dates. Use new jdk8 api for Dates and Time
@@ -24,6 +27,7 @@ public class CalendarUtil {
 	}
 
 	/**
+	 *  TODO translate:
 	 * Retorna o iésimo dia do ano da data informada.
 	 * <br>Se o ano for não bisexto(possui um dia a menos no ano),o valor retornado será o iésimo dia +1 para os dias após 01/03.
 	 * Desta forma, 1º de março e os dias até o final do ano serão representados pelo mesmo valor em ambos os anos(bisexto e não bisexto).
@@ -52,7 +56,7 @@ public class CalendarUtil {
 	}
 
 	/**
-	 * @return true se o ano do calendário informado for um ano bisexto, false caso contrário.
+	 * @return true if the year is a leap year.
 	 */
 	public static boolean isLeapYear(Calendar cal) {
 		int year = cal.get(Calendar.YEAR);
@@ -64,10 +68,9 @@ public class CalendarUtil {
 	}
 
 	/**
+	 * TODO translate:
 	 * Compara dois Calendar utilizando os campos ano, mes e ano
-	 *
-	 * @param calendar1
-	 * @param calencdar2
+
 	 * @return -1 (quando a primeira data é menor que a segunda)
 	 * 1 (quando a primeira data é maior que a segunda)
 	 * 0 (quando os dois são iguais)
@@ -92,8 +95,10 @@ public class CalendarUtil {
 
 	/**
 	 * 1 day == 86.400.000 miliseconds; //(24 * 60 * 60 * 1000)
+	 *
+	 *  TODO translate:
+	 *  CUIDADO, E UM ARREDONDAMENTO. SE POSSUIR 1,2 dia CONTARÁ COMO 1 e 1,6 dia contará como 2.
 	 */
-	//CUIDADO, E UM ARREDONDAMENTO. SE POSSUIR 1,2 dia CONTARÁ COMO 1 e 1,6 dia contará como 2.
 	public static int getDifferenceInDays(Calendar start, Calendar end) {
 		int milliseconds = 86400000;
 		return getDifference(start, end, milliseconds);
@@ -102,7 +107,7 @@ public class CalendarUtil {
 	// calcula os dias sem levar em contas as horas
 	public static int getDifferenceInAbsoluteDays(Calendar start, Calendar end) {
 		int milliseconds = 86400000;
-		return getDifference(DateUtil.dateToCalendar(start.getTime()), DateUtil.dateToCalendar(end.getTime()), milliseconds);
+		return getDifference(dateToCalendar(start.getTime()), dateToCalendar(end.getTime()), milliseconds);
 	}
 
 	/**
@@ -157,7 +162,7 @@ public class CalendarUtil {
 	}
 
 	public static Calendar buildCalendar(int field, int addValue, Calendar dataInicial) {
-		Calendar novaData = CalendarUtil.buildCalendar(dataInicial);
+		Calendar novaData = buildCalendar(dataInicial);
 		novaData.add(field, addValue);
 		return novaData;
 	}
@@ -171,10 +176,9 @@ public class CalendarUtil {
 	}
 
 	/**
+	 * TODO translate:
 	 * Compara dois Calendar utilizando os campos hora, minuto , segundo
 	 *
-	 * @param calendar1
-	 * @param calencdar2
 	 * @return -1 (quando o segundo tempo é maior que o primeiro)
 	 * 1 (quando o primeiro tempo é maior que o segundo)
 	 * 0 (quando os dois são iguais do mesmo horario)
@@ -198,10 +202,9 @@ public class CalendarUtil {
 	}
 
 	/**
+	 * TODO translate:
 	 * Compara dois Calendar utilizando o campo dia do mes
 	 *
-	 * @param calendar1
-	 * @param calencdar2
 	 * @return true (quando os dois são iguais do mesmo dia do mes)
 	 * false caso contrario
 	 */
@@ -209,18 +212,12 @@ public class CalendarUtil {
 		Integer dia1 = calendar1.get(Calendar.DAY_OF_MONTH);
 		Integer dia2 = calencdar2.get(Calendar.DAY_OF_MONTH);
 		int comparador = dia1.compareTo(dia2);
-		if (comparador == 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return comparador == 0;
 	}
 
 	/**
 	 * Compara dois Calendar utilizando o campo mes
 	 *
-	 * @param calendar1
-	 * @param calencdar2
 	 * @return true (quando os dois são iguais do mesmo mes)
 	 * false caso contrario
 	 */
@@ -228,30 +225,19 @@ public class CalendarUtil {
 		Integer mes1 = calendar1.get(Calendar.MONTH);
 		Integer mes2 = calencdar2.get(Calendar.MONTH);
 		int comparador = mes1.compareTo(mes2);
-		if (comparador == 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return comparador == 0;
 	}
 
 	/**
-	 * Compara dois Calendar utilizando o campo ano
+	 * Compare two calendars using the 'year' field
 	 *
-	 * @param calendar1
-	 * @param calendar2
-	 * @return true (quando os dois são iguais do mesmo ano)
-	 * false caso contrario
+	 * @return true (when they are from the same year)
 	 */
 	public static boolean compareCalendarByYear(Calendar calendar1, Calendar calendar2) {
 		Integer ano1 = calendar1.get(Calendar.YEAR);
 		Integer ano2 = calendar2.get(Calendar.YEAR);
 		int comparador = ano1.compareTo(ano2);
-		if (comparador == 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return comparador == 0;
 	}
 
 	public static boolean dateIsOfCurrentYear(Calendar cal1) {
@@ -260,10 +246,6 @@ public class CalendarUtil {
 
 	public static boolean dateIsOfCurrentYear(Calendar cal1, Calendar hoje) {
 		return (cal1.get(Calendar.YEAR) == hoje.get(Calendar.YEAR));
-	}
-
-	public static String literalRangeOfDates(Calendar calIni, Calendar calFim) {
-		return literalRangeOfDates(calIni, calFim, Calendar.getInstance());
 	}
 
 	public static int hourOfDay(Calendar cal) {
@@ -278,60 +260,10 @@ public class CalendarUtil {
 		return cal.get(Calendar.SECOND);
 	}
 
-	/**
-	 * retorna um literal expressando o tempo para um
-	 * determinado intervalo de calendar que possuem o mesmo dia/mes/ano
-	 * caso contrario se não forem do mesmo dia e retornado ""
-	 *
-	 * @param calIni
-	 * @param calFim
-	 * @return período literal de horários
-	 */
-	public static String literalRangeOfTimes(Calendar calIni, Calendar calFim) {
-		boolean ehMesmaData = (compareCalendarDate(calIni, calFim) == 0);
 
-		if (ehMesmaData) {//se são da mesma data verifica o intervalo de tempo
-
-
-			if ((hourOfDay(calIni) == 0 && minute(calIni) == 0)
-					&& (hourOfDay(calFim) == 0 && minute(calFim) == 0)) {
-				return "";
-			}
-
-			boolean isTimeInitEqualsTimeFinal = (hourOfDay(calIni) == hourOfDay(calFim) && (minute(calIni) == minute(calFim)));
-
-			//se possuem o mesmo horario de inicio e fim faça
-			if (isTimeInitEqualsTimeFinal) {
-				return "às " + showLiteralHourMin(calIni);
-			}
-
-			if ((hourOfDay(calIni) < 1) && minute(calIni) > 0 && (hourOfDay(calFim) == 1) && minute(calFim) > 0) {
-				return "de " + showLiteralHourMin(calIni) + " à " + showLiteralHourMin(calFim);
-			}
-
-			//se possuem somente o horario de inicio
-			if ((hourOfDay(calFim) == 23 && minute(calFim) == 59) && (hourOfDay(calIni) != 0 || minute(calIni) != 0)) {
-				return "a partir de " + showLiteralHourMin(calIni);
-			}
-
-			if (hourOfDay(calFim) > 1 && (hourOfDay(calFim) != 23 || minute(calFim) != 59) && (hourOfDay(calIni) != 0 || minute(calIni) != 0)) {
-				return "de " + showLiteralHourMin(calIni) + " às " + showLiteralHourMin(calFim);
-			}
-
-			if ((hourOfDay(calFim) <= 1) && (hourOfDay(calIni) <= 1)) {
-				return "de " + showLiteralHourMin(calIni) + " à " + showLiteralHourMin(calFim);
-			}
-
-			if ((hourOfDay(calFim) != 23 && minute(calFim) != 59) && (hourOfDay(calIni) == 0 || minute(calIni) == 0)) {
-				return "até " + showLiteralHourMin(calFim);
-			}
-
-		}//se nao são da mesma data retorna vazio ""
-		return "";
-	}
 
 	/**
-	 * @return AAhBB onde AA são as horas e BB são os minutos
+	 * @return AAhBB where AA = hours and BB = minutes
 	 */
 	public static String showLiteralHourMin(Calendar cal) {
 		String mask = null;
@@ -340,85 +272,13 @@ public class CalendarUtil {
 		} else {
 			mask = "H'h'mm";
 		}
-		return DateUtil.format(cal, mask);
-	}
-
-	public static String literalRangeOfDates(Calendar calIni, Calendar calFim, Calendar hoje) {
-
-		boolean isYearCurrentResult = dateIsOfCurrentYear(calIni, hoje);//true
-		boolean isIntervalEqualsDay = compareCalendarByDayOfMonth(calIni, calFim);//true
-		boolean isIntervalEqualsMonth = compareCalendarByMonth(calIni, calFim);//true
-		boolean isIntervalEqualsYear = compareCalendarByYear(calIni, calFim);//true
-
-		int diaInicio = calIni.get(Calendar.DAY_OF_MONTH);
-		String mesInicio = MonthEnum.get(calIni);
-		int anoInicio = calIni.get(Calendar.YEAR);
-
-		int diaFim = calFim.get(Calendar.DAY_OF_MONTH);
-		String mesFim = MonthEnum.get(calFim);
-		int anoFim = calFim.get(Calendar.YEAR);
-
-		String faixaDeTempo = literalRangeOfTimes(calIni, calFim);
-
-		if ((!isIntervalEqualsYear)) {//o intervalo ocorre em anos diferentes
-			return formatLiteralIntervalCalendarDiffByYear(calIni, calFim);
-
-		} else {//todos os intervalos abaixo estão no mesmo ano
-
-			if (!isIntervalEqualsDay) {//apesar de o intervalo ser do mesmo ano ele engloba dias diferentes
-
-				if (isIntervalEqualsYear && isIntervalEqualsMonth && isYearCurrentResult) {
-					return diaInicio + " a " + diaFim + " de " + mesInicio;
-
-				} else if (isIntervalEqualsYear && !isIntervalEqualsMonth && isYearCurrentResult) {
-					return diaInicio + " de " + mesInicio + " a " + diaFim + " de " + mesFim;
-
-				} else if (isIntervalEqualsYear && isIntervalEqualsMonth && !isYearCurrentResult) {
-					return diaInicio + " a " + diaFim + " de " + mesFim + " de " + anoFim;
-
-				} else if (isIntervalEqualsYear && !isIntervalEqualsMonth && !isYearCurrentResult) {
-					return diaInicio + " de " + mesInicio + " a " + diaFim + " de " + mesFim + " de " + anoFim;
-				}
-
-			} else { //o intervalo além de estar no mesmo ano também é do mesmo dia
-
-				if (isIntervalEqualsYear && isIntervalEqualsMonth && isYearCurrentResult) {
-					return (diaInicio + " de " + mesInicio + " " + faixaDeTempo).trim();
-
-				} else if (isIntervalEqualsYear && isIntervalEqualsMonth && !isYearCurrentResult) {
-					return (diaInicio + " de " + mesInicio + " de " + anoInicio + " " + faixaDeTempo).trim();
-
-				} else if (isIntervalEqualsYear && !isIntervalEqualsMonth && isYearCurrentResult) {
-					return diaInicio + " de " + mesInicio + " a " + diaFim + " de " + mesFim;
-
-				} else if (isIntervalEqualsYear && !isIntervalEqualsMonth && !isYearCurrentResult) {
-					return diaInicio + " de " + mesInicio + " a " + diaFim + " de " + mesFim + " de " + anoInicio;
-				}
-
-			}
-		}
-
-		return "";
-	}
-
-	/**
-	 * Retorna um intervalo de calendar no formato por extenso
-	 * quando os calendars forem de anos diferentes caso contrario retorna ""
-	 */
-	private static String formatLiteralIntervalCalendarDiffByYear(Calendar calIni, Calendar calFim) {
-		if (!compareCalendarByYear(calIni, calFim)) {
-			return calIni.get(Calendar.DAY_OF_MONTH) + " de " + MonthEnum.get(calIni) + " de "
-					+ calIni.get(Calendar.YEAR) + " a " + calFim.get(Calendar.DAY_OF_MONTH) + " de "
-					+ MonthEnum.get(calFim) + " de " + calFim.get(Calendar.YEAR);
-		} else {
-			return "";
-		}
+		return BrazilDateUtil.format(cal, mask);
 	}
 
 	private static int getAge(Calendar start, Calendar end) {
 		int idade = 0;
 
-		if (start.getTime() == null || start.getTime().compareTo(end.getTime()) > 0) {
+		if (start.getTime().compareTo(end.getTime()) > 0) {
 			return idade;
 		}
 
@@ -437,9 +297,7 @@ public class CalendarUtil {
 	}
 
 	/**
-	 * @param startI
-	 * @param endI
-	 * @return array int[ano,mes,dia,minuto,segundo]
+	 * @return array int[year,month,day,minute,second]
 	 */
 	public static int[] getElapsedTime(Calendar startI, Calendar endI) {
 
@@ -457,10 +315,9 @@ public class CalendarUtil {
 			end = temp;
 		}
 
-
 		int years = getAge(start, end);
 
-		// Soma a mais 1 pelo fato de Calendar.Month começar com 0
+		// plus 1 because Calendar.Month starts with 0
 		int months = ((end.get(Calendar.MONTH) + 1) - (start.get(Calendar.MONTH) + 1));
 
 		if (months <= 0) {
@@ -494,50 +351,21 @@ public class CalendarUtil {
 		return new int[]{years, months, days, horas, minutos};
 	}
 
-	public static String getElapsedTimeUntilNowStatement(Calendar start, String commonPrefix, String exceptionPrefix) {
-		return getElapsedTimeUntilNowStatement(start, null, 0, commonPrefix, exceptionPrefix);
-	}
-
-	public static String getElapsedTimeUntilNowStatement(Calendar start, UnitTimeEnum unitLimit, int limitValue) {
-		return getElapsedTimeUntilNowStatement(start, unitLimit, limitValue, null, null);
-	}
-
-	public static String getElapsedTimeUntilNowStatement(Calendar start, UnitTimeEnum unitLimit, int limitValue,
-	                                                     String commonPrefix, String exceptionPrefix) {
-		return getElapsedTimeUntilNowStatementPriv(start, Calendar.getInstance(), unitLimit, limitValue, commonPrefix, exceptionPrefix);
-	}
-
-	private static String getElapsedTimeUntilNowStatementPriv(Calendar start, Calendar end, UnitTimeEnum unitLimit, int limitValue,
-	                                                          String commonPrefix, String exceptionPrefix) {
-		return getElapsedTimeUntilNowStatement(start, end, unitLimit, limitValue, commonPrefix, exceptionPrefix, true);
-	}
-
-	public static String getElapsedTimeUntilNowStatement(Calendar start, Calendar end, UnitTimeEnum unitLimit, int limitValue,
-	                                                     String commonPrefix, String exceptionPrefix, boolean mostrarSegundoValor) {
-		return getDifferenceToNowStatement(start, end, unitLimit, limitValue, commonPrefix, exceptionPrefix, mostrarSegundoValor, false);
-	}
-
-	public static String getRemainingTimeFromNowStatement(Calendar start, Calendar end, UnitTimeEnum unitLimit, int limitValue,
-	                                                      String commonPrefix, String exceptionPrefix, boolean mostrarSegundoValor) {
-		return getDifferenceToNowStatement(start, end, unitLimit, limitValue, commonPrefix, exceptionPrefix, mostrarSegundoValor, true);
-	}
-
 	/**
-	 * Hora e minuto no formato HH:mm (hora no formato 24h.)
+	 * Hour and minute in 'HH:mm' mask (24h format)
 	 */
 	public static String showHourMin(Calendar calendar) {
-		return DateUtil.format(calendar, "H:mm");
+		return BrazilDateUtil.format(calendar, "H:mm");
 	}
 
 	public static Calendar buildCalendar(Calendar calendar) {
-		Calendar newCalendar = new GregorianCalendar(
+		return new GregorianCalendar(
 				calendar.get(Calendar.YEAR),
 				calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
 				calendar.get(Calendar.HOUR_OF_DAY),
 				calendar.get(Calendar.MINUTE),
 				calendar.get(Calendar.SECOND));
-		return newCalendar;
 	}
 
 	public static int getDifferenceInMonths(Calendar date1, Calendar date2) {
@@ -548,7 +376,7 @@ public class CalendarUtil {
 	public static int getDifferenceInMonths(MonthYear mYearIni, MonthYear mYearFim) {
 		Calendar calIni = new GregorianCalendar(mYearIni.getYear(), mYearIni.getMonth() - 1, 1);
 		Calendar calFim = new GregorianCalendar(mYearFim.getYear(), mYearFim.getMonth() - 1, 1);
-		return CalendarUtil.getDifferenceInMonths(calIni, calFim);
+		return getDifferenceInMonths(calIni, calFim);
 
 	}
 
@@ -556,29 +384,7 @@ public class CalendarUtil {
 	 * Se são dias vizinhos, retorna true
 	 */
 	public static boolean isNeighborDays(Calendar cal1, Calendar cal2) {
-		return CalendarUtil.getDifferenceInDays(CalendarUtil.buildDate(cal1), CalendarUtil.buildDate(cal2)) == 1;
-	}
-
-
-	public static String getDifferenceToNowStatement(Calendar start, Calendar end, UnitTimeEnum unitLimit, int limitValue,
-	                                                 String commonPrefix, String exceptionPrefix, boolean mostrarSegundoValor, boolean nowFirst) {
-
-		String prefix;
-		String exp;
-		try {
-			int[] time = getElapsedTime(start, end);
-			exp = getElapsedTimeStatement(time, unitLimit, limitValue, mostrarSegundoValor);
-			prefix = commonPrefix;
-
-		} catch (TooBigDateException e) {
-			prefix = exceptionPrefix;
-			exp = DateUtil.viewDateTime((nowFirst ? end : start));
-		}
-
-		if (!Is.empty(prefix)) {
-			return prefix + exp;
-		}
-		return exp;
+		return getDifferenceInDays(buildDate(cal1), buildDate(cal2)) == 1;
 	}
 
 	public static Calendar getToday() {
@@ -588,82 +394,6 @@ public class CalendarUtil {
 	public static class TooBigDateException extends Exception {
 	}
 
-	public static String getElapsedTimeStatement(int[] time, UnitTimeEnum unitLimit, int limitValue) throws TooBigDateException {
-		return getElapsedTimeStatement(time, unitLimit, limitValue, true);
-
-	}
-
-	/**
-	 * Monta uma Expressão do tipo "1h e 3min" para o valor associado ás duas maiores unidades de tempo entre ano, mes, dia, ano, minuto
-	 * presentes no array informado.
-	 * Se o valor da unidade (ano, mes, dias...) mais relevante maior que zero for superior ao valor limite é levantada uma {@link TooBigDateException}
-	 * <p/>
-	 * 0,  1,  2,  3,   4,
-	 * ano mes dia hora min
-	 *
-	 * @param time       array: [ano,mes,dia,hora,minuto]
-	 * @param unitLimit: unidade limite a qual deve ser montada a expressão (X unidade atrás),
-	 *                   obs: se a maior unidade > 0 for 'mes' e a unidadeLimite for dia, uma {@link TooBigDateException} será lançada.
-	 * @param limitValue valor limite para a unidadeLimite
-	 *                   obs: se a maior unidade > 0 for 'mes' com valor 2 e o valorLimite for 1, uma {@link TooBigDateException} será lançada.
-	 * @return Expressão do tipo "1 ano 2 meses"
-	 * @throws TooBigDateException
-	 */
-	public static String getElapsedTimeStatement(int[] time, UnitTimeEnum unitLimit, int limitValue, boolean withAbrrs) throws TooBigDateException {
-		String tempo = withAbrrs ? "menos de 1 minuto" : "1 minuto";
-
-		for (int i = 0; i < time.length; i++) {
-			int valor = time[i];
-			if (valor > 0) {
-
-				if (unitLimit != null) {
-
-					if (i < unitLimit.getOrder() || (i == unitLimit.getOrder()) && (valor > limitValue)) {
-						throw new TooBigDateException();
-					}
-				}
-				UnitTimeEnum unit = UnitTimeEnum.getByOrder(i);
-				if (unit != null) {
-					String primUnitName = unit.apropriateUnitDescription(valor, !withAbrrs);
-					String separador = " ";
-					if (unit.getOrder() > 2 && withAbrrs) {
-						separador = "";
-					}
-					tempo = valor + separador + primUnitName;
-					if (withAbrrs) {
-						tempo = addNextValue(time, tempo, i, withAbrrs);
-					}
-					break;
-				} else {
-					break;
-				}
-			}
-
-			if (valor < 0) {
-				break;
-			}
-		}
-		return tempo;
-	}
-
-	private static String addNextValue(int[] time, String tempo, int i, boolean withAbbrs) {
-		UnitTimeEnum unit;
-		if (i < time.length - 1) {
-			i++;
-			int valor = time[i];
-			if (valor > 0) {
-				unit = UnitTimeEnum.getByOrder(i);
-				String segUnitName = unit.apropriateUnitDescription(valor, !withAbbrs);
-				String separador2 = " ";
-				if (unit.getOrder() > 2) {
-					separador2 = "";
-				}
-				tempo += " e " + valor + separador2 + segUnitName;
-				return tempo;
-			}
-		}
-		return tempo;
-	}
 
 	public static String literalDayOfWeek(Calendar cal) {
 		DayOfWeek day = DayOfWeek.getDayByKey(cal.get(Calendar.DAY_OF_WEEK));
@@ -705,8 +435,6 @@ public class CalendarUtil {
 	/**
 	 * Returns last day from mounth in current year.
 	 *
-	 * @param mounth
-	 * @return
 	 */
 	public static int getLastDay(int mounth) {
 		Calendar c = Calendar.getInstance();
@@ -717,9 +445,6 @@ public class CalendarUtil {
 	/**
 	 * Returns last day from mounth and year.
 	 *
-	 * @param mounth
-	 * @param year
-	 * @return Calendar
 	 */
 	public static Calendar getLastDay(int mounth, int year) {
 		Calendar c = Calendar.getInstance();
@@ -731,11 +456,30 @@ public class CalendarUtil {
 	}
 
 	/**
+	 * Returns the actual month.
+	 */
+	public static int getActualMonth() {
+		return (new GregorianCalendar()).get(Calendar.MONTH) + 1;
+	}
+
+	/**
+	 * Returns the actual year.
+	 */
+	public static int getActualYear() {
+		return (new GregorianCalendar()).get(Calendar.YEAR);
+	}
+
+	/**
+	 * Returns the actual day of month.
+	 */
+	public static int getActualDay() {
+		return (new GregorianCalendar()).get(Calendar.DAY_OF_MONTH);
+	}
+
+
+	/**
 	 * Returns first day from mounth and year.
 	 *
-	 * @param mounth
-	 * @param year
-	 * @return Calendar
 	 */
 	public static Calendar getFirstDay(int mounth, int year) {
 		Calendar c = Calendar.getInstance();
@@ -747,16 +491,63 @@ public class CalendarUtil {
 
 	/**
 	 * Return true if test is between begin and end;
-	 *
-	 * @param test
-	 * @param begin
-	 * @param end
-	 * @return
 	 */
 
 	public static boolean between(Calendar test, Calendar begin, Calendar end) {
-		if (areEquals(test, begin) || areEquals(test, end)) return true;
-		if (test.after(begin) && test.before(end)) return true;
-		return false;
+		return areEquals(test, begin) || areEquals(test, end) || test.after(begin) && test.before(end);
+	}
+
+	public static Calendar dbDateToCalendar(String in) {
+		return new GregorianCalendar(Integer.parseInt(in.substring(0, 4)), Integer.parseInt(in.substring(5, 7)) - 1, Integer.parseInt(in.substring(8)));
+	}
+
+
+	public static Calendar dbDateTimeToCalendar(String in) {
+		return new GregorianCalendar(Integer.parseInt(in.substring(0, 4)),
+				Integer.parseInt(in.substring(5, 7)) - 1,
+				Integer.parseInt(in.substring(8, 10)),
+				Integer.parseInt(in.substring(11, 13)),
+				Integer.parseInt(in.substring(14, 16)),
+				Integer.parseInt(in.substring(17, 19)));
+	}
+
+
+	public static Calendar dateTimeToCalendar(Date date) {
+		return dbDateTimeToCalendar(DateUtil.getInstance().dbDateTime(date));
+	}
+
+	public static Calendar dateToCalendar(Date date) {
+		return dbDateToCalendar(DateUtil.getInstance().dbDate(date));
+	}
+
+	/**
+	 * Output: YYYY-MM-DD
+	 */
+	public static String dbDate(Calendar calendar) {
+		String bdDate = "";
+		if (calendar != null) {
+			return DateUtil.getInstance().dbDate(calendar.getTime());
+		}
+		return bdDate;
+	}
+
+	public static String viewDateTime(Calendar inputCalendar, String mask){
+		return new SimpleDateFormat(mask, LocaleManager.getDefaultLocale()).format(inputCalendar.getTime());
+	}
+
+	/**
+	 * String input in MEDIUM DateFormat.
+	 */
+	public static Calendar viewDateToCalendar(String inputInMediumFormat) {
+		try {
+			DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, LocaleManager.getDefaultLocale());
+			df.setLenient(false);
+			Date date = df.parse(inputInMediumFormat);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			return cal;
+		} catch (Exception ex) {
+			return null;
+		}
 	}
 }

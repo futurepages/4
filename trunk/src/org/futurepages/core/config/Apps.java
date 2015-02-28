@@ -80,7 +80,7 @@ public class Apps {
 		}else{
 			getInstance().parsePropertiesFile();
 			getInstance().cachedParams();
-			System.out.println("  >> Only Basic Properties Loaded [NO WEB PROPERTIES].");
+			System.out.println(" >> Apps: Only Basic Properties Loaded [NO WEB PROPERTIES].");
 		}
 	}
 

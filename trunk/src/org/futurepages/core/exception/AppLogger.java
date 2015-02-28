@@ -3,16 +3,15 @@ package org.futurepages.core.exception;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServletRequest;
 import org.futurepages.apps.simple.SimpleUI;
-import org.futurepages.core.locale.LocaleManager;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.locale.TxtNotFoundException;
+import org.futurepages.util.DateUtil;
 import org.futurepages.util.EncodingUtil;
 import org.futurepages.util.The;
-import org.futurepages.util.brazil.DateUtil;
+import org.futurepages.util.brazil.BrazilDateUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 
@@ -47,8 +46,7 @@ public class AppLogger implements ExceptionLogger{
 
 		String exceptionId =  The.concat("[",logType,"] ",failNumber);
 
-		DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM, LocaleManager.getDefaultLocale());
-        log(exceptionId, "  (", formatter.format(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+        log(exceptionId, "  (", DateUtil.getInstance().viewDateTime(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 
 		if(logType==ExceptionLogType.TXT_NOT_FOUND){
 			log(throwable.getMessage());
@@ -82,8 +80,8 @@ public class AppLogger implements ExceptionLogger{
 			}
 			System.err.println();
 			log(">[session]  id: ", req.getSession().getId(), "; ",
-					"creation: ", DateUtil.viewDateTime(new Date(req.getSession().getCreationTime())), "; ",
-					"last access: ", DateUtil.viewDateTime(new Date(req.getSession().getLastAccessedTime())), "; ",
+					"creation: ", BrazilDateUtil.viewDateTime(new Date(req.getSession().getCreationTime())), "; ",
+					"last access: ", BrazilDateUtil.viewDateTime(new Date(req.getSession().getLastAccessedTime())), "; ",
 					"max inative interval: ", String.valueOf(req.getSession().getMaxInactiveInterval() / 60), " minutes;"
 			);
 			logInline(">[session] ");

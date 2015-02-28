@@ -3,11 +3,12 @@ package modules.admin.model.entities;
 import modules.admin.model.core.NotLoggeable;
 import modules.admin.model.entities.enums.LogType;
 import net.vidageek.mirror.dsl.Mirror;
+import org.futurepages.util.DateUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.ObjectContainer;
 import org.futurepages.util.ReflectionUtil;
 import org.futurepages.util.The;
-import org.futurepages.util.brazil.DateUtil;
+import org.futurepages.util.brazil.BrazilDateUtil;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.Entity;
@@ -89,7 +90,7 @@ public class Log implements Serializable {
 		this.logContent = logContent;
 		this.logType = LogType.SYSTEM;
 		this.obs = obs;
-		System.out.println(The.concat("[", DateUtil.viewDateTime(dateTime, "dd/MM/yyyy - HH:mm:ss"), "] SYSTEM: ", logContent, ((obs != null) ? " (" + obs + ")" : "")));
+		System.out.println(The.concat("[", DateUtil.getInstance().viewDateTime(dateTime, "dd/MM/yyyy - HH:mm:ss"), "] SYSTEM: ", logContent, ((obs != null) ? " (" + obs + ")" : "")));
 	}
 
 	/**
@@ -182,7 +183,7 @@ public class Log implements Serializable {
 			if (cont > 0) {
 				sb.append(", ");
 			}
-			sb.append("{dateTime: ").append(DateUtil.viewDateTime(dateTime, "dd/MM/yyyy - HH:mm:ss")).append("}");
+			sb.append("{dateTime: ").append(DateUtil.getInstance().viewDateTime(dateTime, "dd/MM/yyyy - HH:mm:ss")).append("}");
 			cont++;
 		}
 		if (!Is.empty(ipHost)) {
@@ -466,7 +467,7 @@ public class Log implements Serializable {
 					}
 				} catch (NoSuchMethodException ex) { // caso o field não possua um toString
 					if (field.isAnnotationPresent(Temporal.class)) {
-						conteudo.append(toLog(field.getName(), DateUtil.viewDateTime(fieldObj, "dd/MM/yyyy - HH:mm:ss")));
+						conteudo.append(toLog(field.getName(), DateUtil.getInstance().viewDateTime(fieldObj, "dd/MM/yyyy - HH:mm:ss")));
 
 					} else if (field.isAnnotationPresent(Enumerated.class)) {
 						Enumerated enumm = field.getAnnotation(Enumerated.class);
@@ -603,7 +604,7 @@ public class Log implements Serializable {
             if (clss.isPrimitive()) {        // Estranho! Apesar o field ser um tipo primitivo, não passa por aqui
                 return String.valueOf(obj);  // É impresso por toString.invoke();
             } else if(obj instanceof Calendar || obj instanceof Date)  {
-                return DateUtil.viewDateTime(obj, "dd/MM/yyyy - HH:mm:ss");
+                return DateUtil.getInstance().viewDateTime(obj, "dd/MM/yyyy - HH:mm:ss");
             } else if (clss.isEnum()) {
                 return ((Enum)obj).name();
             } else if (obj instanceof Map || clss.isArray() || obj instanceof Collection) {

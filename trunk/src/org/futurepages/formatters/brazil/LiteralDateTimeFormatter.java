@@ -2,9 +2,10 @@ package org.futurepages.formatters.brazil;
 
 import java.util.Calendar;
 import java.util.Date;
-import org.futurepages.util.brazil.DateUtil;
+
+import org.futurepages.util.CalendarUtil;
+import org.futurepages.util.brazil.BrazilDateUtil;
 import java.util.Locale;
-import org.futurepages.util.brazil.CalendarUtil;
 import org.futurepages.core.formatter.AbstractFormatter;
  
 /**
@@ -20,13 +21,13 @@ import org.futurepages.core.formatter.AbstractFormatter;
 			}
 			else{
 				if(value instanceof Date){
-					time = DateUtil.viewHourMin((Date) value);
+					time = BrazilDateUtil.viewHourMin((Date) value);
 				}
 				else{
 					return value.toString();
 				}
 			}
-            return DateUtil.literalDateFromDB(value) +" "+time;
+            return BrazilDateUtil.literalDateFromDB(value) +" "+time;
 
 	}
  }

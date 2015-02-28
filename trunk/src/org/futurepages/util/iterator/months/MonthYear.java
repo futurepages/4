@@ -2,12 +2,11 @@ package org.futurepages.util.iterator.months;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import org.futurepages.util.brazil.CalendarUtil;
+
+import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.The;
 
 /**
- *  @deprecated Now in JDK8 it's present. Use the new API.
- *
  * @author Leandro Santana
  */
 public class MonthYear implements Comparable<MonthYear> {

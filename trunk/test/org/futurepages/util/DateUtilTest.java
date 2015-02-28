@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import junit.framework.Assert;
 
-import org.futurepages.util.brazil.CalendarUtil;
-import org.futurepages.util.brazil.DateUtil;
+import org.futurepages.util.brazil.BrazilCalendarUtil;
+import org.futurepages.util.brazil.BrazilDateUtil;
 import org.junit.Test;
 
 /**
@@ -27,21 +27,21 @@ public class DateUtilTest {
     }
     
     private void assertLiteral(String in, String expOut) throws Exception{
-        String out = DateUtil.literal(in);
+        String out = BrazilDateUtil.literal(in);
         assertEquals("Erro no número por extenso com a entrada "+in, expOut, out);
     }
     
     @Test
     public void testViewDateTime(){
-    	viewDateTimeTestProcedure(CalendarUtil.buildCalendar(1984, 9, 14),"14/09/1984 - 00:00", "erro");
-    	viewDateTimeTestProcedure(CalendarUtil.buildCalendar(1984, 9, 14).getTime(),"14/09/1984 - 00:00", "erro");
-    	viewDateTimeTestProcedure(CalendarUtil.buildCalendar(1984, 9, 14).getTimeInMillis(),"14/09/1984 - 00:00", "erro");
-    	viewDateTimeTestProcedure(CalendarUtil.buildCalendar(2999, 9, 14).getTime(),"14/09/2999 - 00:00", "erro");
+    	viewDateTimeTestProcedure(BrazilCalendarUtil.buildCalendar(1984, 9, 14),"14/09/1984 - 00:00", "erro");
+    	viewDateTimeTestProcedure(BrazilCalendarUtil.buildCalendar(1984, 9, 14).getTime(),"14/09/1984 - 00:00", "erro");
+    	viewDateTimeTestProcedure(BrazilCalendarUtil.buildCalendar(1984, 9, 14).getTimeInMillis(),"14/09/1984 - 00:00", "erro");
+    	viewDateTimeTestProcedure(BrazilCalendarUtil.buildCalendar(2999, 9, 14).getTime(),"14/09/2999 - 00:00", "erro");
     }
 
 	private void viewDateTimeTestProcedure(Object entrada,
 			String esperado, String msg) {
-		String result = DateUtil.viewDateTime(entrada);
+		String result = BrazilDateUtil.viewDateTime(entrada);
 		Assert.assertEquals(msg, esperado, result);
 	}
 }

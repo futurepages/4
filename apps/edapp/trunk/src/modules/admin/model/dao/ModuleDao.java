@@ -2,11 +2,14 @@ package modules.admin.model.dao;
 
 import java.util.List;
 import modules.admin.model.entities.User;
+import modules.admin.model.install.AdminInstaller;
+import org.futurepages.core.locale.Txt;
 import org.futurepages.core.persistence.Dao;
 import modules.admin.model.entities.Module;
 import modules.admin.model.core.AdminConstants;
 import org.futurepages.core.persistence.HQLProvider;
 import org.futurepages.util.Is;
+import org.futurepages.util.ModuleUtil;
 
 public class ModuleDao extends HQLProvider {
 
@@ -60,5 +63,9 @@ public class ModuleDao extends HQLProvider {
         moduleAdmin.setTitle(title);
         Dao.getInstance().save(moduleAdmin);
         return moduleAdmin;
+    }
+
+    public static void installModule(AdminInstaller adminInstaller) {
+        ModuleDao.save(ModuleUtil.moduleId(adminInstaller.getClass()), Txt.get("$.module.smallTitle") , Txt.get("$.module.title"));
     }
 }

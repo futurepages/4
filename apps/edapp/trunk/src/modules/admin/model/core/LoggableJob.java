@@ -1,18 +1,18 @@
 package modules.admin.model.core;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import modules.admin.model.entities.Log;
 import modules.admin.model.entities.enums.LogType;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.persistence.Dao;
-import org.futurepages.util.brazil.DateUtil;
+import org.futurepages.util.CalendarUtil;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class LoggableJob implements Job {
 
@@ -23,7 +23,7 @@ public abstract class LoggableJob implements Job {
 	protected HashMap<String, String> mapa = new HashMap<String, String>();
 
 	protected void executaAntes() {
-		System.out.println(DateUtil.viewDateTime(Calendar.getInstance(), "dd/MM/yyyy - HH:mm:ss") + ": Executing Job >>> " + this.getClass().getSimpleName());
+		System.out.println(CalendarUtil.viewDateTime(Calendar.getInstance(), "dd/MM/yyyy - HH:mm:ss") + ": Executing Job >>> " + this.getClass().getSimpleName());
 	}
 
 	protected void executaDepois() {

@@ -13,8 +13,9 @@ import modules.admin.model.entities.enums.ParamEnum;
 import modules.admin.model.entities.enums.ParamValueType;
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.install.Installer;
+import org.futurepages.core.locale.Txt;
 import org.futurepages.core.persistence.Dao;
-import org.futurepages.util.brazil.CalendarUtil;
+import org.futurepages.util.CalendarUtil;
 
 /**
  * Inserções Iniciais Padrões do Módulo Admin
@@ -22,7 +23,9 @@ import org.futurepages.util.brazil.CalendarUtil;
 public class AdminInstaller extends Installer implements AdminConstants {
 
     public void execute() {
-        ModuleDao.save("admin", "Administração", "Administração de Usuários/Permissões");
+        ModuleDao.installModule(this);
+
+	    //installing joker module...
         ModuleDao.save(SUPER_ID, "(*) Todos os Módulos","(*) Todos os Módulos");
 
 		AdminRolesEnum.install();
@@ -33,7 +36,7 @@ public class AdminInstaller extends Installer implements AdminConstants {
         userAdmin.setLogin("admin");
         userAdmin.setFullName("Administrador Padrão do Sistema");
         userAdmin.setEmail("admin@admin.com");
-	    userAdmin.setBirthDate(CalendarUtil.buildCalendar(1985,1,16));
+	    userAdmin.setBirthDate(CalendarUtil.buildCalendar(1985, 1, 16));
 
 		if(Apps.get("DEPLOY_MODE").equals("none")){
 			userAdmin.setPassword("admin.senha");
@@ -51,4 +54,8 @@ public class AdminInstaller extends Installer implements AdminConstants {
 
 		Dao.getInstance().save(param);
     }
+
+	public static void main(String[] args) {
+		System.out.println(Txt.get("$.module.smallTitle"));
+	}
 }

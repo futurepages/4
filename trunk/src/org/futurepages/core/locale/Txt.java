@@ -56,6 +56,22 @@ public class Txt {
 		if(localeId==null){
 			localeId = UI.getCurrent().getLocale().toString();
 		}
+		if(txtKey.startsWith("$.")){
+			Class callerClass = null;
+			StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+			for(int i = 1; i<stack.length ; i++ ){
+				if(!stack[i].getClassName().equals(Txt.class.getName())){
+					try {
+						callerClass = Class.forName(stack[i].getClassName());
+					} catch (ClassNotFoundException e) {
+						throw new RuntimeException(e);
+					}
+					break;
+				}
+			}
+			String moduleId = ModuleUtil.moduleId(callerClass);
+			txtKey = The.concat(moduleId,".",txtKey.substring(2));
+		}
 		String str = getInstance().localesMap.get(localeId).get(txtKey);
 		if (str == null) {
 			AppLogger.getInstance().execute(new TxtNotFoundException(txtKey,localeId));
@@ -85,7 +101,7 @@ public class Txt {
 
 						HashMap<String,String> localesMap = this.localesMap.get(localeFile.getName());
 						if(localesMap==null){
-							localesMap = new HashMap<String,String>();
+							localesMap = new HashMap<>();
 							this.localesMap.put(localeFile.getName(), localesMap );
 						}
 						String moduleId = ModuleUtil.moduleId(localeFile);

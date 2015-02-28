@@ -7,7 +7,6 @@ import com.vaadin.server.Responsive;
 import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
-import com.vaadin.server.VaadinServletRequest;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.Component;
@@ -64,7 +63,7 @@ public abstract class SimpleUI extends UI {
 	}
 
     private void initErrorHandler() {
-        		UI.getCurrent().setErrorHandler(new DefaultErrorHandler() {
+        	UI.getCurrent().setErrorHandler(new DefaultErrorHandler() {
 			@Override
 			public void error(com.vaadin.server.ErrorEvent event) {
 				if (Dao.getInstance().isTransactionActive()) {
@@ -80,6 +79,7 @@ public abstract class SimpleUI extends UI {
                         getCurrent().notifyErrors(ue);
                 }else{
                       getCurrent().notifyFailure(originalCause);
+                    //TODO it's here to  know how is the default handle for component.
 //                    AbstractComponent component = findAbstractComponent(event);
                      //Default way of handling component failures. Putting an exclamation point in it.
 //                    if (component != null) {
@@ -195,6 +195,8 @@ public abstract class SimpleUI extends UI {
         for(Window window : getWindows()){
            window.close();
         }
+
+        //TODO consider it...
         // getWindows().forEach(com.vaadin.ui.Window::close); //could i change the code above for <-- this??
     }
 
@@ -218,12 +220,12 @@ public abstract class SimpleUI extends UI {
 
     public String getIpsFromClient(){
         VaadinRequest req =VaadinService.getCurrentRequest();
-        String ipClientReal = req.getHeader("x-forwarded-for");
+        String ipRealClient = req.getHeader("x-forwarded-for");
 		String ipResult;
-		if (ipClientReal == null) {
+		if (ipRealClient == null) {
 			ipResult = req.getRemoteAddr();
 		} else {
-			ipResult = ipClientReal;
+			ipResult = ipRealClient;
 		}
 		return ipResult;
     }
