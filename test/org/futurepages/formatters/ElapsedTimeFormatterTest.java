@@ -2,7 +2,7 @@ package org.futurepages.formatters;
 
 import junit.framework.Assert;
 import org.futurepages.formatters.brazil.ElapsedTimeFormatter;
-import org.futurepages.util.brazil.DateUtil;
+import org.futurepages.util.CalendarUtil;
 import org.junit.Test;
 
 public class ElapsedTimeFormatterTest {
@@ -91,8 +91,8 @@ public class ElapsedTimeFormatterTest {
 //	);
 		Assert.assertEquals(
 				expectedText,
-				ElapsedTimeFormatter.formatValue(DateUtil.dbDateTimeToCalendar(bdBaseDateTime),
-						DateUtil.dbDateTimeToCalendar(bdElapsedDateTime))
+				ElapsedTimeFormatter.formatValue(CalendarUtil.dbDateTimeToCalendar(bdBaseDateTime),
+						CalendarUtil.dbDateTimeToCalendar(bdElapsedDateTime))
 				);
 	}
 }

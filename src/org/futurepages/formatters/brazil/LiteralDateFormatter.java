@@ -1,6 +1,6 @@
 package org.futurepages.formatters.brazil;
 
-import org.futurepages.util.brazil.DateUtil;
+import org.futurepages.util.brazil.BrazilDateUtil;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -12,6 +12,6 @@ import org.futurepages.core.formatter.AbstractFormatter;
  public class LiteralDateFormatter extends AbstractFormatter<Calendar> {
  	
  	public String format(Calendar value, Locale loc) {
-            return DateUtil.literalDateFromDB(value);
+            return BrazilDateUtil.literalDateFromDB(value);
  	}
  }

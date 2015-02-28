@@ -1,6 +1,6 @@
 package org.futurepages.formatters.brazil;
 
-import org.futurepages.util.brazil.DateUtil;
+import org.futurepages.util.brazil.BrazilDateUtil;
 import java.util.Locale;
 import org.futurepages.core.formatter.AbstractFormatter;
  
@@ -10,6 +10,6 @@ import org.futurepages.core.formatter.AbstractFormatter;
  public class DateFormatter extends AbstractFormatter {
  	
  	public String format(Object value, Locale loc) {
-            return DateUtil.viewDate(value);
+            return BrazilDateUtil.viewDate(value);
  	}
  }

@@ -1,6 +1,7 @@
 package org.futurepages.formatters;
 
-import org.futurepages.util.brazil.DateUtil;
+import org.futurepages.util.DateUtil;
+
 import java.util.Locale;
 import org.futurepages.core.formatter.AbstractFormatter;
  
@@ -10,6 +11,6 @@ import org.futurepages.core.formatter.AbstractFormatter;
  public class TimeFormatter extends AbstractFormatter {
  	
  	public String format(Object value, Locale loc) {
-            return DateUtil.viewDateTime(value, "HH:mm:ss");
+            return DateUtil.getInstance().viewDateTime(value, "HH:mm:ss");
  	}
  }
