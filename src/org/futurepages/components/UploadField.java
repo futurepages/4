@@ -13,6 +13,7 @@ import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.apps.simple.SimpleUI;
+import org.futurepages.core.config.Apps;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.upload.UploadReceiver;
 import org.futurepages.exceptions.UserException;
@@ -26,6 +27,10 @@ public class UploadField extends CustomComponent {
 	private UploadStartListener startListener;
 	private UploadFinishListener finishListener;
 	private AllowedTypes allowedTypes;
+
+	public UploadField(String caption, AllowedTypes allowedTypes, UploadSuccessListener successListener) {
+		this(caption,Integer.parseInt(Apps.get("MAX_UPLOAD_MB_SIZE")),allowedTypes,successListener);
+	}
 
 	public UploadField(String caption, int maxFileSizeMB, AllowedTypes allowedTypes, UploadSuccessListener successListener) {
 		this.caption = caption;
@@ -41,6 +46,8 @@ public class UploadField extends CustomComponent {
 		final ProgressBar progressBar = new ProgressBar();
 		final Upload upload = new Upload(null, new UploadReceiver());
 		final Button fakeUpload = new Button(caption);
+
+		upload.setSizeFull();
 
 		root.addComponent(uploadingContainer);
 			uploadingContainer.setVisible(false);
