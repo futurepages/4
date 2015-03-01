@@ -88,9 +88,9 @@ public class PaginationSliceContainer<BEANTYPE> extends BeanContainer {
 
         for(BEANTYPE bean : listBeans){
             Object beanId = paginationSlice.getDao().getIdValue(bean);
-                allItemsIds.add(i, beanId);
+            allItemsIds.add(i, beanId);
             objects.put(beanId, new BeanItem(bean));
-//            registerNewItem(i, beanId, new BeanItem(bean)); //only for listeners
+            //registerNewItem(i, beanId, new BeanItem(bean)); //only for listeners (understand to use it.
             i++;
         }
         return super.getItemIds(startIndex,numberOfIds);
