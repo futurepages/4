@@ -1,6 +1,7 @@
 package org.futurepages.apps.simple;
 
 import com.google.common.eventbus.Subscribe;
+import com.vaadin.client.ui.VAbstractSplitPanel;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -11,6 +12,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
@@ -90,7 +92,6 @@ public abstract class SimpleMenu extends CustomComponent {
         }
 
 		menuContent.addComponent(buildMenuItems());
-
 		return menuContent;
 	}
 
@@ -127,6 +128,37 @@ public abstract class SimpleMenu extends CustomComponent {
             }
             menuItemsLayout.addComponent(resultButton);
 		}
+
+		final MenuBar settings = new MenuBar();
+        settings.setAutoOpen(true);
+        settings.setSizeUndefined();
+		settings.addStyleName("modules-menu");
+		MenuBar.MenuItem settingsItem = settings.addItem("Módulos", FontAwesome.INBOX, null);
+//        settingsItem.setText("Módulos");
+
+		settingsItem.setStyleName("valo-menu-item");
+		settings.setAutoOpen(false);
+        settingsItem.addItem("Administração", selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
+        settingsItem.addItem("Global", selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
+		settingsItem.addSeparator();
+        settingsItem.addItem("Fechar Módulos", selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
+		menuItemsLayout.addComponent(settings);
+
+//		for (final ViewItem viewItem  : getHome().getViewItems()) {
+//			if(viewItem!=getHome()){
+//
+//			ViewItemButton viewItemButton = new ViewItemButton(viewItem);
+//
+//            Component resultButton = customViewItemButton(viewItemButton);
+////            if(viewItem.isNotifier()){
+////                Label badge = new Label();
+////                badge.setId("app-menu-"+viewItem.getViewName()+"-badge");
+////                badges.put(viewItem, badge);
+////                resultButton = buildBadgeWrapper(resultButton, badge);
+////            }
+//            menuItemsLayout.addComponent(resultButton);
+//			}
+//		}
 
 		return menuItemsLayout;
 	}
