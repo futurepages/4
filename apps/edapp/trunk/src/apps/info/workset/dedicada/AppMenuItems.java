@@ -83,6 +83,7 @@ public enum AppMenuItems implements ViewItemMenu {
 	public boolean isStateful() {
 		return this.stateful;
 	}
+
 	public boolean isNotifier() {
 		return this.notifier;
 	}

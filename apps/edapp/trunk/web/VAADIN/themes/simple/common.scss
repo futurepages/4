@@ -17,6 +17,26 @@
   .simple .v-upload-immediate .v-button {
     text-align: center;
   }
+  .valo-menu .v-menubar-modules-menu {
+      color: inherit;
+      background-color: inherit;
+  }
+
+  .v-menubar.modules-menu {
+    margin-top: 12px;
+    margin-bottom: 1px;
+    background-color: #414B56;
+    width: 100%;
+    height: 34px;
+    border: none;
+  }
+
+  .v-menubar.modules-menu > .v-menubar-menuitem.v-menubar-menuitem-valo-menu-item {
+      text-align: left;
+      background-color: #4C555F;
+      display: block;
+  }
+
   // END FUTUREPAGES STYLES ##################################################
 
 
