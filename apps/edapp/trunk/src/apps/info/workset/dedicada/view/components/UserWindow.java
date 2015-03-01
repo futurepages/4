@@ -15,7 +15,6 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextArea;
@@ -33,7 +32,7 @@ import modules.global.model.dao.CidadeDao;
 import modules.global.model.entities.brasil.Estado;
 import org.futurepages.apps.simple.SimpleWindow;
 import org.futurepages.components.CalendarDateField;
-import org.futurepages.components.UploadField;
+import org.futurepages.components.ImageUploadField;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
 import org.futurepages.core.locale.Txt;
@@ -41,15 +40,11 @@ import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HQLQuery;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.formatters.brazil.DateTimeFormatter;
-import org.futurepages.util.ImageUtil;
-import org.futurepages.util.Is;
 import org.futurepages.util.ReflectionUtil;
 import org.vaadin.viritin.ListContainer;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -87,8 +82,6 @@ public class UserWindow extends SimpleWindow {
 
     private UserWindow(User user) {
         user = UserServices.getInstance().read(user.getLogin());
-//        addStyleName("profile-window"); //deixo aqui para estudo posterior. Este style aparentemente só dava o width e height e padding.
-//        setId("profilepreferenceswindow");
 
         setWidth (50.0f, Unit.PERCENTAGE);
         setHeight(80.0f, Unit.PERCENTAGE);
@@ -144,8 +137,6 @@ public class UserWindow extends SimpleWindow {
 
     private Component buildUserTab(User user) {
         final HorizontalLayout root = new HorizontalLayout();
-        final VerticalLayout picLayout = new VerticalLayout();
-        final Image profilePic = new Image(null, user.getAvatarRes());
         final FormLayout details = new FormLayout();
 
         root.setCaption(Txt.get("user.basic_info"));
@@ -153,53 +144,23 @@ public class UserWindow extends SimpleWindow {
         root.setWidth(100.0f, Unit.PERCENTAGE);
         root.setSpacing(true);
         root.setMargin(true);
-        // root.addStyleName("profile-form");
 
-        picLayout.setSizeUndefined();
-        picLayout.setSpacing(true);
-        profilePic.setWidth(118.0f, Unit.PIXELS);
-        picLayout.addComponent(profilePic);
-        picLayout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
+        avatarValueField = new TextField("Avatar Hidden Value");
+        avatarValueField.setVisible(false);
+        avatarValueField.setNullRepresentation("");
+        avatarValueField.setValue(user.getAvatarValue()); //necessary here to avatarValueField
 
-        final UploadField uploadField = new UploadField("Trocar Foto", AdminConstants.AVATAR_MAX_SIZE, UploadField.AllowedTypes.IMAGES,
-        event -> {
-            File file = event.getReceiver().getNewFileResource().getSourceFile();
-                try {
-                    ImageUtil.resizeCropping(file, 300, 300, file.getAbsolutePath(), false);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                profilePic.setSource(event.getReceiver().getNewFileResource());
-                avatarValueField.setValue(event.getReceiver().getNewFileName());
-        });
-        picLayout.addComponent(uploadField);
+        ImageUploadField imageUploadField = new ImageUploadField(avatarValueField, AdminConstants.AVATAR_DEFAULT_RES ,user.getAvatarRes());
 
-        final Button removerAvatar = new Button("");
-        removerAvatar.setDescription("Remover Avatar");
-        removerAvatar.setIcon(FontAwesome.TIMES);
-        removerAvatar.setStyleName(ValoTheme.BUTTON_TINY);
-
-         if(Is.empty(user.getAvatarValue())){
-           removerAvatar.setVisible(false);
-        }
-
-        removerAvatar.addClickListener(event -> {
-            profilePic.setSource(AdminConstants.AVATAR_DEFAULT_RES);
-            avatarValueField.setValue("");
-            removerAvatar.setVisible(false);
-        });
-        uploadField.setStartListener(()  ->  removerAvatar.setVisible(false));
-        uploadField.setFinishListener(() ->{  if(!Is.empty(avatarValueField.getValue())) removerAvatar.setVisible(true); });
-        picLayout.addComponent(removerAvatar);
-        removerAvatar.setStyleName("user-no-avatar-button " + ValoTheme.BUTTON_TINY + " " + ValoTheme.BUTTON_ICON_ONLY);
+        root.addComponent(imageUploadField);
 
 
-        root.addComponent(picLayout);
         VerticalLayout verticalLayout = new VerticalLayout();
         root.addComponent(verticalLayout);
-        root.setExpandRatio(verticalLayout, 1);
+        root.setExpandRatio(imageUploadField, 1);
+        root.setExpandRatio(verticalLayout, 3);
 
-
+        details.addComponent(avatarValueField);
         details.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         details.setMargin(false);
         verticalLayout.addComponent(details);
@@ -265,18 +226,33 @@ public class UserWindow extends SimpleWindow {
         birthCityField.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         birthCityField.setItemCaptionPropertyId("nome");
         birthStateField.addValueChangeListener(event -> {
-            if(birthStateField.getValue()!=null){
+            if (birthStateField.getValue() != null) {
                 birthCityField.setValue(null);
                 birthCityField.setContainerDataSource(new ListContainer<>(CidadeDao.listByUF(((Estado) birthStateField.getValue()).getSigla())));
                 birthCityField.setEnabled(true);
                 birthCityField.setReadOnly(false);
-            }else{
+                birthCityField.setTextInputAllowed(true);
+                birthCityField.setInputPrompt("Escolha a Cidade...");
+            } else {
                 birthCityField.setValue(null);
                 birthCityField.setEnabled(false);
                 birthCityField.setReadOnly(true);
+                birthCityField.setTextInputAllowed(false);
+                birthCityField.setDescription("Necessário escolher estado.");
             }
         });
 
+        if(birthStateField.getValue()==null){
+            birthCityField.setValue(null);
+            birthCityField.setEnabled(false);
+            birthCityField.setReadOnly(true);
+            birthCityField.setTextInputAllowed(false);
+            birthCityField.setInputPrompt("Necessário escolher estado.");
+        }else{
+            birthCityField.setInputPrompt("Escolha a cidade...");
+        }
+
+        birthStateField.setInputPrompt("Escolha o Estado...");
         birthStateField.setContainerDataSource(new ListContainer(Dao.getInstance().list(new HQLQuery<Estado>(Estado.class, null, "nome asc"))));
         birthStateField.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         birthStateField.setItemCaptionPropertyId("nome");
@@ -297,11 +273,6 @@ public class UserWindow extends SimpleWindow {
 
         lbX.setStyleName(ValoTheme.LABEL_LARGE);
         details.addComponent(lbX);
-
-        avatarValueField = new TextField("Avatar Hidden Value");
-        avatarValueField.setVisible(false);
-        avatarValueField.setNullRepresentation("");
-        details.addComponent(avatarValueField);
 
         return root;
     }

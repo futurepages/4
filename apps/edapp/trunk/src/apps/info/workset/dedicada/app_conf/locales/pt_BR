@@ -2,7 +2,11 @@ system.internal_failure = Falha Interna
 system.press_esc_to_exit = Pressione ESC para fechar
 system.some_errors_found = Alguns erros foram encontrados
 
+# GLOBAL_TEXTS ##############################
 save = Salvar
+change_image = Trocar Imagem
+remove_image = Remover Imagem
+# GLOBAL_TEXTS ##############################
 
 upload.file_type_not_allowed = Somente arquivos "%s" são permitidos. Você tentou enviar um arquivo do tipo "%s"
 upload.file_size_not_allowed = Arquivos com mais de %dMB não são permitidos

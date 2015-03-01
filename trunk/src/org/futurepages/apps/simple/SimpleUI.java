@@ -114,7 +114,7 @@ public abstract class SimpleUI extends UI {
 
 
     public void notifySuccess(String msg){
-            Notification success = new Notification(msg);
+            Notification success = new Notification((!msg.endsWith(".") && !msg.endsWith("!"))? (msg+"."):msg);
             success.setDelayMsec(NOTIFICATIONS_TIMEOUT_MS);
             success.setStyleName("bar success small");
             success.setPosition(Position.TOP_CENTER);

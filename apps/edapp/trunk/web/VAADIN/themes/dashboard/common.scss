@@ -6,12 +6,18 @@
 
 @mixin dashboard-common {
 
-   //by leandro
-   .v-button.user-no-avatar-button{
+   // FUTUREPAGES STYLES #####################################################
+   .v-button.removeImage{
       top: -87px;
-      left: 46px;
+      left: 64px;
   }
-
+  input[type=file]{
+    display: none;
+  }
+  .dashboard .v-upload-immediate .v-button {
+    text-align: center;
+  }
+  // END FUTUREPAGES STYLES ##################################################
 
 
 
@@ -27,10 +33,7 @@
   .valo-menu-item {
     overflow: hidden;
   }
-  // to correct bug with upload component @byLeandro
-  input[type=file]{
-    display: none;
-  }
+
   .v-ui[width-range~="0-800px"] {
     .valo-menu-title {
       @include valo-gradient($color: $valo-menu-background-color);
