@@ -25,13 +25,13 @@ $view-padding: round($v-unit-size / 1.5) !default;
 // Slight adjustment to menu background-color
 $valo-menu-background-color: #414B56;
 
-@mixin dashboard {
+@mixin simple {
   @include valo;
-  @include dashboard-common;
-  @include dashboard-login-view;
-  @include dashboard-dashboard-view;
-  @include dashboard-schedule-view;
-  @include dashboard-sales-view;
-  @include dashboard-transactions-view;
-  @include dashboard-reports-view;
+  @include simple-common;
+  @include simple-login-view;
+  @include simple-dashboard-view;
+  @include simple-schedule-view;
+  @include simple-sales-view;
+  @include simple-transactions-view;
+  @include simple-reports-view;
 }

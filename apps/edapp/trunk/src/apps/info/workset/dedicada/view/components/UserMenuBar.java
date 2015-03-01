@@ -33,6 +33,8 @@ public class UserMenuBar extends CustomComponent {
 		String[] names = user.getFullName().split("\\s+");
 		settingsItem.setText(names.length > 1 ? names[0] + " " + names[names.length - 1] : names[0]);
 
+//		settingsItem.setIcon(FontAwesome.KEY);
+
 		settingsItem.addItem(Txt.get("user-menu.basic_info"), selectedItem -> UserWindow.open(user, 0));
 		final int logAccessIdx;
 		settingsItem.addItem(Txt.get("user-menu.new_password") , selectedItem -> UserWindow.open(user, 1));

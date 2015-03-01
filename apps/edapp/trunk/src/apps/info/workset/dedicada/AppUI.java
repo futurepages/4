@@ -18,7 +18,7 @@ import org.futurepages.util.Is;
 import java.lang.reflect.Field;
 
 @Title("Workset Dedicada")
-@Theme("dashboard")
+@Theme("simple")
 public class AppUI extends SimpleUI {
 
     private static final String LOCAL_USER_KEY = "_luserk"; //abbreviation to local user key (proposital as it is a local key.

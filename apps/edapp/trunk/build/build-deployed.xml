@@ -31,13 +31,14 @@
 		<deployAntTask source="${webroot}" target="${basedir}/${target.deployed}/${target.deployed.webdirname}"  />
 	</target>
 
-	<target name="-copy-conf" depends="-deploy-web">
-		<echo message="Atualizando web.xml para modo de Produção..."/>
-		<copy overwrite="true"
-		      file="${basedir}/${target.deployed}/conf/web.xml"
-		      todir="${basedir}/${target.deployed}/${target.deployed.webdirname}/WEB-INF"
-		/>
-	</target>
+	<!--Not necessary.-->
+	<!--<target name="-copy-conf" depends="-deploy-web">-->
+		<!--<echo message="Atualizando web.xml para modo de Produção..."/>-->
+		<!--<copy overwrite="true"-->
+		      <!--file="${basedir}/${target.deployed}/conf/web.xml"-->
+		      <!--todir="${basedir}/${target.deployed}/${target.deployed.webdirname}/WEB-INF"-->
+		<!--/>-->
+	<!--</target>-->
 
 	<!--copia web.xml após copiar pasta compilada já com o tema previamente compilado...-->
 	<target name="run" depends="-copy-conf">

@@ -41,7 +41,7 @@ import org.futurepages.core.persistence.HQLQuery;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.formatters.brazil.DateTimeFormatter;
 import org.futurepages.util.ReflectionUtil;
-import org.vaadin.viritin.ListContainer;
+import org.vaadin.maddon.ListContainer;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;

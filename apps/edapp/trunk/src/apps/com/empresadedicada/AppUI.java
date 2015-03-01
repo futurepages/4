@@ -26,7 +26,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.util.Locale;
 
 @Title("Empresa Dedicada DashBoard")
-@Theme("dashboard")
+@Theme("simple")
 public class AppUI extends UI {
 
     private final DataProvider dataProvider = new DummyDataProvider();

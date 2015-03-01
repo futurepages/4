@@ -4,7 +4,7 @@
   }
 }
 
-@mixin dashboard-common {
+@mixin simple-common {
 
    // FUTUREPAGES STYLES #####################################################
    .v-button.removeImage{
@@ -14,7 +14,7 @@
   input[type=file]{
     display: none;
   }
-  .dashboard .v-upload-immediate .v-button {
+  .simple .v-upload-immediate .v-button {
     text-align: center;
   }
   // END FUTUREPAGES STYLES ##################################################
