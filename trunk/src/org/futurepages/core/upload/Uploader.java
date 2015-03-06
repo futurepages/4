@@ -95,12 +95,12 @@ public class Uploader extends CustomComponent {
 		return event -> {
 			if (Is.empty(upload.getDescription())) {
 				if (!allowedFile(event.getMIMEType(),allowedTypes)) {
-					upload.setDescription(String.format(Txt.get("upload.file_type_not_allowed"),allowedTypes.getInfoExt(), event.getMIMEType()));
+					upload.setDescription(String.format(Txt.get("uploader.file_type_not_allowed"),allowedTypes.getInfoExt(), event.getMIMEType()));
 					String errorMsg = upload.getDescription();
 					upload.setVisible(false);
 					throw new UserException(errorMsg);
 				} else if (((event.getContentLength() / 1024f / 1024f) > maxFileSizeMB)) {
-					upload.setDescription(String.format(Txt.get("upload.file_size_not_allowed"),maxFileSizeMB));
+					upload.setDescription(String.format(Txt.get("uploader.file_size_not_allowed"),maxFileSizeMB));
 					String errorMsg = upload.getDescription();
 					upload.setVisible(false);
 					throw new UserException(errorMsg);

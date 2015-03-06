@@ -74,9 +74,15 @@ public class Txt {
 		}
 		String str = getInstance().localesMap.get(localeId).get(txtKey);
 		if (str == null) {
-			AppLogger.getInstance().execute(new TxtNotFoundException(txtKey,localeId));
-			String label = The.lastTokenOf(txtKey,"\\.").replaceAll("_", " ");
-			return The.capitalizedWords(label);
+			if(!txtKey.startsWith("[") && txtKey.contains("[") && txtKey.endsWith("]")){
+				txtKey = txtKey.replaceAll("\\[.*?\\]","");
+				str = getInstance().localesMap.get(localeId).get(txtKey);
+			}
+			if(str==null){
+				AppLogger.getInstance().execute(new TxtNotFoundException(txtKey,localeId));
+				String label = The.lastTokenOf(txtKey,"\\.").replaceAll("_", " ");
+				return The.capitalizedWords(label);
+			}
 		}
 		return str;
 	}

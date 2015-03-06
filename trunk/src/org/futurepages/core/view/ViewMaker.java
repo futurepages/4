@@ -39,6 +39,7 @@ import org.futurepages.core.view.annotations.FieldStartGroup;
 import org.futurepages.core.view.annotations.FieldStartGroupIcon;
 import org.futurepages.core.view.annotations.FieldUpdate;
 import org.futurepages.core.view.annotations.ForView;
+import org.futurepages.core.view.types.EntityGenderType;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.util.Is;
 import org.futurepages.util.ModuleUtil;
@@ -85,13 +86,14 @@ public class ViewMaker {
 		//ManyToMany, NotCascade
 		//MaskedField
 	}
+
 	private EntityForServices entity;
 	private Class entityClass;
 	private String moduleId;
 	private BeanFieldGroup fieldGroup;
 	private SimpleView simpleView;
 
-	public ViewMaker(SimpleView simpleView, @ForView EntityForServices entity) {
+	public ViewMaker(SimpleView simpleView,@ForView EntityForServices entity) {
 		this.simpleView = simpleView;
 		this.entity = entity;
 		this.entityClass = entity.getClass();
@@ -103,12 +105,11 @@ public class ViewMaker {
 	}
 
 	public void updateForm(OnSuccessUpdateListener listener) {
-		updateForm(ValoTheme.FORMLAYOUT_LIGHT);
-		simpleView.addFooter(updateFooterButton(listener));
+		updateForm(ValoTheme.FORMLAYOUT_LIGHT, listener);
 	}
 
 	public void updateForm(String formStyle, OnSuccessUpdateListener listener) {
-		updateForm(formStyle);
+		updateFields(formStyle);
 		simpleView.addFooter(updateFooterButton(listener));
 	}
 
@@ -218,8 +219,9 @@ public class ViewMaker {
 	}
 
 	public Layout updateFooterButton(OnSuccessUpdateListener listener){
-		String genderSufix = ((ForView)entityClass.getAnnotation(ForView.class)).genderSufix();
-		return updateFooterButton(String.format(Txt.get("entity_successfully_updated"), proccessEntityLabel(),genderSufix), listener);
+		EntityGenderType gender = ((ForView)entityClass.getAnnotation(ForView.class)).gender();
+
+		return updateFooterButton(String.format(Txt.get("viewmaker.entity_successfully_updated["+gender.name().toLowerCase()+"]"), proccessEntityLabel()), listener);
 	}
 
 	private String proccessEntityLabel() {

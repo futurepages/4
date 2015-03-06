@@ -1,5 +1,7 @@
 package org.futurepages.core.view.annotations;
 
+import org.futurepages.core.view.types.EntityGenderType;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -9,5 +11,5 @@ import java.lang.annotation.Target;
 @Target(value = {ElementType.PARAMETER, ElementType.TYPE})
 public @interface ForView {
 	String label() default "";
-	String genderSufix() default "";
+	EntityGenderType gender() default EntityGenderType.MALE;
 }
