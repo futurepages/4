@@ -11,9 +11,10 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
+import org.futurepages.core.view.SimpleView;
 
 @SuppressWarnings("serial")
-public abstract class SimpleWindow extends Window {
+public abstract class SimpleWindow extends Window implements SimpleView {
 
     protected final TabSheet tabSheet = new TabSheet();
 	protected final VerticalLayout root = new VerticalLayout();
@@ -50,7 +51,8 @@ public abstract class SimpleWindow extends Window {
 		}
 	}
 
-	protected Component addFooter(Component component){
+    @Override
+    public Component addFooter(Component component){
 		root.addComponent(component);
 		return component;
 	}
@@ -60,8 +62,21 @@ public abstract class SimpleWindow extends Window {
         tabSheet.setSelectedTab(tabIdx);
     }
 
-    protected Component addTab(Component tabComponent) {
+    @Override
+    public Component addTab(Component tabComponent) {
         tabSheet.addComponent(tabComponent);
         return tabComponent;
     }
+
+    @Override
+    public TabSheet getTabSheet(){
+        return this.tabSheet;
+    }
+
+    @Override
+    public Component addComponent(Component component){
+        root.addComponent(component);
+        return component;
+    }
+
 }

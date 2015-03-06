@@ -1,6 +1,8 @@
 package org.futurepages.core.services;
 
-public interface EntityForServices<ES extends EntityServices> {
+import java.io.Serializable;
+
+public interface EntityForServices<ES extends EntityServices> extends Serializable {
 
 	public void prepareToCreate();
 	public void prepareToRead();

@@ -75,7 +75,8 @@ public class Txt {
 		String str = getInstance().localesMap.get(localeId).get(txtKey);
 		if (str == null) {
 			AppLogger.getInstance().execute(new TxtNotFoundException(txtKey,localeId));
-			return The.capitalizedWord(The.lastTokenOf(txtKey,"\\.").replaceAll("_", " "));
+			String label = The.lastTokenOf(txtKey,"\\.").replaceAll("_", " ");
+			return The.capitalizedWords(label);
 		}
 		return str;
 	}
@@ -93,9 +94,7 @@ public class Txt {
 				if(localeFiles!=null){
 					for(File localeFile : localeFiles){
 						Properties txts = new Properties();
-						InputStreamReader isr = null;
-
-						isr = new FileReader(localeFile.getAbsolutePath());
+						InputStreamReader isr =  new FileReader(localeFile.getAbsolutePath());
 						txts.load(isr);
 						isr.close();
 
@@ -105,8 +104,8 @@ public class Txt {
 							this.localesMap.put(localeFile.getName(), localesMap );
 						}
 						String moduleId = ModuleUtil.moduleId(localeFile);
-						//System.out.println(moduleId);
-						for(String key : txts.stringPropertyNames()){
+
+ 						for(String key : txts.stringPropertyNames()){
 							String txtValue = txts.getProperty(key);
 							if(key.startsWith("$.")){
 								key = The.concat(moduleId,".",key.substring(2));
@@ -115,7 +114,6 @@ public class Txt {
 								System.out.println(">> Txt key "+key+" overwritten for locale '"+localeFile.toString()+"'. Old Value: '"+localesMap.get(key)+"'; New Value: '"+txtValue+"'");
 							}
 							localesMap.put(key, txtValue);
-							//System.out.println(key+": "+txtValue);
 						}
 					}
 				}
