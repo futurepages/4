@@ -1,5 +1,6 @@
 package org.futurepages.core.services;
 
+import com.vaadin.server.Resource;
 import org.futurepages.core.persistence.EntityDao;
 import org.futurepages.core.validation.EntityValidator;
 import org.futurepages.core.validation.Validator;
@@ -42,6 +43,11 @@ public abstract class EntityServices<DAO extends EntityDao<BEAN>,BEAN extends Se
 		}
 		return dao.save(bean);
 	}
+
+	public BEAN retrieve(Serializable bean){
+		return read(dao.getIdValue(bean));
+	}
+
 
 	public BEAN read(Serializable id){
 		BEAN bean = dao.get(id);

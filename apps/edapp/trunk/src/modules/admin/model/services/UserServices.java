@@ -18,8 +18,8 @@ import modules.admin.model.exceptions.DisabledUserException;
 import modules.admin.model.exceptions.ExpiredPasswordException;
 import modules.admin.model.exceptions.InvalidUserOrPasswordException;
 import modules.admin.model.validators.UserValidator;
-import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.exception.AppLogger;
+import org.futurepages.core.locale.Txt;
 import org.futurepages.core.resource.UploadedResource;
 import org.futurepages.core.resource.UploadedTempResource;
 import org.futurepages.core.services.EntityServices;
@@ -336,7 +336,7 @@ public class UserServices extends EntityServices<UserDao, User> implements Admin
 		if(!Is.empty(user.getAvatarValue())){
 			return new UploadedResource(user, user.getAvatarValue());
 		}
-		return AVATAR_DEFAULT_RES;
+		return user.getDefaultAvatarRes();
 	}
 
 	/**
@@ -418,5 +418,17 @@ public class UserServices extends EntityServices<UserDao, User> implements Admin
 			}
 		}
 		return false;
+	}
+
+	public String getInfo(User user) {
+		if (user.hasModules()) {
+			return Txt.get("$.user.info.admin_user");
+		} else {
+			return Txt.get("$.user.info.limited_user");
+		}
+	}
+
+	public Resource getDefaultAvatar(User user) {
+		return AVATAR_DEFAULT_RES;
 	}
 }

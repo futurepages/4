@@ -1,4 +1,4 @@
-package org.futurepages.components;
+package org.futurepages.core.upload;
 
 import com.vaadin.event.FieldEvents;
 import com.vaadin.server.DefaultErrorHandler;
@@ -15,11 +15,10 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.apps.simple.SimpleUI;
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.locale.Txt;
-import org.futurepages.core.upload.UploadReceiver;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.util.Is;
 
-public class UploadField extends CustomComponent {
+public class Uploader extends CustomComponent {
 
 	private String caption;
 	private int maxFileSizeMB;
@@ -28,11 +27,11 @@ public class UploadField extends CustomComponent {
 	private UploadFinishListener finishListener;
 	private AllowedTypes allowedTypes;
 
-	public UploadField(String caption, AllowedTypes allowedTypes, UploadSuccessListener successListener) {
+	public Uploader(String caption, AllowedTypes allowedTypes, UploadSuccessListener successListener) {
 		this(caption,Integer.parseInt(Apps.get("MAX_UPLOAD_MB_SIZE")),allowedTypes,successListener);
 	}
 
-	public UploadField(String caption, int maxFileSizeMB, AllowedTypes allowedTypes, UploadSuccessListener successListener) {
+	public Uploader(String caption, int maxFileSizeMB, AllowedTypes allowedTypes, UploadSuccessListener successListener) {
 		this.caption = caption;
 		this.maxFileSizeMB = maxFileSizeMB;
 		this.allowedTypes = allowedTypes;
@@ -188,7 +187,8 @@ public class UploadField extends CustomComponent {
 	}
 
 	public static enum AllowedTypes {
-		IMAGES("*.jpg,*.png",    "image/png","image/jpg","image/jpeg","image/pjpeg");
+		IMAGES("*.jpg,*.png",    "image/png","image/jpg","image/jpeg","image/pjpeg"),
+		PDF("*.pdf",    "application/pdf");
 
 		private String infoExt;
 		private String[] mimeTypes;

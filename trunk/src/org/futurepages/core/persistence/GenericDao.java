@@ -23,7 +23,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -48,11 +47,7 @@ public class GenericDao extends HQLProvider {
 		this.schemaId = sessionFactoryKey;
 	}
 
-
-
-	public GenericDao(Class<EntityDao> entityDaoClass){
-
-	}
+	public GenericDao(Class<EntityDao> entityDaoClass){}
 
 	public Session session() {
 		return HibernateManager.getInstance().getSession(schemaId);

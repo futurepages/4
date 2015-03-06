@@ -4,6 +4,7 @@ system.some_errors_found = Alguns erros foram encontrados
 
 # GLOBAL_TEXTS ##############################
 save = Salvar
+entity_successfully_updated = %s atualizad%s com sucesso
 change_image = Trocar Imagem
 remove_image = Remover Imagem
 # GLOBAL_TEXTS ##############################
@@ -29,8 +30,12 @@ user-menu.profile = Perfil
 user-menu.log_accesses = Acessos
 user-menu.sign_out = Sair
 
-user.basic_info = Usuário
-user.new_password = Senha
+admin.user = Usuário
+admin.user.basic_info = Usuário
+admin.user.password = Senha
+admin.user.old_password = Senha Atual
+admin.user.new_password = Nova Senha
+admin.user.new_password_again = Nova Senha (Repetir)
 user.profile = Perfil
 user.log_accesses = Acessos
-user.profile_successfully_updated = Perfil atualizado com sucesso
+#user.profile_successfully_updated = Perfil atualizado com sucesso

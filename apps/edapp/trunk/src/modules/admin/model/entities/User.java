@@ -1,5 +1,6 @@
 package modules.admin.model.entities;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import modules.admin.model.dao.LogDao;
 import modules.admin.model.services.UserServices;
@@ -8,6 +9,16 @@ import org.futurepages.core.auth.DefaultRole;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.resource.UploadedResource;
 import org.futurepages.core.services.EntityForServices;
+import org.futurepages.core.view.annotations.FieldCustom;
+import org.futurepages.core.view.annotations.FieldDelete;
+import org.futurepages.core.view.annotations.FieldDependency;
+import org.futurepages.core.view.annotations.FieldImage;
+import org.futurepages.core.view.annotations.FieldPassword;
+import org.futurepages.core.view.annotations.FieldStartGroup;
+import org.futurepages.core.view.annotations.FieldStartGroupIcon;
+import org.futurepages.core.view.annotations.FieldUpdate;
+import org.futurepages.core.view.annotations.ForView;
+import org.futurepages.core.view.types.FieldGroupType;
 import org.futurepages.util.Is;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -20,51 +31,79 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
 @Entity
-public class User implements DefaultUser, Serializable, EntityForServices<UserServices> {
+@ForView(genderSufix = "o")
+public class User implements DefaultUser, EntityForServices<UserServices> {
+
+	@FieldStartGroup(label = "Txt:$this.basic_info",type = FieldGroupType.TAB)
+	@FieldStartGroupIcon(FontAwesome.USER)
+	@FieldUpdate
+	@FieldImage(image= "avatarRes", noImage = "defaultAvatarRes")
+	@FieldCustom(floatRatio="1:3")
+	private String avatarValue;
 
 	@Id
+	@NotEmpty
 	@Size(max=30)
+	@FieldUpdate(readOnly = true)
 	private String login;
 
 	@NotEmpty
 	@Size(max=120)
+	@FieldUpdate
 	private String fullName;
 
-	@NotEmpty
-	private String encriptPassword;
+	@ManyToOne
+	@FieldUpdate
+	@FieldDependency //optional in this case because of the @ManyToOne
+	private Profile profile;
 
 	@NotEmpty
 	@Email
+	@FieldUpdate
  	private String email;
 
 	@Past
 	@Temporal(TemporalType.DATE)
+	@FieldUpdate
 	private Calendar birthDate;
 
 	@ManyToOne
+	@FieldUpdate
+	@FieldDependency(preSelect = "estado")
 	private Cidade birthCity;
 
+	@FieldDelete(visibleWithRole=true)
 	private boolean status;
+
+	@Transient
+	@FieldUpdate
+	@FieldPassword
+	@FieldStartGroup(label = "Txt:$this.password",type = FieldGroupType.TAB)
+	@FieldStartGroupIcon(FontAwesome.KEY)
+	private String oldPassword;
+
+	@Transient
+	@FieldUpdate
+	@FieldPassword
+	private String newPassword;
+
+	@Transient
+	@FieldUpdate
+	@FieldPassword
+	private String newPasswordAgain;
+
+
+	@Transient
+	private String accessKey;
 
 	@Transient
 	private String plainPassword;
 
-	@Transient
-	private String oldPassword;
-
-	@Transient
-	private String newPassword;
-
-	@Transient
-	private String newPasswordAgain = "";
-
-	@Transient
-	private String accessKey;
+	private String encriptPassword;
 
 	@Transient
 	private List<Module> modules;
@@ -72,13 +111,8 @@ public class User implements DefaultUser, Serializable, EntityForServices<UserSe
 	@Transient
 	private List<Role> roles;
 
-	@ManyToOne
-	private Profile profile;
-
 	@Transient
 	private List<Log> lastAccesses;
-
-	private String avatarValue;
 
 	@Transient
 	private String oldAvatarValue;
@@ -92,6 +126,10 @@ public class User implements DefaultUser, Serializable, EntityForServices<UserSe
 	}
 
 	public User() {
+	}
+
+	public Resource getDefaultAvatarRes(){
+		return services().getDefaultAvatar(this);
 	}
 
 	public User(DefaultUser defaultUser) {
@@ -283,11 +321,7 @@ public class User implements DefaultUser, Serializable, EntityForServices<UserSe
 	}
 
 	public String getInfo() {
-		if (this.hasModules()) {
-			return "Usuário Administrativo";
-		} else {
-			return "Acesso Limitado";
-		}
+		return services().getInfo(this);
 	}
 
 	public boolean hasRole(DefaultRole role) {

@@ -649,4 +649,34 @@ public class The {
 	public static String rightPad(String value, int qt, String token) {
 		return org.apache.commons.lang.StringUtils.rightPad(value, qt, token);
 	}
+
+	public static String camelCaseToLowerUnderscore(String from){
+		if(from!=null){
+			StringBuilder sb = new StringBuilder();
+			for(char c : from.toCharArray()){
+				String cstr = String.valueOf(c);
+				if(cstr.toUpperCase().equals(cstr) && sb.length()>0){ //not do this with the first char.
+					sb.append("_").append(cstr.toLowerCase());
+				}else{
+					sb.append(cstr.toLowerCase());
+				}
+			}
+			return sb.toString();
+		}
+		return null;
+	}
+
+	public static String capitalizedWords(String label) {
+		String[] words = label.split(" ");
+		StringBuilder sb = new StringBuilder();
+		int i = 0;
+		for(String word : words){
+			i++;
+			sb.append(capitalizedWord(word));
+			if(i!=words.length){
+				sb.append(" ");
+			}
+		}
+		return sb.toString();
+	}
 }
