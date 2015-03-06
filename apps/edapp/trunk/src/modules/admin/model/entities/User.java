@@ -30,12 +30,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
 import java.util.Calendar;
 import java.util.List;
 
 @Entity
-@ForView(genderSufix = "o")
+@ForView
 public class User implements DefaultUser, EntityForServices<UserServices> {
 
 	@FieldStartGroup(label = "Txt:$this.basic_info",type = FieldGroupType.TAB)
@@ -47,12 +46,10 @@ public class User implements DefaultUser, EntityForServices<UserServices> {
 
 	@Id
 	@NotEmpty
-	@Size(max=30)
 	@FieldUpdate(readOnly = true)
 	private String login;
 
 	@NotEmpty
-	@Size(max=120)
 	@FieldUpdate
 	private String fullName;
 
