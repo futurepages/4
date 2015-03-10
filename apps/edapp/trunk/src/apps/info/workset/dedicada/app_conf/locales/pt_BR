@@ -3,13 +3,17 @@ save = Salvar
 change_image = Trocar Imagem
 remove_image = Remover Imagem
 
-system.internal_failure = Falha Interna
-system.press_esc_to_exit = Pressione ESC para fechar
-system.some_errors_found = Alguns erros foram encontrados
+#ui...
+ui.internal_failure = Falha Interna
+ui.press_esc_to_exit = Pressione ESC para fechar
+ui.some_errors_found = Alguns erros foram encontrados
 
+#viewmaker...
+viewmaker.form_was_not_properly_filled = O formulário não foi devidamente preenchido
 viewmaker.entity_successfully_updated = %s atualizado com sucesso
 viewmaker.entity_successfully_updated[female] = %s atualizada com sucesso
 
+#uploader...
 uploader.file_type_not_allowed = Somente arquivos "%s" são permitidos. Você tentou enviar um arquivo do tipo "%s"
 uploader.file_size_not_allowed = Arquivos com mais de %dMB não são permitidos
 # GLOBAL_TEXTS ##############################
@@ -32,14 +36,3 @@ user-menu.new_password = Senha
 user-menu.profile = Perfil
 user-menu.log_accesses = Acessos
 user-menu.sign_out = Sair
-
-admin.user = Usuário
-admin.user[plural] = Usuários
-admin.user.basic_info = Usuário
-admin.user.password = Senha
-admin.user.old_password = Senha Atual
-admin.user.new_password = Nova Senha
-admin.user.new_password_again = Nova Senha (Repetir)
-user.profile = Perfil
-user.log_accesses = Acessos
-#user.profile_successfully_updated = Perfil atualizado com sucesso

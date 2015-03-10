@@ -2,9 +2,25 @@ $.module.title = Administração
 $.module.smallTitle = Administração de Usuários/Permissões
 
 # USER ##################################################
+$.user = Usuário
+$.user[plural] = Usuários
 $.user.login = Login
-$.user.fullName = Nome Completo
-$.user.password = Senha
 $.user.info.admin_user = Usuário Administrativo
 $.user.info.limited_user = Acesso Limitado
+$.user.basic_info = Cadastro
+$.user.full_name = Nome Completo
+$.user.password = Senha
+$.user.old_password = Senha Atual
+$.user.birth_date = Data de Nascimento
+$.user.email = Email
+$.user.new_password = Nova Senha
+$.user.birth_city = Cidade Natal
+$.user.new_password_again = Nova Senha (Repetir)
+$.user.profile = Perfil
+$.user.log_accesses = Acessos
+$.user.avatar_value = Avatar
+$.user.avatar_value[prompt] = Outro Avatar...
+$.user.birth_city[estado] = Estado onde Nasceu
+$.user.birth_city[estado][prompt] = Escolha o Estado...
+$.user.birth_city[prompt] = Escolha a Cidade...
 # END USER ##############################################

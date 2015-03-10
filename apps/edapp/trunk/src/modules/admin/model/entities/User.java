@@ -18,9 +18,11 @@ import org.futurepages.core.view.annotations.FieldStartGroup;
 import org.futurepages.core.view.annotations.FieldStartGroupIcon;
 import org.futurepages.core.view.annotations.FieldUpdate;
 import org.futurepages.core.view.annotations.ForView;
+import org.futurepages.core.view.annotations.PreSelectDependency;
 import org.futurepages.core.view.types.FieldGroupType;
 import org.futurepages.util.Is;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
@@ -30,6 +32,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Calendar;
 import java.util.List;
 
@@ -41,7 +44,7 @@ public class User implements DefaultUser, EntityForServices<UserServices> {
 	@FieldStartGroupIcon(FontAwesome.USER)
 	@FieldUpdate
 	@FieldImage(image= "avatarRes", noImage = "defaultAvatarRes")
-	@FieldCustom(floatRatio="1:3")
+	@FieldCustom(floatLeft="1:3")
 	private String avatarValue;
 
 	@Id
@@ -51,11 +54,12 @@ public class User implements DefaultUser, EntityForServices<UserServices> {
 
 	@NotEmpty
 	@FieldUpdate
+	@Size(max = 120)
 	private String fullName;
 
 	@ManyToOne
 	@FieldUpdate
-	@FieldDependency //optional in this case because of the @ManyToOne
+	@FieldDependency(showAttr = "label")
 	private Profile profile;
 
 	@NotEmpty
@@ -70,7 +74,9 @@ public class User implements DefaultUser, EntityForServices<UserServices> {
 
 	@ManyToOne
 	@FieldUpdate
-	@FieldDependency(preSelect = "estado")
+	@FieldDependency(showAttr = "nome", orderBy = "nome asc",
+			pre = {@PreSelectDependency(groupBy = "estado",showAttr = "nome",orderBy = "nome asc")}
+	)
 	private Cidade birthCity;
 
 	@FieldDelete(visibleWithRole=true)
@@ -92,7 +98,6 @@ public class User implements DefaultUser, EntityForServices<UserServices> {
 	@FieldUpdate
 	@FieldPassword
 	private String newPasswordAgain;
-
 
 	@Transient
 	private String accessKey;

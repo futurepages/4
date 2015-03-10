@@ -43,22 +43,22 @@ import org.apache.commons.lang3.ClassUtils;
  *
  * @param <T> the type of beans in the backed list
  */
-public abstract class PreSelectListContainer<T> extends AbstractContainer implements
+public abstract class CopyOfListContainer<T> extends AbstractContainer implements
         Container.Indexed, Container.Sortable, ItemSetChangeNotifier {
 
     private List<T> backingList;
 
-    public PreSelectListContainer() {
+    public CopyOfListContainer() {
 	    setCollection(getList());
     }
 
 	protected abstract Collection<T> getList();
 
-	public PreSelectListContainer(Collection<T> backingList) {
+	public CopyOfListContainer(Collection<T> backingList) {
         setCollection(backingList);
     }
 
-    public PreSelectListContainer(Class<T> type, Collection<T> backingList) {
+    public CopyOfListContainer(Class<T> type, Collection<T> backingList) {
         dynaClass = WrapDynaClass.createDynaClass(type);
         setCollection(backingList);
     }
@@ -72,7 +72,7 @@ public abstract class PreSelectListContainer<T> extends AbstractContainer implem
         fireItemSetChange();
     }
 
-    public PreSelectListContainer(Class<T> type) {
+    public CopyOfListContainer(Class<T> type) {
         backingList = new ArrayList<T>();
         dynaClass = WrapDynaClass.createDynaClass(type);
     }
@@ -259,7 +259,7 @@ public abstract class PreSelectListContainer<T> extends AbstractContainer implem
         return true;
     }
 
-    public PreSelectListContainer addAll(Collection<T> beans) {
+    public CopyOfListContainer addAll(Collection<T> beans) {
         backingList.addAll(beans);
         fireItemSetChange();
         return this;
@@ -328,7 +328,7 @@ public abstract class PreSelectListContainer<T> extends AbstractContainer implem
 
             @Override
             public Class getType() {
-                return PreSelectListContainer.this.getType(propertyName);
+                return CopyOfListContainer.this.getType(propertyName);
             }
 
             @Override
@@ -366,7 +366,7 @@ public abstract class PreSelectListContainer<T> extends AbstractContainer implem
 
         @Override
         public Collection<String> getItemPropertyIds() {
-            return PreSelectListContainer.this.getContainerPropertyIds();
+            return CopyOfListContainer.this.getContainerPropertyIds();
         }
 
         @Override

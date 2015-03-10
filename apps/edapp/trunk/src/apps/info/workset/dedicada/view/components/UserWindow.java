@@ -12,7 +12,6 @@ import modules.admin.model.entities.Log;
 import modules.admin.model.entities.Module;
 import modules.admin.model.entities.Role;
 import modules.admin.model.entities.User;
-import modules.admin.model.services.UserServices;
 import org.futurepages.apps.simple.SimpleWindow;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
@@ -26,63 +25,21 @@ import java.util.List;
 public class UserWindow extends SimpleWindow {
 
     private UserWindow(User user) {
-        user = UserServices.getInstance().read(user.getLogin());
 
-        setWidth (50.0f, Unit.PERCENTAGE);
-        setHeight(80.0f, Unit.PERCENTAGE);
+        setDimensionsPercent(50,80);
 
-        ViewMaker maker = (new ViewMaker(this, user));
-        maker.updateForm((updatedUser)-> Eventizer.post(new Events.LoggedUserChanged((DefaultUser)updatedUser)));
+        (new ViewMaker(this, user)).updateForm((updatedUser) -> Eventizer.post(new Events.LoggedUserChanged((DefaultUser) updatedUser)));
 
-//        maker.updateFields(ValoTheme.FORMLAYOUT_LIGHT);
+        if(user.hasProfile()){
+            addTab(buildProfileTab(user));
+        }
 
-//        if(user.hasProfile()){
-//            addTab(buildProfileTab(user));
-//        }
-//        addTab(buildLogAccessesTab(user));
-//
-//        addFooter(maker.updateFooterButton(Txt.get("user.profile_successfully_updated"),
-//                    (updatedUser)-> Eventizer.post(new Events.LoggedUserChanged((DefaultUser)updatedUser))
-//                )
-//        );
+        addTab(buildLogAccessesTab(user));
     }
-
-//    private Component buildPasswordTab(User user) {
-//        final HorizontalLayout root = new HorizontalLayout();
-//        root.setCaption(Txt.get("user.new_password"));
-//        root.setIcon(FontAwesome.KEY);
-//        root.setWidth(100.0f, Unit.PERCENTAGE);
-//        root.setSpacing(true);
-//        root.setMargin(true);
-//        final FormLayout details = new FormLayout();
-//
-//        details.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-//        details.setMargin(false);
-//        root.addComponent(details);
-//        root.setDefaultComponentAlignment(Alignment.TOP_CENTER);
-//
-//        Label labelAlterarSenha = new Label("Definição de Nova Senha");
-//        labelAlterarSenha.setStyleName(ValoTheme.LABEL_COLORED);
-//        labelAlterarSenha.setIcon(FontAwesome.LOCK);
-//        details.addComponent(labelAlterarSenha);
-//
-//        oldPassword = new PasswordField("Senha Atual");
-//        oldPassword.setNullRepresentation("");
-//        details.addComponent(oldPassword);
-//
-//        newPassword = new PasswordField("Nova Senha");
-//        newPassword.setNullRepresentation("");
-//        details.addComponent(newPassword);
-//
-//        newPasswordAgain = new PasswordField("Nova Senha (Repetir)");
-//        newPasswordAgain.setNullRepresentation("");
-//        details.addComponent(newPasswordAgain);
-//        return root;
-//    }
 
     private Component buildProfileTab(User user) {
         VerticalLayout root = new VerticalLayout();
-        root.setCaption(Txt.get("user.profile"));
+        root.setCaption(Txt.get("admin.user.profile"));
         root.setIcon(FontAwesome.UNLOCK);
         root.setSpacing(true);
         root.setMargin(true);
@@ -137,7 +94,7 @@ public class UserWindow extends SimpleWindow {
 
     private Component buildLogAccessesTab(User user) {
         VerticalLayout root = new VerticalLayout();
-        root.setCaption(Txt.get("user.log_accesses"));
+        root.setCaption(Txt.get("admin.user.log_accesses"));
         root.setIcon(FontAwesome.TH_LIST);
         root.setSpacing(true);
         root.setMargin(true);

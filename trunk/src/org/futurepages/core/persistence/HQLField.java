@@ -7,6 +7,7 @@ import org.futurepages.util.Is;
 import org.futurepages.util.The;
 
 import javax.persistence.EnumType;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collection;

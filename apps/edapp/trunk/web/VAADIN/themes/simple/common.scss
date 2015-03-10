@@ -6,10 +6,14 @@
 
 @mixin simple-common {
 
-   // FUTUREPAGES STYLES #####################################################
-   .v-button.removeImage{
-      top: -87px;
-      left: 64px;
+   // FUTUREPAGES ADDED STYLES #####################################################
+  .v-slot-removeImage {
+    position: absolute;
+  }
+  .v-button.removeImage{
+     position: relative;
+    top: -87px;
+    left: 125px;
   }
   input[type=file]{
     display: none;
@@ -37,7 +41,16 @@
       display: block;
   }
 
-  // END FUTUREPAGES STYLES ##################################################
+  .v-formlayout-captioncell {
+    vertical-align: top;
+    line-height: 36px;
+    text-align: right;
+  }
+
+  .v-formlayout-firstrow {
+    padding-top: 0;
+  }
+  // END FUTUREPAGES ADDED STYLES ##################################################
 
 
 
