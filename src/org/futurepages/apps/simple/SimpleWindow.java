@@ -79,4 +79,9 @@ public abstract class SimpleWindow extends Window implements SimpleView {
         return component;
     }
 
+    public void setDimensionsPercent(int width, int height){
+        setWidth (width,  Unit.PERCENTAGE);
+        setHeight(height, Unit.PERCENTAGE);
+    }
+
 }

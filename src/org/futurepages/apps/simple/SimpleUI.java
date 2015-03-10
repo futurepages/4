@@ -84,7 +84,7 @@ public abstract class SimpleUI extends UI {
                      //Default way of handling component failures. Putting an exclamation point in it.
 //                    if (component != null) {
                         // Shows the error in AbstractComponent
-//                        ErrorMessage errorMessage = new UserError(Txt.get("system.internal_failure")+" "+errorNumber);
+//                        ErrorMessage errorMessage = new UserError(Txt.get("ui.internal_failure")+" "+errorNumber);
 //                        component.setComponentError(errorMessage);
 //                    }
                 }
@@ -134,7 +134,7 @@ public abstract class SimpleUI extends UI {
         Map<String,String> map = e.getValidationMap();
         String msg;
         if(map.size()>1){
-            StringBuilder sb = new StringBuilder(Txt.get("system.some_errors_found")+":<ul>");
+            StringBuilder sb = new StringBuilder(Txt.get("ui.some_errors_found")+":<ul>");
 
             int i = 0;
             for(String errorMsg : map.values()){
@@ -155,7 +155,7 @@ public abstract class SimpleUI extends UI {
 
     public void notifyFailure(Throwable originalCause) {
         String errorNumber = AppLogger.getInstance().execute(originalCause, VaadinService.getCurrentRequest());
-        getCurrent().notifyFailure(The.concat(Txt.get("system.internal_failure"), " ", errorNumber, "  (", Txt.get("system.press_esc_to_exit"),")"));
+        getCurrent().notifyFailure(The.concat(Txt.get("ui.internal_failure"), " ", errorNumber, "  (", Txt.get("ui.press_esc_to_exit"),")"));
     }
 
 

@@ -9,5 +9,5 @@ public @interface FieldCustom {
 
 	String mask() default ""; //TODO how script it?
 
-	String floatRatio() default "";
+	String floatLeft() default "";
 }

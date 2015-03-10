@@ -37,8 +37,13 @@ public class ImageUploadField extends CustomComponent implements Property<String
 	}
 
 	/**
-	 * Default component that uses Txt default keys: change_image and remove_image
+	 * Default component that uses input caption and Txt default key: remove_image
 	 */
+	public ImageUploadField(String imageValue, Resource noImageRes, Resource imageRes, String caption){
+		this(makeImageProperty(imageValue),imageRes, noImageRes,caption, Txt.get("remove_image"), Integer.parseInt(Apps.get("MAX_UPLOAD_MB_SIZE")), 300,300);
+	}
+
+
 	public ImageUploadField(Property imageProperty, Resource noImageRes, Resource imageRes){
 		this(imageProperty,imageRes, noImageRes,Txt.get("change_image"), Txt.get("remove_image"), Integer.parseInt(Apps.get("MAX_UPLOAD_MB_SIZE")), 300,300);
 	}

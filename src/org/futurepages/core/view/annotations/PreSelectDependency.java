@@ -4,8 +4,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FieldShowContainer {
-	int value() default 0;
-
-	String afterSeparator() default "";
+public @interface PreSelectDependency {
+	String groupBy();
+	String showAttr() default "";
+	String orderBy() default "";
 }
