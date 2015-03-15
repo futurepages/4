@@ -77,6 +77,7 @@ public class Module implements DefaultModule, Serializable{
         this.moduleId = moduleId;
     }
 
+	@Override
     public String getTitle() {
         return title;
     }
@@ -85,6 +86,7 @@ public class Module implements DefaultModule, Serializable{
         this.title = title;
     }
 
+	@Override
     public String getSmallTitle() {
         return smallTitle;
     }

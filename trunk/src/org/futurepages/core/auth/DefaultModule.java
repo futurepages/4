@@ -4,4 +4,7 @@ public interface DefaultModule {
 
 	public String getModuleId();
 
+	public String getTitle();
+
+	public String getSmallTitle();
 }

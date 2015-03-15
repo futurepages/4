@@ -5,6 +5,7 @@ import com.vaadin.server.Resource;
 import modules.admin.model.dao.LogDao;
 import modules.admin.model.services.UserServices;
 import modules.global.model.entities.brasil.Cidade;
+import org.futurepages.core.auth.DefaultModule;
 import org.futurepages.core.auth.DefaultRole;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.resource.UploadedResource;
@@ -12,6 +13,7 @@ import org.futurepages.core.services.EntityForServices;
 import org.futurepages.core.view.annotations.FieldCustom;
 import org.futurepages.core.view.annotations.FieldDelete;
 import org.futurepages.core.view.annotations.FieldDependency;
+import org.futurepages.core.view.annotations.FieldHTML;
 import org.futurepages.core.view.annotations.FieldImage;
 import org.futurepages.core.view.annotations.FieldPassword;
 import org.futurepages.core.view.annotations.FieldStartGroup;
@@ -22,11 +24,11 @@ import org.futurepages.core.view.annotations.PreSelectDependency;
 import org.futurepages.core.view.types.FieldGroupType;
 import org.futurepages.util.Is;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -80,7 +82,19 @@ public class User implements DefaultUser, EntityForServices<UserServices> {
 	private Cidade birthCity;
 
 	@FieldDelete(visibleWithRole=true)
+	@FieldUpdate
 	private boolean status;
+
+	@Lob
+	@FieldUpdate
+	private String obs;
+
+	@FieldStartGroup(label = "Txt:$this.about",type = FieldGroupType.TAB)
+	@FieldStartGroupIcon(FontAwesome.INFO)
+	@Lob
+	@FieldUpdate
+	@FieldHTML
+	private String about;
 
 	@Transient
 	@FieldUpdate
@@ -433,6 +447,22 @@ public class User implements DefaultUser, EntityForServices<UserServices> {
 			this.oldAvatarValue = this.avatarValue;
 		}
 		this.avatarValue = avatarValue;
+	}
+
+	public String getAbout() {
+		return about;
+	}
+
+	public void setAbout(String about) {
+		this.about = about;
+	}
+
+	public String getObs() {
+		return obs;
+	}
+
+	public void setObs(String obs) {
+		this.obs = obs;
 	}
 
 	public String getOldAvatarValue() {

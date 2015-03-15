@@ -14,6 +14,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
+import org.futurepages.core.auth.DefaultModule;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.Events;
@@ -23,6 +24,7 @@ import org.futurepages.core.view.ViewItemButton;
 import org.futurepages.core.view.ViewItemMenu;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 @SuppressWarnings({ "serial", "unchecked" })
@@ -134,31 +136,19 @@ public abstract class SimpleMenu extends CustomComponent {
         settings.setSizeUndefined();
 		settings.addStyleName("modules-menu");
 		MenuBar.MenuItem settingsItem = settings.addItem("Módulos", FontAwesome.INBOX, null);
-//        settingsItem.setText("Módulos");
 
 		settingsItem.setStyleName("valo-menu-item");
 		settings.setAutoOpen(false);
-        settingsItem.addItem("Administração", selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
-        settingsItem.addItem("Global", selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
-		settingsItem.addSeparator();
-        settingsItem.addItem("Fechar Módulos", selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
+		Iterator<? extends DefaultModule> it = SimpleUI.getCurrent().getLoggedUser().getModules().iterator();
+		while(it.hasNext()){
+			DefaultModule module = it.next();
+	        settingsItem.addItem(module.getSmallTitle(), selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
+			if(it.hasNext()){
+				settingsItem.addSeparator();
+			}
+		}
+        settingsItem.addItem(Txt.get("menu.close_modules"), selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
 		menuItemsLayout.addComponent(settings);
-
-//		for (final ViewItem viewItem  : getHome().getViewItems()) {
-//			if(viewItem!=getHome()){
-//
-//			ViewItemButton viewItemButton = new ViewItemButton(viewItem);
-//
-//            Component resultButton = customViewItemButton(viewItemButton);
-////            if(viewItem.isNotifier()){
-////                Label badge = new Label();
-////                badge.setId("app-menu-"+viewItem.getViewName()+"-badge");
-////                badges.put(viewItem, badge);
-////                resultButton = buildBadgeWrapper(resultButton, badge);
-////            }
-//            menuItemsLayout.addComponent(resultButton);
-//			}
-//		}
 
 		return menuItemsLayout;
 	}

@@ -1,7 +1,7 @@
 package apps.info.workset.dedicada;
 
 import apps.info.workset.dedicada.model.entities.Transaction;
-import apps.info.workset.dedicada.view.components.UserMenuBar;
+import modules.admin.view.components.UserMenuBar;
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
@@ -27,7 +27,7 @@ public final class AppMenu extends SimpleMenu {
 
 	@Override
 	protected Component userMenu() {
-		return new UserMenuBar(); //TODO bring to fpg3 with the picture as parameter.
+		return new UserMenuBar();
 		//if you change for...
 //		return super.userMenu();  // returns simple login title with logout button
 	}

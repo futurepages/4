@@ -14,7 +14,6 @@ $.user.old_password = Senha Atual
 $.user.birth_date = Data de Nascimento
 $.user.email = Email
 $.user.new_password = Nova Senha
-$.user.birth_city = Cidade Natal
 $.user.new_password_again = Nova Senha (Repetir)
 $.user.profile = Perfil
 $.user.log_accesses = Acessos
@@ -22,5 +21,8 @@ $.user.avatar_value = Avatar
 $.user.avatar_value[prompt] = Outro Avatar...
 $.user.birth_city[estado] = Estado onde Nasceu
 $.user.birth_city[estado][prompt] = Escolha o Estado...
+$.user.birth_city = Cidade Natal
+$.user.obs = Observações
+$.user.about = Biografia
 $.user.birth_city[prompt] = Escolha a Cidade...
 # END USER ##############################################

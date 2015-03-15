@@ -56,6 +56,7 @@ public class Role implements DefaultRole, Serializable{
         this.roleId = roleId;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }

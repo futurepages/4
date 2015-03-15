@@ -14,6 +14,7 @@ import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
@@ -74,13 +75,15 @@ public class ViewMaker extends HQLProvider{
 
 	static {
 		mapComponents = new LinkedHashMap<>();
+		mapComponents.put(boolean.class,         CheckBox.class);
+		mapComponents.put(Boolean.class,         CheckBox.class);
 		mapComponents.put(Calendar.class,        CalendarDateField.class);
 		mapComponents.put(Date.class,            CalendarDateField.class);
 		mapComponents.put(Temporal.class,        CalendarDateField.class);
 		mapComponents.put(FieldPassword.class,   PasswordField.class);
-		mapComponents.put(ManyToOne.class,       ComboBox.class); //pode ser radioButton tb
-		mapComponents.put(OneToOne.class,        ComboBox.class); //pode ser radioButton tb
-		mapComponents.put(FieldDependency.class, ComboBox.class); //pode ser radioButton tb
+		mapComponents.put(ManyToOne.class,       ComboBox.class);
+		mapComponents.put(OneToOne.class,        ComboBox.class);
+		mapComponents.put(FieldDependency.class, ComboBox.class);
 		mapComponents.put(FieldImage.class,      ImageUploadField.class);
 		mapComponents.put(FieldFile.class,       FileUploadField.class);
 		mapComponents.put(FieldHTML.class,       RichTextArea.class);
@@ -346,6 +349,9 @@ public class ViewMaker extends HQLProvider{
 				}
 				if (viewField instanceof AbstractTextField) {
 					((AbstractTextField) viewField).setNullRepresentation("");
+				}
+				if(viewField instanceof RichTextArea){
+					((RichTextArea) viewField).setNullRepresentation("");
 				}
 
 				viewField.setId(classField.getName());

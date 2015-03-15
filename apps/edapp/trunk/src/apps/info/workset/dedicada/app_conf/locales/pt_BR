@@ -1,5 +1,7 @@
 # GLOBAL_TEXTS ##############################
 save = Salvar
+yes  = Sim
+no   = Não
 change_image = Trocar Imagem
 remove_image = Remover Imagem
 
@@ -20,6 +22,8 @@ uploader.file_size_not_allowed = Arquivos com mais de %dMB não são permitidos
 
 
 menu.app_title = Workset <strong>Dedicada</strong>
+menu.close_modules = Fechar Módulos
+menu.sign_out = Sair
 
 login.caption = Workset Dedicada
 login.user.accesskey = Login
@@ -27,12 +31,3 @@ login.user.password = Senha
 login.enter = Entrar
 login.remember = Manter Conectado
 login.authentication_required = Autenticação Requerida
-
-# module admin candidates @##############################
-#########################################################
-
-user-menu.basic_info = Usuário
-user-menu.new_password = Senha
-user-menu.profile = Perfil
-user-menu.log_accesses = Acessos
-user-menu.sign_out = Sair

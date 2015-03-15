@@ -1,4 +1,4 @@
-package apps.info.workset.dedicada.view.components;
+package modules.admin.view;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
