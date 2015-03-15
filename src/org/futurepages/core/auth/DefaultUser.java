@@ -19,9 +19,9 @@ public interface DefaultUser extends Serializable{
 
 	public String getPassword();
 	
-	public Collection getRoles();
+	public Collection<? extends DefaultRole> getRoles();
 
-	public Collection getModules();
+	public Collection<? extends DefaultModule> getModules();
 	
 	public boolean hasModule(String moduleId);
 
