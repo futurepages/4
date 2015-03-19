@@ -34,7 +34,7 @@ import org.futurepages.apps.simple.SimpleWindow;
 import org.futurepages.components.CalendarDateField;
 import org.futurepages.components.ImageUploadField;
 import org.futurepages.core.event.Eventizer;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HQLQuery;
@@ -379,7 +379,7 @@ public class OldUserWindow extends SimpleWindow {
                 user = services.update(user);
                 services.dao().flush(); //flush is here because of the deached below
                 AppUI.getCurrent().notifySuccess(Txt.get("user.profile_successfully_updated"));
-                Eventizer.post(new Events.LoggedUserChanged(user));
+                Eventizer.post(new NativeEvents.LoggedUserChanged(user));
                 close();
             } catch (UserException e) {
                 AppUI.getCurrent().notifyErrors(e);

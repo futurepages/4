@@ -5,7 +5,6 @@ import com.vaadin.server.Resource;
 import modules.admin.model.dao.LogDao;
 import modules.admin.model.services.UserServices;
 import modules.global.model.entities.brasil.Cidade;
-import org.futurepages.core.auth.DefaultModule;
 import org.futurepages.core.auth.DefaultRole;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.resource.UploadedResource;
@@ -257,7 +256,7 @@ public class User implements DefaultUser, EntityForServices<UserServices> {
 	}
 
 	public void setProfile(Profile profile) {
-		if(profile==null ||  !services().dao().areEqualsById(profile,this.profile)){
+		if(profile==null || this.profile == null ||  !services().dao().areEqualsById(profile,this.profile)){
 			roles = null;
 			modules = null;
 		}

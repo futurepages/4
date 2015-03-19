@@ -1,6 +1,6 @@
 package apps.info.workset.dedicada.view.pages.transactions;
 
-import apps.info.workset.dedicada.AppEvents;
+import apps.info.workset.dedicada.control.Events;
 import apps.info.workset.dedicada.model.entities.Transaction;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Item;
@@ -28,7 +28,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import modules.global.model.entities.brasil.Cidade;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.containers.PaginationSliceContainer;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HQLField;
@@ -223,7 +223,7 @@ public final class TransactionsView extends VerticalLayout implements View {
     }
 
     @Subscribe
-    public void browserResized(final Events.BrowserResize event) {
+    public void browserResized(final NativeEvents.BrowserResize event) {
         // Some columns are collapsed when browser window width gets small
         // enough to make the table fit better.
         if (defaultColumnsVisible()) {
@@ -249,7 +249,7 @@ public final class TransactionsView extends VerticalLayout implements View {
 
     void createNewReportFromSelection() {
         UI.getCurrent().getNavigator().navigateTo("reports");
-        Eventizer.post(new AppEvents.TransactionReportEvent((Collection<Transaction>) table.getValue()));
+        Eventizer.post(new Events.TransactionReportEvent((Collection<Transaction>) table.getValue()));
     }
 
     @Override

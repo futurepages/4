@@ -3,6 +3,7 @@ package modules.admin.model.dao;
 import java.util.List;
 import modules.admin.model.entities.User;
 import modules.admin.model.install.AdminInstaller;
+import org.futurepages.core.install.Installer;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.persistence.Dao;
 import modules.admin.model.entities.Module;
@@ -65,7 +66,8 @@ public class ModuleDao extends HQLProvider {
         return moduleAdmin;
     }
 
-    public static void installModule(AdminInstaller adminInstaller) {
-        ModuleDao.save(ModuleUtil.moduleId(adminInstaller.getClass()), Txt.get("$.module.smallTitle") , Txt.get("$.module.title"));
+    public static void installModule(Installer installer) {
+        String moduleId = ModuleUtil.moduleId(installer.getClass());
+        ModuleDao.save(moduleId, Txt.get(moduleId+".module.smallTitle") , Txt.get(moduleId+".module.title"));
     }
 }

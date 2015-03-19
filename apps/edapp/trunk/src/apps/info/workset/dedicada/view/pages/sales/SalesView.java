@@ -1,6 +1,7 @@
 package apps.info.workset.dedicada.view.pages.sales;
 
 import apps.info.workset.dedicada.AppUI;
+import apps.info.workset.dedicada.model.data.dummy.DummyDataProvider;
 import apps.info.workset.dedicada.model.entities.Movie;
 import apps.info.workset.dedicada.model.entities.MovieRevenue;
 import com.vaadin.addon.charts.model.style.SolidColor;
@@ -63,7 +64,7 @@ public class SalesView extends VerticalLayout implements View {
 
         initMovieSelect();
         // Add first 4 by default
-        List<Movie> subList = new ArrayList<Movie>(AppUI.getDataProvider().getMovies()).subList(0, 4);
+        List<Movie> subList = new ArrayList<Movie>(DummyDataProvider.getInstance().getMovies()).subList(0, 4);
         for (Movie m : subList) {
             addDataSet(m);
         }
@@ -76,7 +77,7 @@ public class SalesView extends VerticalLayout implements View {
     }
 
     private void initMovieSelect() {
-        Collection<Movie> movies = AppUI.getDataProvider().getMovies();
+        Collection<Movie> movies = DummyDataProvider.getInstance().getMovies();
         Container movieContainer = new ListContainer<Movie>(Movie.class, movies);
         movieSelect.setContainerDataSource(movieContainer);
     }
@@ -164,8 +165,7 @@ public class SalesView extends VerticalLayout implements View {
         movieSelect.removeItem(movie);
         movieSelect.setValue(null);
 
-        Collection<MovieRevenue> dailyRevenue = AppUI.getDataProvider()
-                .getDailyRevenuesByMovie(movie.getId());
+        Collection<MovieRevenue> dailyRevenue = DummyDataProvider.getInstance().getDailyRevenuesByMovie(movie.getId());
 
         ListContainer<MovieRevenue> dailyRevenueContainer = new TempMovieRevenuesContainer(
                 dailyRevenue);

@@ -1,4 +1,4 @@
-package modules.global.model.install;
+package modules.global.model.install.brasil;
 
 import modules.global.model.entities.brasil.Cidade;
 //import modules.global.model.dao.PaisDao;

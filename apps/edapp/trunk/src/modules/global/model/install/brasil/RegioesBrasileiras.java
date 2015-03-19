@@ -1,4 +1,4 @@
-package modules.global.model.install;
+package modules.global.model.install.brasil;
 
 import org.futurepages.core.persistence.Dao;
 import modules.global.model.entities.brasil.Regiao;

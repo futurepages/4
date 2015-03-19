@@ -1,5 +1,10 @@
 package modules.global.model.install;
 
+import modules.global.model.install.brasil.CidadesBrasileiras;
+import modules.global.model.install.brasil.CidadesEstrangeiras;
+import modules.global.model.install.brasil.EstadosBrasileiros;
+import modules.global.model.install.brasil.Paises;
+import modules.global.model.install.brasil.RegioesBrasileiras;
 import org.futurepages.core.install.Installer;
 
 public class BrasilInstaller extends Installer {

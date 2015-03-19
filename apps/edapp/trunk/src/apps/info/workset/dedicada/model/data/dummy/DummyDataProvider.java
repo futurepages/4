@@ -17,11 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.UI;
 import com.vaadin.util.CurrentInstance;
-import modules.admin.model.exceptions.ExpiredPasswordException;
-import modules.admin.model.exceptions.InvalidUserOrPasswordException;
-import modules.admin.model.services.UserServices;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -52,6 +48,16 @@ import java.util.Random;
  */
 @SuppressWarnings("serial")
 public class DummyDataProvider implements DataProvider, Serializable {
+
+    private static DummyDataProvider INSTANCE;
+
+    public static DummyDataProvider getInstance() {
+        if(INSTANCE==null){
+            INSTANCE = new DummyDataProvider();
+        }
+        return INSTANCE;
+    }
+
 
     // TODO: Get API key from http://developer.rottentomatoes.com
     private static final String ROTTEN_TOMATOES_API_KEY = null;
@@ -308,6 +314,9 @@ public class DummyDataProvider implements DataProvider, Serializable {
             result.putAll(movie.getId(), new ArrayList<Transaction>());
 
             Calendar cal = Calendar.getInstance();
+            if(rand==null){
+                rand = new Random();
+            }
             int daysSubtractor = rand.nextInt(150) + 30;
             cal.add(Calendar.DAY_OF_YEAR, -daysSubtractor);
 
@@ -337,8 +346,7 @@ public class DummyDataProvider implements DataProvider, Serializable {
                     transaction.setCity(cities.iterator().next());
 
                     // Theater
-                    String theater = theaters
-                            .get((int) (rand.nextDouble() * (theaters.size() - 1)));
+                    String theater = theaters.get((int) (rand.nextDouble() * (theaters.size() - 1)));
                     transaction.setTheater(theater);
 
                     // Room

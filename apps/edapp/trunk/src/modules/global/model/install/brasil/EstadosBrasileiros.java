@@ -1,4 +1,4 @@
-package modules.global.model.install;
+package modules.global.model.install.brasil;
 
 import java.util.List;
 import modules.global.model.entities.brasil.Cidade;

@@ -15,7 +15,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.cookie.Cookies;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.locale.Txt;
 
@@ -33,7 +33,7 @@ public class SimpleLoginView extends VerticalLayout {
         addComponent(loginForm);
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
         signin.addClickListener(event ->
-            Eventizer.post(new Events.UserLoginRequested(accesskey.getValue(), password.getValue(), remember.getValue()))
+            Eventizer.post(new NativeEvents.UserLoginRequested(accesskey.getValue(), password.getValue(), remember.getValue()))
         );
   }
 
@@ -82,7 +82,7 @@ public class SimpleLoginView extends VerticalLayout {
         signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
         signin.setClickShortcut(KeyCode.ENTER);
 
-        String cookieValue = Cookies.get(Events.UserLoginRequested.LOGIN_KEY);
+        String cookieValue = Cookies.get(NativeEvents.UserLoginRequested.LOGIN_KEY);
         if (cookieValue!=null) {
             accesskey.setValue(cookieValue);
             password.focus();
@@ -96,7 +96,7 @@ public class SimpleLoginView extends VerticalLayout {
     }
 
     private Component buildRemember() {
-        String cookieValue = Cookies.get(Events.UserLoginRequested.REMEMBER_KEY);
+        String cookieValue = Cookies.get(NativeEvents.UserLoginRequested.REMEMBER_KEY);
         if (cookieValue!=null) {
             remember.setValue(Boolean.valueOf(cookieValue));
             return remember;

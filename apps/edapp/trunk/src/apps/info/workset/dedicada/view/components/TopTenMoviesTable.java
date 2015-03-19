@@ -1,6 +1,7 @@
 package apps.info.workset.dedicada.view.components;
 
 import apps.info.workset.dedicada.AppUI;
+import apps.info.workset.dedicada.model.data.dummy.DummyDataProvider;
 import apps.info.workset.dedicada.model.entities.MovieRevenue;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
@@ -46,7 +47,7 @@ public final class TopTenMoviesTable extends Table {
         setSizeFull();
 
         List<MovieRevenue> movieRevenues = new ArrayList<MovieRevenue>(
-                AppUI.getDataProvider().getTotalMovieRevenues());
+                DummyDataProvider.getInstance().getTotalMovieRevenues());
         Collections.sort(movieRevenues, new Comparator<MovieRevenue>() {
             @Override
             public int compare(final MovieRevenue o1, final MovieRevenue o2) {

@@ -1,6 +1,6 @@
 package apps.info.workset.dedicada.view.pages.schedule;
 
-import apps.info.workset.dedicada.AppUI;
+import apps.info.workset.dedicada.model.data.dummy.DummyDataProvider;
 import apps.info.workset.dedicada.model.entities.Movie;
 import apps.info.workset.dedicada.model.entities.Transaction;
 import apps.info.workset.dedicada.view.components.MovieDetailsWindow;
@@ -37,7 +37,7 @@ import com.vaadin.ui.components.calendar.handler.BasicEventMoveHandler;
 import com.vaadin.ui.components.calendar.handler.BasicEventResizeHandler;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.event.Eventizer;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,7 +81,7 @@ public final class ScheduleView extends CssLayout implements View {
     private void injectMovieCoverStyles() {
         // Add all movie cover images as classes to CSSInject
         String styles = "";
-        for (Movie m : AppUI.getDataProvider().getMovies()) {
+        for (Movie m : DummyDataProvider.getInstance().getMovies()) {
             WebBrowser webBrowser = Page.getCurrent().getWebBrowser();
 
             String bg = "url(VAADIN/themes/" + UI.getCurrent().getTheme()+ "/img/event-title-bg.png), url(" + m.getThumbUrl() + ")";
@@ -170,7 +170,7 @@ public final class ScheduleView extends CssLayout implements View {
         catalog.setCaption("Catalog");
         catalog.addStyleName("catalog");
 
-        for (final Movie movie : AppUI.getDataProvider().getMovies()) {
+        for (final Movie movie : DummyDataProvider.getInstance().getMovies()) {
             VerticalLayout frame = new VerticalLayout();
             frame.addStyleName("frame");
             frame.setWidthUndefined();
@@ -249,7 +249,7 @@ public final class ScheduleView extends CssLayout implements View {
     }
 
     @Subscribe
-    public void browserWindowResized(final Events.BrowserResize event) {
+    public void browserWindowResized(final NativeEvents.BrowserResize event) {
         if (Page.getCurrent().getBrowserWindowWidth() < 800) {
             calendar.setEndDate(calendar.getStartDate());
         }
@@ -266,12 +266,11 @@ public final class ScheduleView extends CssLayout implements View {
                 final Date endDate) {
             // Transactions are dynamically fetched from the backend service
             // when needed.
-            Collection<Transaction> transactions = AppUI
-                    .getDataProvider().getTransactionsBetween(startDate,
+            Collection<Transaction> transactions = DummyDataProvider.getInstance().getTransactionsBetween(startDate,
                             endDate);
             List<CalendarEvent> result = new ArrayList<CalendarEvent>();
             for (Transaction transaction : transactions) {
-                Movie movie = AppUI.getDataProvider().getMovie(transaction.getMovieId());
+                Movie movie = DummyDataProvider.getInstance().getMovie(transaction.getMovieId());
                 Date end = new Date(transaction.getTime().getTime() + movie.getDuration() * 60 * 1000);
                 result.add(new MovieEvent(transaction.getTime(), end, movie));
             }

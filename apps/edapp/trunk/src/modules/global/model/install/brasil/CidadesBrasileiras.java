@@ -1,4 +1,4 @@
-package modules.global.model.install;
+package modules.global.model.install.brasil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

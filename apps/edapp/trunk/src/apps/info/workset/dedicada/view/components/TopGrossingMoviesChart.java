@@ -1,7 +1,7 @@
 package apps.info.workset.dedicada.view.components;
 
-import apps.info.workset.dedicada.AppUI;
 import apps.info.workset.dedicada.model.data.dummy.DummyDataGenerator;
+import apps.info.workset.dedicada.model.data.dummy.DummyDataProvider;
 import apps.info.workset.dedicada.model.entities.Movie;
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.ChartType;
@@ -26,8 +26,7 @@ public class TopGrossingMoviesChart extends Chart {
         getConfiguration().getyAxis().setTitle("");
         setSizeFull();
 
-        List<Movie> movies = new ArrayList<Movie>(AppUI.getDataProvider()
-                .getMovies());
+        List<Movie> movies = new ArrayList<Movie>(DummyDataProvider.getInstance().getMovies());
 
         List<Series> series = new ArrayList<Series>();
         for (int i = 0; i < 6; i++) {

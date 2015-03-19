@@ -1,8 +1,8 @@
 package apps.info.workset.dedicada.view.pages.dashboard;
 
-import apps.info.workset.dedicada.AppMenuItems;
-import apps.info.workset.dedicada.AppUI;
+import apps.info.workset.dedicada.control.Menu;
 import apps.info.workset.dedicada.model.data.dummy.DummyDataGenerator;
+import apps.info.workset.dedicada.model.data.dummy.DummyDataProvider;
 import apps.info.workset.dedicada.model.entities.EDNotification;
 import apps.info.workset.dedicada.view.components.SparklineChart;
 import apps.info.workset.dedicada.view.components.TopGrossingMoviesChart;
@@ -32,7 +32,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.event.Eventizer;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -72,7 +72,7 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
         // All the open sub-windows should be closed whenever the root layout
         // gets clicked.
         root.addLayoutClickListener(event -> {
-            Eventizer.post(new Events.CloseOpenWindows());
+            Eventizer.post(new NativeEvents.CloseOpenWindows());
         });
     }
 
@@ -260,8 +260,8 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
 
-        Collection<EDNotification> notifications = AppUI.getDataProvider().getNotifications();
-        Eventizer.post(new Events.NotifyViewItem(AppMenuItems.HOME));
+        Collection<EDNotification> notifications = DummyDataProvider.getInstance().getNotifications();
+        Eventizer.post(new NativeEvents.NotifyViewItem(Menu.HOME));
 
         for (EDNotification notification : notifications) {
             VerticalLayout notificationLayout = new VerticalLayout();
@@ -359,11 +359,11 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
         }
 
         @Subscribe
-        public void updateNotificationsCount(final Events.NotifyViewItem event) {
+        public void updateNotificationsCount(final NativeEvents.NotifyViewItem event) {
             if(event!=null){
                 setUnreadCount(event.getCount());
             }else{
-                setUnreadCount(AppMenuItems.HOME.getCountNotifications());
+                setUnreadCount(Menu.HOME.getCountNotifications());
             }
         }
 

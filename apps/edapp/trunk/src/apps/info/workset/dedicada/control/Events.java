@@ -1,11 +1,11 @@
-package apps.info.workset.dedicada;
+package apps.info.workset.dedicada.control;
 
 import apps.info.workset.dedicada.model.entities.Transaction;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 
 import java.util.Collection;
 
-public abstract class AppEvents extends Events {
+public abstract class Events extends NativeEvents {
 
     public static final class TransactionReportEvent {
         private final Collection<Transaction> transactions;

@@ -6,7 +6,7 @@ import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.GenericDao;
 import org.futurepages.core.view.ViewItem;
 
-public abstract class Events {
+public abstract class NativeEvents {
 
     public static final class UserLoginRequested {
         public final static String REMEMBER_KEY = UserLoginRequested.class.getSimpleName()+"_remember";

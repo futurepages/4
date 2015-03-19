@@ -1,5 +1,6 @@
-package apps.info.workset.dedicada;
+package apps.info.workset.dedicada.control;
 
+import apps.info.workset.dedicada.model.data.dummy.DummyDataProvider;
 import apps.info.workset.dedicada.view.pages.dashboard.HomeView;
 import apps.info.workset.dedicada.view.pages.reports.ReportsView;
 import apps.info.workset.dedicada.view.pages.sales.SalesView;
@@ -11,12 +12,12 @@ import com.vaadin.server.Resource;
 import org.futurepages.core.view.ViewItem;
 import org.futurepages.core.view.ViewItemMenu;
 
-public enum AppMenuItems implements ViewItemMenu {
+public enum Menu implements ViewItemMenu {
 
 	HOME        ("home",         HomeView.class,         FontAwesome.HOME,        true, true){
 		@Override
 		public int getCountNotifications() {
-			return AppUI.getDataProvider().getUnreadNotificationsCount();
+			return DummyDataProvider.getInstance().getUnreadNotificationsCount();
 		}
 	},
 
@@ -32,10 +33,10 @@ public enum AppMenuItems implements ViewItemMenu {
 	boolean stateful; //if true, the view will be cached.
 	boolean notifier; //if true, the item menu has a notify counter over it.
 
-	AppMenuItems(String viewName, Class<? extends View> viewClass, Resource icon, boolean stateful) {
+	Menu(String viewName, Class<? extends View> viewClass, Resource icon, boolean stateful) {
 		this(viewName, viewClass, icon, stateful, false);
 	}
-	AppMenuItems(String viewName, Class<? extends View> viewClass, Resource icon, boolean stateful, boolean notifier) {
+	Menu(String viewName, Class<? extends View> viewClass, Resource icon, boolean stateful, boolean notifier) {
 		this.viewName = viewName;
 		this.viewClass = viewClass;
 		this.icon = icon;

@@ -15,7 +15,7 @@ import modules.admin.model.entities.User;
 import org.futurepages.apps.simple.SimpleWindow;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.view.ViewMaker;
 import org.futurepages.formatters.brazil.DateTimeFormatter;
@@ -28,7 +28,7 @@ public class UserWindow extends SimpleWindow {
 
         setDimensionsPercent(50,80);
 
-        (new ViewMaker(this, user)).updateForm((updatedUser) -> Eventizer.post(new Events.LoggedUserChanged((DefaultUser) updatedUser)));
+        (new ViewMaker(this, user)).updateForm((updatedUser) -> Eventizer.post(new NativeEvents.LoggedUserChanged((DefaultUser) updatedUser)));
 
         if(user.hasProfile()){
             addTab(buildProfileTab(user));

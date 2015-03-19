@@ -30,6 +30,7 @@ public class AdminInstaller extends Installer implements AdminConstants {
 
 		AdminRolesEnum.install();
 		AdminProfilesEnum.install();
+		Dao.getInstance().flush();
 
 		//Criação do usuario 'super'
         User userAdmin = new User();
@@ -56,6 +57,8 @@ public class AdminInstaller extends Installer implements AdminConstants {
     }
 
 	public static void main(String[] args) {
-		System.out.println(Txt.get("$.module.smallTitle"));
+        Dao.getInstance().beginTransaction();
+		new AdminInstaller();
+        Dao.getInstance().commitTransaction();
 	}
 }

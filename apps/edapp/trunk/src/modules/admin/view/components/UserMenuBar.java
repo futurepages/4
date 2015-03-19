@@ -9,7 +9,7 @@ import modules.admin.model.entities.User;
 import modules.admin.view.UserWindow;
 import org.futurepages.apps.simple.SimpleUI;
 import org.futurepages.core.event.Eventizer;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.locale.Txt;
 
 public class UserMenuBar extends CustomComponent {
@@ -49,11 +49,11 @@ public class UserMenuBar extends CustomComponent {
 		settingsItem.addItem(Txt.get("admin.user.log_accesses") , selectedItem -> UserWindow.open(user, logAccessIdx));
 
 		settingsItem.addSeparator();
-		settingsItem.addItem(Txt.get("menu.sign_out")    , FontAwesome.POWER_OFF,selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
+		settingsItem.addItem(Txt.get("menu.sign_out")    , FontAwesome.POWER_OFF,selectedItem -> Eventizer.post(new NativeEvents.UserLoggedOut()));
 	}
 
 	@Subscribe
-	public void updateUserName(final Events.LoggedUserChanged event) {
+	public void updateUserName(final NativeEvents.LoggedUserChanged event) {
 		buldContextMenu((User) event.getLoggedUser());
 	}
 }

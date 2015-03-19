@@ -10,7 +10,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.event.Eventizer;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.view.SimpleView;
 
 @SuppressWarnings("serial")
@@ -39,7 +39,7 @@ public abstract class SimpleWindow extends Window implements SimpleView {
 	}
 
 	public void open(){
-		Eventizer.post(new Events.CloseOpenWindows());
+		Eventizer.post(new NativeEvents.CloseOpenWindows());
         UI.getCurrent().addWindow(this);
         this.focus();
 	}

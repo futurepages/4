@@ -19,7 +19,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.event.Eventizer;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -165,7 +165,7 @@ public final class MovieDetailsWindow extends Window {
 
     public static void open(final Movie movie, final Date startTime,
             final Date endTime) {
-        Eventizer.post(new Events.CloseOpenWindows());
+        Eventizer.post(new NativeEvents.CloseOpenWindows());
         Window w = new MovieDetailsWindow(movie, startTime, endTime);
         UI.getCurrent().addWindow(w);
         w.focus();
