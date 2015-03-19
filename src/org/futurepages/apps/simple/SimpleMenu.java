@@ -1,7 +1,6 @@
 package org.futurepages.apps.simple;
 
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.client.ui.VAbstractSplitPanel;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -12,12 +11,11 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.auth.DefaultModule;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.view.ViewItem;
 import org.futurepages.core.view.ViewItemButton;
@@ -107,16 +105,25 @@ public abstract class SimpleMenu extends CustomComponent {
             MenuBar.MenuItem settingsItem = settings.addItem("", FontAwesome.USER, null);
             settingsItem.setText(user.getLogin());
             settings.addStyleName("user-menu");
-            settingsItem.addItem(Txt.get("menu.sign_out"), FontAwesome.POWER_OFF, selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
+            settingsItem.addItem(Txt.get("menu.sign_out"), FontAwesome.POWER_OFF, selectedItem -> Eventizer.post(new NativeEvents.UserLoggedOut()));
             return settings;
         }
         return null;
     }
 
 	protected Component buildMenuItems() {
-		CssLayout menuItemsLayout = new CssLayout();
-		menuItemsLayout.addStyleName("valo-menuitems");
-		menuItemsLayout.setHeight(100.0f, Unit.PERCENTAGE);
+		CssLayout appMenu = (CssLayout) buildAppMenu();
+		Component modulesMenu = buildModulesMenu();
+		if(modulesMenu != null) {
+			appMenu.addComponent(modulesMenu);
+		}
+		return appMenu;
+	}
+
+	private Component buildAppMenu() {
+		CssLayout appMenu = new CssLayout();
+		appMenu.addStyleName("valo-menuitems");
+		appMenu.setHeight(100.0f, Unit.PERCENTAGE);
 
 		for (final ViewItem viewItem  : getHome().getViewItems()) {
 			ViewItemButton viewItemButton = new ViewItemButton(viewItem);
@@ -128,32 +135,34 @@ public abstract class SimpleMenu extends CustomComponent {
                 badges.put(viewItem, badge);
                 resultButton = buildBadgeWrapper(resultButton, badge);
             }
-            menuItemsLayout.addComponent(resultButton);
+            appMenu.addComponent(resultButton);
 		}
-
-		final MenuBar settings = new MenuBar();
-        settings.setAutoOpen(true);
-        settings.setSizeUndefined();
-		settings.addStyleName("modules-menu");
-		MenuBar.MenuItem settingsItem = settings.addItem("Módulos", FontAwesome.INBOX, null);
-
-		settingsItem.setStyleName("valo-menu-item");
-		settings.setAutoOpen(false);
-		Iterator<? extends DefaultModule> it = SimpleUI.getCurrent().getLoggedUser().getModules().iterator();
-		while(it.hasNext()){
-			DefaultModule module = it.next();
-	        settingsItem.addItem(module.getSmallTitle(), selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
-			if(it.hasNext()){
-				settingsItem.addSeparator();
-			}
-		}
-        settingsItem.addItem(Txt.get("menu.close_modules"), selectedItem -> Eventizer.post(new Events.UserLoggedOut()));
-		menuItemsLayout.addComponent(settings);
-
-		return menuItemsLayout;
+		return appMenu;
 	}
 
-    protected abstract Component customViewItemButton(ViewItemButton viewItemButton);
+	private Component buildModulesMenu() {
+		Iterator<? extends DefaultModule> it = SimpleUI.getCurrent().getLoggedUser().getModules().iterator();
+		if (it.hasNext()) {
+			final MenuBar settings = new MenuBar();
+			settings.setAutoOpen(true);
+			settings.setSizeUndefined();
+			settings.addStyleName("modules-menu");
+			MenuBar.MenuItem settingsItem = settings.addItem("Módulos", FontAwesome.INBOX, null);
+
+			settingsItem.setStyleName("valo-menu-item");
+			settings.setAutoOpen(false);
+			while (it.hasNext()) {
+				DefaultModule module = it.next();
+				settingsItem.addItem(module.getSmallTitle(), selectedItem -> Eventizer.post(new NativeEvents.UserLoggedOut()));
+			}
+			settingsItem.addSeparator();
+			settingsItem.addItem(Txt.get("menu.close_modules"), selectedItem -> Eventizer.post(new NativeEvents.UserLoggedOut()));
+			return settings;
+		}
+		return null;
+	}
+
+	protected abstract Component customViewItemButton(ViewItemButton viewItemButton);
 
 
     private Component buildToggleButton() {
@@ -173,7 +182,7 @@ public abstract class SimpleMenu extends CustomComponent {
 
 
     @Subscribe // After a successful view change the menu can be hidden in mobile view.
-	public void postViewChange(final Events.PostViewChange event) {
+	public void postViewChange(final NativeEvents.PostViewChange event) {
 		getCompositionRoot().removeStyleName(STYLE_VISIBLE);
 	}
 
@@ -184,7 +193,7 @@ public abstract class SimpleMenu extends CustomComponent {
 	}
 
 	@Subscribe
-	public void updateNotificationsCount(final Events.NotifyViewItem event) {
+	public void updateNotificationsCount(final NativeEvents.NotifyViewItem event) {
 		if(badges!=null){
 			ViewItem viewItem;
 			if(event!=null){

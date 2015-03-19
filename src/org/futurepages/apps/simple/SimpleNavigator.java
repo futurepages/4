@@ -8,7 +8,7 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.view.ViewItem;
 import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
@@ -57,9 +57,9 @@ public class SimpleNavigator extends Navigator {
                 ViewItem itemView = menu.getHome().getByName(event.getViewName());
 
                 // Appropriate events get fired after the view is changed.
-                Eventizer.post(new Events.PostViewChange(itemView));
-                Eventizer.post(new Events.BrowserResize());
-                Eventizer.post(new Events.CloseOpenWindows());
+                Eventizer.post(new NativeEvents.PostViewChange(itemView));
+                Eventizer.post(new NativeEvents.BrowserResize());
+                Eventizer.post(new NativeEvents.CloseOpenWindows());
 
                 if (gaTracker!= null) {
                     // The view change is submitted as a pageview for GA tracker

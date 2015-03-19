@@ -16,7 +16,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
-import org.futurepages.core.event.Events;
+import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.locale.LocaleManager;
 import org.futurepages.core.locale.Txt;
@@ -59,7 +59,7 @@ public abstract class SimpleUI extends UI {
         // Some views need to be aware of browser resize events so a
         // BrowserResizeEvent gets fired to the event bus on every occasion.
         initErrorHandler();
-        Page.getCurrent().addBrowserWindowResizeListener(event ->  Eventizer.post(new Events.BrowserResize()));
+        Page.getCurrent().addBrowserWindowResizeListener(event ->  Eventizer.post(new NativeEvents.BrowserResize()));
 	}
 
     private void initErrorHandler() {
@@ -161,7 +161,7 @@ public abstract class SimpleUI extends UI {
 
 
     @Subscribe
-    public void login(final Events.UserLoginRequested event) {
+    public void login(final NativeEvents.UserLoginRequested event) {
         try{
             DefaultUser user = authenticate(event.getLogin(), event.getPassword());
             if(user!=null){
@@ -184,14 +184,14 @@ public abstract class SimpleUI extends UI {
      * invalidate the current HttpSession.
      */
     @Subscribe
-    public void logout(final Events.UserLoggedOut event) {
+    public void logout(final NativeEvents.UserLoggedOut event) {
         removeUserLocally();
         VaadinSession.getCurrent().close();
         Page.getCurrent().reload();
     }
 
     @Subscribe
-    public void closeOpenWindows(final Events.CloseOpenWindows event) {
+    public void closeOpenWindows(final NativeEvents.CloseOpenWindows event) {
         for(Window window : getWindows()){
            window.close();
         }
@@ -201,7 +201,7 @@ public abstract class SimpleUI extends UI {
     }
 
 	@Subscribe
-	public void updateLoggedUser(final Events.LoggedUserChanged event) {
+	public void updateLoggedUser(final NativeEvents.LoggedUserChanged event) {
         VaadinSession.getCurrent().setAttribute(loggedUserKey(),event.getLoggedUser());
     }
 
