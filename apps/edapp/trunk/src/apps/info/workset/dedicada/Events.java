@@ -1,4 +1,4 @@
-package apps.info.workset.dedicada.control;
+package apps.info.workset.dedicada;
 
 import apps.info.workset.dedicada.model.entities.Transaction;
 import org.futurepages.core.event.NativeEvents;

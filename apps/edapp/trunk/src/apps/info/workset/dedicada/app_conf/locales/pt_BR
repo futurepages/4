@@ -4,6 +4,7 @@ yes  = Sim
 no   = Não
 change_image = Trocar Imagem
 remove_image = Remover Imagem
+modules = Módulos
 
 #ui...
 ui.internal_failure = Falha Interna

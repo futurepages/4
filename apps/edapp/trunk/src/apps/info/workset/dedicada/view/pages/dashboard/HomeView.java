@@ -1,6 +1,7 @@
 package apps.info.workset.dedicada.view.pages.dashboard;
 
-import apps.info.workset.dedicada.control.Menu;
+import apps.info.workset.dedicada.Events;
+import apps.info.workset.dedicada.Menu;
 import apps.info.workset.dedicada.model.data.dummy.DummyDataGenerator;
 import apps.info.workset.dedicada.model.data.dummy.DummyDataProvider;
 import apps.info.workset.dedicada.model.entities.EDNotification;
@@ -33,6 +34,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.NativeEvents;
+import org.futurepages.core.modules.Menus;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -234,11 +236,8 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
             }
         });
         root.addSeparator();
-        root.addItem("Close", new Command() {
-            @Override
-            public void menuSelected(final MenuItem selectedItem) {
-                Notification.show("Not implemented in this demo");
-            }
+        root.addItem("Close", selectedItem -> {
+            Notification.show("Not implemented in this demo");
         });
 
         toolbar.addComponents(caption, tools);
@@ -260,8 +259,8 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
 
-        Collection<EDNotification> notifications = DummyDataProvider.getInstance().getNotifications();
-        Eventizer.post(new NativeEvents.NotifyViewItem(Menu.HOME));
+        Collection<EDNotification> notifications = DummyDataProvider.getInstance().getNotifications(); //must be before Eventizer.post!
+        Eventizer.post(new NativeEvents.NotifyViewItem(Menus.get(this).get(Menu.HOME)));
 
         for (EDNotification notification : notifications) {
             VerticalLayout notificationLayout = new VerticalLayout();
@@ -363,7 +362,7 @@ public final class HomeView extends Panel implements View, DashboardEdit.Dashboa
             if(event!=null){
                 setUnreadCount(event.getCount());
             }else{
-                setUnreadCount(Menu.HOME.getCountNotifications());
+                setUnreadCount(Menus.get(this).get(Menu.HOME).getCountNotifications());
             }
         }
 

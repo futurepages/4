@@ -1,7 +1,7 @@
 package apps.info.workset.dedicada.view.pages.reports;
 
-import apps.info.workset.dedicada.control.Events;
-import apps.info.workset.dedicada.control.Menu;
+import apps.info.workset.dedicada.Events;
+import apps.info.workset.dedicada.Menu;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
@@ -28,6 +28,9 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.NativeEvents;
+import org.futurepages.core.modules.Menus;
+
+import static apps.info.workset.dedicada.Menu.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -132,12 +135,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
 
         Button create = new Button("Create New");
         create.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        create.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                addReport(ReportType.EMPTY, null);
-            }
-        });
+        create.addClickListener(event -> addReport(ReportType.EMPTY, null));
 
         createBox.addComponent(create);
         createBox.setComponentAlignment(create, Alignment.MIDDLE_CENTER);
@@ -163,7 +161,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
             reportEditor.addWidget(ReportEditor.PaletteItemType.TRANSACTIONS, prefillData);
         }
 
-        Eventizer.post(new NativeEvents.NotifyViewItem(Menu.REPORTS, (getComponentCount() - 1)));
+        Eventizer.post(new NativeEvents.NotifyViewItem(Menus.get(this).get(REPORTS), (getComponentCount() - 1)));
         setSelectedTab(getComponentCount() - 1);
     }
 
@@ -199,7 +197,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
         Button ok = new Button("Save", event -> {
             confirmDialog.close();
             removeComponent(tabContent);
-            Eventizer.post(new NativeEvents.NotifyViewItem(Menu.REPORTS, (getComponentCount() - 1)));
+            Eventizer.post(new NativeEvents.NotifyViewItem(Menus.get(this).get(REPORTS), (getComponentCount() - 1)));
             Notification
                     .show("The report was saved as a draft",
                             "Actually, the report was just closed and deleted forever. As this is only a demo, it doesn't persist any data.",
@@ -210,7 +208,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
         Button discard = new Button("Discard Changes", event -> {
             confirmDialog.close();
             removeComponent(tabContent);
-            Eventizer.post(new NativeEvents.NotifyViewItem(Menu.REPORTS, (getComponentCount() - 1)));
+            Eventizer.post(new NativeEvents.NotifyViewItem(Menus.get(this).get(REPORTS), (getComponentCount() - 1)));
         });
         discard.addStyleName(ValoTheme.BUTTON_DANGER);
 

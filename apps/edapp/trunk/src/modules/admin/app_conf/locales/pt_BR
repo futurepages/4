@@ -25,4 +25,5 @@ $.user.birth_city = Cidade Natal
 $.user.obs = Observações
 $.user.about = Biografia
 $.user.birth_city[prompt] = Escolha a Cidade...
+$.user.status = Situação
 # END USER ##############################################

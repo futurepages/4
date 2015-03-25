@@ -442,7 +442,7 @@ public class User implements DefaultUser, EntityForServices<UserServices> {
 	}
 
 	public void setAvatarValue(String avatarValue) {
-		if(oldAvatarValue!=null && !oldAvatarValue.equals(avatarValue)){
+		if(oldAvatarValue==null || !oldAvatarValue.equals(avatarValue)){
 			this.oldAvatarValue = this.avatarValue;
 		}
 		this.avatarValue = avatarValue;

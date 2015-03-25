@@ -17,26 +17,28 @@ import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.locale.Txt;
-import org.futurepages.core.view.ViewItem;
-import org.futurepages.core.view.ViewItemButton;
-import org.futurepages.core.view.ViewItemMenu;
+import org.futurepages.core.modules.Menus;
+import org.futurepages.core.view.items.ViewItem;
+import org.futurepages.core.view.items.ViewItemMenu;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 @SuppressWarnings({ "serial", "unchecked" })
-public abstract class SimpleMenu extends CustomComponent {
+public class SimpleMenu extends CustomComponent {
 
-  private final ViewItemMenu HOME_ITEM_MENU;
+  private ViewItemMenu HOME_ITEM_MENU = null;
 
   private static final String STYLE_VISIBLE = "valo-menu-visible";
 
   private Map<ViewItem, Label> badges = new HashMap<>();
 
-	public SimpleMenu() {
-        HOME_ITEM_MENU = viewItemMenuHome();
-
+	public SimpleMenu(SimpleUI ui) {
+		ViewItemMenu menu = Menus.get(ui);
+		if(menu!=null){
+	        HOME_ITEM_MENU = menu;
+		}
 		addStyleName("valo-menu");
 		setId("app-menu");
 		setSizeUndefined();
@@ -47,11 +49,9 @@ public abstract class SimpleMenu extends CustomComponent {
 		setCompositionRoot(buildContent());
     }
 
-    public ViewItemMenu getHome(){
+    public ViewItemMenu getItemMenu(){
         return HOME_ITEM_MENU;
     }
-
-    protected abstract ViewItemMenu viewItemMenuHome();
 
 	protected Component buildTitle() {
 		Label logo = new Label(Txt.get("menu.app_title"), ContentMode.HTML);
@@ -86,7 +86,7 @@ public abstract class SimpleMenu extends CustomComponent {
 		menuContent.addComponent(buildTitle());
 		menuContent.addComponent(buildToggleButton());
 
-        Component userMenu = userMenu();
+        Component userMenu = SimpleUI.getCurrent().userMenu();
         if(userMenu!=null){
             menuContent.addComponent(userMenu);
         }
@@ -94,22 +94,6 @@ public abstract class SimpleMenu extends CustomComponent {
 		menuContent.addComponent(buildMenuItems());
 		return menuContent;
 	}
-
-    //builds a simple user menu with userLogin and logout button.
-    protected Component userMenu(){
-		DefaultUser user = SimpleUI.getCurrent().getLoggedUser();
-        if(user!=null){
-            final MenuBar settings = new MenuBar();
-            settings.setAutoOpen(true);
-            settings.setSizeFull();
-            MenuBar.MenuItem settingsItem = settings.addItem("", FontAwesome.USER, null);
-            settingsItem.setText(user.getLogin());
-            settings.addStyleName("user-menu");
-            settingsItem.addItem(Txt.get("menu.sign_out"), FontAwesome.POWER_OFF, selectedItem -> Eventizer.post(new NativeEvents.UserLoggedOut()));
-            return settings;
-        }
-        return null;
-    }
 
 	protected Component buildMenuItems() {
 		CssLayout appMenu = (CssLayout) buildAppMenu();
@@ -125,17 +109,17 @@ public abstract class SimpleMenu extends CustomComponent {
 		appMenu.addStyleName("valo-menuitems");
 		appMenu.setHeight(100.0f, Unit.PERCENTAGE);
 
-		for (final ViewItem viewItem  : getHome().getViewItems()) {
-			ViewItemButton viewItemButton = new ViewItemButton(viewItem);
-
-            Component resultButton = customViewItemButton(viewItemButton);
-            if(viewItem.isNotifier()){
-                Label badge = new Label();
-                badge.setId("app-menu-"+viewItem.getViewName()+"-badge");
-                badges.put(viewItem, badge);
-                resultButton = buildBadgeWrapper(resultButton, badge);
-            }
-            appMenu.addComponent(resultButton);
+		if(getItemMenu()!=null){
+			for (final ViewItem viewItem  : getItemMenu().getViewItems()) {
+	            Component resultButton = viewItem.getButton();
+	            if(viewItem.isNotifier()){
+	                Label badge = new Label();
+	                badge.setId("app-menu-"+viewItem.getViewName()+"-badge");
+	                badges.put(viewItem, badge);
+	                resultButton = buildBadgeWrapper(resultButton, badge);
+	            }
+	            appMenu.addComponent(resultButton);
+			}
 		}
 		return appMenu;
 	}
@@ -147,7 +131,7 @@ public abstract class SimpleMenu extends CustomComponent {
 			settings.setAutoOpen(true);
 			settings.setSizeUndefined();
 			settings.addStyleName("modules-menu");
-			MenuBar.MenuItem settingsItem = settings.addItem("Módulos", FontAwesome.INBOX, null);
+			MenuBar.MenuItem settingsItem = settings.addItem(Txt.get("modules"), FontAwesome.INBOX, null);
 
 			settingsItem.setStyleName("valo-menu-item");
 			settings.setAutoOpen(false);
@@ -161,9 +145,6 @@ public abstract class SimpleMenu extends CustomComponent {
 		}
 		return null;
 	}
-
-	protected abstract Component customViewItemButton(ViewItemButton viewItemButton);
-
 
     private Component buildToggleButton() {
 		Button valoMenuToggleButton = new Button("Menu", event -> {
@@ -199,7 +180,7 @@ public abstract class SimpleMenu extends CustomComponent {
 			if(event!=null){
 				viewItem = event.getViewItem();
 			}else{
-				viewItem = getHome();
+				viewItem = getItemMenu().getHome();
 			}
 			Label component = badges.get(viewItem);
 			if(component!=null){
@@ -214,4 +195,17 @@ public abstract class SimpleMenu extends CustomComponent {
 			}
 		}
 	}
+
+	public static Component defaultUserMenu(DefaultUser user) {
+		final MenuBar settings = new MenuBar();
+            settings.setAutoOpen(true);
+            settings.setSizeFull();
+            MenuBar.MenuItem settingsItem = settings.addItem("", FontAwesome.USER, null);
+            settingsItem.setText(user.getLogin());
+            settings.addStyleName("user-menu");
+            settingsItem.addItem(Txt.get("menu.sign_out"), FontAwesome.POWER_OFF, selectedItem -> Eventizer.post(new NativeEvents.UserLoggedOut()));
+            return settings;
+	}
+
 }
+

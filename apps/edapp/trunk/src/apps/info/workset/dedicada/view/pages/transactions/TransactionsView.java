@@ -1,6 +1,6 @@
 package apps.info.workset.dedicada.view.pages.transactions;
 
-import apps.info.workset.dedicada.control.Events;
+import apps.info.workset.dedicada.Events;
 import apps.info.workset.dedicada.model.entities.Transaction;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Item;

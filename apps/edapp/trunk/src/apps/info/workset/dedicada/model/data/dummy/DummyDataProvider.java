@@ -472,12 +472,7 @@ public class DummyDataProvider implements DataProvider, Serializable {
 
     @Override
     public int getUnreadNotificationsCount() {
-        Predicate<EDNotification> unreadPredicate = new Predicate<EDNotification>() {
-            @Override
-            public boolean apply(EDNotification input) {
-                return !input.isRead();
-            }
-        };
+        Predicate<EDNotification> unreadPredicate = input -> !input.isRead();
         return Collections2.filter(notifications, unreadPredicate).size();
     }
 
