@@ -5,6 +5,7 @@ import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.install.InstallersManager;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.mail.MailConfig;
+import org.futurepages.core.modules.Menus;
 import org.futurepages.core.path.Paths;
 import org.futurepages.core.persistence.HibernateManager;
 import org.futurepages.core.persistence.SchemaGeneration;
@@ -53,6 +54,7 @@ public class AppListener implements ServletContextListener {
 			File[] appsAndModules = loadAppsAndModules();
 			initHibernateAndConsequences(appsAndModules);
 			initTxts(appsAndModules);
+			initMenus(appsAndModules);
 			initQuartzManager(appsAndModules);
 
 			initEmailConfigurations();
@@ -67,6 +69,10 @@ public class AppListener implements ServletContextListener {
 			log("Error trying to start context.");
 			AppLogger.getInstance().execute(ex);
 		}
+	}
+
+	private void initMenus(File[] appsAndModules) {
+		Menus.init(appsAndModules);
 	}
 
 	private void initTxts(File[] appsAndModules) throws IOException {

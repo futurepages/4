@@ -10,7 +10,7 @@ import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.event.Eventizer;
-import org.futurepages.core.view.ViewItem;
+import org.futurepages.core.view.items.ViewItem;
 import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
 
 @SuppressWarnings("serial")
@@ -24,7 +24,7 @@ public class SimpleNavigator extends Navigator {
 
     public SimpleNavigator(SimpleMenu menu, ComponentContainer container) {
         super(UI.getCurrent(), container);
-        HOME_ITEM_VIEW = menu.getHome();
+        HOME_ITEM_VIEW = menu.getItemMenu().getHome();
         this.menu = menu;
         initGATrackerIfTheCase();
         initViewChangeListener();
@@ -54,7 +54,7 @@ public class SimpleNavigator extends Navigator {
             @Override
             public void afterViewChange(final ViewChangeEvent event) {
 
-                ViewItem itemView = menu.getHome().getByName(event.getViewName());
+                ViewItem itemView = menu.getItemMenu().getByName(event.getViewName());
 
                 // Appropriate events get fired after the view is changed.
                 Eventizer.post(new NativeEvents.PostViewChange(itemView));
@@ -71,7 +71,7 @@ public class SimpleNavigator extends Navigator {
 
     protected void initViewProviders() {
         // A dedicated view provider is added for each separate view type
-        for (ViewItem viewItem : menu.viewItemMenuHome().getViewItems()) {
+        for (ViewItem viewItem : menu.getItemMenu().getViewItems()) {
             ViewProvider viewProvider = new ClassBasedViewProvider(viewItem.getViewName(), viewItem.getViewClass()) {
 
                 // This field caches an already initialized view instance if the

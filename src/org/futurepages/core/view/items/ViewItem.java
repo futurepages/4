@@ -1,7 +1,8 @@
-package org.futurepages.core.view;
+package org.futurepages.core.view.items;
 
 import com.vaadin.navigator.View;
 import com.vaadin.server.Resource;
+import com.vaadin.ui.Component;
 
 public interface ViewItem {
 
@@ -17,4 +18,6 @@ public interface ViewItem {
 	public boolean isNotifier(); //if true, the view will be cached by the navigator.
 
 	public int getCountNotifications();
+
+	public Component getButton();
 }

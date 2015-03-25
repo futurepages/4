@@ -1,4 +1,4 @@
-package org.futurepages.core.view;
+package org.futurepages.core.view.items;
 
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.ui.Button;

@@ -4,7 +4,7 @@ import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.cookie.Cookies;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.GenericDao;
-import org.futurepages.core.view.ViewItem;
+import org.futurepages.core.view.items.ViewItem;
 
 public abstract class NativeEvents {
 

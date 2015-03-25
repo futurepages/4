@@ -31,7 +31,7 @@ public class ModuleUtil {
 
 	public static String getModulePackage(File file) {
 		if(isApp(file.getAbsolutePath())){
-			return (getAppName(file.getAbsolutePath()));
+			return (The.concat(Apps.APPS_PATH,".",getAppName(file.getAbsolutePath())));
 		}else{
 			return The.concat(Apps.MODULES_PACK,".",file.getName());
 		}

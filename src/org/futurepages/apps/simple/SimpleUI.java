@@ -15,6 +15,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.auth.DefaultUser;
+import org.futurepages.core.cookie.Cookies;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.exception.AppLogger;
@@ -22,6 +23,7 @@ import org.futurepages.core.locale.LocaleManager;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.exceptions.UserException;
+import org.futurepages.util.Is;
 import org.futurepages.util.The;
 
 import java.util.Map;
@@ -29,21 +31,46 @@ import java.util.Map;
 public abstract class SimpleUI extends UI {
 
     private static final int NOTIFICATIONS_TIMEOUT_MS = 2000;
+    private static final String DEFAULT_LOGGED_USER_KEY = "loggedUser";
+    private static final String LOCAL_USER_KEY = "_luserk"; //abbreviation to local user for cookie key.
+
 
     private final Eventizer eventizer = new Eventizer();
 
-    // BEGIN methods user need to implements or can override:
-    protected abstract DefaultUser loadUserLocally();
-    protected abstract SimpleMenu appMenu();
-    protected abstract void removeUserLocally();
-    protected abstract void storeUserLocally(DefaultUser user);
+    protected abstract String getLocalUserId(DefaultUser user);
+    protected abstract DefaultUser getLocalUserById(String userLocalId);
     protected abstract DefaultUser authenticate(String login, String password);
 
-    protected String loggedUserKey() { return "loggedUser"; }
+
+    protected SimpleMenu appMenu(){
+        return new SimpleMenu(this);
+    }
+
+    protected void storeUserLocally(DefaultUser user) {
+        Cookies.set(LOCAL_USER_KEY, getLocalUserId(user));
+    }
+
+    protected void removeUserLocally() {
+        Cookies.remove(LOCAL_USER_KEY);
+    }
+
+    protected DefaultUser loadUserLocally() {
+       String loggedValue = Cookies.get(LOCAL_USER_KEY);
+        if (!Is.empty(loggedValue)) {
+            DefaultUser localUser = getLocalUserById(loggedValue);
+            if(localUser!=null){
+                Cookies.set(LOCAL_USER_KEY, loggedValue);
+                return localUser;
+            }
+        }
+        return null;
+    }
+
+
+    protected String loggedUserKey() { return DEFAULT_LOGGED_USER_KEY; }
     protected SessionInitListener sessionInitListener() { return new SimpleSessionInitListener(); }
     protected Component loginView() { return new SimpleLoginView(); }
 
-    // END methods user need to implements or can override:
 
 
     @Override
@@ -111,6 +138,14 @@ public abstract class SimpleUI extends UI {
         }
     }
 
+    //builds a simple user menu with userLogin and logout button.
+    protected Component userMenu(){
+		DefaultUser user = getLoggedUser();
+        if(user!=null){
+            SimpleMenu.defaultUserMenu(user);
+        }
+        return null;
+    }
 
 
     public void notifySuccess(String msg){
