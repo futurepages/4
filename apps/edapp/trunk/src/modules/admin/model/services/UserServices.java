@@ -320,9 +320,11 @@ public class UserServices extends EntityServices<UserDao, User> implements Admin
 				if(!oldAvatarRes.getSourceFile().exists()){
 					AppLogger.getInstance().execute(new IOException("Old avatar file " + oldAvatarRes.getSourceFile().getAbsolutePath()+" doesnt exists"));
 				}else{
-					boolean deleted = oldAvatarRes.getSourceFile().delete();
-					if (!deleted) {
-						AppLogger.getInstance().execute(new IOException("Unable to delete " + oldAvatarRes.getSourceFile().getAbsolutePath()));
+					if(!user.getOldAvatarValue().equals(user.getAvatarValue())){
+						boolean deleted = oldAvatarRes.getSourceFile().delete();
+						if (!deleted) {
+							AppLogger.getInstance().execute(new IOException("Unable to delete " + oldAvatarRes.getSourceFile().getAbsolutePath()));
+						}
 					}
 				}
 

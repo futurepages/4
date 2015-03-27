@@ -11,6 +11,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 import org.futurepages.core.auth.DefaultModule;
 import org.futurepages.core.auth.DefaultUser;
@@ -18,9 +19,11 @@ import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.modules.Menus;
+import org.futurepages.core.modules.ModuleMenu;
 import org.futurepages.core.view.items.ViewItem;
 import org.futurepages.core.view.items.ViewItemMenu;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -91,13 +94,16 @@ public class SimpleMenu extends CustomComponent {
             menuContent.addComponent(userMenu);
         }
 
-		menuContent.addComponent(buildMenuItems());
+		APP_MENU = buildMenuItems();
+		menuContent.addComponent(APP_MENU);
 		return menuContent;
 	}
 
-	protected Component buildMenuItems() {
+	private CssLayout APP_MENU = null;
+
+	protected CssLayout buildMenuItems() {
 		CssLayout appMenu = (CssLayout) buildAppMenu();
-		Component modulesMenu = buildModulesMenu();
+		Component modulesMenu = buildModulesMenu(appMenu);
 		if(modulesMenu != null) {
 			appMenu.addComponent(modulesMenu);
 		}
@@ -108,10 +114,14 @@ public class SimpleMenu extends CustomComponent {
 		CssLayout appMenu = new CssLayout();
 		appMenu.addStyleName("valo-menuitems");
 		appMenu.setHeight(100.0f, Unit.PERCENTAGE);
+		addItemsMenu(getItemMenu(), appMenu);
+		return appMenu;
+	}
 
-		if(getItemMenu()!=null){
-			for (final ViewItem viewItem  : getItemMenu().getViewItems()) {
-	            Component resultButton = viewItem.getButton();
+	private void addItemsMenu(ViewItemMenu menu, CssLayout appMenu) {
+		if(menu!=null){
+			for (final ViewItem viewItem  : menu.getViewItems()) {
+	            Component resultButton = viewItem.buildButton();
 	            if(viewItem.isNotifier()){
 	                Label badge = new Label();
 	                badge.setId("app-menu-"+viewItem.getViewName()+"-badge");
@@ -121,32 +131,63 @@ public class SimpleMenu extends CustomComponent {
 	            appMenu.addComponent(resultButton);
 			}
 		}
-		return appMenu;
 	}
 
-	private Component buildModulesMenu() {
+	Map<String, MenuBar.MenuItem> moduleMenuItems = new HashMap<>();
+
+	private Component buildModulesMenu(CssLayout appMenu) {
+		final MenuBar settings;
 		Iterator<? extends DefaultModule> it = SimpleUI.getCurrent().getLoggedUser().getModules().iterator();
 		if (it.hasNext()) {
-			final MenuBar settings = new MenuBar();
+			settings = new MenuBar();
 			settings.setAutoOpen(true);
 			settings.setSizeUndefined();
 			settings.addStyleName("modules-menu");
-			MenuBar.MenuItem settingsItem = settings.addItem(Txt.get("modules"), FontAwesome.INBOX, null);
+			MenuBar.MenuItem settingsItem = settings.addItem(" "+Txt.get("modules"), FontAwesome.FOLDER, null);
+			final MenuBar.MenuItem closeItem;
 
 			settingsItem.setStyleName("valo-menu-item");
 			settings.setAutoOpen(false);
 			while (it.hasNext()) {
 				DefaultModule module = it.next();
-				settingsItem.addItem(module.getSmallTitle(), selectedItem -> Eventizer.post(new NativeEvents.UserLoggedOut()));
+				ModuleMenu menu = Menus.get(module.getModuleId());
+				if(menu!=null){
+					MenuBar.MenuItem menuItem = settingsItem.addItem(module.getSmallTitle(), selectedItem -> {
+						if (menu.hasHome()) {
+							UI.getCurrent().getNavigator().navigateTo(menu.getHome().getViewName());
+						}else{
+							selectModuleMenu(menu, selectedItem, appMenu);
+						}
+					});
+					for(ViewItem viewItem : menu.getViewItems()){
+						moduleMenuItems.put(viewItem.getViewName(), menuItem);
+					}
+				}
 			}
-			settingsItem.addSeparator();
-			settingsItem.addItem(Txt.get("menu.close_modules"), selectedItem -> Eventizer.post(new NativeEvents.UserLoggedOut()));
+			MenuBar.MenuItem separator = settingsItem.addSeparator();
+			separator.setVisible(false);
+			closeItem = settingsItem.addItem(Txt.get("menu.close_module"),FontAwesome.TIMES , selectedCloseItem -> {
+				selectedCloseItem.setVisible(false);
+				settingsItem.getChildren().get(settingsItem.getChildren().size()-2).setVisible(false);
+				settingsItem.setText(" " + Txt.get("modules"));
+				settingsItem.setIcon(FontAwesome.FOLDER);
+			});
+			closeItem.setVisible(false);
 			return settings;
 		}
 		return null;
 	}
 
-    private Component buildToggleButton() {
+	private void selectModuleMenu(ModuleMenu menu, MenuBar.MenuItem selectedItem, CssLayout appMenu) {
+		selectedItem.getParent().setText(" " + selectedItem.getText());
+		MenuBar.MenuItem parent = selectedItem.getParent();
+		parent.setIcon(FontAwesome.FOLDER_OPEN);
+		parent.getChildren().get(parent.getChildren().size() - 1).setVisible(true);
+		parent.getChildren().get(parent.getChildren().size() - 2).setVisible(true);
+		addItemsMenu(menu, APP_MENU); //TODO evitar que ele seja criado ao navegar para um item. Ou seja criar flag que verifica se está aberto.
+	}
+
+	private Component buildToggleButton() {
 		Button valoMenuToggleButton = new Button("Menu", event -> {
 			if (getCompositionRoot().getStyleName().contains(STYLE_VISIBLE)) {
 				getCompositionRoot().removeStyleName(STYLE_VISIBLE);
@@ -207,5 +248,13 @@ public class SimpleMenu extends CustomComponent {
             return settings;
 	}
 
+	public void navigateTo(String state) {
+		if(state.contains("/")){
+			if(moduleMenuItems.get(state) != null) {
+				ModuleMenu menu =  Menus.get(state.split("/")[0]);
+				selectModuleMenu(menu,moduleMenuItems.get(state),APP_MENU);
+			}
+        }
+	}
 }
 

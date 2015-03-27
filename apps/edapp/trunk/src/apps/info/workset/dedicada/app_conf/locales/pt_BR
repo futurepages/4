@@ -23,7 +23,7 @@ uploader.file_size_not_allowed = Arquivos com mais de %dMB não são permitidos
 
 
 menu.app_title = Workset <strong>Dedicada</strong>
-menu.close_modules = Fechar Módulos
+menu.close_module = Fechar Módulo
 menu.sign_out = Sair
 
 login.caption = Workset Dedicada

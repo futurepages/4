@@ -16,6 +16,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.DragAndDropWrapper;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
+import org.futurepages.apps.simple.SimpleNavigator;
+import org.futurepages.apps.simple.SimpleUI;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.modules.ModuleMenu;
 import org.futurepages.core.view.items.ViewItem;
@@ -58,7 +60,7 @@ public class Menu extends ModuleMenu {
 			@Override
 			// Add drop target to reports button. You can drop elements from table to this link.
 			public void drop(final DragAndDropEvent event) {
-				UI.getCurrent().getNavigator().navigateTo(viewItemButton.getView().getViewName());
+				SimpleUI.getCurrent().navigateTo(viewItemButton.getView().getViewName());
 				Table table = (Table) event.getTransferable().getSourceComponent();
 				Eventizer.post(new Events.TransactionReportEvent((Collection<Transaction>) table.getValue()));
 			}
