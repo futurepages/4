@@ -21,8 +21,10 @@ import org.futurepages.core.locale.Txt;
 import org.futurepages.core.modules.Menus;
 import org.futurepages.core.modules.ModuleMenu;
 import org.futurepages.core.view.items.ViewItem;
+import org.futurepages.core.view.items.ViewItemButton;
 import org.futurepages.core.view.items.ViewItemMenu;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -118,7 +120,15 @@ public class SimpleMenu extends CustomComponent {
 		return appMenu;
 	}
 
+	private void addItemsModuleMenu(ViewItemMenu menu, CssLayout appMenu) {
+		addItemsMenu(menu, appMenu, true);
+	}
+
 	private void addItemsMenu(ViewItemMenu menu, CssLayout appMenu) {
+		addItemsMenu(menu, appMenu, false);
+	}
+
+	private void addItemsMenu(ViewItemMenu menu, CssLayout appMenu, boolean moduleMenu) {
 		if(menu!=null){
 			for (final ViewItem viewItem  : menu.getViewItems()) {
 	            Component resultButton = viewItem.buildButton();
@@ -129,11 +139,15 @@ public class SimpleMenu extends CustomComponent {
 	                resultButton = buildBadgeWrapper(resultButton, badge);
 	            }
 	            appMenu.addComponent(resultButton);
+				if(moduleMenu){
+					selectedModuleMenuButtons.add(resultButton);
+				}
 			}
 		}
 	}
 
 	Map<String, MenuBar.MenuItem> moduleMenuItems = new HashMap<>();
+	Collection<Component> selectedModuleMenuButtons = new ArrayList<>();
 
 	private Component buildModulesMenu(CssLayout appMenu) {
 		final MenuBar settings;
@@ -153,6 +167,8 @@ public class SimpleMenu extends CustomComponent {
 				ModuleMenu menu = Menus.get(module.getModuleId());
 				if(menu!=null){
 					MenuBar.MenuItem menuItem = settingsItem.addItem(module.getSmallTitle(), selectedItem -> {
+						selectedModuleMenuButtons.forEach(APP_MENU::removeComponent);
+						selectedModuleMenuButtons.clear();
 						if (menu.hasHome()) {
 							UI.getCurrent().getNavigator().navigateTo(menu.getHome().getViewName());
 						}else{
@@ -167,6 +183,11 @@ public class SimpleMenu extends CustomComponent {
 			MenuBar.MenuItem separator = settingsItem.addSeparator();
 			separator.setVisible(false);
 			closeItem = settingsItem.addItem(Txt.get("menu.close_module"),FontAwesome.TIMES , selectedCloseItem -> {
+
+				//TODO new method removeModuleMenuItems
+				selectedModuleMenuButtons.forEach(APP_MENU::removeComponent);
+				selectedModuleMenuButtons.clear();
+
 				selectedCloseItem.setVisible(false);
 				settingsItem.getChildren().get(settingsItem.getChildren().size()-2).setVisible(false);
 				settingsItem.setText(" " + Txt.get("modules"));
@@ -184,7 +205,9 @@ public class SimpleMenu extends CustomComponent {
 		parent.setIcon(FontAwesome.FOLDER_OPEN);
 		parent.getChildren().get(parent.getChildren().size() - 1).setVisible(true);
 		parent.getChildren().get(parent.getChildren().size() - 2).setVisible(true);
-		addItemsMenu(menu, APP_MENU); //TODO evitar que ele seja criado ao navegar para um item. Ou seja criar flag que verifica se está aberto.
+		if(selectedModuleMenuButtons.isEmpty()){
+			addItemsModuleMenu(menu, APP_MENU); //TODO evitar que ele seja criado ao navegar para um item. Ou seja criar flag que verifica se está aberto.
+		}
 	}
 
 	private Component buildToggleButton() {
