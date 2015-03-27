@@ -55,7 +55,7 @@ abstract class AbstractViewItem implements ViewItem {
 		return 0;
 	}
 
-	public Component getButton(){
+	public Component buildButton(){
 		ViewItemButton viewItemButton = new ViewItemButton(this);
 		if(buttonCustomizer!=null){
 			return buttonCustomizer.build(viewItemButton);

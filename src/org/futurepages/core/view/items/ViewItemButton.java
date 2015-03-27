@@ -5,6 +5,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;
 import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.event.Eventizer;
+import org.futurepages.core.locale.Txt;
+import org.futurepages.util.The;
 
 public final class ViewItemButton extends Button {
 
@@ -17,7 +19,14 @@ public final class ViewItemButton extends Button {
 		this.view = view;
 		setPrimaryStyleName("valo-menu-item");
 		setIcon(view.getIcon());
-		setCaption(view.getViewName().substring(0, 1).toUpperCase() + view.getViewName().substring(1));
+		String[] txtParts = view.getViewName().split("/");
+		String txtCaption;
+		if(txtParts.length==2){
+			txtCaption = The.concat(txtParts[0],".menu.",txtParts[1]);
+		} else {
+			txtCaption = "menu."+view.getViewName();
+		}
+		setCaption(Txt.get(txtCaption));
 		addClickListener(event -> UI.getCurrent().getNavigator().navigateTo(view.getViewName()));
 
 	}

@@ -1,6 +1,7 @@
 package org.futurepages.apps.simple;
 
 import com.google.common.eventbus.Subscribe;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
@@ -42,7 +43,7 @@ public abstract class SimpleUI extends UI {
     protected abstract DefaultUser authenticate(String login, String password);
 
 
-    protected SimpleMenu appMenu(){
+    protected SimpleMenu buildMenu(){
         return new SimpleMenu(this);
     }
 
@@ -119,6 +120,8 @@ public abstract class SimpleUI extends UI {
 		});
     }
 
+    private SimpleMenu APP_MENU = null;
+
     private void renderContent() {
         DefaultUser user = (DefaultUser) VaadinSession.getCurrent().getAttribute(loggedUserKey());
         if(user==null){
@@ -129,13 +132,17 @@ public abstract class SimpleUI extends UI {
         }
 
         if (user != null) {
-            SimpleMenu APP_MENU = appMenu();
+            APP_MENU = buildMenu();
             setContent(new SimpleMainView(APP_MENU));
             removeStyleName("loginview");
         } else {
             setContent(loginView());
             addStyleName("loginview");
         }
+    }
+
+    public SimpleMenu getMenu(){
+        return APP_MENU;
     }
 
     //builds a simple user menu with userLogin and logout button.
@@ -207,7 +214,7 @@ public abstract class SimpleUI extends UI {
             }
             renderContent();
             if(user!=null){
-                getNavigator().navigateTo(getNavigator().getState());
+                restoreState();
             }
         }catch(UserException errEx){
             notifyError(errEx.getMessage());
@@ -263,6 +270,14 @@ public abstract class SimpleUI extends UI {
 			ipResult = ipRealClient;
 		}
 		return ipResult;
+    }
+
+    public void navigateTo(String viewName) {
+        getNavigator().navigateTo(viewName);
+    }
+
+    public void restoreState(){
+        navigateTo(getNavigator().getState());
     }
     //END GETs AND UTILs METHODs
 }

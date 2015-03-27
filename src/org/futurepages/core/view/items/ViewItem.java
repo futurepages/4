@@ -19,5 +19,5 @@ public interface ViewItem {
 
 	public int getCountNotifications();
 
-	public Component getButton();
+	public Component buildButton();
 }
