@@ -1,7 +1,6 @@
 package org.futurepages.apps.simple;
 
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
@@ -22,6 +21,7 @@ import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.locale.LocaleManager;
 import org.futurepages.core.locale.Txt;
+import org.futurepages.core.modules.Menus;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.util.Is;
@@ -72,7 +72,11 @@ public abstract class SimpleUI extends UI {
     protected SessionInitListener sessionInitListener() { return new SimpleSessionInitListener(); }
     protected Component loginView() { return new SimpleLoginView(); }
 
+    private Menus menus;
 
+    public Menus getMenus(){
+        return this.menus;
+    }
 
     @Override
 	protected void init(VaadinRequest request) {
@@ -130,6 +134,8 @@ public abstract class SimpleUI extends UI {
                 VaadinSession.getCurrent().setAttribute(loggedUserKey(), user);
             }
         }
+
+       menus = new Menus(getLoggedUser());
 
         if (user != null) {
             APP_MENU = buildMenu();

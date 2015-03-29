@@ -1,23 +1,33 @@
 package org.futurepages.core.modules;
 
+import com.vaadin.ui.UI;
+import org.futurepages.apps.simple.SimpleUI;
+import org.futurepages.core.auth.DefaultModule;
+import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.view.items.ViewItem;
 import org.futurepages.util.ModuleUtil;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Menus {
 
 	private HashMap<String, ModuleMenu> mapMenus = new HashMap<>();
 	private HashMap<String, ViewItem>   mapItems = new HashMap<>();
 
-	private static Menus INSTANCE;
-
-	private Menus(File[] appsAndModules){
-		for(File moduleDir : appsAndModules){
-			String menuQualifiedName = ModuleUtil.getModulePackage(moduleDir)+".Menu";
-			String moduleId = ModuleUtil.moduleId(moduleDir);
+	public Menus(DefaultUser loggedUser){
+		Map<String,String> menuMap = new HashMap<>();
+		for(String appPack : ModuleUtil.getAppsList()){
+			menuMap.put(ModuleUtil.moduleId(appPack), appPack);
+		}
+		if(loggedUser!=null){
+			for(DefaultModule module  : loggedUser.getModules()){
+				menuMap.put(module.getModuleId(), ModuleUtil.getPackageByModuleId(module.getModuleId()));
+			}
+		}
+		for(String moduleId : menuMap.keySet()){
+			String menuQualifiedName = menuMap.get(moduleId)+".Menu";
 			try {
 				Class<? extends ModuleMenu> menuClass = (Class<? extends ModuleMenu>) Class.forName(menuQualifiedName);
 				ModuleMenu moduleMenu = menuClass.newInstance();
@@ -31,20 +41,6 @@ public class Menus {
 		}
 	}
 
-	public synchronized static void init(){
-		init(ModuleUtil.listModulesAndApps());
-	}
-
-	public synchronized static void init(File[] appsAndModules){
-		if (INSTANCE == null) {
-			INSTANCE = new Menus(appsAndModules);
-		}
-	}
-
-	public static Menus getInstance(){
-		return INSTANCE;
-	}
-
 	public ViewItem getItemByName(String namePath){
 		return mapItems.get(namePath);
 	}
@@ -56,12 +52,7 @@ public class Menus {
 		}else{
 			moduleId = ModuleUtil.moduleId(caller.getClass());
 		}
-		try{
-			return getInstance().mapMenus.get(moduleId);
-		}catch(NullPointerException ex){
-			init();
-			return getInstance().mapMenus.get(moduleId);
-		}
+		return SimpleUI.getCurrent().getMenus().mapMenus.get(moduleId);
 	}
 
 	public  Collection<ModuleMenu> list(){
