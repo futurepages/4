@@ -8,9 +8,8 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.event.Eventizer;
-import org.futurepages.core.modules.Menus;
+import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.modules.ModuleMenu;
 import org.futurepages.core.view.items.ViewItem;
 import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
@@ -53,7 +52,7 @@ public class SimpleNavigator extends Navigator {
             @Override
             public void afterViewChange(final ViewChangeEvent event) {
 
-                ViewItem itemView = Menus.getInstance().getItemByName(event.getViewName());
+                ViewItem itemView = SimpleUI.getCurrent().getMenus().getItemByName(event.getViewName());
 
                 // Appropriate events get fired after the view is changed.
                 Eventizer.post(new NativeEvents.PostViewChange(itemView));
@@ -70,7 +69,7 @@ public class SimpleNavigator extends Navigator {
 
     protected void initViewProviders() {
         // A dedicated view provider is added for each separate view type
-        for (ModuleMenu menu : Menus.getInstance().list()) {
+        for (ModuleMenu menu : SimpleUI.getCurrent().getMenus().list()) {
             for (ViewItem viewItem : menu.getViewItems()) {
                 ViewProvider viewProvider = new ClassBasedViewProvider(viewItem.getViewName(), viewItem.getViewClass()) {
 

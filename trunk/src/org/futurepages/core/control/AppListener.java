@@ -54,7 +54,6 @@ public class AppListener implements ServletContextListener {
 			File[] appsAndModules = loadAppsAndModules();
 			initHibernateAndConsequences(appsAndModules);
 			initTxts(appsAndModules);
-			initMenus(appsAndModules);
 			initQuartzManager(appsAndModules);
 
 			initEmailConfigurations();
@@ -69,10 +68,6 @@ public class AppListener implements ServletContextListener {
 			log("Error trying to start context.");
 			AppLogger.getInstance().execute(ex);
 		}
-	}
-
-	private void initMenus(File[] appsAndModules) {
-		Menus.init(appsAndModules);
 	}
 
 	private void initTxts(File[] appsAndModules) throws IOException {
