@@ -15,14 +15,11 @@ import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DragAndDropWrapper;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.UI;
-import org.futurepages.apps.simple.SimpleNavigator;
 import org.futurepages.apps.simple.SimpleUI;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.modules.ModuleMenu;
 import org.futurepages.core.view.items.ViewItem;
 import org.futurepages.core.view.items.ViewItemButton;
-import org.futurepages.core.view.items.ViewItemButtonCustomizer;
 import org.futurepages.core.view.items.ViewItemNotifier;
 
 import java.util.Collection;
