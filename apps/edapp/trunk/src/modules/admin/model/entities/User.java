@@ -20,6 +20,7 @@ import org.futurepages.core.view.annotations.FieldStartGroupIcon;
 import org.futurepages.core.view.annotations.FieldUpdate;
 import org.futurepages.core.view.annotations.ForView;
 import org.futurepages.core.view.annotations.PreSelectDependency;
+import org.futurepages.core.view.types.EntityGenderType;
 import org.futurepages.core.view.types.FieldGroupType;
 import org.futurepages.util.Is;
 import org.hibernate.validator.constraints.Email;

@@ -13,23 +13,22 @@ import modules.admin.model.entities.Log;
 import modules.admin.model.entities.Module;
 import modules.admin.model.entities.Role;
 import modules.admin.model.entities.User;
-import org.futurepages.apps.simple.SimpleWindow;
+import org.futurepages.apps.simple.SimplePage;
 import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.event.Eventizer;
 import org.futurepages.core.event.NativeEvents;
 import org.futurepages.core.locale.Txt;
+import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.view.ViewMaker;
 import org.futurepages.formatters.brazil.DateTimeFormatter;
 
 import java.util.List;
 
-public class UserWindow extends SimpleWindow {
+public class UserView extends SimplePage {
 
-    private UserWindow(User user) {
-
-        setDimensionsPercent(50,80);
-
-        (new ViewMaker(this, user)).updateForm((updatedUser) -> Eventizer.post(new NativeEvents.LoggedUserChanged((DefaultUser) updatedUser)));
+    public UserView() {
+        User user = Dao.getInstance().list(User.class).get(0);
+        (new ViewMaker(this, user)).updateForm(null,(updatedUser) -> Eventizer.post(new NativeEvents.LoggedUserChanged((DefaultUser) updatedUser)));
 
         if(user.hasProfile()){
             addTab(buildProfileTab(user));
@@ -116,10 +115,6 @@ public class UserWindow extends SimpleWindow {
             details.addComponent(labelAccess);
         }
         return root;
-    }
-
-    public static void open(final User user, final int tabIdx) {
-        (new UserWindow(user)).openTab(tabIdx);
     }
 
     @Override

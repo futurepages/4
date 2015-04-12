@@ -35,9 +35,9 @@ public class Menus {
 				for(ViewItem viewItem : moduleMenu.getViewItems()){
 					mapItems.put(viewItem.getViewName(), viewItem);
 				}
-			} catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-				System.out.println(menuQualifiedName+" not present or not instance of ModuleMenu");
-			}
+			} catch (InstantiationException | IllegalAccessException e) {
+				System.err.println("[Menus]: "+menuQualifiedName+" not instance of ModuleMenu");
+			} catch(ClassNotFoundException ignored){}
 		}
 	}
 

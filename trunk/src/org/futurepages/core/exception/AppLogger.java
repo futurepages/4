@@ -46,19 +46,22 @@ public class AppLogger implements ExceptionLogger{
 
 		String exceptionId =  The.concat("[",logType,"] ",failNumber);
 
-        log(exceptionId, "  (", DateUtil.getInstance().viewDateTime(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+		if(logType!=ExceptionLogType.TXT_NOT_FOUND){
+	        log(exceptionId, "  (", DateUtil.getInstance().viewDateTime(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+			throwable.printStackTrace();
+		}
 
 		if(logType==ExceptionLogType.TXT_NOT_FOUND){
-			log(throwable.getMessage());
+			log("\n[",logType,"] "," (", DateUtil.getInstance().viewDateTime(new Date()), ")");
+			log("\t",throwable.getMessage());
 			for(StackTraceElement el : throwable.getStackTrace()){
 				if(!el.getClassName().equals(Txt.class.getName())){
-					log("\tat "+el);
+					log("\t\tat "+el+"\n");
 					break;
 				}
 			}
-		}else{
-			throwable.printStackTrace();
 		}
+
 		if(req!=null){
 			log("\n>[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():""));
 			log(">[state  ]  ", SimpleUI.getCurrent() != null && SimpleUI.getCurrent().getNavigator() != null ? SimpleUI.getCurrent().getNavigator().getState():"<< null >>");
@@ -107,7 +110,9 @@ public class AppLogger implements ExceptionLogger{
 				System.err.println();
 			}
 		}
-		log("\n",exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+		if(logType!=ExceptionLogType.TXT_NOT_FOUND){
+			log("\n",exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+		}
 		return failNumber;
 	}
 

@@ -40,12 +40,12 @@ public class ImageUploadField extends CustomComponent implements Property<String
 	 * Default component that uses input caption and Txt default key: remove_image
 	 */
 	public ImageUploadField(String imageValue, Resource noImageRes, Resource imageRes, String caption){
-		this(makeImageProperty(imageValue),imageRes, noImageRes,caption, Txt.get("remove_image"), Integer.parseInt(Apps.get("MAX_UPLOAD_MB_SIZE")), 300,300);
+		this(makeImageProperty(imageValue), imageRes, noImageRes, caption, Txt.get("remove_image"), Integer.parseInt(Apps.get("MAX_UPLOAD_MB_SIZE")), 300, 300);
 	}
 
 
 	public ImageUploadField(Property imageProperty, Resource noImageRes, Resource imageRes){
-		this(imageProperty,imageRes, noImageRes,Txt.get("change_image"), Txt.get("remove_image"), Integer.parseInt(Apps.get("MAX_UPLOAD_MB_SIZE")), 300,300);
+		this(imageProperty, imageRes, noImageRes, Txt.get("change_image"), Txt.get("remove_image"), Integer.parseInt(Apps.get("MAX_UPLOAD_MB_SIZE")), 300, 300);
 	}
 
 	public ImageUploadField(Property imgProperty, Resource imageRes, Resource noImageRes, String uploadButtonCaption, String removeButtonDescription, int imageSizeInMB, int outputWidth, int outputHeight){
@@ -69,7 +69,9 @@ public class ImageUploadField extends CustomComponent implements Property<String
 	        this.imageProperty.setValue(event.getReceiver().getNewFileName());
         });
 		uploader.setStartListener(() -> removeImageButton.setVisible(false));
-		uploader.setFinishListener(() -> { if (!Is.empty(this.imageProperty.getValue())) removeImageButton.setVisible(true); });
+		uploader.setFinishListener(() -> {
+			if (!Is.empty(this.imageProperty.getValue())) removeImageButton.setVisible(true);
+		});
 
 		removeImageButton.setDescription(removeButtonDescription);
 		removeImageButton.setIcon(FontAwesome.TIMES);
@@ -80,14 +82,13 @@ public class ImageUploadField extends CustomComponent implements Property<String
          }
 
         removeImageButton.addClickListener(event -> {
-		    image.setSource(noImageRes);
+	        image.setSource(noImageRes);
 	        this.imageProperty.setValue("");
 	        removeImageButton.setVisible(false);
         });
 
 		//configuring components (sizes, positions, margins, styles, etc)...
-		root.setSizeUndefined();
-        root.setSpacing(true);
+		root.setSpacing(true);
 		root.setVisible(true);
 		root.setDefaultComponentAlignment(Alignment.TOP_CENTER);
 		image.setWidth(outputWidth / 2, Unit.PIXELS);
@@ -99,8 +100,10 @@ public class ImageUploadField extends CustomComponent implements Property<String
         root.addComponent(image);
 		root.addComponent(uploader);
         root.addComponent(removeImageButton);
-
-        setCompositionRoot(root);
+		this.setWidth((outputWidth / 2), Unit.PIXELS);
+        root.setWidth(image.getWidth(), Unit.PIXELS);
+		uploader.setWidth(image.getWidth(), Unit.PIXELS);
+		setCompositionRoot(root);
 	}
 
 	public VerticalLayout getRoot() {

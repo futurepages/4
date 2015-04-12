@@ -10,9 +10,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * Parâmetros da aplicação Futurepages
@@ -21,6 +25,7 @@ import java.util.Properties;
  */
 public class Txt {
 
+	private static Set<String> absentAlreadyInformed = new HashSet();
 	private HashMap<String, HashMap<String, String>> localesMap = new HashMap<>();
 
 	private static Txt INSTANCE;
@@ -78,8 +83,11 @@ public class Txt {
 				txtKey = txtKey.replaceAll("\\[.*?\\]","");
 				str = getInstance().localesMap.get(localeId).get(txtKey);
 			}
-			if(str==null){
-				AppLogger.getInstance().execute(new TxtNotFoundException(txtKey,localeId));
+			if(str==null && !txtKey.contains("|")){
+				if(!absentAlreadyInformed.contains(txtKey)){
+					absentAlreadyInformed.add(txtKey);
+					AppLogger.getInstance().execute(new TxtNotFoundException(txtKey,localeId));
+				}
 				String label = The.lastTokenOf(txtKey,"\\.").replaceAll("_", " ");
 				return The.capitalizedWords(label);
 			}

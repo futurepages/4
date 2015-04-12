@@ -17,8 +17,10 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.RichTextArea;
@@ -120,12 +122,12 @@ public class ViewMaker extends HQLProvider{
 
 	public void updateForm(String formStyle, OnSuccessUpdateListener listener) {
 		updateFields(formStyle);
-		simpleView.addFooter(updateFooterButton(listener));
+		simpleView.addFooter(updateFooterBar(listener));
 	}
 
 	public void updateForm(String formStyle) {
 		updateFields(formStyle);
-		simpleView.addFooter(updateFooterButton(null));
+		simpleView.addFooter(updateFooterBar(null));
 	}
 
 	public BeanFieldGroup updateFields(String formStyle) {
@@ -201,6 +203,7 @@ public class ViewMaker extends HQLProvider{
 			if (!Is.empty(formStyle)) {
 				vLayout.setStyleName(formStyle);
 			}
+			hLayout.setId("cara_" + hLayout.hashCode());
 			hLayout.addComponent(vLayout);
 			hLayout.setExpandRatio(vLayout, 1);
 			mainLayout = vLayout;
@@ -219,6 +222,7 @@ public class ViewMaker extends HQLProvider{
 				if (!Is.empty(custom.floatLeft())) {
 					HorizontalLayout hLayout = new HorizontalLayout();
 			        hLayout.setWidth(100.0f, Sizeable.Unit.PERCENTAGE);
+					hLayout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
 					mainLayout.addComponent(hLayout);
 					mainLayout = hLayout;
 				}
@@ -231,10 +235,14 @@ public class ViewMaker extends HQLProvider{
 		if (label.startsWith("Txt:")) {
 			label = label.substring(4);
 			if (label.startsWith("$this.")) {
-				label = Txt.get(The.concat(moduleId, ".", entityClass.getSimpleName().toLowerCase(), ".", label.substring(6)));
+				label = Txt.get(The.concat(entityTxtPath(), ".", label.substring(6)));
 			}
 		}
 		return label;
+	}
+
+	private String entityTxtPath() {
+		return The.concat(The.concat(moduleId,".",entityClass.getSimpleName().toLowerCase()));
 	}
 
 	private Class<? extends Component> getComponent(Field field) {
@@ -248,10 +256,26 @@ public class ViewMaker extends HQLProvider{
 		return componentType;
 	}
 
-	public Layout updateFooterButton(OnSuccessUpdateListener listener){
-		EntityGenderType gender = ((ForView)entityClass.getAnnotation(ForView.class)).gender();
+	public Layout updateFooterBar(OnSuccessUpdateListener listener){
+		return updateFooterBar(String.format(Txt.get("viewmaker.entity_successfully_updated" + entityGenderSufix()), proccessEntityLabel()), listener);
+	}
 
-		return updateFooterButton(String.format(Txt.get("viewmaker.entity_successfully_updated["+gender.name().toLowerCase()+"]"), proccessEntityLabel()), listener);
+	private String entityGenderSufix = null;
+
+	private String entityGenderSufix() {
+		if(entityGenderSufix == null){
+			String genderKey = The.concat(entityTxtPath(), "|gender");
+			String gender = Txt.get(genderKey);
+			String genderSufix = "";
+			if(gender!=null){
+				if(EntityGenderType.valueOf(gender.toUpperCase()) == null){
+					throw new RuntimeException("gender must be 'male|female' for '"+genderKey+"' instead of "+gender);
+				}
+				genderSufix = The.concat("[",gender,"]");
+			}
+			entityGenderSufix = genderSufix;
+		}
+		return this.entityGenderSufix;
 	}
 
 	private String proccessEntityLabel() {
@@ -263,14 +287,18 @@ public class ViewMaker extends HQLProvider{
 		}
 	}
 
-	public Layout updateFooterButton(String successMsg, OnSuccessUpdateListener updateListener){
+	public Layout updateFooterBar(String successMsg, OnSuccessUpdateListener updateListener){
 		HorizontalLayout footer = new HorizontalLayout();
         footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
         footer.setWidth(100.0f, Sizeable.Unit.PERCENTAGE);
 
 		Button button = updateButton(successMsg, updateListener);
-        footer.addComponent(button);
-        footer.setComponentAlignment(button, Alignment.TOP_RIGHT);
+		Label label = new Label(String.format(Txt.get(The.concat("viewmaker.update_entity" + entityGenderSufix())), proccessEntityLabel()));
+        footer.addComponent(label);
+		label.setStyleName(ValoTheme.LABEL_HUGE);
+		footer.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
+		footer.addComponent(button);
+        footer.setComponentAlignment(button, Alignment.MIDDLE_RIGHT);
         return footer;
 	}
 
@@ -311,8 +339,8 @@ public class ViewMaker extends HQLProvider{
 			AbstractField viewField;
 			try {
 				FieldCustom custom = classField.getAnnotation(FieldCustom.class);
-				String defaultTxtPath = defaultTxtPath(classField);
-				String fieldLabel = (custom!=null && !Is.empty(custom.label())) ? proccessLabel(custom.label()) : Txt.get(defaultTxtPath);
+				String entityFieldTxtPath = entityFieldTxtPath(classField);
+				String fieldLabel = (custom!=null && !Is.empty(custom.label())) ? proccessLabel(custom.label()) : Txt.get(entityFieldTxtPath);
 				Class<? extends Component> componentClass = getComponent(classField);
 				if (componentClass == null) {
 					viewField = TextField.class.newInstance();
@@ -327,7 +355,7 @@ public class ViewMaker extends HQLProvider{
 							if (classField.getType() != String.class) {
 								throw new RuntimeException("Only Strings attributes could be @FieldImage");
 							}
-							component = new ImageUploadField((String) ReflectionUtil.getField(entity, classField.getName()), (Resource) ReflectionUtil.getField(entity, fi.noImage()), (Resource) ReflectionUtil.getField(entity, fi.image()),getTxtWithSufix(defaultTxtPath,"prompt"));
+							component = new ImageUploadField((String) ReflectionUtil.getField(entity, classField.getName()), (Resource) ReflectionUtil.getField(entity, fi.noImage()), (Resource) ReflectionUtil.getField(entity, fi.image()),getTxtWithSufix(entityFieldTxtPath,"prompt"));
 
 						} else if (componentClass == FileUploadField.class) {
 							//todo nao foi testado o componente ainda...
@@ -472,7 +500,9 @@ public class ViewMaker extends HQLProvider{
 				}
 			}
 
-			component.setSizeFull();
+			if(!(component instanceof CustomComponent)){
+				component.setSizeFull();
+			}
 			mainLayout.addComponent(component);
 
 			if(viewField.isEnabled() && !viewField.isReadOnly()){
@@ -493,14 +523,14 @@ public class ViewMaker extends HQLProvider{
 	}
 
 	private String getDefaultTxt(Field classField,String sufix) {
-		return getTxtWithSufix(defaultTxtPath(classField),sufix);
+		return getTxtWithSufix(entityFieldTxtPath(classField),sufix);
 	}
 
-	private String defaultTxtPath(Field classField) {
-		return The.concat(moduleId, ".", entity.getClass().getSimpleName().toLowerCase(), ".", The.camelCaseToLowerUnderscore(classField.getName()));
+	private String entityFieldTxtPath(Field classField) {
+		return The.concat(entityTxtPath(),".",The.camelCaseToLowerUnderscore(classField.getName()));
 	}
 	private String defaultTxtPath(Field classField, String sufix) {
-		return defaultTxtPath(classField)+(sufix!=null?"["+sufix+"]":"");
+		return entityFieldTxtPath(classField)+(sufix!=null?"["+sufix+"]":"");
 	}
 
 	private String getTxtWithSufix(String pathName,String sufix) {

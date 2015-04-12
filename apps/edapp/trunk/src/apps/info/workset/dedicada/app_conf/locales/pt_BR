@@ -15,6 +15,11 @@ ui.some_errors_found = Alguns erros foram encontrados
 viewmaker.form_was_not_properly_filled = O formulário não foi devidamente preenchido
 viewmaker.entity_successfully_updated = %s atualizado com sucesso
 viewmaker.entity_successfully_updated[female] = %s atualizada com sucesso
+viewmaker.create_entity = Novo %s
+viewmaker.create_entity[female] = Nova %s
+viewmaker.update_entity = Atualização de %s
+viewmaker.explore_entity = %s
+viewmaker.delete_entity = Exclusão de %s
 
 #uploader...
 uploader.file_type_not_allowed = Somente arquivos "%s" são permitidos. Você tentou enviar um arquivo do tipo "%s"

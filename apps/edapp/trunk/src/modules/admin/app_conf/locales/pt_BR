@@ -2,8 +2,13 @@ $.module.title = Administração de Usuários/Permissões
 $.module.smallTitle = Administração
 
 # USER ##################################################
+#User Generals ---
+$.user|gender = male
 $.user = Usuário
 $.user[plural] = Usuários
+$.user[create] = Novo Usuário
+$.user[update] = Atualização de Usuário
+#User fields ---
 $.user.login = Login
 $.user.info.admin_user = Usuário Administrativo
 $.user.info.limited_user = Acesso Limitado
