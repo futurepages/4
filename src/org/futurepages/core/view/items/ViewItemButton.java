@@ -26,7 +26,7 @@ public final class ViewItemButton extends Button {
 		} else {
 			txtCaption = "menu."+view.getViewName();
 		}
-		setCaption(Txt.get(txtCaption));
+ 		setCaption(Txt.get(txtCaption));
 		addClickListener(event -> UI.getCurrent().getNavigator().navigateTo(view.getViewName()));
 
 	}

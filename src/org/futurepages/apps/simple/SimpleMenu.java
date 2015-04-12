@@ -1,6 +1,7 @@
 package org.futurepages.apps.simple;
 
 import com.google.common.eventbus.Subscribe;
+import com.vaadin.client.ui.menubar.MenuItem;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -21,13 +22,15 @@ import org.futurepages.core.locale.Txt;
 import org.futurepages.core.modules.Menus;
 import org.futurepages.core.modules.ModuleMenu;
 import org.futurepages.core.view.items.ViewItem;
-import org.futurepages.core.view.items.ViewItemButton;
 import org.futurepages.core.view.items.ViewItemMenu;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({ "serial", "unchecked" })
@@ -151,7 +154,17 @@ public class SimpleMenu extends CustomComponent {
 
 	private Component buildModulesMenu(CssLayout appMenu) {
 		final MenuBar settings;
-		Iterator<? extends DefaultModule> it = SimpleUI.getCurrent().getLoggedUser().getModules().iterator();
+
+
+		Collection<? extends DefaultModule> userModules = SimpleUI.getCurrent().getLoggedUser().getModules();
+		List<DefaultModule> modules = new ArrayList<>();
+		for(DefaultModule module : userModules){
+			modules.add(module);
+		}
+
+		Collections.sort(modules, (o1, o2)  -> o1.getSmallTitle().compareTo(o2.getSmallTitle()));
+
+		Iterator<? extends DefaultModule> it = modules.iterator();
 		if (it.hasNext()) {
 			settings = new MenuBar();
 			settings.setAutoOpen(true);
@@ -188,6 +201,10 @@ public class SimpleMenu extends CustomComponent {
 				selectedModuleMenuButtons.forEach(APP_MENU::removeComponent);
 				selectedModuleMenuButtons.clear();
 
+				for(MenuBar.MenuItem item : settingsItem.getChildren()){
+					item.setEnabled(true);
+				}
+
 				selectedCloseItem.setVisible(false);
 				settingsItem.getChildren().get(settingsItem.getChildren().size()-2).setVisible(false);
 				settingsItem.setText(" " + Txt.get("modules"));
@@ -205,6 +222,12 @@ public class SimpleMenu extends CustomComponent {
 		parent.setIcon(FontAwesome.FOLDER_OPEN);
 		parent.getChildren().get(parent.getChildren().size() - 1).setVisible(true);
 		parent.getChildren().get(parent.getChildren().size() - 2).setVisible(true);
+
+		for(MenuBar.MenuItem item : parent.getChildren()){
+			item.setEnabled(true);
+		}
+		selectedItem.setEnabled(false);
+
 		if(selectedModuleMenuButtons.isEmpty()){
 			addItemsModuleMenu(menu, APP_MENU); //TODO evitar que ele seja criado ao navegar para um item. Ou seja criar flag que verifica se está aberto.
 		}
