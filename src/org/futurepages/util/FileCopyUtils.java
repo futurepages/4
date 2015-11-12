@@ -3,7 +3,7 @@ package org.futurepages.util;
 import java.io.File;
 import java.io.IOException;
 
-public class SVNUtils {
+public class FileCopyUtils {
 
 	private static String SEPARATOR = File.separator;
 
@@ -33,7 +33,7 @@ public class SVNUtils {
 				}
 			} else {
 				String nomeFile = origem.getName();
-				if (!nomeFile.equals(".svn")) {
+				if (!nomeFile.startsWith(".")) {
 					delete(deep + SEPARATOR + nomeFile, target, origem.listFiles());
 				}
 			}
@@ -47,7 +47,7 @@ public class SVNUtils {
 				copy(origem, target + SEPARATOR + deep);
 			} else {
 				String nomeFile = origem.getName();
-				if (!nomeFile.equals(".svn")) {
+				if (!nomeFile.startsWith(".")) {
 					cleanCopy(deep + SEPARATOR + nomeFile, target, origem.listFiles());
 				}
 			}
@@ -69,7 +69,7 @@ public class SVNUtils {
 
 	private static void removeDeleted(String sufixo, String source, File destino) throws IOException {
 		File origem = new File(source + SEPARATOR + sufixo);
-		if (!destino.getName().equals(".svn")) {
+		if (!destino.getName().startsWith(".")) {
 			boolean temDestino = destino.exists();
 			boolean naoTemOrigem = !origem.exists();
 			if (temDestino && naoTemOrigem) {

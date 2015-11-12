@@ -1,6 +1,5 @@
 package org.futurepages.core.services;
 
-import com.vaadin.server.Resource;
 import org.futurepages.core.persistence.EntityDao;
 import org.futurepages.core.validation.EntityValidator;
 import org.futurepages.core.validation.Validator;
@@ -11,7 +10,7 @@ import java.util.HashMap;
 public abstract class EntityServices<DAO extends EntityDao<BEAN>,BEAN extends Serializable> {
 
 
-	protected static HashMap<Class<? extends EntityServices>,EntityServices> INSTANCES = new HashMap<>();
+	protected static HashMap<Class<? extends EntityServices>,EntityServices> INSTANCES = new HashMap();
 	protected Class<EntityValidator> validatorClass;
 	protected DAO dao;
 
@@ -37,10 +36,11 @@ public abstract class EntityServices<DAO extends EntityDao<BEAN>,BEAN extends Se
 	}
 
 	public BEAN create(BEAN bean){
-		validate(validatorClass, val -> val.create(bean));
-		if(bean instanceof EntityForServices){
-			((EntityForServices)bean).prepareToCreate();
-		}
+		//TODO downgrade JDK8 --> JDK6
+//		validate(validatorClass, val -> val.create(bean));
+//		if(bean instanceof EntityForServices){
+//			((EntityForServices)bean).prepareToCreate();
+//		}
 		return dao.save(bean);
 	}
 
@@ -51,9 +51,10 @@ public abstract class EntityServices<DAO extends EntityDao<BEAN>,BEAN extends Se
 
 	public BEAN read(Serializable id){
 		BEAN bean = dao.get(id);
-		validate(validatorClass, val -> {
-				val.read(bean);
-		});
+		//TODO downgrade JDK8 --> JDK6
+//		validate(validatorClass, val -> {
+//				val.read(bean);
+//		});
 		if(bean instanceof EntityForServices){
 			((EntityForServices)bean).prepareToRead();
 		}
@@ -61,18 +62,20 @@ public abstract class EntityServices<DAO extends EntityDao<BEAN>,BEAN extends Se
 	}
 
 	public BEAN update(BEAN bean){
-		validate(validatorClass, val -> val.update(bean));
-		if(bean instanceof EntityForServices){
-			((EntityForServices)bean).prepareToUpdate();
-		}
+		//TODO downgrade JDK8 --> JDK6
+//		validate(validatorClass, val -> val.update(bean));
+//		if(bean instanceof EntityForServices){
+//			((EntityForServices)bean).prepareToUpdate();
+//		}
 		return dao.update(bean);
 	}
 
 	public BEAN delete(BEAN bean){
-		validate(validatorClass, val -> val.delete(bean));
-		if(bean instanceof EntityForServices){
-			((EntityForServices)bean).prepareToDelete();
-		}
+		//TODO downgrade JDK8 --> JDK6
+//		validate(validatorClass, val -> val.delete(bean));
+//		if(bean instanceof EntityForServices){
+//			((EntityForServices)bean).prepareToDelete();
+//		}
 		return dao.delete(bean);
 	}
 

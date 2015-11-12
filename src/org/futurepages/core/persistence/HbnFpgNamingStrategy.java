@@ -13,11 +13,11 @@ import java.util.List;
 
 public class HbnFpgNamingStrategy extends DefaultNamingStrategy {
 
-	private HashMap<String, ArrayList<String>> mapOfClasses = new HashMap<>();
+	private HashMap<String, ArrayList<String>> mapOfClasses = new HashMap();
 
 	public void putClass(Class clss){
 		if(mapOfClasses.get(clss.getSimpleName().toLowerCase())==null){
-			mapOfClasses.put(clss.getSimpleName().toLowerCase(),new ArrayList<>());
+			mapOfClasses.put(clss.getSimpleName().toLowerCase(),new ArrayList());
 		}
 		mapOfClasses.get(clss.getSimpleName().toLowerCase()).add(ModuleUtil.moduleId(clss));
 	}

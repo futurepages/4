@@ -1,21 +1,15 @@
 package org.futurepages.core.control;
 
-import com.vaadin.server.VaadinServlet;
 import org.futurepages.core.persistence.Dao;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public class AppServlet extends VaadinServlet {
-
-
-	@Override
-	protected final void servletInitialized() throws ServletException {
-		super.servletInitialized();
-	}
+public class AppServlet extends HttpServlet {
 
 
 	@Override

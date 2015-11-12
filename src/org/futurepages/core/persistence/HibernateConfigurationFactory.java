@@ -148,7 +148,7 @@ public class HibernateConfigurationFactory {
 	}
 
 	private Map<String, Configurations> generateConfigurationsMap(Map<String, Schema> schemasMap) {
-		Map<String, Configurations> configurationsMap = new HashMap<>();
+		Map<String, Configurations> configurationsMap = new HashMap();
 		for(String schemaId : schemasMap.keySet()){
 			Schema schema = schemasMap.get(schemaId);
 			insertSchemaProperties(schema);

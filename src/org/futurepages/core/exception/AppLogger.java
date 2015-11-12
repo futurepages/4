@@ -1,8 +1,6 @@
 package org.futurepages.core.exception;
 
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServletRequest;
-import org.futurepages.apps.simple.SimpleUI;
+import org.futurepages.core.control.UI;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.locale.TxtNotFoundException;
 import org.futurepages.util.DateUtil;
@@ -30,10 +28,10 @@ public class AppLogger implements ExceptionLogger{
 		return execute(throwable, null);
 	}
 
-	public String execute(Throwable throwable, VaadinRequest vaadinReq) {
+	public String execute(Throwable throwable, HttpServletRequest vaadinReq) {
 		HttpServletRequest req = null;
 		if(vaadinReq!=null){
-			req = ((VaadinServletRequest)vaadinReq).getHttpServletRequest();
+			req = (HttpServletRequest) vaadinReq;
 		}
 		ExceptionLogType logType;
 		if(throwable instanceof TxtNotFoundException){
@@ -64,13 +62,12 @@ public class AppLogger implements ExceptionLogger{
 
 		if(req!=null){
 			log("\n>[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():""));
-			log(">[state  ]  ", SimpleUI.getCurrent() != null && SimpleUI.getCurrent().getNavigator() != null ? SimpleUI.getCurrent().getNavigator().getState():"<< null >>");
 			log(">[referer]  ", req.getHeader("referer"));
 			log(">[browser]  ", req.getHeader("user-agent"));
 			log(">[proxy  ]  ", req.getHeader("Proxy-Authorization"));
 
-			if(SimpleUI.getCurrent().getLoggedUser()!=null){
-				log(">[user   ]  ", SimpleUI.getCurrent().getLoggedUser().getLogin());
+			if(UI.getCurrent().getLoggedUser()!=null){
+				log(">[user   ]  ", UI.getCurrent().getLoggedUser().getLogin());
 			}
 			log(">[method ]  ", req.getMethod());
 

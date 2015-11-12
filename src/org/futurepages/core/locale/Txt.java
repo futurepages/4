@@ -1,6 +1,5 @@
 package org.futurepages.core.locale;
 
-import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.ModuleUtil;
@@ -10,11 +9,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -26,7 +23,7 @@ import java.util.Set;
 public class Txt {
 
 	private static Set<String> absentAlreadyInformed = new HashSet();
-	private HashMap<String, HashMap<String, String>> localesMap = new HashMap<>();
+	private HashMap<String, HashMap<String, String>> localesMap = new HashMap();
 
 	private static Txt INSTANCE;
 
@@ -59,7 +56,7 @@ public class Txt {
 
 	private static String doGet(String txtKey, String localeId) {
 		if(localeId==null){
-			localeId = UI.getCurrent().getLocale().toString();
+			localeId = null; //TODO era assim ... UI.getCurrent().getLocale().toString();
 		}
 		if(txtKey.startsWith("$.")){
 			Class callerClass = null;
@@ -114,7 +111,7 @@ public class Txt {
 
 						HashMap<String,String> localesMap = this.localesMap.get(localeFile.getName());
 						if(localesMap==null){
-							localesMap = new HashMap<>();
+							localesMap = new HashMap();
 							this.localesMap.put(localeFile.getName(), localesMap );
 						}
 						String moduleId = ModuleUtil.moduleId(localeFile);

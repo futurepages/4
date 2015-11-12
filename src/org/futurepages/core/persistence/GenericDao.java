@@ -447,7 +447,7 @@ public class GenericDao extends HQLProvider {
 				return (T) alreadyOne;
 			}
 		}else{
-			alreadyDetached.put(object.getClass(),new HashMap<>());
+			alreadyDetached.put(object.getClass(),new HashMap());
 		}
 		object = get((Class<T>) object.getClass(), getIdValue(object));
 		alreadyDetached.get(object.getClass()).put(getIdValue(object),object);
@@ -528,10 +528,13 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public <T extends Serializable> T detached(T object, boolean detachCollectionElements){
-		HashMap<Class<? extends Serializable>, HashMap<Serializable, Serializable>> alreadyDetached = new HashMap<>();
+		HashMap<Class<? extends Serializable>, HashMap<Serializable, Serializable>> alreadyDetached = new HashMap();
 		T detachedObject = detachedObject(alreadyDetached, object, detachCollectionElements);
 		for(HashMap<Serializable, Serializable> map : alreadyDetached.values()){
-			map.values().forEach(this::evict);
+//			map.values().forEach(this::evict); 	//TODO downgrade JDK8 --> JDK6 and replace below...
+			for(Serializable s : map.values()){
+				evict(s);
+			}
 		}
 		return detachedObject;
 	}

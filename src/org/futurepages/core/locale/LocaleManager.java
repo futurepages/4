@@ -1,7 +1,7 @@
 package org.futurepages.core.locale;
 
-import com.vaadin.ui.UI;
 import org.futurepages.core.config.Apps;
+import org.futurepages.core.control.UI;
 import org.futurepages.exceptions.AppsPropertiesException;
 
 import java.util.Collection;

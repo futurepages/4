@@ -3,7 +3,7 @@ package org.futurepages.ant;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.futurepages.util.Is;
-import org.futurepages.util.SVNUtils;
+import org.futurepages.util.FileCopyUtils;
 
 import java.io.IOException;
 
@@ -38,7 +38,7 @@ public class DeployAntTask extends Task {
 					System.out.println("inferred target: "+target);
 				}
 			}
-			SVNUtils.cleanCopy(source, target);
+			FileCopyUtils.cleanCopy(source, target);
 		} catch (IOException e) {
 			System.out.println("Falha ao copiar.");
 			e.printStackTrace();

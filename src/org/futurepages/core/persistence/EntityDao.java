@@ -8,7 +8,7 @@ import java.util.HashMap;
 public abstract class EntityDao<BEAN extends Serializable> extends GenericDao {
 
 	public abstract Class<BEAN> getEntityClass();
-	protected static HashMap<Class<? extends EntityDao>,EntityDao> INSTANCES = new HashMap<>();
+	protected static HashMap<Class<? extends EntityDao>,EntityDao> INSTANCES = new HashMap();
 	protected GenericDao dao;
 
 	public static <ED extends EntityDao> ED getInstance(Class<ED> edClass){

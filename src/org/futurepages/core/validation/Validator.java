@@ -16,7 +16,7 @@ public abstract class Validator<SERVICES extends EntityServices>  {
 	protected LinkedHashMap<String, String> validationMap = new LinkedHashMap<String, String>();
 
 	/** validadores chamados por esse validador.*/
-	private ArrayList<Validator> subValidators = new ArrayList<>();
+	private ArrayList<Validator> subValidators = new ArrayList();
 
 	protected Boolean breakOnFirst;
 

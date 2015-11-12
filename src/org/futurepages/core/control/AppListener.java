@@ -5,7 +5,6 @@ import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.install.InstallersManager;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.mail.MailConfig;
-import org.futurepages.core.modules.Menus;
 import org.futurepages.core.path.Paths;
 import org.futurepages.core.persistence.HibernateManager;
 import org.futurepages.core.persistence.SchemaGeneration;
@@ -80,7 +79,7 @@ public class AppListener implements ServletContextListener {
 			String appsPaths = Apps.get("APPS");
 
 			String[] apps = appsPaths.split(",");
-			Map<String,String> appsMapping = new LinkedHashMap<>();
+			Map<String,String> appsMapping = new LinkedHashMap();
 			for(String app : apps){
 				app = app.trim();
 				String appPackage, appPath;

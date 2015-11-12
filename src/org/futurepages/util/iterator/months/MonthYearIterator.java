@@ -3,7 +3,7 @@ package org.futurepages.util.iterator.months;
 import java.util.Iterator;
 
 /**
- *  @deprecated  MonthYear is now in JDK8 it's present. Use the new API.
+ *  will be deprecated... MonthYear is now in JDK8 it's present. Use the new API.
  *
  * @author Leandro Santana
  */

@@ -165,7 +165,7 @@ public class ModuleUtil {
 
 	public static File[] listAppsRootDirs(){
 		String appsPaths = Apps.get("APPS");
-		List<String> listOfApps = new ArrayList<>();
+		List<String> listOfApps = new ArrayList();
 		String[] apps = appsPaths.split(",");
 		for(String app : apps){
 			if(!app.contains(":")){
@@ -185,7 +185,7 @@ public class ModuleUtil {
 	public static List<String> getAppsList(){
 		List<String> appsList;
 		String appsPaths = Apps.get("APPS");
-		appsList = new ArrayList<>();
+		appsList = new ArrayList();
 		String[] apps = appsPaths.split(",");
 		for (String app : apps) {
 			if (!app.contains(":")) {
