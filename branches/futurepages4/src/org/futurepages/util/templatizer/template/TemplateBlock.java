@@ -2,6 +2,7 @@ package org.futurepages.util.templatizer.template;
 
 import org.futurepages.util.templatizer.expressions.tree.Exp;
 import org.futurepages.util.templatizer.template.builtin.tags.TemplateTag;
+import org.futurepages.util.templatizer.util.ContextTemplateTag;
 
 /**
  *

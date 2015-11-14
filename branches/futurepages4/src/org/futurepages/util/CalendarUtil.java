@@ -1,9 +1,6 @@
 package org.futurepages.util;
 
 import org.futurepages.core.locale.LocaleManager;
-import org.futurepages.util.brazil.BrazilDateUtil;
-import org.futurepages.util.brazil.enums.DayOfWeek;
-import org.futurepages.util.brazil.enums.MonthEnum;
 import org.futurepages.util.iterator.months.MonthYear;
 
 import java.text.DateFormat;
@@ -272,7 +269,7 @@ public class CalendarUtil {
 		} else {
 			mask = "H'h'mm";
 		}
-		return BrazilDateUtil.format(cal, mask);
+		return format(cal, mask);
 	}
 
 	private static int getAge(Calendar start, Calendar end) {
@@ -294,6 +291,17 @@ public class CalendarUtil {
 			idade += 1;
 		}
 		return idade;
+	}
+
+	/**
+	 * @return format(calendar.getTime(), mask)
+	 */
+	public static String format(Calendar calendar, String mask) {
+		Date date = null;
+		if (calendar != null) {
+			date = calendar.getTime();
+		}
+		return DateUtil.getInstance().format(date, mask);
 	}
 
 	/**
@@ -355,7 +363,7 @@ public class CalendarUtil {
 	 * Hour and minute in 'HH:mm' mask (24h format)
 	 */
 	public static String showHourMin(Calendar calendar) {
-		return BrazilDateUtil.format(calendar, "H:mm");
+		return format(calendar, "H:mm");
 	}
 
 	public static Calendar buildCalendar(Calendar calendar) {
@@ -392,16 +400,6 @@ public class CalendarUtil {
 	}
 
 	public static class TooBigDateException extends Exception {
-	}
-
-
-	public static String literalDayOfWeek(Calendar cal) {
-		DayOfWeek day = DayOfWeek.getDayByKey(cal.get(Calendar.DAY_OF_WEEK));
-		return day != null ? day.getSmallDescription() : "";
-	}
-
-	public static String getMonthAbbr(Calendar cal) {
-		return MonthEnum.values()[cal.get(Calendar.MONTH)].getAbbr();
 	}
 
 	public static boolean isToday(Calendar cal) {
@@ -538,7 +536,7 @@ public class CalendarUtil {
 	/**
 	 * String input in MEDIUM DateFormat.
 	 */
-	public static Calendar viewDateToCalendar(String inputInMediumFormat) {
+	public static Calendar viewDateTime(String inputInMediumFormat) {
 		try {
 			DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, LocaleManager.getDefaultLocale());
 			df.setLenient(false);

@@ -111,7 +111,7 @@ public class InstallersManager extends Automations {
 //					}
 //				}
 				Dao.getInstance().commitTransaction();
-				Dao.close();
+				Dao.getInstance().close();
 
 			} catch (Exception ex) {
 				Dao.getInstance().rollBackTransaction();

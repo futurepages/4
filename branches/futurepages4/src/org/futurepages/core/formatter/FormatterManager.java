@@ -1,4 +1,4 @@
-package org.futurepages.core.formatter;
+    package org.futurepages.core.formatter;
 
 import org.futurepages.util.The;
 

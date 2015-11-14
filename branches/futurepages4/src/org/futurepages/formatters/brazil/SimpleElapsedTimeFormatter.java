@@ -2,7 +2,6 @@ package org.futurepages.formatters.brazil;
 
 import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.CalendarUtil;
-import org.futurepages.util.brazil.BrazilDateUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -26,12 +25,12 @@ public class SimpleElapsedTimeFormatter extends AbstractFormatter {
 
 	public static String formatValue(Calendar agora, Calendar momentoNoPassado){
 		if(CalendarUtil.isSameDay(agora, momentoNoPassado)){
-			return BrazilDateUtil.format(momentoNoPassado, "HH:mm");
+			return CalendarUtil.format(momentoNoPassado, "HH:mm");
 		}
 		else if(CalendarUtil.isNeighborDays(momentoNoPassado, agora)){
 				return "Ontem";
 		}else {
-			return BrazilDateUtil.format(momentoNoPassado, "MMM dd");
+			return CalendarUtil.format(momentoNoPassado, "MMM dd");
 		}
 	}
 }

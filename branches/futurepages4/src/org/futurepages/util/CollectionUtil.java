@@ -1,10 +1,10 @@
 package org.futurepages.util;
 
+import org.futurepages.exceptions.EmptyCollectionException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.futurepages.exceptions.EmptyCollectionException;
 
 public class CollectionUtil {
 

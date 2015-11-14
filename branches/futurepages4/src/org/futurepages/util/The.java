@@ -1,5 +1,6 @@
 package org.futurepages.util;
 
+import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.html.HtmlMapChars;
@@ -387,6 +388,14 @@ public class The {
 		return wIn;
 	}
 
+	public static String truncated(String in, int size) {
+		if (in == null || in.length() <= size) {
+			return in;
+		} else {
+			return in.substring(0, size);
+		}
+	}
+
 	public static String javascriptText(String value) {		
 		return HtmlRegex.javascriptText(value);
 	}
@@ -493,8 +502,27 @@ public class The {
 
 	public static String strWithoutCharsetBreakers(String str) {
 			str = SEOUtil.replaceSpecialAlphas(str);  //substitui acentuados e troca ç por c e retorna todo em in.
-			String regexPatternChars = "[\\d|A-Z|a-z|\\s|\\-|\\.]"; //regex para manter somente estes caracteres.
+			String regexPatternChars = "[\\d|A-Z|a-z|\\s|\\-|\\.|>|\\/|\\(|\\)|\\[|\\]|\\||\\}|\\{]"; //regex para manter somente estes caracteres.
 			return The.wordInRegex(str, regexPatternChars); //retira caracteres especiais
+	}
+
+	public static String serializedList(List strings, String separator){
+		StringBuilder out = new StringBuilder();
+		if (separator == null) {
+			for (Object string : strings) {
+				out.append(string);
+			}
+			return out.toString();
+		} else {
+			for (int i = 0; i < strings.size(); i++) {
+				if (i != 0) {
+					out.append(separator);
+				}
+				out.append(strings.get(i));
+			}
+			return out.toString();
+		}
+
 	}
 
 	/**
@@ -570,8 +598,12 @@ public class The {
 		return obj;
 	}
 
-	public static String replace(String text, String textToBeReplaced, String replacement) {
-		return org.apache.commons.lang.StringUtils.replace(text, textToBeReplaced, replacement);
+	public static String camelFromSnake(String str) {
+		return uncapitalizedWord(WordUtils.capitalizeFully(str, new char[]{'_'}).replaceAll("_", ""));
+	}
+
+	public static int intVal(Integer number) {
+		return number==null? 0 : number;
 	}
 
 	public static String concat(String... args) {
@@ -602,14 +634,6 @@ public class The {
 				out.append(array[i]);
 			}
 			return out.toString();
-		}
-	}
-
-	public static String truncated(String in, int size) {
-		if (in == null || in.length() <= size) {
-			return in;
-		} else {
-			return in.substring(0, size);
 		}
 	}
 

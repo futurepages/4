@@ -1,31 +1,26 @@
 package org.futurepages.util;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-import javax.swing.ImageIcon;
-
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.sun.media.jai.codec.ByteArraySeekableStream;
 import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.SeekableStream;
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.renderable.ParameterBlock;
-import javax.media.jai.JAI;
 import org.apache.commons.lang.NotImplementedException;
+
+import javax.imageio.ImageIO;
+import javax.media.jai.JAI;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.renderable.ParameterBlock;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 /**
  * Utilidades para manipulação de JPEG - Utiliza o Leitor da biblioteca JAI
@@ -193,24 +188,76 @@ public class ImageUtil {
 		SeekableStream seekableStream = new FileSeekableStream(file);
 		ParameterBlock pb = new ParameterBlock();
 		pb.add(seekableStream);
-		BufferedImage image = bufferedCutInRatioWithNoAlpha(JAI.create("stream", pb).getAsBufferedImage(), thumbW, thumbH);
+		BufferedImage image;
+		if(FileUtil.extensionFormat(file.getAbsolutePath()).equals("png") && FileUtil.extensionFormat(pathNewFile).equals("png")){
+			image = bufferedCutInRatio(JAI.create("stream", pb).getAsBufferedImage(), thumbW, thumbH);
+		} else {
+			image = bufferedCutInRatioWithNoAlpha(JAI.create("stream", pb).getAsBufferedImage(), thumbW, thumbH);
+		}
 
+		//RESIZING....
 		if (thumbW >= image.getWidth() || thumbH >= image.getHeight()) {
 			//quando imagem é menor que o resultado final, faz um esticamento para crescer até o tamanho desejado.
 			//quando imagem é menor que o resultado final, faz um resizer pobre
 			if (stretchWhenSmaller) {
-				poorResize(image, null, thumbW, thumbH, 100, pathNewFile);
+				image = poorResize(image, null, thumbW, thumbH, 100, pathNewFile);
 			} else {
-				poorResize(image, null, image.getWidth(), image.getHeight(), 100, pathNewFile);
+				image = poorResize(image, null, image.getWidth(), image.getHeight(), 100, pathNewFile);
 			}
 		} else {
 			image = GraphicsUtilities.createThumbnail(image, thumbW, thumbH);
 
+		}
+
+		if(FileUtil.extensionFormat(pathNewFile).equals("png")){
+			ImageIO.write(image, "png", new File(pathNewFile));
+		}else{
 			createJPEG(image, 100, pathNewFile);
 		}
+
+
 		image.flush();
 		image = null;
 		System.gc();
+	}
+
+	private static BufferedImage bufferedCutInRatio(BufferedImage image, int w, int h) {
+
+		int oH = image.getHeight();
+		int oW = image.getWidth();
+
+		float r = h / (float) w;
+
+		float oR = oH / (float) oW;
+		int hN, wN, xN, yN;
+		if (r < oR) {
+			wN = oW;
+			hN = Math.round(oW * r);
+			yN = Math.round((oH - hN) / 2f);
+			xN = 0;
+		} else {
+			hN = oH;
+			wN = Math.round(oH / r);
+			xN = Math.round((oW - wN) / 2f);
+			yN = 0;
+		}
+
+		BufferedImage oldImage;
+//		if (image.getTransparency() != Transparency.OPAQUE) {
+//			BufferedImage outputImage = new BufferedImage(wN, hN, BufferedImage.TYPE_INT_RGB);
+//			Graphics2D graphics2D = outputImage.createGraphics();
+//			graphics2D.setBackground(Color.WHITE);
+//			graphics2D.setComposite(AlphaComposite.SrcOver);
+//			graphics2D.fill(new Rectangle2D.Double(0, 0, wN, hN));
+//			graphics2D.drawImage(image.getSubimage(xN, yN, wN, hN), 0, 0, wN, hN, null);
+//			oldImage = image;
+//			image = outputImage;
+//			graphics2D.dispose();
+//		} else {
+			oldImage = image;
+			image = image.getSubimage(xN, yN, wN, hN);
+//		}
+		return image;
 	}
 
 	public static BufferedImage bufferedCutInRatioWithNoAlpha(BufferedImage image, int w, int h) {
@@ -377,10 +424,18 @@ public class ImageUtil {
 		}
 	}
 
-	//TODO - Refatorar no futuro. (leandro)
-	private static void poorResize(Image image, Color colorSquare, int width, int height, int quality, String pathNewFile) throws FileNotFoundException, IOException {
+	private static BufferedImage poorResize(Image image, Color colorSquare, int width, int height, int quality, String pathNewFile) throws FileNotFoundException, IOException {
 
-		BufferedImage thumbImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+
+		BufferedImage thumbImage;
+		if(FileUtil.extensionFormat(pathNewFile).equals("jpg")){
+			image = bufferedImgWithNoAlpha((BufferedImage) image);
+			thumbImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		}else{
+			thumbImage = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
+		}
+
 
 		Graphics2D graphics2D = thumbImage.createGraphics();
 
@@ -403,9 +458,7 @@ public class ImageUtil {
 			graphics2D.drawImage(image, 0, 0, width, height, null);
 			image.getGraphics().dispose();
 		}
-
-		createJPEG(thumbImage, quality, pathNewFile);
-		graphics2D.dispose();
+		return thumbImage;
 	}
 
 	private static void createJPEG(BufferedImage image, int quality, String pathNewFile) throws FileNotFoundException, IOException {
