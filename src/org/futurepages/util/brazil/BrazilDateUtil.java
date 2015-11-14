@@ -52,7 +52,7 @@ public class BrazilDateUtil {
 	public static String literalDayOfWeek(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		return CalendarUtil.literalDayOfWeek(cal);
+		return BrazilCalendarUtil.literalDayOfWeek(cal);
 	}
 
 	public static String literalDateFromDB(Object in) {
@@ -228,18 +228,7 @@ public class BrazilDateUtil {
 	 * @return format(calendar, mask.getMask())
 	 */
 	public static String format(Calendar calendar, DateFormatEnum mask) {
-		return format(calendar, mask.getMask());
-	}
-
-	/**
-	 * @return format(calendar.getTime(), mask)
-	 */
-	public static String format(Calendar calendar, String mask) {
-		Date date = null;
-		if (calendar != null) {
-			date = calendar.getTime();
-		}
-		return DateUtil.getInstance().format(date, mask);
+		return CalendarUtil.format(calendar, mask.getMask());
 	}
 
 	/**

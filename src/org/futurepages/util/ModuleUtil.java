@@ -52,6 +52,7 @@ public class ModuleUtil {
 		}
 		return classesPath;
 	}
+
 	public static String getPathByModuleId(String moduleId){
 		if(isAppId(moduleId)){
 			return The.concat(getClassesPath(),"/",Apps.APPS_PATH,"/",moduleId.replaceAll("_","/"));

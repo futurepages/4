@@ -2,6 +2,7 @@ package org.futurepages.util.brazil;
 
 import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.Is;
+import org.futurepages.util.brazil.enums.DayOfWeek;
 import org.futurepages.util.brazil.enums.MonthEnum;
 import org.futurepages.util.brazil.enums.UnitTimeEnum;
 
@@ -61,6 +62,16 @@ public class BrazilCalendarUtil extends CalendarUtil {
 		}//se nao são da mesma data retorna vazio ""
 		return "";
 	}
+
+	public static String literalDayOfWeek(Calendar cal) {
+		DayOfWeek day = DayOfWeek.getDayByKey(cal.get(Calendar.DAY_OF_WEEK));
+		return day != null ? day.getSmallDescription() : "";
+	}
+
+	public static String getMonthAbbr(Calendar cal) {
+		return MonthEnum.values()[cal.get(Calendar.MONTH)].getAbbr();
+	}
+
 
 	public static String literalRangeOfDates(Calendar calIni, Calendar calFim, Calendar hoje) {
 

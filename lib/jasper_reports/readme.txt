@@ -1,0 +1,1 @@
+iText-2.1.7.jar é necessário também, estar na raiz da lib.

@@ -1,9 +1,10 @@
 package org.futurepages.formatters.brazil;
 
+import org.futurepages.core.formatter.AbstractFormatter;
+import org.futurepages.util.CalendarUtil;
+
 import java.util.Calendar;
 import java.util.Locale;
-import org.futurepages.core.formatter.AbstractFormatter;
-import org.futurepages.util.brazil.BrazilDateUtil;
 
 /**
  *
@@ -12,7 +13,7 @@ import org.futurepages.util.brazil.BrazilDateUtil;
 public class AnniversaryFormatter  extends AbstractFormatter<Calendar> {
 
     public String format(Calendar value, Locale loc) {
-        return BrazilDateUtil.format(value, "dd/MM");
+        return CalendarUtil.format(value, "dd/MM");
     }
 
 }

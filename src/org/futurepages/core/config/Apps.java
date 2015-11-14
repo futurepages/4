@@ -206,8 +206,14 @@ public class Apps {
 		}
 	}
 
-	public boolean  connectExternalModules(){
-		return connectExternalModules;
+	public static boolean  connectExternalModules(){
+		try{
+			return getInstance().connectExternalModules;
+
+		}catch(NullPointerException e){
+			initStandAlone();
+			return getInstance().connectExternalModules;
+		}
 	}
 
 	private String regexParam(String key){

@@ -456,6 +456,14 @@ public class HQLField implements HQLable {
 		return notLikeExpression("'", value.name(), "%'");
 	}
 
+	public String isEmpty() {
+		return concat(fieldName, EQUALS, "''");
+	}
+
+	public String isNotEmpty() {
+		return concat(fieldName, DIFFERENT, "''");
+	}
+
 	public String endsWith(String value) {
 		return likeExpression("'%", value, "'");
 	}

@@ -44,6 +44,10 @@ public class Paths {
         return The.concat(getModule(req,module),"/", Apps.get("RESOURCE_PATH"));
     }
 
+    public String getTheme(HttpServletRequest req){
+        return The.concat(getTemplate(req),"/",Apps.get("THEMES_DIR_NAME"),"/",Apps.get("THEME"));
+    }
+
     public String getTemplate(HttpServletRequest req){
         return getContext(req)+"/"+ Apps.TEMPLATE_PATH;
     }
@@ -122,4 +126,12 @@ public class Paths {
 	public static String template(HttpServletRequest req, String module) {
 		return INSTANCE.getTemplate(req, module);
 	}
+
+    /**
+     * @param req Requisição
+     * @return a url completa da pasta de temas da aplicação
+     */
+    public static String theme(HttpServletRequest req){
+        return INSTANCE.getTheme(req);
+    }
 }

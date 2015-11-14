@@ -15,13 +15,4 @@ public class Dao extends HQLProvider {
 	public static GenericDao getInstance() {
 		return INSTANCE;
 	}
-
-
-	public static void open() {
-		getInstance().open();
-	}
-
-	public static void close() {
-		getInstance().close();
-	}
 }

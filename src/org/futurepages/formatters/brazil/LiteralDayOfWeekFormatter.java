@@ -1,7 +1,7 @@
 package org.futurepages.formatters.brazil;
 
 import org.futurepages.core.formatter.AbstractFormatter;
-import org.futurepages.util.CalendarUtil;
+import org.futurepages.util.brazil.BrazilCalendarUtil;
 import org.futurepages.util.brazil.BrazilDateUtil;
 
 import java.util.Calendar;
@@ -19,7 +19,7 @@ public class LiteralDayOfWeekFormatter extends AbstractFormatter {
 			return BrazilDateUtil.literalDayOfWeek((Date) date);
 
 		}else if (date instanceof Calendar) {
-			return CalendarUtil.literalDayOfWeek((Calendar) date);
+			return BrazilCalendarUtil.literalDayOfWeek((Calendar) date);
 		}
 
 		return null;

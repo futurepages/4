@@ -217,35 +217,35 @@ public class HQLProvider implements HQLable {
 		}
 	}
 	public static <T extends Serializable> HQLQuery<T> hql(String field, String expression, Class<T> entityFrom, String where) {
-		return new HQLQuery(field, expression, entityFrom, where);
+		return new HQLQuery<>(field, expression, entityFrom, where);
 	}
 
 	public static <T extends Serializable> HQLQuery<T> hql(Class<T> entityFrom) {
-		return new HQLQuery(entityFrom);
+		return new HQLQuery<>(entityFrom);
 	}
 
 	public static <T extends Serializable> HQLQuery<T>  hql(Class<T> entityFrom, String where) {
-		return new HQLQuery(entityFrom, where);
+		return new HQLQuery<>(entityFrom, where);
 	}
 
-	public static <T extends Serializable> HQLQuery hql(Class<T> entityFrom, String where, String order) {
-		return new HQLQuery(entityFrom, where, order);
+	public static <T extends Serializable> HQLQuery<T> hql(Class<T> entityFrom, String where, String order) {
+		return new HQLQuery<>(entityFrom, where, order);
 	}
 
-	public static <T extends Serializable> HQLQuery hql(String select, Class<T> entityFrom, String where) {
-		return new HQLQuery(select, entityFrom, where);
+	public static <T extends Serializable> HQLQuery<T> hql(String select, Class<T> entityFrom, String where) {
+		return new HQLQuery<>(select, entityFrom, where);
 	}
 
-	public static <T extends Serializable> HQLQuery hql(String select, Class<T> entityFrom, String where, String order) {
-		return new HQLQuery(select, entityFrom, where, order);
+	public static <T extends Serializable> HQLQuery<T> hql(String select, Class<T> entityFrom, String where, String order) {
+		return new HQLQuery<>(select, entityFrom, where, order);
 	}
 
-	public static <T extends Serializable> HQLQuery hql(String select, Class<T> entityFrom, String alias, String join, String where, String order) {
-		return new HQLQuery(select,entityFrom,alias,join,where,order);
+	public static <T extends Serializable> HQLQuery<T> hql(String select, Class<T> entityFrom, String alias, String join, String where, String order) {
+		return new HQLQuery<>(select,entityFrom,alias,join,where,order);
 	}
 
-	public static <T extends Serializable> HQLQuery hql(String select, Class<T> entityFrom, String alias, String join, String where, String group, String having, String order) {
-		return new HQLQuery(select,entityFrom,alias,join,where,group,having,order);
+	public static <T extends Serializable> HQLQuery<T> hql(String select, Class<T> entityFrom, String alias, String join, String where, String group, String having, String order) {
+		return new HQLQuery<>(select,entityFrom,alias,join,where,group,having,order);
 	}
 
 	public static String asc(String field) {
@@ -265,6 +265,11 @@ public class HQLProvider implements HQLable {
 	public static String ands(String... clauses) {
 		return connectClauses(AND, clauses);
 	}
+
+	public static String commas(String... clauses) {
+		return connectClauses(",", clauses);
+	}
+
 
 	/**
 	 * @param clauses
