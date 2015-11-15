@@ -164,7 +164,7 @@ public class ModuleUtil {
 		return null;
 	}
 
-	public static File[] listAppsRootDirs(){
+	private static File[] listAppsRootDirs(){
 		String appsPaths = Apps.get("APPS");
 		List<String> listOfApps = new ArrayList();
 		String[] apps = appsPaths.split(",");
@@ -200,7 +200,8 @@ public class ModuleUtil {
 
 	public static File[] listModulesAndApps() {
 
-		File[] apps = listAppsRootDirs();
+//		File[] apps = listAppsRootDirs();
+		File[] apps = new File[]{};
 		File[] modules = (new File(Apps.get("MODULES_CLASSES_REAL_PATH"))).listFiles();
 		modules = modules==null? new File[0] : modules;
 
