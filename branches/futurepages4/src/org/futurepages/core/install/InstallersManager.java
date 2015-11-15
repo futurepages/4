@@ -70,8 +70,8 @@ public class InstallersManager extends Automations {
 
 				//TODO rever este código... IMPLEMENTAR para o pacote 'apps'
 //				if (installMode.startsWith("script:")) {
-//					System.out.println("Installing data from script: "+Params.get("CLASSES_REAL_PATH") + "/install/" + installMode.split("script\\:")[1]+"...");
-//					Dao.executeSQLs(false,FileUtil.getStringLines(Params.get("CLASSES_REAL_PATH")+ "/install/" + installMode.split("script\\:")[1]));
+//					System.out.println("Installing data from script: "+Apps.get("CLASSES_REAL_PATH") + "/install/" + installMode.split("script\\:")[1]+"...");
+//					Dao.executeSQLs(false,FileUtil.getStringLines(Apps.get("CLASSES_REAL_PATH")+ "/install/" + installMode.split("script\\:")[1]));
 //				} else {
 				if(installMode.equals("modules") || installMode.equals("on")){
 					Map<String, List<Class<Installer>>> classes = getModulesDirectoryClasses(Installer.class, null);

@@ -7,13 +7,11 @@ import org.futurepages.menta.exceptions.InputException;
 import org.futurepages.util.Is;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Operações de action para provimento de paginação.
  * @author Danilo
  */
-@Deprecated
 public class Paginator implements Pageable {
 
 	private Output output;
@@ -25,40 +23,6 @@ public class Paginator implements Pageable {
 		super();
 		this.output = output;
 		this.input = input;
-	}
-
-	/**
-	 * Paginação de elementos
-	 *
-	 * Depreciado por ser uma má pratica de programação (mistura controle e modelo)
-	 *
-	 * @deprecated Utilize setOutputPaginationSlice (verificar em site2 e scrummer o uso)
-	 */
-	public <T extends Serializable> List<T> paginateList(int pageSize, Class<T> entityClass, String where, String order) {
-		//TODO CORRIGIR integrando ao novo jeito de fazer.
-//		List<T> list = Dao.listPage(getPageNum(), pageSize, 0, " FROM " + entityClass.getName() + (Is.empty(where) ? "" : " WHERE " + where) + " ORDER BY " + order);
-//		long totalSize = Dao.numRows(entityClass, where);
-//		double total = totalSize;
-//		int totalPages = (int) Math.ceil(total / pageSize);
-//		setOutputPaginationValues(pageSize, 0, totalSize, totalPages, getPageNum());
-//		return list;
-		return null;
-	}
-	/**
-	 * Paginação de elementos de um report
-	 *
-	 * Depreciado por ser uma má pratica de programação (mistura controle e modelo)
-	 *
-	 * @deprecated Utilize setOutputPaginationSlice (verificar em site2 e scrummer o uso)
-	 */
-	public <T extends Serializable> List<T> paginateReport(int pageSize, Class<T> entityClass, Class resultClass, String fields, String where, String group, String... order) {
-		//TODO CORRIGIR integrando ao novo jeito de fazer.
-//		List<T> list = Dao.getInstance().reportPage(getPageNum(), pageSize, 0, entityClass, resultClass, fields, where, group, order);
-//		long totalSize = Dao.getInstance().numRows(hqlentityClass, where);
-//		double total = totalSize;
-//		int totalPages = (int) Math.ceil(total / pageSize);
-//		setOutputPaginationValues(pageSize, 0, totalSize, totalPages, getPageNum());
-		return null;
 	}
 
 	public <T extends Serializable> void setOutputPaginationSlice(String listKey, PaginationSlice<T> slice) {
@@ -88,8 +52,6 @@ public class Paginator implements Pageable {
 	/**
 	 * Extrai o tamanho da página definido no input.
 	 * Se nenhum tamanho for definido, o valor retornado será o 
-	 * @param defaultPageSize
-	 * @return
 	 */
 	public int getPageSize(int defaultPageSize) {
 		int pageSize; 
@@ -138,7 +100,6 @@ public class Paginator implements Pageable {
 	/**
 	 * Offset é a quantidade de elementos que as páginas que estão sendo exibidas assincronamente
 	 * mudou desde a última vez que a página foi carregada.
-	 * @return
 	 */
 	public int getPagesOffset() {
 		int offsetPages = 0;

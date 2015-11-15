@@ -1,7 +1,7 @@
 package org.futurepages.util.templatizer.template.builtin.tags;
 
 import org.futurepages.core.formatter.AbstractFormatter;
-import org.futurepages.core.formatter.FormatterManager;
+import org.futurepages.menta.core.formatter.FormatterManager;
 import org.futurepages.util.templatizer.expressions.exceptions.BadExpression;
 import org.futurepages.util.templatizer.expressions.exceptions.ExpectedExpression;
 import org.futurepages.util.templatizer.expressions.exceptions.ExpectedOperator;

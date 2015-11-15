@@ -1,7 +1,6 @@
 package org.futurepages.menta.core.i18n;
 
-//TODO DESCOMENTAR AO TERMINAR
-//import org.futurepages.menta.core.control.AbstractApplicationManager;
+import org.futurepages.menta.core.control.AbstractApplicationManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,10 +16,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-/**
- * @author Sergio Oliveira
- */
-@Deprecated
 public class LocaleManager {
 
 	public static final String LOCALE_KEY = "locale";
@@ -50,134 +45,6 @@ public class LocaleManager {
 		setDateMask(new Locale("pt", "BR"), "dd/MM/yyyy");
 	}
 	private static final Map<String, SimpleDateFormat> simpleTimeFormatters = new HashMap<String, SimpleDateFormat>();
-
-// Comentado enquanto não é utilizado
-// Na verdade não se sabe ao certo para que servia.
-//	static {
-//
-//		startLocaleScan();
-//	}
-	
-//	private static void initThread() {
-//
-//		thread = new Thread(new Runnable() {
-//
-//			public void run() {
-//
-//				while (running) {
-//
-//					try {
-//
-//						if (!checkDirs()) {
-//							return;
-//						}
-//
-//					} catch (NullPointerException e) {
-//
-//						return;
-//
-//					} catch (Throwable e) {
-//
-//						if (running) {
-//							DefaultExceptionLogger.getInstance().execute(e);
-//						}
-//					}
-//
-//					try {
-//
-//						if (running) {
-//							Thread.sleep(SCAN_TIME);
-//						}
-//
-//					} catch (Exception e) {
-//						// will be called by stopLocaleScan...
-//					}
-//				}
-//			}
-//		});
-//
-//		thread.setDaemon(true);
-//
-//		thread.start();
-//	}
-
-//	public static void stopLocaleScan() {
-//
-//		running = false;
-//
-//		if (thread != null) {
-//
-//			thread.interrupt();
-//
-//			try {
-//
-//				thread.join();
-//
-//			} catch (Exception e) {
-//				DefaultExceptionLogger.getInstance().execute(e);
-//			}
-//
-//			thread = null;
-//		}
-//
-//	}
-
-//	public static void startLocaleScan() {
-//
-//		if (thread != null) {
-//			stopLocaleScan();
-//		}
-//
-//		running = true;
-//
-//		initThread();
-//	}
-
-//	private static void addLocales(Set<Locale> set) {
-//
-//		if (set == null || set.isEmpty()) {
-//			return;
-//		}
-//
-//		synchronized (dirLocales) {
-//
-//			dirLocales.addAll(set);
-//		}
-//
-//	}
-
-//	private static boolean checkDirs() throws Throwable {
-//
-//		if (dirLocales == null) {
-//			return false;
-//		}
-//
-//		synchronized (dirLocales) {
-//
-//			dirLocales.clear();
-//		}
-//
-//		String master = getMaster();
-//
-//		int index = master.lastIndexOf("/");
-//
-//		if (index > 0) {
-//
-//			master = master.substring(0, index);
-//
-//			addLocales(scanLocales(master));
-//
-//		} else {
-//
-//			addLocales(scanLocales(""));
-//		}
-//
-//		addLocales(scanLocales(getDir()));
-//
-////		addLocales(scanLocales(ListManager.LIST_DIR.replace('\\', '/'))); // ListManager removido, porisso foi comentado.
-//
-//		return true;
-//	}
 
 	private static Locale checkLocale(Locale loc) {
 
@@ -230,12 +97,11 @@ public class LocaleManager {
 
 		StringBuilder sb = new StringBuilder(128);
 
-//TODO DESCOMENTAR AO TERMINAR
-//		if (AbstractApplicationManager.getRealPath() == null) {
-//			return null;
-//		}
-//
-//		sb.append(AbstractApplicationManager.getRealPath());
+		if (AbstractApplicationManager.getRealPath() == null) {
+			return null;
+		}
+
+		sb.append(AbstractApplicationManager.getRealPath());
 
 		if (dir.startsWith("/") && dir.length() > 1) {
 

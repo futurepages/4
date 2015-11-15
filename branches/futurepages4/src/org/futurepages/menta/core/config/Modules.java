@@ -10,7 +10,7 @@ import java.io.File;
 /**
  * Registrar os Módulos da aplicação
  */
-@Deprecated //TODO ver como foi feito no jeito novo fora do menta e integrar.
+//TODO ver como foi feito no jeito novo fora do menta e integrar.
 public class Modules {
     /**
      * Registra o Gerenciador dos Módulos (ModuleManager) não comentado
@@ -51,7 +51,7 @@ public class Modules {
 
 
     public static boolean hasOwnSchema(File module) {
-        File hiberPropertiesFile = new File(The.concat(module.getAbsolutePath(), "/", Apps.MODULE_CONFIG_DIR_NAME, "/", Apps.BASE_HIBERNATE_PROPERTIES_FILE));
+        File hiberPropertiesFile = new File(The.concat(module.getAbsolutePath(), "/", Apps.CONFIGURATION_DIR_NAME, "/", Apps.BASE_HIBERNATE_PROPERTIES_FILE));
 		return hiberPropertiesFile.exists();
     }
 }

@@ -1,5 +1,7 @@
 package org.futurepages.exceptions;
 
+import org.futurepages.menta.core.action.Action;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -36,7 +38,7 @@ public class UserException extends RuntimeException {
 	public LinkedHashMap<String, String> getValidationMap() {
 		if(validationMap==null){
 			validationMap = new LinkedHashMap<String, String>();
-//			validationMap.put(Action.ERROR, this.getMessage()); // TODO rever o que pode ser visto.
+			validationMap.put(Action.ERROR, this.getMessage()); //TODO calling menta.
 		}
 		return validationMap;
 	}

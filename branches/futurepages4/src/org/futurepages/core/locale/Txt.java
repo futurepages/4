@@ -45,7 +45,7 @@ public class Txt {
 
 
 	public static String get(String txtKey) {
-		String localeId = LocaleManager.getDefaultLocale().toString();
+		String localeId = NewLocaleManager.getDefaultLocale().toString();
 		try {
 			return doGet(txtKey, localeId);
 		} catch (NullPointerException e) {
@@ -99,7 +99,7 @@ public class Txt {
 
 	private void doInit(File[] appsAndModules) throws IOException {
 		for(int i = 0; i<appsAndModules.length; i++){
-			File localesDir = new File(appsAndModules[i]+"/"+ Apps.MODULE_CONFIG_DIR_NAME+"/locales");
+			File localesDir = new File(appsAndModules[i]+"/"+ Apps.CONFIGURATION_DIR_NAME+"/locales");
 			if(localesDir.exists()){
 				File[] localeFiles = localesDir.listFiles();
 				if(localeFiles!=null){

@@ -14,7 +14,7 @@ import org.futurepages.menta.core.control.InvocationChain;
 import org.futurepages.menta.core.filter.Filter;
 import org.futurepages.menta.exceptions.FuturepagesServletException;
 import org.futurepages.menta.exceptions.PageNotFoundException;
-import org.futurepages.menta.exceptions.ServletErrorException;
+import org.futurepages.menta.exceptions.ServletUserException;
 import org.futurepages.util.EncodingUtil;
 import org.futurepages.util.The;
 import org.futurepages.util.brazil.BrazilDateUtil;
@@ -196,8 +196,8 @@ class LegacyExceptionLogger implements ExceptionLogger, Manipulable {
 			}else{
 				ex = throwable;
 			}
-			if(ex instanceof ServletErrorException){
-				throw (ServletErrorException) ex;
+			if(ex instanceof ServletUserException){
+				throw (ServletUserException) ex;
 			}
 			String protocolNumber = execute(ex,ExceptionLogType.SERVLET_500.name(),req);
 			throw new FuturepagesServletException(protocolNumber, actionType, ex);
