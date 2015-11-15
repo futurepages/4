@@ -23,6 +23,7 @@ import org.futurepages.menta.core.input.PrettyURLRequestInput;
 import org.futurepages.menta.core.output.ResponseOutput;
 import org.futurepages.menta.exceptions.PageNotFoundException;
 import org.futurepages.menta.filters.ConsequenceCallbackFilter;
+import org.futurepages.menta.filters.ExceptionFilter;
 import org.futurepages.menta.filters.GlobalFilterFreeFilter;
 import org.futurepages.util.The;
 
@@ -105,8 +106,7 @@ public class Controller extends HttpServlet {
 			this.configureServlet(conf);
 			initApplicationManager();
 		} catch (Exception ex) {
-			AppLogger.getInstance().execute(ex);
-			throw new ServletException(ex);
+			ExceptionFilter.Logger.getInstance().execute(ex, null, null, true);
 		}
 
 	}
@@ -124,8 +124,7 @@ public class Controller extends HttpServlet {
 			configureServletOffLine();
 			initApplicationManager();
 		} catch (Exception ex) {
-			AppLogger.getInstance().execute(ex);
-			throw new ServletException(ex);
+			ExceptionFilter.Logger.getInstance().execute(ex, null, null, true);
 		}
 
 	}
@@ -137,7 +136,7 @@ public class Controller extends HttpServlet {
 		}
 		response.setCharacterEncoding(charset);
 		// se algum dia precisar, para aplicativos mobile, descomentar... (by Dimmy)
-//		response.setHeader("Access-Control-Allow-Origin","*");
+		//response.setHeader("Access-Control-Allow-Origin","*");
 	}
 
 	/**
@@ -215,8 +214,7 @@ public class Controller extends HttpServlet {
 		try {
 			doService(req, res);
 		} catch (Exception ex) {
-			AppLogger.getInstance().execute(ex);
-			throw new ServletException(ex);
+			ExceptionFilter.Logger.getInstance().execute(ex, getChain(), req, true);
 		} finally {
 			chainTL.remove();
 		}

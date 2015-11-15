@@ -13,6 +13,7 @@ import org.futurepages.menta.core.i18n.LocaleManager;
 import org.futurepages.menta.core.input.PrettyURLRequestInput;
 import org.futurepages.menta.core.output.ResponseOutput;
 import org.futurepages.menta.exceptions.TemplateException;
+import org.futurepages.menta.filters.ExceptionFilter;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -47,8 +48,7 @@ public class TemplateServlet extends HttpServlet {
 		try{
 			templateManager = createTemplateManager();
 		}catch(Exception ex){
-			AppLogger.getInstance().execute(ex);
-			throw new ServletException(ex);
+			ExceptionFilter.Logger.getInstance().execute(ex, null, null, true);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class TemplateServlet extends HttpServlet {
 			if (nameClassTemplateManager == null || "".equals(nameClassTemplateManager)) {
 				nameClassTemplateManager = TEMPLATE_MANAGER_ATTR;
 			}
-			Class classTemplateManager = Class.forName(nameClassTemplateManager);
+			Class classTemplateManager = TemplateManager.class;
 			manager = (AbstractTemplateManager) classTemplateManager.newInstance();
 			if (manager == null) {
 				throw new TemplateException("TemplateManager not found");
@@ -109,8 +109,7 @@ public class TemplateServlet extends HttpServlet {
 			}
 			processTemplate(path, createTemplateManager(), request, response, getServletContext());
 		} catch (Exception ex) {
-			AppLogger.getInstance().execute(ex);
-			throw new ServletException(ex);
+			ExceptionFilter.Logger.getInstance().execute(ex, null, request, true);
 		}
 	}
 

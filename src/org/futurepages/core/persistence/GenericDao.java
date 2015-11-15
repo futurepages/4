@@ -89,7 +89,11 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public Query selectQuery(HQLQuery hqlQuery) {
-		return session().createQuery(hqlQuery.getSelectHQL()).setCacheable(true); //TODO study, maybe it's interesting!
+		if(!isTransactionActive()){
+			beginTransaction();
+		}
+		Query query = session().createQuery(hqlQuery.getSelectHQL()).setCacheable(true); //TODO study, maybe it's interesting!
+		return query;
 	}
 
 	public Query updateQuery(HQLQuery hqlQuery) {
@@ -279,6 +283,9 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public long numRows(HQLQuery hqlQuery){
+		if(hqlQuery.getSelect()==null){
+			hqlQuery.setSelect("COUNT(*)");
+		}
 		return (Long) selectQuery(hqlQuery).uniqueResult();
 	}
 
@@ -434,7 +441,9 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public <T extends Serializable> void evict(T obj) {
-		session().evict(obj);
+		if(isTransactionActive()){
+			session().evict(obj);
+		}
 //		session().getSessionFactory().getCache().evictEntity(obj.getClass(),getIdValue(obj)); //TODO verify if it's really necessary.
 //		System.out.println("Evicted: "+obj.getClass()+"#"+getIdValue(obj));
 	}
