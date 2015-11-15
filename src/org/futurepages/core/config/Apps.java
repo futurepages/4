@@ -2,8 +2,13 @@ package org.futurepages.core.config;
 
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.exceptions.AppsPropertiesException;
+import org.futurepages.menta.exceptions.BadFormedConfigFileException;
+import org.futurepages.menta.exceptions.ConfigFileNotFoundException;
 import org.futurepages.util.FileUtil;
 import org.futurepages.util.The;
+import org.futurepages.util.XmlUtil;
+import org.jdom.Element;
+import org.jdom.JDOMException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -23,18 +29,18 @@ import java.util.Properties;
 public class Apps {
 
 
-    public static final  String PARAMS_FILE_NAME                = "futurepages.properties";
-	public static final  String MODULES_PATH                    = "modules";
-	public static final  String MODULES_PACK                    = "modules";
-	public static final  String APPS_PACK                       = "apps";
-	public static final  String APPS_PATH                       = "apps";
-	public static final  String CONTEXT_CONFIG_DIR_NAME         = "conf";
-	public static final  String MODULE_CONFIG_DIR_NAME          = "app_conf";
-	public static final  String MODULE_JOBS_SUBPATH             = "control/jobs";
-    public static final  String HIBERNATE_ENTITIES_SUBPATH      = "model/entities";
-    public static final  String HIBERNATE_ENTITIES_SUBPACK      = "model.entities";
-	public static final  String TEMPLATE_PATH                   = "template";
-	public static final  String BASE_HIBERNATE_PROPERTIES_FILE  = "hibernate.properties";
+    public static final String PARAMS_FILE_NAME               = "app-params.xml";
+	public static final String MODULES_PATH                   = "modules";
+	public static final String MODULES_PACK                   = "modules";
+	public static final  String APPS_PACK                     = "apps";
+	public static final  String APPS_PATH                     = "apps";
+	public static final String CONFIGURATION_DIR_NAME         = "conf";
+    public static final String BEANS_PACK                     = "beans";
+    public static final String BEANS_PATH                     = "beans";
+	public static final String TEMPLATE_PATH                  = "template";
+	public static final  String MODULE_JOBS_SUBPATH           = "control/jobs";
+	public static final String BASE_HIBERNATE_PROPERTIES_FILE = "hibernate.properties";
+
 
 	/**
 	 * Load application default properties (with no web resource),
@@ -104,7 +110,6 @@ public class Apps {
 	}
 
 	private String defineMainParams(String classesRoot) throws UnsupportedEncodingException {
-
 		//super-core params
 		String classesPath ;
 		try{
@@ -112,11 +117,13 @@ public class Apps {
 		}catch (NullPointerException ex){
 			classesPath = classesRoot+"/";
 		}
+		//super-core params
 		paramsMap.put("CLASSES_PATH", classesPath);
 
 		paramsMap.put("CLASSES_REAL_PATH", classesPath.substring(0, classesPath.length()-1)); //sem a última barra, mantido por conta de legados.
 		paramsMap.put("MODULES_CLASSES_REAL_PATH", get("CLASSES_REAL_PATH") + "/" + Apps.MODULES_PATH);
-		paramsMap.put("APPS_CLASSES_REAL_PATH", get("CLASSES_REAL_PATH") + "/" + Apps.APPS_PATH);
+
+		paramsMap.put("BEANS_PACK_NAME", "beans");
 
 		//stand-alone params
 		paramsMap.put("CONNECT_EXTERNAL_MODULES", "false"); //só quando for dar suporte a mais de um banco de dados
@@ -128,28 +135,49 @@ public class Apps {
 		paramsMap.put("EMAIL_SSL_CONNECTION", "false");
 		paramsMap.put("INSTALL_MODE", "off");
 		paramsMap.put("PAGE_ENCODING", "ISO-8859-1");
+		paramsMap.put("RELEASE", "");
 		paramsMap.put("MIGRATION_CLASSPATH", "");
 		paramsMap.put("SCHEMA_GENERATION_TYPE", "none");
 		paramsMap.put("QUARTZ_MODE", "off");
+
+		// parâmetros de redirecionamento
+		paramsMap.put("LOGIN_URL_REDIRECT", null);
+		paramsMap.put("LOGIN_URL_REDIRECT_VAR_NAME", "next");
 		return classesPath;
 	}
 
 	/**
-	 * Default Params (WEB Application)
+	 * Default App params (WEB Application)
 	 */
 	private void webDefaultParams(String classesPath, String contextName) {
-		//input example: "C:/complete/path/etc/projectName/webSomeStuff/WEB-INF/classes/"
+		//entrada: "C:/path/completo/tal/projectName/webQualquerCoisa/WEB-INF/classes/"
 		String applicationRealPath = (new File(classesPath.substring(0, classesPath.length()-16))).getAbsolutePath()+"/"; //16 = "WEB-INF/classes/".length
 
 		contextName = (contextName != null ? contextName : "");
 
 		paramsMap.put("WEB_REAL_PATH", applicationRealPath);
 		paramsMap.put("WEBINF_PATH", get("WEB_REAL_PATH") + "WEB-INF");
-		paramsMap.put("MODULES_WEB_REAL_PATH", get("WEB_REAL_PATH") + Apps.MODULES_PATH);
+		paramsMap.put("MODULES_WEB_REAL_PATH", get("WEB_REAL_PATH") + MODULES_PATH);
 		paramsMap.put("CONTEXT_NAME", contextName);
 
-		paramsMap.put("EMAIL_CHARSET", "UTF_8");
-//		paramsMap.put("MINIFY_RESOURCE_MODE", "none"); //none, css, js, both //TODO rever esta funcionalidade se precisa continuar
+		paramsMap.put("DYN_EXCEPTION_FILE_PATH", "/exceptions/dyn/exception.jsp");
+		paramsMap.put("EMAIL_CHARSET", "ISO_8859_1");
+		paramsMap.put("EXCEPTION_FILE_PATH",  "/exceptions/exception.jsp");
+		paramsMap.put("GENERATE_TAGLIB",  "true");
+		paramsMap.put("GLOBAL_HEAD_TITLE","");
+		paramsMap.put("INIT_ACTION", "init.Index");
+		paramsMap.put("INIT_MANAGER_CLASS", "org.futurepages.menta.core.InitManager");
+		paramsMap.put("PRETTY_HEAD_TITLE", "");
+		paramsMap.put("MINIFY_RESOURCE_MODE", "none"); //none, css, js, both
+		paramsMap.put("START_PAGE_NAME", "Index");
+        paramsMap.put("THEME", "default");
+        paramsMap.put("THEMES_DIR_NAME", "themes");
+        paramsMap.put("USE_MODULE_DEPENDENCY", "false"); //control (via ModuleManager)
+
+//for DEBUG-MODE
+//		for(String key : paramsMap.keySet()){
+//			System.out.println(key+":"+paramsMap.get(key));
+//		}
 	}
 
 
@@ -158,28 +186,20 @@ public class Apps {
 	 * Parse Futurepages Properties Param File
 	 */
 	private void parsePropertiesFile() {
-		propertiesFilePath = The.concat(paramsMap.get("CLASSES_PATH"), CONTEXT_CONFIG_DIR_NAME, "/", PARAMS_FILE_NAME);
-
-		Properties paramsAndProperties = new Properties();
-		InputStreamReader isr = null;
-
+		propertiesFilePath = The.concat(paramsMap.get("CLASSES_PATH"), CONFIGURATION_DIR_NAME, "/", PARAMS_FILE_NAME);
+		Element appParams;
 		try {
-			isr = new FileReader(propertiesFilePath);
-		} catch (FileNotFoundException e) {
-			throw new AppsPropertiesException("Futurepages Properties File Not Found: "+ propertiesFilePath,e);
-		}
-		try {
-			paramsAndProperties.load(isr);
+			appParams = XmlUtil.getRootElement(propertiesFilePath);
+			List<Element> elements = appParams.getChildren();
+			for (Element e : elements) {
+				String name = e.getAttributeValue("name");
+				String value = e.getAttributeValue("value");
+				paramsMap.put(name, value);
+			}
 		} catch (IOException e) {
-			throw new AppsPropertiesException("Unable to find and/or parse Futurepages Properties File: "+ propertiesFilePath,e);
-		}
-		try {
-			isr.close();
-		} catch (IOException e) {
-			throw new AppsPropertiesException("Unable to find and/or parse Futurepages Properties File: "+ propertiesFilePath,e);
-		}
-		for(String key : paramsAndProperties.stringPropertyNames()){
-			paramsMap.put(key, paramsAndProperties.getProperty(key));
+			throw new ConfigFileNotFoundException("Arquivo de parâmetros da aplicação não encontrado: "+propertiesFilePath);
+		} catch (JDOMException e) {
+			throw new BadFormedConfigFileException("Arquivo de parâmetros da aplicação mal formado: "+propertiesFilePath);
 		}
 	}
 
@@ -187,13 +207,33 @@ public class Apps {
 	 * Constroi os Parâmetros Compostos 
 	 */
 	private void compositeWebParams() {
+		if (get("START_INDEX") == null) {
+            paramsMap.put("START_INDEX", get("START_PAGE_NAME") + ".fpg");
+        }
+
+		if (get("RESOURCE_PATH") == null) {
+			paramsMap.put("RESOURCE_PATH", TEMPLATE_PATH + "/resource");
+        }
+
+		if (get("START_CONSEQUENCE") == null) {
+			paramsMap.put("START_CONSEQUENCE", "init/" + get("START_PAGE_NAME") + ".page");
+		}
+		if (!get("RELEASE").equals("")) {
+			paramsMap.put("RELEASE_QUERY", "?release=" + get("RELEASE"));
+		} else {
+			paramsMap.put("RELEASE_QUERY", "");
+		}
 		String autoRedirectDomain = get("AUTO_REDIRECT_DOMAIN");
-		if(!devMode && autoRedirectDomain!=null 
+		if(!devMode && autoRedirectDomain!=null
 				&&  (!autoRedirectDomain.startsWith("http://") && !autoRedirectDomain.startsWith("https://"))){
 			paramsMap.put("HTTPS_PATH", "https://"+autoRedirectDomain);
 		}else{
 			paramsMap.put("HTTPS_PATH", "");
 		}
+	}
+
+	private static String regexParam(String key){
+		return "<param\\s+[^/]*name\\s*=\\s*\""+key+"\"[^/]*/>";
 	}
 
 	public static boolean devMode(){
@@ -214,10 +254,6 @@ public class Apps {
 			initStandAlone();
 			return getInstance().connectExternalModules;
 		}
-	}
-
-	private String regexParam(String key){
-		return "^\\s*"+key+"\\=(.*?)$";
 	}
 
 	/**

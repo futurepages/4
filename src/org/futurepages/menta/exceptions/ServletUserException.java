@@ -7,9 +7,9 @@ import javax.servlet.ServletException;
  *
  * @author leandro
  */
-public class ServletErrorException extends ServletException {
+public class ServletUserException extends ServletException {
 
-	public ServletErrorException(String message) {
+	public ServletUserException(String message) {
 		super(message);
 	}
 

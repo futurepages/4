@@ -1,6 +1,6 @@
 package org.futurepages.core.formatter;
 
-import org.futurepages.core.locale.LocaleManager;
+import org.futurepages.core.locale.NewLocaleManager;
 
 import java.util.Locale;
 
@@ -25,11 +25,11 @@ public abstract class AbstractFormatter<T extends Object> {
 	}
 
 	public final String format(T value) {
-		return format(value, LocaleManager.getDefaultLocale());
+		return format(value, NewLocaleManager.getDefaultLocale());
 	}
 
 
 	public final String format(T value, String param) {
-		return format(value, LocaleManager.getDefaultLocale(), param);
+		return format(value, NewLocaleManager.getDefaultLocale(), param);
 	}
 }

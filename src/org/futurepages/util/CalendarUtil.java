@@ -1,6 +1,6 @@
 package org.futurepages.util;
 
-import org.futurepages.core.locale.LocaleManager;
+import org.futurepages.core.locale.NewLocaleManager;
 import org.futurepages.util.iterator.months.MonthYear;
 
 import java.text.DateFormat;
@@ -530,7 +530,7 @@ public class CalendarUtil {
 	}
 
 	public static String viewDateTime(Calendar inputCalendar, String mask){
-		return new SimpleDateFormat(mask, LocaleManager.getDefaultLocale()).format(inputCalendar.getTime());
+		return new SimpleDateFormat(mask, NewLocaleManager.getDefaultLocale()).format(inputCalendar.getTime());
 	}
 
 	/**
@@ -538,7 +538,7 @@ public class CalendarUtil {
 	 */
 	public static Calendar viewDateTime(String inputInMediumFormat) {
 		try {
-			DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, LocaleManager.getDefaultLocale());
+			DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, NewLocaleManager.getDefaultLocale());
 			df.setLenient(false);
 			Date date = df.parse(inputInMediumFormat);
 			Calendar cal = Calendar.getInstance();

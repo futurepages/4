@@ -2,7 +2,7 @@ package org.futurepages.core.services;
 
 import org.futurepages.core.persistence.EntityDao;
 import org.futurepages.core.validation.EntityValidator;
-import org.futurepages.core.validation.Validator;
+import org.futurepages.core.validation.ServiceValidator;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -31,8 +31,8 @@ public abstract class EntityServices<DAO extends EntityDao<BEAN>,BEAN extends Se
 		return instance;
 	}
 
-	public <V extends Validator> void validate(Class<V> t, Validator.Executor<V> exec) {
-		Validator.validate(this,t, exec);
+	public <V extends ServiceValidator> void validate(Class<V> t, ServiceValidator.Executor<V> exec) {
+		ServiceValidator.validate(this,t, exec);
 	}
 
 	public BEAN create(BEAN bean){

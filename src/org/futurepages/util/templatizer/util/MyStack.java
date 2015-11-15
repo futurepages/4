@@ -7,6 +7,7 @@ import java.util.List;
  *
  * @author thiago
  */
+@SuppressWarnings("ALL")
 public class MyStack<T> {
 
 	private List<T> stack;

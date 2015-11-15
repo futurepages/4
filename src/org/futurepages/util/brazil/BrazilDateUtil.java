@@ -1,6 +1,6 @@
 package org.futurepages.util.brazil;
 
-import org.futurepages.core.locale.LocaleManager;
+import org.futurepages.core.locale.NewLocaleManager;
 import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.DateUtil;
 import org.futurepages.util.brazil.enums.DateFormatEnum;
@@ -123,11 +123,11 @@ public class BrazilDateUtil {
 				data = dia + "/" + mes + "/" + ano;
 				return data;
 			} else if (in instanceof Date) {
-				return new SimpleDateFormat("dd/MM/yyyy", LocaleManager.getDefaultLocale()).format((Date) in);
+				return new SimpleDateFormat("dd/MM/yyyy", NewLocaleManager.getDefaultLocale()).format((Date) in);
 			}
 			if (in instanceof GregorianCalendar) {
 				GregorianCalendar date = (GregorianCalendar) in;
-				return new SimpleDateFormat("dd/MM/yyyy", LocaleManager.getDefaultLocale()).format((Date) date.getTime());
+				return new SimpleDateFormat("dd/MM/yyyy", NewLocaleManager.getDefaultLocale()).format((Date) date.getTime());
 			}
 		} catch (Exception ex) {
 		}
@@ -172,13 +172,13 @@ public class BrazilDateUtil {
 	}
 
 	public static String rawDateIn6(Date dataIn) {
-		String in = new SimpleDateFormat("dd/MM/yyyy", LocaleManager.getDefaultLocale()).format(dataIn);
+		String in = new SimpleDateFormat("dd/MM/yyyy", NewLocaleManager.getDefaultLocale()).format(dataIn);
 		return rawDateIn6(in);
 	}
 
 	public static Date date(String in) throws ParseException {
 		Date correctDate;
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy", LocaleManager.getDefaultLocale());
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy", NewLocaleManager.getDefaultLocale());
 		df.setLenient(false);
 		correctDate = df.parse(in);
 		return correctDate;
@@ -243,6 +243,6 @@ public class BrazilDateUtil {
 	}
 
 	public static String viewHourMin(Date date) {
-		return (new SimpleDateFormat("HH:mm", LocaleManager.getDefaultLocale()).format(date));
+		return (new SimpleDateFormat("HH:mm", NewLocaleManager.getDefaultLocale()).format(date));
 	}
 }

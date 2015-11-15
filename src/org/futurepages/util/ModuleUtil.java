@@ -149,7 +149,7 @@ public class ModuleUtil {
     }
 
     public static boolean hasOwnSchema(File module) {
-        File hiberPropertiesFile = new File(The.concat(module.getAbsolutePath() , "/" , Apps.MODULE_CONFIG_DIR_NAME,"/" , Apps.BASE_HIBERNATE_PROPERTIES_FILE));
+        File hiberPropertiesFile = new File(The.concat(module.getAbsolutePath() , "/" , Apps.CONFIGURATION_DIR_NAME,"/" , Apps.BASE_HIBERNATE_PROPERTIES_FILE));
 		return hiberPropertiesFile.exists();
     }
 

@@ -1,10 +1,12 @@
 package org.futurepages.menta.core.action;
 
+import org.futurepages.core.auth.DefaultUser;
+import org.futurepages.core.path.Paths;
+import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.exceptions.UserException;
 import org.futurepages.menta.consequences.AjaxConsequence;
 import org.futurepages.menta.consequences.StringConsequence;
 import org.futurepages.menta.core.auth.Authentication;
-import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.menta.core.context.Context;
 import org.futurepages.menta.core.context.SessionContext;
 import org.futurepages.menta.core.control.InvocationChain;
@@ -13,10 +15,8 @@ import org.futurepages.menta.core.input.Input;
 import org.futurepages.menta.core.output.MapOutput;
 import org.futurepages.menta.core.output.Output;
 import org.futurepages.menta.core.pagination.Pageable;
-import org.futurepages.core.persistence.PaginationSlice;
 import org.futurepages.menta.core.pagination.Paginator;
-import org.futurepages.core.path.Paths;
-import org.futurepages.core.validation.Validator;
+import org.futurepages.menta.core.validation.Validator;
 import org.futurepages.menta.filters.HeadTitleFilter;
 import org.futurepages.menta.filters.ModuleIdFilter;
 import org.futurepages.util.Is;
@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
@@ -91,9 +90,8 @@ public abstract class AbstractAction implements Pageable, Action {
 	 * @return retorna o validador daquele tipo passando o tipo de validação
 	 */
 	public <V extends Validator> V validate(Class<V> t, boolean breakOnFirst) {
-//		V validator = Validator.validate(t, breakOnFirst);
-//		return validator;
-		return null; //TODO
+		V validator = Validator.validate(t, breakOnFirst);
+		return validator;
 	}
 
 	/**
@@ -103,7 +101,7 @@ public abstract class AbstractAction implements Pageable, Action {
 	 * @return o validador
 	 */
 	public <V extends Validator> V validate(Class<V> t) {
-		return null; // TODO: Validator.validate(t, true);
+		return Validator.validate(t, true);
 	}
 
 	protected Paginator getPaginator() {
@@ -116,30 +114,6 @@ public abstract class AbstractAction implements Pageable, Action {
 	protected Paginator getPaginator(int defaultPageSize) {
 		getPaginator().setDefaultPageSize(defaultPageSize);
 		return paginator;
-	}
-
-	/**
-	 * Paginação de elementos
-	 * <p/>
-	 * Depreciado por ser uma má pratica de programação (mistura controle e modelo)
-	 *
-	 * @deprecated Utilize setOutputPaginationSlice (verificar em site2 e scrummer o uso)
-	 */
-	public <T extends Serializable> List<T> paginateList(int pageSize, Class<T> entityClass, String where, String order) {
-		return getPaginator().paginateList(pageSize, entityClass, where, order);
-	}
-
-	/**
-	 * Atenção: Este método é legado do Futurepages 1 e aparentemente não está funcionando corretamente
-	 * na contagem dos itens para paginação.
-	 * <p/>
-	 * Utilize Dao.reportPage() or Dao.listReports()
-	 *
-	 * @deprecated
-	 */
-	@Deprecated
-	public List paginateReport(int pageSize, Class entityClass, String fields, String where, String group, String order, Class resultClass) {
-		return getPaginator().paginateReport(pageSize, entityClass, resultClass, fields, where, group, order);
 	}
 
 	public <T extends Serializable> void setOutputPaginationSlice(String listKey, PaginationSlice<T> slice) {

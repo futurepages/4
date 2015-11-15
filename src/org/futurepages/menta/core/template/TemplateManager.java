@@ -34,7 +34,7 @@ public class TemplateManager extends AbstractTemplateManager {
 	private void initialize(){
 		try {
 			String classRealPath = EncodingUtil.correctPath(this.getClass().getResource("/").getPath());
-			String templateFilePath = classRealPath+ Apps.CONTEXT_CONFIG_DIR_NAME+"/app-template.xml";
+			String templateFilePath = classRealPath+ Apps.CONFIGURATION_DIR_NAME+"/app-template.xml";
 			File templateFile = new File(templateFilePath);
 
 			SAXBuilder sb = new SAXBuilder();

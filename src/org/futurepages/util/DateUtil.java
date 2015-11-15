@@ -1,6 +1,6 @@
 package org.futurepages.util;
 
-import org.futurepages.core.locale.LocaleManager;
+import org.futurepages.core.locale.NewLocaleManager;
 import org.futurepages.util.brazil.enums.DateFormatEnum;
 
 import java.text.DateFormat;
@@ -27,10 +27,10 @@ public class DateUtil {
 	}
 
 	private DateUtil(){
-		defaultViewDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, LocaleManager.getDefaultLocale());
-		defaultViewDateTimeFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, LocaleManager.getDefaultLocale());
-		defaultDBDateFormat = new SimpleDateFormat("yyyy-MM-dd", LocaleManager.getDefaultLocale());
-		defaultDBDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", LocaleManager.getDefaultLocale());
+		defaultViewDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, NewLocaleManager.getDefaultLocale());
+		defaultViewDateTimeFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, NewLocaleManager.getDefaultLocale());
+		defaultDBDateFormat = new SimpleDateFormat("yyyy-MM-dd", NewLocaleManager.getDefaultLocale());
+		defaultDBDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", NewLocaleManager.getDefaultLocale());
 	}
 
 	public String viewDateTime(Date date) {
@@ -50,7 +50,7 @@ public class DateUtil {
 		return formatter.format(date);
 	}
 	public String viewDateTime(Date date, int dateAndTimeStyle) {
-		return viewDateTime(date, dateAndTimeStyle, LocaleManager.getDefaultLocale());
+		return viewDateTime(date, dateAndTimeStyle, NewLocaleManager.getDefaultLocale());
 	}
 
 	public String viewDate(Date date, int dateStyle, Locale locale) {
@@ -59,7 +59,7 @@ public class DateUtil {
 	}
 
 	public String viewDate(Date date, int dateStyle) {
-		return viewDate(date, dateStyle, LocaleManager.getDefaultLocale());
+		return viewDate(date, dateStyle, NewLocaleManager.getDefaultLocale());
 	}
 
 	public String dbDate(int year, int month, int day) {
@@ -82,11 +82,11 @@ public class DateUtil {
 	 */
 	public String viewDateTime(Object in, String mask) {
 		if (in instanceof Date) {
-			return new SimpleDateFormat(mask, LocaleManager.getDefaultLocale()).format((Date) in);
+			return new SimpleDateFormat(mask, NewLocaleManager.getDefaultLocale()).format((Date) in);
 		} else if (in instanceof Calendar) {
 			return CalendarUtil.viewDateTime((Calendar)in,mask);
 		} else if (in instanceof Long) {
-			return new SimpleDateFormat(mask, LocaleManager.getDefaultLocale()).format(new Date((Long) in));
+			return new SimpleDateFormat(mask, NewLocaleManager.getDefaultLocale()).format(new Date((Long) in));
 		} else if (in instanceof Number) {
 			return TimeUtil.timeFrom(((Number) in).doubleValue()); //only time, consider signal
 		}
@@ -103,7 +103,7 @@ public class DateUtil {
 	 * Specify the mask to show today informations.
 	 */
 	public String viewToday(String mask) {
-		return new SimpleDateFormat(mask, LocaleManager.getDefaultLocale()).format(new Date());
+		return new SimpleDateFormat(mask, NewLocaleManager.getDefaultLocale()).format(new Date());
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class DateUtil {
 	public Date parse(String dateString, String formatString) {
 		Date data = null;
 		if (!Is.empty(dateString)) {
-			SimpleDateFormat sdf = new SimpleDateFormat(formatString, LocaleManager.getDefaultLocale());
+			SimpleDateFormat sdf = new SimpleDateFormat(formatString, NewLocaleManager.getDefaultLocale());
 			sdf.setLenient(false);
 			try {
 				data = sdf.parse(dateString);
@@ -147,6 +147,6 @@ public class DateUtil {
 		if (date == null) {
 			return "";
 		}
-		return new SimpleDateFormat(mask, LocaleManager.getDefaultLocale()).format(date);
+		return new SimpleDateFormat(mask, NewLocaleManager.getDefaultLocale()).format(date);
 	}
 }

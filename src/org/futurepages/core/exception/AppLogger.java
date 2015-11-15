@@ -1,8 +1,8 @@
 package org.futurepages.core.exception;
 
-import org.futurepages.core.control.UI;
-import org.futurepages.core.locale.Txt;
-import org.futurepages.core.locale.TxtNotFoundException;
+//import org.futurepages.core.control.UI;
+//import org.futurepages.core.locale.Txt;
+//import org.futurepages.core.locale.TxtNotFoundException;
 import org.futurepages.util.DateUtil;
 import org.futurepages.util.EncodingUtil;
 import org.futurepages.util.The;
@@ -34,31 +34,32 @@ public class AppLogger implements ExceptionLogger{
 			req = (HttpServletRequest) vaadinReq;
 		}
 		ExceptionLogType logType;
-		if(throwable instanceof TxtNotFoundException){
-			logType = ExceptionLogType.TXT_NOT_FOUND;
-		}else{
+//TODO: txt not installed yet.
+//		if(throwable instanceof TxtNotFoundException){
+//			logType = ExceptionLogType.TXT_NOT_FOUND;
+//		}else{
 			logType = ExceptionLogType.INTERNAL_FAIL;
-		}
+//		}
 
 		String failNumber = System.currentTimeMillis()+"-"+Thread.currentThread().getId();
 
 		String exceptionId =  The.concat("[",logType,"] ",failNumber);
 
-		if(logType!=ExceptionLogType.TXT_NOT_FOUND){
+//		if(logType!=ExceptionLogType.TXT_NOT_FOUND){
 	        log(exceptionId, "  (", DateUtil.getInstance().viewDateTime(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 			throwable.printStackTrace();
-		}
+//		}
 
-		if(logType==ExceptionLogType.TXT_NOT_FOUND){
-			log("\n[",logType,"] "," (", DateUtil.getInstance().viewDateTime(new Date()), ")");
-			log("\t",throwable.getMessage());
-			for(StackTraceElement el : throwable.getStackTrace()){
-				if(!el.getClassName().equals(Txt.class.getName())){
-					log("\t\tat "+el+"\n");
-					break;
-				}
-			}
-		}
+//		if(logType==ExceptionLogType.TXT_NOT_FOUND){
+//			log("\n[",logType,"] "," (", DateUtil.getInstance().viewDateTime(new Date()), ")");
+//			log("\t",throwable.getMessage());
+//			for(StackTraceElement el : throwable.getStackTrace()){
+//				if(!el.getClassName().equals(Txt.class.getName())){
+//					log("\t\tat "+el+"\n");
+//					break;
+//				}
+//			}
+//		}
 
 		if(req!=null){
 			log("\n>[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():""));
@@ -66,9 +67,10 @@ public class AppLogger implements ExceptionLogger{
 			log(">[browser]  ", req.getHeader("user-agent"));
 			log(">[proxy  ]  ", req.getHeader("Proxy-Authorization"));
 
-			if(UI.getCurrent().getLoggedUser()!=null){
-				log(">[user   ]  ", UI.getCurrent().getLoggedUser().getLogin());
-			}
+// TODO: new futurepages need UI implemented.
+//			if(UI.getCurrent().getLoggedUser()!=null){
+//				log(">[user   ]  ", UI.getCurrent().getLoggedUser().getLogin());
+//			}
 			log(">[method ]  ", req.getMethod());
 
 			logInline(">[request]  ");

@@ -104,7 +104,7 @@ public class HibernateConfigurationFactory {
 	}
 
 	private Collection<Class<Object>> listBeansAnnotatedFromModule(File module) throws ModuleWithoutBeanDirException {
-		File beansDirectory = new File(module.getAbsolutePath() + "/" + Apps.HIBERNATE_ENTITIES_SUBPATH);
+		File beansDirectory = new File(module.getAbsolutePath() + "/" + Apps.BEANS_PATH);
 		if (beansDirectory.listFiles() != null) {
 			return ClassesUtil.getInstance().listClassesFromDirectory(beansDirectory, ModuleUtil.getClassesPath(), null, Entity.class, true);
 		}
@@ -122,7 +122,7 @@ public class HibernateConfigurationFactory {
 		if (defaultModule) { //default database
 			if(schemasMap.get(DEFAULT)==null){
 				schemasMap.put(DEFAULT, new Schema());
-				String configPath = "/" + Apps.CONTEXT_CONFIG_DIR_NAME + "/" + Apps.BASE_HIBERNATE_PROPERTIES_FILE;
+				String configPath = "/" + Apps.CONFIGURATION_DIR_NAME + "/" + Apps.BASE_HIBERNATE_PROPERTIES_FILE;
 				String filePath = ModuleUtil.getClassesPath() + configPath;
 				InputStream inputStream = new FileInputStream(filePath);
 				properties.load(inputStream);
@@ -130,7 +130,7 @@ public class HibernateConfigurationFactory {
 			}
 			return DEFAULT;
 		} else if (Apps.get("CONNECT_EXTERNAL_MODULES").equals("true")) {
-			String configPath = "/" + Apps.MODULE_CONFIG_DIR_NAME + "/" + Apps.BASE_HIBERNATE_PROPERTIES_FILE;
+			String configPath = "/" + Apps.CONFIGURATION_DIR_NAME + "/" + Apps.BASE_HIBERNATE_PROPERTIES_FILE;
 			String filePath = module.getAbsolutePath() + configPath;
 			InputStream inputStream;
 			inputStream = new FileInputStream(filePath);
