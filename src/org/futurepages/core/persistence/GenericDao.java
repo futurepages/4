@@ -89,17 +89,11 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public Query selectQuery(HQLQuery hqlQuery) {
-		if(!isTransactionActive()){
-			beginTransaction();
-		}
-		Query query = session().createQuery(hqlQuery.getSelectHQL()).setCacheable(true); //TODO study, maybe it's interesting!
-		return query;
+		return session().createQuery(hqlQuery.getSelectHQL());
 	}
 
 	public Query updateQuery(HQLQuery hqlQuery) {
 		return session().createQuery(hqlQuery.getUpdateHQL());
-		//.setCacheable(true); TODO study, maybe it's interesting!
-
 	}
 
 	public <T extends Serializable> List<T> sqlQueryList(String sql, Class<T> clss) {
@@ -444,8 +438,6 @@ public class GenericDao extends HQLProvider {
 		if(isTransactionActive()){
 			session().evict(obj);
 		}
-//		session().getSessionFactory().getCache().evictEntity(obj.getClass(),getIdValue(obj)); //TODO verify if it's really necessary.
-//		System.out.println("Evicted: "+obj.getClass()+"#"+getIdValue(obj));
 	}
 
 	//alreadyDeatached is necessary because of possible duplicate references in the object tree. If it happens, it will be detached just the first time.
@@ -516,23 +508,6 @@ public class GenericDao extends HQLProvider {
 				throw new RuntimeException(ex);
 			}
 		}
-//		if (user.hasProfile()) {
-//			if(!dao.session().contains(user.getProfile())){
-//				Profile profile = dao.get(Profile.class,user.getProfile().getId());
-//				user.setProfile(profile);
-//			}
-//			user.getProfile().getRoles().size(); //touch
-//			user.getProfile().getModules().size(); //touch
-//			if (user.getProfile().getAllowedProfiles() != null) {
-//				user.getProfile().getAllowedProfiles().size(); //touch
-//			}
-//		}
-//
-//		if (user.hasProfile()) {
-//			dao.evict(user.getProfile());
-//		}
-//		dao.evict(user);
-//		return user;
 		return object;
 	}
 
@@ -540,10 +515,7 @@ public class GenericDao extends HQLProvider {
 		HashMap<Class<? extends Serializable>, HashMap<Serializable, Serializable>> alreadyDetached = new HashMap();
 		T detachedObject = detachedObject(alreadyDetached, object, detachCollectionElements);
 		for(HashMap<Serializable, Serializable> map : alreadyDetached.values()){
-//			map.values().forEach(this::evict); 	//TODO downgrade JDK8 --> JDK6 and replace below...
-			for(Serializable s : map.values()){
-				evict(s);
-			}
+			map.values().forEach(this::evict);
 		}
 		return detachedObject;
 	}

@@ -205,8 +205,7 @@ public class ImageUtil {
 				image = poorResize(image, null, image.getWidth(), image.getHeight(), 100, pathNewFile);
 			}
 		} else {
-			image = GraphicsUtilities.createThumbnail(image, thumbW, thumbH);
-
+			image = poorResize(image, null, thumbW, thumbH, 100, pathNewFile);
 		}
 
 		if(FileUtil.extensionFormat(pathNewFile).equals("png")){
