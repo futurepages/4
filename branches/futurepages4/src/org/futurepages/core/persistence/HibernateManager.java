@@ -94,7 +94,7 @@ public class HibernateManager {
 		if (session != null && session.isOpen()) {
 				return session;
 		}else{
-			session = getSessionFactory(schemaId).getCurrentSession();
+			session = getSessionFactory(schemaId).withOptions().autoJoinTransactions(true).openSession();
 			getSessionTL(schemaId).set(session);
 			return session;
 		}

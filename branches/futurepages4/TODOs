@@ -1,0 +1,13 @@
+================================
+TODOs:
+trocar servlets para 3. JSP para 3
+---------------------------
+UserException TODO calling menta.
+NewLocaleManager TODO calling menta.
+NewApps
+NewFormatterManager
+---------------------------
+Integrar LocaleManagers
+---------------------------
+Integrar FormatterManager
+--------------------------
