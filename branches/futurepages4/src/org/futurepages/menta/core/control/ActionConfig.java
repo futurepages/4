@@ -208,7 +208,7 @@ public class ActionConfig {
 			System.out.println("####> Method '"+innerAction+"' doesnt exist!  >>> " +  ModuleUtil.moduleId(actionClass)+ ".ModuleManager ## action(\"" + this.name + "." + innerAction + "\").on(\"" + result + "\", fwd('" + urlFw + "');");
 		}else{
 			if(AsynchronousManager.isAsynchronousAction(method,actionClass) && urlFw.endsWith(".page")) {
-				System.out.println("####> Is this correct? >>> " +  ModuleUtil.moduleId(actionClass)+ ".ModuleManager ## action(\"" + this.name + "." + innerAction + "\").on(\"" + result + "\", fwd('" + urlFw + "');");
+				System.out.println("####> Is this correct? >>> " +  ModuleUtil.moduleId(actionClass)+ ".ModuleManager ## action(\"" + this.name + "." + innerAction + "\").on(\"" + result + "\", fwd('" + urlFw + "'); Asyncronous with page?");
 			}
 		}
 
