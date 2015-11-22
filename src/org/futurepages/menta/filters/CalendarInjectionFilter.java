@@ -39,13 +39,26 @@ public class CalendarInjectionFilter implements Filter {
 			int yearInt = Integer.parseInt(month);
 			int hourInt = Integer.parseInt(hour);
 			int minuteInt = Integer.parseInt(minute);
+
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.YEAR, yearInt);
+			boolean anoBissexto = CalendarUtil.isLeapYear(cal);
 			if(dayInt>31 || monthInt > 12 || yearInt > 2999 || hourInt > 23 || minuteInt > 59
 				||
 			   dayInt<0 || monthInt<0 || yearInt<0 || hourInt<0 || minuteInt<0){
 				input.setValue(keyToInject, null);
+			}else
+			if(dayInt>30 && (monthInt==2 || monthInt==4 || monthInt == 6 || monthInt == 9 || monthInt == 11 )){
+				input.setValue(keyToInject, null);
+			}else
+			if(dayInt>29 && monthInt==2){
+				input.setValue(keyToInject, null);
+			}else if(dayInt>28 && monthInt == 2 && !anoBissexto ){
+				input.setValue(keyToInject, null);
+			}else{
+				input.setValue(keyToInject, CalendarUtil.dbDateTimeToCalendar(The.concat(year , "-",The.strWithLeftZeros(month,2),"-", The.strWithLeftZeros(day,2), " ", The.strWithLeftZeros(hour,2),":",The.strWithLeftZeros(minute,2),":00")));
 			}
 
-			input.setValue(keyToInject, CalendarUtil.dbDateTimeToCalendar(The.concat(year , "-",The.strWithLeftZeros(month,2),"-", The.strWithLeftZeros(day,2), " ", The.strWithLeftZeros(hour,2),":",The.strWithLeftZeros(minute,2),":00")));
 		} catch (Exception ex) {
 			input.setValue(keyToInject, null);
 		}
