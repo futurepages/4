@@ -34,6 +34,17 @@ public class CalendarInjectionFilter implements Filter {
 			String hour   = input.getStringValue(keyToInject + "_hour");
 			String minute = input.getStringValue(keyToInject + "_minute");
 
+			int dayInt = Integer.parseInt(day);
+			int monthInt = Integer.parseInt(month);
+			int yearInt = Integer.parseInt(month);
+			int hourInt = Integer.parseInt(hour);
+			int minuteInt = Integer.parseInt(minute);
+			if(dayInt>31 || monthInt > 12 || yearInt > 2999 || hourInt > 23 || minuteInt > 59
+				||
+			   dayInt<0 || monthInt<0 || yearInt<0 || hourInt<0 || minuteInt<0){
+				input.setValue(keyToInject, null);
+			}
+
 			input.setValue(keyToInject, CalendarUtil.dbDateTimeToCalendar(The.concat(year , "-",The.strWithLeftZeros(month,2),"-", The.strWithLeftZeros(day,2), " ", The.strWithLeftZeros(hour,2),":",The.strWithLeftZeros(minute,2),":00")));
 		} catch (Exception ex) {
 			input.setValue(keyToInject, null);
