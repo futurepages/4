@@ -45,6 +45,16 @@ public class MailSender {
 		return emails;
 	}
 
+	private List<Email> criarListaEmailsWithFrom(String nameFrom, String emailFrom, String[] mailAdresses, String subject, String message, TypeEmail typeEmail) throws EmailException {
+		List<Email> emails = new ArrayList<Email>();
+		for (String emailAdr : mailAdresses) {
+			Email email = newEmail(typeEmail,emailAdr, subject,message);
+			email.setFrom(nameFrom, emailFrom);
+			emails.add(email);
+		}
+		return emails;
+	}
+
 	private enum TypeEmail {
 
 		SIMPLE_EMAIL,
@@ -63,6 +73,19 @@ public class MailSender {
 	public void sendHtmlEmailNow(String subject, String message, String... mailAdresses) throws EmailException {
 		for (String mail : mailAdresses) {
 			HtmlEmail email = newHtmlEmail(mail, subject, message);
+			send(email);
+		}
+	}
+
+	/*
+	 * Envia o e-mail tempo de execução da sessão.
+	 * O usuário aguarda a excução para receber uma
+	 * resposta do servidor.
+	 */
+	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailFrom, String subject, String message, String... mailAdresses) throws EmailException {
+		for (String mail : mailAdresses) {
+			HtmlEmail email = newHtmlEmail(mail, subject, message);
+			email.setFrom(nameFrom,emailFrom);
 			send(email);
 		}
 	}
@@ -94,7 +117,20 @@ public class MailSender {
 		} catch (EmailException ex) {
 			AppLogger.getInstance().execute(ex);
 		}
-		
+
+	}
+
+	public void sendHtmlEmailWithFrom(String nameFrom, String emailFrom, String subject, String message, String... mailAdresses) {
+
+	try {
+			List<Email> emails = criarListaEmailsWithFrom(nameFrom, emailFrom,mailAdresses, subject, message, TypeEmail.HTML_EMAIL);
+			ThreadEmail threadEmail = new ThreadEmail(emails);
+			Thread thread = new Thread(threadEmail);
+			thread.start();
+		} catch (EmailException ex) {
+			AppLogger.getInstance().execute(ex);
+		}
+
 	}
 
 	/*
