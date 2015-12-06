@@ -1,5 +1,6 @@
 package org.futurepages.core.mail;
 
+import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.emails.Email;
 import org.futurepages.emails.HtmlEmail;
@@ -49,7 +50,11 @@ public class MailSender {
 		List<Email> emails = new ArrayList<Email>();
 		for (String emailAdr : mailAdresses) {
 			Email email = newEmail(typeEmail,emailAdr, subject,message);
-			email.setFrom(nameFrom, emailFrom);
+			if(nameFrom.length()>60){
+				nameFrom = nameFrom.substring(0,60)+"...";
+			}
+			email.setFrom(Apps.get("EMAIL_FROM"), nameFrom);
+			email.addReplyTo(emailFrom,nameFrom);
 			emails.add(email);
 		}
 		return emails;
@@ -85,7 +90,11 @@ public class MailSender {
 	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailFrom, String subject, String message, String... mailAdresses) throws EmailException {
 		for (String mail : mailAdresses) {
 			HtmlEmail email = newHtmlEmail(mail, subject, message);
-			email.setFrom(nameFrom,emailFrom);
+			if(nameFrom.length()>60){
+				nameFrom = nameFrom.substring(0,60)+"...";
+			}
+			email.setFrom(Apps.get("EMAIL_FROM"), nameFrom);
+			email.addReplyTo(emailFrom,nameFrom);
 			send(email);
 		}
 	}
