@@ -6,6 +6,7 @@ import org.futurepages.emails.Email;
 import org.futurepages.emails.HtmlEmail;
 import org.futurepages.emails.SimpleEmail;
 import org.futurepages.exceptions.EmailException;
+import org.futurepages.util.Is;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +55,9 @@ public class MailSender {
 				nameFrom = nameFrom.substring(0,60)+"...";
 			}
 			email.setFrom(Apps.get("EMAIL_FROM"), nameFrom);
-			email.addReplyTo(emailFrom,nameFrom);
+			if(!Is.empty(emailFrom)){
+				email.addReplyTo(emailFrom,nameFrom);
+			}
 			emails.add(email);
 		}
 		return emails;
@@ -94,7 +97,9 @@ public class MailSender {
 				nameFrom = nameFrom.substring(0,60)+"...";
 			}
 			email.setFrom(Apps.get("EMAIL_FROM"), nameFrom);
-			email.addReplyTo(emailFrom,nameFrom);
+			if(!Is.empty(emailFrom)){
+				email.addReplyTo(emailFrom,nameFrom);
+			}
 			send(email);
 		}
 	}
