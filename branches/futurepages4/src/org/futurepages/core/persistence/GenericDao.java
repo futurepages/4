@@ -201,6 +201,10 @@ public class GenericDao extends HQLProvider {
 		return (List<T>) selectQuery(hqlQuery).list();
 	}
 
+	public List listFields(HQLQuery hqlQuery) {
+		return (List) selectQuery(hqlQuery).list();
+	}
+
 	public <T> List<T> list(HQLQuery<T> hqlQuery, Class<T> resultClass) {
 		Query query = selectQuery(hqlQuery);
 		query.setResultTransformer(new AliasToBeanResultTransformer(resultClass));
