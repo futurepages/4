@@ -8,6 +8,7 @@ public interface HQLable {
     public static final String AND = " AND ";
     public static final String JOIN = " JOIN ";
     public static final String LEFT_JOIN = " LEFT JOIN ";
+    public static final String RIGHT_JOIN = " RIGHT JOIN ";
     public static final String WHERE = " WHERE ";
     public static final String ORDER_BY = " ORDER BY ";
     public static final String GROUP_BY = " GROUP BY ";

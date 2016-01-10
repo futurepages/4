@@ -10,6 +10,7 @@ public class HQLQuery<T> extends HQLProvider {
 	private String select;
 	private Class<T> entity;
 	private String alias;
+	private String joinType;
 	private String join;
 	private String where;
 	private String group;
@@ -63,6 +64,15 @@ public class HQLQuery<T> extends HQLProvider {
 		this.where = where;
 		this.order = order;
 	}
+	public HQLQuery(String select, Class<T> entity, String alias, String joinType, String join, String where, String order) {
+		this.select = select;
+		this.entity = entity;
+		this.alias = alias;
+		this.join = join;
+		this.joinType = joinType;
+		this.where = where;
+		this.order = order;
+	}
 
 	public HQLQuery(String select, Class<T> entity, String alias, String join, String where, String group, String having, String order) {
 		this.select = select;
@@ -85,13 +95,13 @@ public class HQLQuery<T> extends HQLProvider {
 	}
 
 	public String getSelectHQL(){
-		String hql = The.concat(select(select),from(entity),as(alias),join(join),where(where),groupBy(group),having(having),orderBy(order));
+		String hql = The.concat(select(select),from(entity),as(alias),(joinType!=null? joinType+join : join(join)),where(where),groupBy(group),having(having),orderBy(order));
 //		System.out.println(hql);
 		return hql;
 	}
 
 	public String getUpdateHQL(){
-		String hql = The.concat(updateSetting(entity), fieldToUpdate, EQUALS, expression,join(join),where(where));
+		String hql = The.concat(updateSetting(entity), fieldToUpdate, EQUALS, expression,(joinType!=null? joinType+join : join(join)),where(where));
 //		System.out.println(hql);
 		return hql;
 	}
