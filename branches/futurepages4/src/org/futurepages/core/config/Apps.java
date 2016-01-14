@@ -32,13 +32,13 @@ public class Apps {
     public static final String PARAMS_FILE_NAME               = "app-params.xml";
 	public static final String MODULES_PATH                   = "modules";
 	public static final String MODULES_PACK                   = "modules";
-	public static final  String APPS_PACK                     = "apps";
-	public static final  String APPS_PATH                     = "apps";
+	public static final String APPS_PACK                      = "apps";
+	public static final String APPS_PATH                      = "apps";
 	public static final String CONFIGURATION_DIR_NAME         = "conf";
     public static final String BEANS_PACK                     = "beans";
     public static final String BEANS_PATH                     = "beans";
 	public static final String TEMPLATE_PATH                  = "template";
-	public static final  String MODULE_JOBS_SUBPATH           = "control/jobs";
+	public static final String MODULE_JOBS_SUBPATH            = "jobs";
 	public static final String BASE_HIBERNATE_PROPERTIES_FILE = "hibernate.properties";
 
 

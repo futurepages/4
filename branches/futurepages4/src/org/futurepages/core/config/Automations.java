@@ -61,11 +61,12 @@ public abstract class Automations {
 						classes = new ArrayList<Class<S>>(ClassesUtil.getInstance().listClassesFromDirectory(dir, ModuleUtil.getClassesPath(), superKlass, annotation, true));
 
 						sortClassList(classes);
-						if(ModuleUtil.isApp(module.getAbsolutePath())){
-							modulesClasses.put("app "+ModuleUtil.getAppName(module.getAbsolutePath()), classes);
-						}else{
-							modulesClasses.put("module "+module.getName(), classes);
-						}
+						modulesClasses.put(module.getName(), classes);
+//						if(ModuleUtil.isApp(module.getAbsolutePath())){
+//							modulesClasses.put("app "+ModuleUtil.getAppName(module.getAbsolutePath()), classes);
+//						}else{
+//							modulesClasses.put("module "+module.getName(), classes);
+//						}
 					}
 				}
 				else{
