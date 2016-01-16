@@ -15,6 +15,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.Tag;
 
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.menta.annotations.SuperTag;
 import org.futurepages.menta.annotations.TagAttribute;
 import org.futurepages.menta.core.action.Action;
@@ -112,7 +113,7 @@ public abstract class PrintTag extends BodyTagSupport {
 			}
 		}
 		catch (Exception e) {
-			//DefaultExceptionLogger.getInstance().execute(e);
+			AppLogger.getInstance().execute(e);
 		}
         if (tryBoolean) {
 		    return getBooleanValue(bean, name);
