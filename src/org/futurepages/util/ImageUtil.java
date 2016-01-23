@@ -471,6 +471,8 @@ public class ImageUtil {
 	}
 
 	private static void createJPEG(BufferedImage image, int quality, String pathNewFile) throws FileNotFoundException, IOException {
+//		ImageIO.write(image, "jpg", new File(pathNewFile)); // TODO um dia pode ser necessário substituir tudo abaixo por este código.
+
 		FileOutputStream fos = new FileOutputStream(pathNewFile);
 		BufferedOutputStream out = new BufferedOutputStream(fos);
 
