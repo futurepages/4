@@ -184,6 +184,16 @@ public class ImageUtil {
 		image.flush();
 	}
 
+	public static void buildImageFile(byte[] bytesOfImageFile, String pathNewFile) throws IOException {
+		BufferedImage image = getBufferedImage(bytesOfImageFile);
+		if(FileUtil.extensionFormat(pathNewFile).equals("png")){
+			ImageIO.write(image, "png", new File(pathNewFile));
+		}else{
+			createJPEG(image, 100, pathNewFile);
+		}
+		image.flush();
+	}
+
 	public static void resizeCropping(File file,int thumbW, int thumbH, String pathNewFile, boolean stretchWhenSmaller) throws IOException {
 		SeekableStream seekableStream = new FileSeekableStream(file);
 		ParameterBlock pb = new ParameterBlock();
