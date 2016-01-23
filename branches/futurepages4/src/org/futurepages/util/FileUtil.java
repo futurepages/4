@@ -72,12 +72,16 @@ public class FileUtil {
 		return sb.toString();
 	}
 
+    public static byte[] getBytesFromUrl(String url, Long maxAllowed)  throws IOException {
+	    return getBytesFromUrl(url, new StringBuilder(), maxAllowed) ;
+    }
+
     public static byte[] getBytesFromUrl(String url, StringBuilder sbContentType, Long maxAllowed)  throws IOException {
 		ByteArrayOutputStream bais = new ByteArrayOutputStream();
 		InputStream is = null;
 		URL theURL = new URL(url.replace(" ","%20").replace("+","%20"));
         URLConnection c =  theURL.openConnection();
-		try {
+	    try {
 		  if(sbContentType!=null){
 			sbContentType.append(c.getContentType());
 		  }
