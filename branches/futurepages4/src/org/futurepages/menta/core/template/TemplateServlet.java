@@ -1,17 +1,9 @@
 package org.futurepages.menta.core.template;
 
-import org.futurepages.core.exception.AppLogger;
 import org.futurepages.menta.actions.NullAction;
 import org.futurepages.menta.consequences.Forward;
 import org.futurepages.menta.core.action.Action;
-import org.futurepages.menta.core.context.ApplicationContext;
-import org.futurepages.menta.core.context.CookieContext;
-import org.futurepages.menta.core.context.MapContext;
-import org.futurepages.menta.core.context.SessionContext;
 import org.futurepages.menta.core.control.Controller;
-import org.futurepages.menta.core.i18n.LocaleManager;
-import org.futurepages.menta.core.input.PrettyURLRequestInput;
-import org.futurepages.menta.core.output.ResponseOutput;
 import org.futurepages.menta.exceptions.TemplateException;
 import org.futurepages.menta.filters.ExceptionFilter;
 
@@ -97,15 +89,7 @@ public class TemplateServlet extends HttpServlet {
 				Controller.fixEncoding(request,response);
 				
 				//Creating Null Action - without breaking.
-				Action action = new NullAction();
-				action.setInput(new PrettyURLRequestInput(request));
-				action.setOutput(new ResponseOutput(response));
-				action.setSession(new SessionContext(request, response));
-				action.setApplication(new ApplicationContext(this.getServletContext()));
-				action.setCookies(new CookieContext(request, response));
-				action.setLocale(LocaleManager.getLocale(request));
-				action.setCallback(new MapContext());
-				request.setAttribute(Forward.ACTION_REQUEST, action);
+				Action action = new NullAction(request,response);
 			}
 			processTemplate(path, createTemplateManager(), request, response, getServletContext());
 		} catch (Exception ex) {
