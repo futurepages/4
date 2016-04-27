@@ -28,7 +28,7 @@ public abstract class SchemaGenerator {
 			Dao.getInstance().executeSQL(sql);
 	}
 
-	protected void executeSQLFromFile(String path) throws FileNotFoundException, IOException {
+	protected void executeSQLFromFile(String path) throws IOException {
 		String[] sqls = FileUtil.getStringLines(this.getClass(), path);
 		Dao.getInstance().executeSQLs(sqls);
 	}

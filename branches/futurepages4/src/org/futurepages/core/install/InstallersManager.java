@@ -1,8 +1,11 @@
 package org.futurepages.core.install;
 
+import org.futurepages.core.config.Apps;
 import org.futurepages.core.config.Automations;
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.core.persistence.HibernateManager;
+import org.futurepages.util.FileUtil;
+import org.futurepages.util.The;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
@@ -20,7 +23,7 @@ import java.util.Map;
  */
 public class InstallersManager extends Automations {
 
-	private static final String INSTALL_DIR_NAME = "model/install";
+	private static final String INSTALL_DIR_NAME = "install";
 	private String installMode;
 
 	public InstallersManager(File[] modules, String installMode) {
@@ -59,60 +62,61 @@ public class InstallersManager extends Automations {
 				Dao.getInstance().beginTransaction();
 
 				//Initial Resources Installer
-//				try {
-//					Class resourcesInstaller = Class.forName(INSTALL_DIR_NAME + ".Resources");
-//					log(">>> installer " + resourcesInstaller.getSimpleName() + " running...  ");
-//					resourcesInstaller.newInstance();
-//					log(">>>   Resources OK.");
-//				} catch (ClassNotFoundException ex) {
-//					log(">>> installer of Resources isn't present.");
-//				}
+				try {
+					Class resourcesInstaller = Class.forName(INSTALL_DIR_NAME + ".Resources");
+					log(">>> installer " + resourcesInstaller.getSimpleName() + " running...  ");
+					resourcesInstaller.newInstance();
+					log(">>>   Resources OK.");
+				} catch (ClassNotFoundException ex) {
+					log(">>> installer of Resources isn't present.");
+				}
 
-				//TODO rever este código... IMPLEMENTAR para o pacote 'apps'
-//				if (installMode.startsWith("script:")) {
-//					System.out.println("Installing data from script: "+Apps.get("CLASSES_REAL_PATH") + "/install/" + installMode.split("script\\:")[1]+"...");
-//					Dao.executeSQLs(false,FileUtil.getStringLines(Apps.get("CLASSES_REAL_PATH")+ "/install/" + installMode.split("script\\:")[1]));
-//				} else {
-				if(installMode.equals("modules") || installMode.equals("on")){
-					Map<String, List<Class<Installer>>> classes = getModulesDirectoryClasses(Installer.class, null);
-					for (String moduleName : classes.keySet()) {
-						log(moduleName + " installing...");
-						for (Class<?> installer : classes.get(moduleName)) {
-							if (!Modifier.isAbstract(installer.getModifiers())) {
-								log(">>> installer " + installer.getSimpleName() + " running...  ");
-								installer.newInstance();
-								log(">>> installer " + installer.getSimpleName() + " OK");
+//				TODO rever este código... IMPLEMENTAR para o pacote 'apps'
+				if (installMode.startsWith("script:")) {
+					System.out.println("Installing data from script: "+ Apps.get("CLASSES_REAL_PATH") + "/install/" + installMode.split("script\\:")[1]+"...");
+					Dao.getInstance().executeSQLs(false, FileUtil.getStringLines(Apps.get("CLASSES_REAL_PATH")+ "/install/" + installMode.split("script\\:")[1]));
+				} else {
+					if (installMode.equals("modules")
+					|| installMode.equals("on")
+					|| installMode.equals("production")
+					|| installMode.equals("examples")) {
+						Map<String, List<Class<Installer>>> classes = getModulesDirectoryClasses(Installer.class, null);
+						for (String moduleName : classes.keySet()) {
+							log(moduleName + " installing...");
+							for (Class<?> installer : classes.get(moduleName)) {
+								if (!Modifier.isAbstract(installer.getModifiers())) {
+									log(">>> installer " + installer.getSimpleName() + " running...  ");
+									installer.newInstance();
+									log(">>> installer " + installer.getSimpleName() + " OK");
+								}
 							}
+							log(moduleName + " installed.");
 						}
-						log(moduleName + " installed.");
 					}
 				}
-// TODO IMPLEMENTAR O INSTALL DAS APPS FORA DOS MODULOS.
-//					}
-//					//ExtraInstaller
-//					String extraInstaller = null;
-//					if (!installMode.equals("modules")) {
-//						if (installMode.equals("on")) {
-//							extraInstaller = "Examples";
-//						} else {
-//							extraInstaller = The.capitalizedWord(installMode);
-//						}
-//					}
+				// TODO IMPLEMENTAR O INSTALL DAS APPS FORA DOS MODULOS.
+				//ExtraInstaller
+				String extraInstaller = null;
+				if (!installMode.equals("modules")) {
+					if (installMode.equals("on")) {
+						extraInstaller = "Examples";
+					} else {
+						extraInstaller = The.capitalizedWord(installMode);
+					}
+				}
 
-//					if (extraInstaller != null) {
-//						try {
-//							Class exInstallerClass = Class.forName(INSTALL_DIR_NAME + "." + extraInstaller);
-//							log(">>> " + extraInstaller + " installing...  ");
-//							Installer extras = (Installer) exInstallerClass.newInstance();
-//							log(">>> " + extras + " installed in " + extras.totalTime() + " secs.");
-//						} catch (ClassNotFoundException ex) {
-//							log(">>> installer of " + extraInstaller + " not present.");
-//						}
-//					}
-//				}
+				if (extraInstaller != null) {
+					try {
+						Class exInstallerClass = Class.forName(INSTALL_DIR_NAME + "." + extraInstaller);
+						log(">>> " + extraInstaller + " installing...  ");
+						Installer extras = (Installer) exInstallerClass.newInstance();
+						log(">>> " + extras + " installed in " + extras.totalTime() + " secs.");
+					} catch (ClassNotFoundException ex) {
+						log(">>> installer of " + extraInstaller + " not present.");
+					}
+				}
 				Dao.getInstance().commitTransaction();
 				Dao.getInstance().close();
-
 			} catch (Exception ex) {
 				Dao.getInstance().rollBackTransaction();
 				throw ex;

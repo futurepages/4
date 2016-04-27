@@ -23,7 +23,7 @@ public class ModuleUtil {
 		if(modules == null){
 			getClassesPath();
 			
-			File modulesDir = new File(rootDir + "/" + Apps.MODULES_PATH);
+			File modulesDir = new File(rootDir.getAbsolutePath() + "/" + Apps.MODULES_PATH);
 			modules = modulesDir.listFiles();
 		}
 		return modules;
@@ -50,6 +50,7 @@ public class ModuleUtil {
 				return rootDir.getAbsolutePath();
 			} catch (UnsupportedEncodingException ignored) {}
 		}
+		rootDir = new File(classesPath);
 		return classesPath;
 	}
 

@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+// em standby enquando não migramos o que há no menta
+@Deprecated
 public abstract class Validator<SERVICES extends EntityServices>  {
 
 	/** mapa de validações (chave, mensagem)*/
