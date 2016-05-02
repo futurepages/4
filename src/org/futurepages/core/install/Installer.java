@@ -1,6 +1,10 @@
 package org.futurepages.core.install;
 
 import org.futurepages.core.exception.AppLogger;
+import org.futurepages.core.persistence.Dao;
+import org.futurepages.util.FileUtil;
+
+import java.io.IOException;
 
 /**
  * Instalador. Herde essa classe e coloque dentro do pacote install
@@ -40,5 +44,10 @@ public abstract class Installer implements Installation {
 
 	public long totalTime() {
 		return this.timeCount;
+	}
+
+	protected void executeSQLFromFile(String path) throws IOException {
+		String[] sqls = FileUtil.getStringLines(this.getClass(), path);
+		Dao.getInstance().executeSQLs(sqls);
 	}
 }
