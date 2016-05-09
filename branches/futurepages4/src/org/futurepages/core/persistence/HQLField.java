@@ -6,8 +6,8 @@ import org.futurepages.util.HQLUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
 
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collection;
@@ -83,10 +83,26 @@ public class HQLField implements HQLable {
 		return concat(fieldName, " = '", escQuoteAndSlashes(enumeration.name()), "'");
 	}
 
+	public String equalsTo(Object bean) {
+		if(bean.getClass().isAnnotationPresent(Entity.class)){
+			return concat(fieldName, " = '", escQuoteAndSlashes(Dao.getInstance().getIdValue(bean).toString()), "'");
+		}else{
+			throw new RuntimeException("HQLProvider.equalsTo(Object) must be used to an @Entity");
+		}
+	}
+
 	public String equalsTo(String value) {
 		if (Is.empty(value)) {
 			return "";
 		}
+		//TODO Isso tá muito errado!! VERIFICAR OUTROS EQUALS. É PRA SER TUDO COMO ESSE AÍ...
+		// APAGA O DE CIMA E DESCOMENTA OS DEBAIXO...
+//		if(value==null){
+//			return this.isNull();
+//		}
+//		if(Is.empty(value)){
+//			return this.isEmpty();
+//		}
 		return concat(fieldName, " = '", escQuoteAndSlashes(value), "'");
 	}
 
