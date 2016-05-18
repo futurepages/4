@@ -2,15 +2,10 @@ package org.futurepages.core.persistence;
 
 import org.futurepages.util.Is;
 import org.hibernate.Criteria;
-import org.hibernate.EntityMode;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.engine.spi.EntityKey;
-import org.hibernate.engine.spi.PersistenceContext;
-import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.transform.Transformers;
 
