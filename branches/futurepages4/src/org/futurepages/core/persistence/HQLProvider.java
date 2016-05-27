@@ -353,4 +353,8 @@ public class HQLProvider implements HQLable {
 	public static String concat(String... args) {
 		return The.concat(args);
 	}
+
+	public static String quoted(String value) {
+		return concat("'",value,"'");
+	}
 }
