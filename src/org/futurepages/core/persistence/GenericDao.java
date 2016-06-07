@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.transform.AliasToBeanConstructorResultTransformer;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.transform.Transformers;
 
@@ -17,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
@@ -200,10 +202,14 @@ public class GenericDao extends HQLProvider {
 		return (List) selectQuery(hqlQuery).list();
 	}
 
-	public <T> List<T> list(HQLQuery<T> hqlQuery, Class<T> resultClass) {
+	public <T,R> List<R> list(HQLQuery<T> hqlQuery, Class<R> resultClass) {
 		Query query = selectQuery(hqlQuery);
-		query.setResultTransformer(new AliasToBeanResultTransformer(resultClass));
-		return (List<T>) query.list();
+		try {
+			query.setResultTransformer(new AliasToBeanConstructorResultTransformer(resultClass.getConstructor(hqlQuery.getEntity())));
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
+		return (List<R>) query.list();
 	}
 
 	public <T> List<T> topList(int topSize, HQLQuery<T> hqlQuery, Class<T> resultClass) {
