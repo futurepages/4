@@ -15,10 +15,16 @@ import java.util.Date;
 public class CalendarInjectionFilter implements Filter {
 
 	private String keyToInject;
+	private boolean dateTime;
 
 	public CalendarInjectionFilter(String keyToInject) {
-		this.keyToInject = keyToInject;
+		this(keyToInject,true);
 	}
+	public CalendarInjectionFilter(String keyToInject,boolean dateTime) {
+		this.keyToInject = keyToInject;
+		this.dateTime = dateTime;
+	}
+
 //	public CalendarInjectionFilter(String keyToInject) {
 //		this(keyToInject);
 //		this.html5Input = html5Input;
@@ -36,9 +42,9 @@ public class CalendarInjectionFilter implements Filter {
 
 			int dayInt = Integer.parseInt(day);
 			int monthInt = Integer.parseInt(month);
-			int yearInt = Integer.parseInt(month);
-			int hourInt = Integer.parseInt(hour);
-			int minuteInt = Integer.parseInt(minute);
+			int yearInt = Integer.parseInt(year);
+			int hourInt = dateTime? Integer.parseInt(hour):0;
+			int minuteInt = dateTime? Integer.parseInt(minute):0;
 
 			Calendar cal = Calendar.getInstance();
 			cal.set(Calendar.YEAR, yearInt);
@@ -56,7 +62,11 @@ public class CalendarInjectionFilter implements Filter {
 			}else if(dayInt>28 && monthInt == 2 && !anoBissexto ){
 				input.setValue(keyToInject, null);
 			}else{
-				input.setValue(keyToInject, CalendarUtil.dbDateTimeToCalendar(The.concat(year , "-",The.strWithLeftZeros(month,2),"-", The.strWithLeftZeros(day,2), " ", The.strWithLeftZeros(hour,2),":",The.strWithLeftZeros(minute,2),":00")));
+				if(dateTime){
+					input.setValue(keyToInject, CalendarUtil.dbDateTimeToCalendar(The.concat(year , "-",The.strWithLeftZeros(month,2),"-", The.strWithLeftZeros(day,2), " ", The.strWithLeftZeros(hour,2),":",The.strWithLeftZeros(minute,2),":00")));
+				}else{
+					input.setValue(keyToInject, CalendarUtil.dbDateToCalendar(The.concat(year , "-",The.strWithLeftZeros(month,2),"-", The.strWithLeftZeros(day,2))));
+				}
 			}
 
 		} catch (Exception ex) {
