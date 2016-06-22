@@ -2,8 +2,11 @@ package org.futurepages.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.futurepages.util.CalendarUtil;
+import org.futurepages.util.FileUtil;
 
-import java.io.IOException;
+import java.util.Calendar;
+import java.util.HashMap;
 
 public class ConfigureAppVersion extends Task {
 
@@ -12,8 +15,12 @@ public class ConfigureAppVersion extends Task {
 	@Override
 	public void execute() throws BuildException {
 		try {
-			Runtime.getRuntime().exec("sed -i \"s/\\!--RELEASE--/param name=\\\"RELEASE\\\" value=\\\"$(date +%Y.%m.%d_%H_%M)\\\"\\//g\" "+ classesBaseDir +"/conf/app-params.xml");
-		} catch (IOException e) {
+			HashMap<String,String> contentMap = new HashMap<>();
+			contentMap.put("<!--RELEASE-->","<param name=\"RELEASE\" value=\""+ CalendarUtil.format(Calendar.getInstance(), "yyyy-MM-dd_HH_mm_ss")+"\" />");
+			String filePath = classesBaseDir+"/conf/app-params.xml";
+			FileUtil.putKeyValue(contentMap, filePath, filePath);
+
+		} catch (Exception e) {
 			throw new BuildException(e);
 		}
 	}
