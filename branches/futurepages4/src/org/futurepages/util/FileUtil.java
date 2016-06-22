@@ -296,6 +296,7 @@ public class FileUtil {
 	}
 
 	public static void copy(String fromFileName, String toFileName) throws IOException {
+//		System.out.println(fromFileName+ "-->"+toFileName);
 
 		File fromFile = new File(fromFileName);
 		File toFile = new File(EncodingUtil.correctPath(toFileName));
@@ -308,7 +309,7 @@ public class FileUtil {
 		//cópia de uma pasta inteira (recursiva)
 		if(fromFile.isDirectory()){
 
-			if(!toFile.exists()){
+			if(toFile.isDirectory() && !toFile.exists()){
 				toFile.mkdirs();
 			}
 
