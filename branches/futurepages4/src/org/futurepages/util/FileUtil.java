@@ -300,36 +300,36 @@ public class FileUtil {
 		File fromFile = new File(fromFileName);
 		File toFile = new File(EncodingUtil.correctPath(toFileName));
 
-		//para casos de mandar arquivo para dentro de uma pasto com o mesmo nome....
-		if (toFile.exists() && toFile.isDirectory()) {
+		//para casos de mandar arquivo para dentro de uma pasta com o mesmo nome....
+		if (!fromFile.isDirectory() && toFile.exists() && toFile.isDirectory()) {
 			toFile = new File(toFile, fromFile.getName());
 		}
 
 		//cópia de uma pasta inteira (recursiva)
 		if(fromFile.isDirectory()){
+
 			if(!toFile.exists()){
 				toFile.mkdirs();
 			}
+
 			File[] childrenFiles = fromFile.listFiles();
 			if(childrenFiles!=null && childrenFiles.length>0){
-				for(File file : childrenFiles){
-					copy(file.getAbsolutePath(), toFile.getAbsolutePath()+"/"+file.getName());
+				for(File childFile : childrenFiles){
+					copy(childFile.getAbsolutePath(), toFile.getAbsolutePath()+"/"+childFile.getName());
 				}
 			}
+
 		// cópia de arquivo...
 		} else {
-			if (!toFile.exists()) {
-				String parent = toFile.getParent();
-				if (parent == null) {
-					parent = System.getProperty("user.dir");
-				}
-			}
 
 			FileInputStream from = null;
 			FileOutputStream to = null;
 			try {
 				from = new FileInputStream(fromFile);
 				to = new FileOutputStream(toFile);
+//				System.out.println("Copy:");
+//				System.out.println("    from :"+fromFile.getAbsolutePath());
+//				System.out.println("    to   :"+toFile.getAbsolutePath());
 				byte[] buffer = new byte[4096];
 				int bytesRead;
 
