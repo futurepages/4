@@ -1,7 +1,6 @@
 package org.futurepages.menta.core.control;
 
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.exception.AppLogger;
 import org.futurepages.menta.core.ApplicationManager;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.callback.ConsequenceCallback;
