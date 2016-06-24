@@ -309,7 +309,7 @@ public class FileUtil {
 		//cópia de uma pasta inteira (recursiva)
 		if(fromFile.isDirectory()){
 
-			if(toFile.isDirectory() && !toFile.exists()){
+			if(!toFile.exists()){
 				toFile.mkdirs();
 			}
 
