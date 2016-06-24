@@ -35,8 +35,8 @@ public class ApplicationListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent evt) {
 		try {
 			ServletContext servletContext = evt.getServletContext();
-			String context = The.tokenAt(1, servletContext.getResource("/").getPath(), "/");
-			contextName = (context != null ? context : "ROOT");
+			String context = evt.getServletContext().getContextPath();
+			contextName = (!Is.empty(context) ? context : "ROOT");
 
 			log("Inicializando " + servletContext.getServletContextName() + "...");
 

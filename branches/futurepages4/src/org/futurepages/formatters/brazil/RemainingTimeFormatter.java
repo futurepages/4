@@ -36,7 +36,7 @@ public class RemainingTimeFormatter extends AbstractFormatter<Calendar> {
 			}
 		} catch (CalendarUtil.TooBigDateException e) {
 			int qtdDias;
-			if(daysCountdown!=null && daysCountdown >= (qtdDias=CalendarUtil.getDifferenceInDays(agora,momentoNoFuturo))){
+			if(daysCountdown!=null && daysCountdown >= (qtdDias=CalendarUtil.getDifferenceInAbsoluteDays(agora,momentoNoFuturo))){
 				return The.concat("faltam ",qtdDias," dias");
 			}else{
 				int mesAtual = agora.get(Calendar.MONTH)+1;
