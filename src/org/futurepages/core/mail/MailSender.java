@@ -47,16 +47,19 @@ public class MailSender {
 		return emails;
 	}
 
-	private List<Email> criarListaEmailsWithFrom(String nameFrom, String emailFrom, String[] mailAdresses, String subject, String message, TypeEmail typeEmail) throws EmailException {
+	private List<Email> criarListaEmailsWithFrom(String nameFrom, String emailReplyTo,String emailAccountFrom, String emailPassword, String[] mailAdresses, String subject, String message, TypeEmail typeEmail) throws EmailException {
 		List<Email> emails = new ArrayList<Email>();
 		for (String emailAdr : mailAdresses) {
 			Email email = newEmail(typeEmail,emailAdr, subject,message);
+			if(!Is.empty(emailAccountFrom)){
+				email.setAuthentication(emailAccountFrom,!Is.empty(emailPassword)?emailPassword: Apps.get("EMAIL_USER_PASSWORD"));
+			}
 			if(nameFrom.length()>60){
 				nameFrom = nameFrom.substring(0,60)+"...";
 			}
 			email.setFrom(Apps.get("EMAIL_FROM"), nameFrom);
-			if(!Is.empty(emailFrom)){
-				email.addReplyTo(emailFrom,nameFrom);
+			if(!Is.empty(emailReplyTo)){
+				email.addReplyTo(emailReplyTo,nameFrom);
 			}
 			emails.add(email);
 		}
@@ -64,7 +67,6 @@ public class MailSender {
 	}
 
 	private enum TypeEmail {
-
 		SIMPLE_EMAIL,
 		HTML_EMAIL;
 	}
@@ -90,15 +92,18 @@ public class MailSender {
 	 * O usuário aguarda a excução para receber uma
 	 * resposta do servidor.
 	 */
-	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailFrom, String subject, String message, String... mailAdresses) throws EmailException {
+	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String emailPassword, String subject, String message, String... mailAdresses) throws EmailException {
 		for (String mail : mailAdresses) {
 			HtmlEmail email = newHtmlEmail(mail, subject, message);
+			if(!Is.empty(emailAccountFrom)){
+				email.setAuthentication(emailAccountFrom,!Is.empty(emailPassword)?emailPassword: Apps.get("EMAIL_USER_PASSWORD"));
+			}
 			if(nameFrom.length()>60){
 				nameFrom = nameFrom.substring(0,60)+"...";
 			}
 			email.setFrom(Apps.get("EMAIL_FROM"), nameFrom);
-			if(!Is.empty(emailFrom)){
-				email.addReplyTo(emailFrom,nameFrom);
+			if(!Is.empty(emailReplyTo)){
+				email.addReplyTo(emailReplyTo,nameFrom);
 			}
 			send(email);
 		}
@@ -134,10 +139,10 @@ public class MailSender {
 
 	}
 
-	public void sendHtmlEmailWithFrom(String nameFrom, String emailFrom, String subject, String message, String... mailAdresses) {
+	public void sendHtmlEmailWithFrom(String nameFrom, String emailReplayTo, String emailAccountFrom, String emailPassword, String subject, String message, String... mailAdresses) {
 
 	try {
-			List<Email> emails = criarListaEmailsWithFrom(nameFrom, emailFrom,mailAdresses, subject, message, TypeEmail.HTML_EMAIL);
+			List<Email> emails = criarListaEmailsWithFrom(nameFrom, emailReplayTo, emailAccountFrom, emailPassword, mailAdresses, subject, message, TypeEmail.HTML_EMAIL);
 			ThreadEmail threadEmail = new ThreadEmail(emails);
 			Thread thread = new Thread(threadEmail);
 			thread.start();
