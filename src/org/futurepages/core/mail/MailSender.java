@@ -53,11 +53,22 @@ public class MailSender {
 			Email email = newEmail(typeEmail,emailAdr, subject,message);
 			if(!Is.empty(emailAccountFrom)){
 				email.setAuthentication(emailAccountFrom,!Is.empty(emailPassword)?emailPassword: Apps.get("EMAIL_USER_PASSWORD"));
+				email.setSmtpPort(Integer.valueOf(Apps.get("EMAIL_DEFAULT_PORT")));
+				email.setSSLConnection(Apps.get("EMAIL_SSL_CONNECTION").equals("true"));
+				email.setHostName(Apps.get("EMAIL_HOST_NAME"));
+				email.setFrom(emailAccountFrom, nameFrom);
+			}else{
+				email.setFrom(Apps.get("EMAIL_FROM"), Apps.get("EMAIL_FROM_NAME"));
 			}
+
 			if(nameFrom.length()>60){
 				nameFrom = nameFrom.substring(0,60)+"...";
 			}
-			email.setFrom(Apps.get("EMAIL_FROM"), nameFrom);
+
+			if(nameFrom.length()>60){
+				nameFrom = nameFrom.substring(0,60)+"...";
+			}
+
 			if(!Is.empty(emailReplyTo)){
 				email.addReplyTo(emailReplyTo,nameFrom);
 			}
@@ -97,11 +108,16 @@ public class MailSender {
 			HtmlEmail email = newHtmlEmail(mail, subject, message);
 			if(!Is.empty(emailAccountFrom)){
 				email.setAuthentication(emailAccountFrom,!Is.empty(emailPassword)?emailPassword: Apps.get("EMAIL_USER_PASSWORD"));
+				email.setSmtpPort(Integer.valueOf(Apps.get("EMAIL_DEFAULT_PORT")));
+				email.setSSLConnection(Apps.get("EMAIL_SSL_CONNECTION").equals("true"));
+				email.setHostName(Apps.get("EMAIL_HOST_NAME"));
+				email.setFrom(emailAccountFrom, nameFrom);
+			}else{
+				email.setFrom(Apps.get("EMAIL_FROM"), Apps.get("EMAIL_FROM_NAME"));
 			}
 			if(nameFrom.length()>60){
 				nameFrom = nameFrom.substring(0,60)+"...";
 			}
-			email.setFrom(Apps.get("EMAIL_FROM"), nameFrom);
 			if(!Is.empty(emailReplyTo)){
 				email.addReplyTo(emailReplyTo,nameFrom);
 			}

@@ -2,6 +2,7 @@ package org.futurepages.emails;
 
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.mail.DefaultAuthenticator;
+import org.futurepages.core.mail.MailConfig;
 import org.futurepages.exceptions.EmailException;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
@@ -832,6 +833,7 @@ public abstract class Email {
             }
 
             Transport.send(this.message);
+			MailConfig.initialize(); //necessário pois pode acontecer de o sistema enviar emails que não sejam o padrão.
         } catch (Exception ex) {
 	        throw new EmailException("Problem trying to send email to "+The.implodedArray(destinyAddress(),",","'")+": "+ex.getMessage(), ex);
         }
