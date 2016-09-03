@@ -52,7 +52,7 @@ public class MailSender {
 		for (String emailAdr : mailAdresses) {
 			Email email = newEmail(typeEmail,emailAdr, subject,message);
 			if(!Is.empty(emailAccountFrom)){
-				email.setAuthentication(emailAccountFrom,!Is.empty(emailPassword)?emailPassword: Apps.get("EMAIL_USER_PASSWORD"));
+				//email.setAuthentication(emailAccountFrom,!Is.empty(emailPassword)?emailPassword: Apps.get("EMAIL_USER_PASSWORD"));
 				email.setSmtpPort(Integer.valueOf(Apps.get("EMAIL_DEFAULT_PORT")));
 				email.setSSLConnection(Apps.get("EMAIL_SSL_CONNECTION").equals("true"));
 				email.setHostName(Apps.get("EMAIL_HOST_NAME"));
@@ -107,7 +107,7 @@ public class MailSender {
 		for (String mail : mailAdresses) {
 			HtmlEmail email = newHtmlEmail(mail, subject, message);
 			if(!Is.empty(emailAccountFrom)){
-				email.setAuthentication(emailAccountFrom,!Is.empty(emailPassword)?emailPassword: Apps.get("EMAIL_USER_PASSWORD"));
+				//email.setAuthentication(emailAccountFrom,!Is.empty(emailPassword)?emailPassword: Apps.get("EMAIL_USER_PASSWORD"));
 				email.setSmtpPort(Integer.valueOf(Apps.get("EMAIL_DEFAULT_PORT")));
 				email.setSSLConnection(Apps.get("EMAIL_SSL_CONNECTION").equals("true"));
 				email.setHostName(Apps.get("EMAIL_HOST_NAME"));
