@@ -230,6 +230,7 @@ public class ImageUtil {
 		System.gc();
 	}
 
+	//reduz imagem mantendo o aspect-ratio. As larguras e alturas passadas como parâmetro são os max possíveis de cada um.
 	public static void reduceImage(File file,int thumbW, int thumbH, String pathNewFile, boolean stretchWhenSmaller) throws IOException {
 		SeekableStream seekableStream = new FileSeekableStream(file);
 		ParameterBlock pb = new ParameterBlock();
@@ -239,6 +240,16 @@ public class ImageUtil {
 			image = JAI.create("stream", pb).getAsBufferedImage();
 		} else {
 			image = bufferedImgWithNoAlpha(JAI.create("stream", pb).getAsBufferedImage());
+		}
+
+		int imageWidth = image.getWidth(null);
+		int imageHeight = image.getHeight(null);
+		double imageRatio = (double) imageWidth / (double) imageHeight;
+
+		if (imageWidth>imageHeight) {
+			thumbH = (int) (thumbW / imageRatio);
+		} else {
+			thumbW = (int) (thumbH * imageRatio);
 		}
 
 		//RESIZING....
