@@ -230,6 +230,41 @@ public class ImageUtil {
 		System.gc();
 	}
 
+	public static void reduceImage(File file,int thumbW, int thumbH, String pathNewFile, boolean stretchWhenSmaller) throws IOException {
+		SeekableStream seekableStream = new FileSeekableStream(file);
+		ParameterBlock pb = new ParameterBlock();
+		pb.add(seekableStream);
+		BufferedImage image;
+		if(FileUtil.extensionFormat(file.getAbsolutePath()).equals("png") && FileUtil.extensionFormat(pathNewFile).equals("png")){
+			image = JAI.create("stream", pb).getAsBufferedImage();
+		} else {
+			image = bufferedImgWithNoAlpha(JAI.create("stream", pb).getAsBufferedImage());
+		}
+
+		//RESIZING....
+		if (thumbW >= image.getWidth() || thumbH >= image.getHeight()) {
+			//quando imagem é menor que o resultado final, faz um esticamento para crescer até o tamanho desejado.
+			//quando imagem é menor que o resultado final, faz um resizer pobre
+			if (stretchWhenSmaller) {
+				image = poorResize(image, null, thumbW, thumbH, 100, pathNewFile);
+			} else {
+				image = poorResize(image, null, image.getWidth(), image.getHeight(), 100, pathNewFile);
+			}
+		} else {
+			image = poorResize(image, null, thumbW, thumbH, 100, pathNewFile);
+		}
+
+		if(FileUtil.extensionFormat(pathNewFile).equals("png")){
+			ImageIO.write(image, "png", new File(pathNewFile));
+		}else{
+			createJPEG(image, 100, pathNewFile);
+		}
+
+		image.flush();
+		image = null;
+		System.gc();
+	}
+
 	private static BufferedImage bufferedCutInRatio(BufferedImage image, int w, int h) {
 
 		int oH = image.getHeight();
