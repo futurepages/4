@@ -88,36 +88,6 @@
 		</attribute>
 	</tag>
 	<tag>
-		<name>browserDetectionClass</name>
-		<tag-class>org.futurepages.menta.tags.BrowserDetectionClass</tag-class>
-		<body-content>empty</body-content>
-		<display-name>BrowserDetectionClass</display-name>
-		<attribute>
-			<name>browser</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<name>engine</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<name>max</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-			<type>int</type>
-		</attribute>
-		<attribute>
-			<name>mobile</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
 		<name>contextPath</name>
 		<tag-class>org.futurepages.menta.tags.core.paths.ContextPath</tag-class>
 		<body-content>empty</body-content>
