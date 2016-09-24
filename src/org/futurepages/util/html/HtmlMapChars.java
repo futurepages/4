@@ -146,7 +146,7 @@ public class HtmlMapChars {
      * @return a string com os caracteres especiais críticos convertidos para a codificação HTML
      */
     public static String htmlSimpleValue(String strIn){
-        if(strIn == null) return "&nbsp;";
+        if(strIn == null) return "";
 
 		StringBuilder outBuffer = new StringBuilder();
         for(int i = 0; i < strIn.length();i++){

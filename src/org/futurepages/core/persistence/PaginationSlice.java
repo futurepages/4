@@ -1,5 +1,7 @@
 package org.futurepages.core.persistence;
 
+import org.futurepages.util.Is;
+
 import java.util.List;
 
 public class PaginationSlice<T> extends HQLProvider{
@@ -41,7 +43,7 @@ public class PaginationSlice<T> extends HQLProvider{
     }
 
     public PaginationSlice<T> loadPageByFirstResult(int firstResult) {
-        this.totalSize = dao.numRows(hql(count("*"), hqlQuery.getEntity(), hqlQuery.getWhere()));
+        this.totalSize = dao.numRows(hql(count("*"), hqlQuery.getEntity() ,hqlQuery.getAlias() , hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
         this.totalPages  = calcTotalPages(totalSize,pageSize);
         this.pageNumber = calcCorrectPageNumberByFirstResult(firstResult);
         this.firstResult = firstResult;
@@ -93,7 +95,7 @@ public class PaginationSlice<T> extends HQLProvider{
     }
 
     public long calcTotalSize(){
-        return dao.numRows(hql(count("*"),hqlQuery.getEntity(), hqlQuery.getWhere()));
+        return dao.numRows(hql(count("*"),hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
     }
 
     public Integer getPageSize() {

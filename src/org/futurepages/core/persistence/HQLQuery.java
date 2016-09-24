@@ -185,4 +185,8 @@ public class HQLQuery<T> extends HQLProvider {
 	public void setFieldToUpdate(String fieldToUpdate) {
 		this.fieldToUpdate = fieldToUpdate;
 	}
+
+	public String getJoinType() {
+		return joinType;
+	}
 }
