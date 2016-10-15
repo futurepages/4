@@ -11,7 +11,6 @@ import org.futurepages.util.brazil.enums.UnitTimeEnum;
 import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.brazil.enums.MonthEnum;
 
-//TODO - falta contemplar o "amanhã"
 public class RemainingTimeFormatter extends AbstractFormatter<Calendar> {
 
 	@Override
