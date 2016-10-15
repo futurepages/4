@@ -39,7 +39,7 @@ public class HQLProvider implements HQLable {
 			return new HQLField(sb.toString());
 		}
 
-		return null;
+		return new HQLField("");
 	}
 
 	public static String distinct(String selectClause) {

@@ -430,6 +430,11 @@ public class GenericDao extends HQLProvider {
 		return (T) session().get(entity, id);
 	}
 
+	public Object get(HQLQuery hql) {
+		Query query = selectQuery(hql);
+		return query.uniqueResult();
+	}
+
 	public <T> T uniqueResult(HQLQuery<T> hqlQuery) {
 		Query query = selectQuery(hqlQuery);
 		return (T) query.uniqueResult();
