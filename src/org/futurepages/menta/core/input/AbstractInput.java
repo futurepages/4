@@ -48,6 +48,9 @@ public abstract class AbstractInput implements Input {
 
 	@Override
 	public Calendar getCalendarValue(String name){
+		if(getValue(name) instanceof Calendar){
+			return (Calendar) getValue(name);
+		}
         String value = getStringValue(name);
 		return BrazilCalendarUtil.viewDateTime(value);
 	}
