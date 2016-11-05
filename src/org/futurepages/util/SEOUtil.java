@@ -16,6 +16,7 @@ public class SEOUtil {
 
     static{
     	String empty =  "";
+        specials.put('#',"_");
         specials.put('-',"_");
         specials.put(' ',"-");
         specials.put('@',"_");
