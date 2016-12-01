@@ -1,7 +1,5 @@
 package org.futurepages.core.persistence;
 
-import org.futurepages.util.Is;
-
 import java.util.List;
 
 public class PaginationSlice<T> extends HQLProvider{
