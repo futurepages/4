@@ -1,11 +1,20 @@
 # Futurepages Web Framework V.4
 
-Designed for Web Applications with Java 8 and JEE6. 
+Futurepages is designed for Web Applications with Java 8 and JEE6.
+
+Futurepages Web Framework is written in Java and its source code is open under the GNU Lesser General Public License, version 3.0 (LGPL-3.0), an OSI Approved License. LGPL-3.0 is a set of additional permissions added to version 3 of the GNU General Public License. 
+
+We have recently migrated from Subversion to GIT (github), so somethings are being organized yet.
+
+* [Visite our legacy page from Futurepages 2](http://futurepages.org/)
+
+
+We are focused on the two specific technologies under JEE6 below:
 
 * Servlet	3.0	JSR315
 * JavaServer Pages (JSP)	2.2	JSR245
 
-We are over some frameworks:
+We are over some well known frameworks:
 
 * Hibernate 4
 * Hibernate-validator-5.1.3
