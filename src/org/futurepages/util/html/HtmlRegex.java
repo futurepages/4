@@ -149,13 +149,14 @@ public class HtmlRegex {
 		return COMPILED_TAGS_WITH_CONTENT_PATTERN;
 	}
 
-	public static String javascriptText(String value) {
+	public static String javascriptText(String value, boolean escapeIntoStr) {
 		String val = value;
 		val = NEW_LINE.matcher(val).replaceAll("\\\\n");
 		val = CARRIAGE_RETURN.matcher(val).replaceAll("\\\\r");
-
-		val = val.replace("\\r","\\\\r");
-		val = val.replace("\\n","\\\\n");
+		if(escapeIntoStr){
+			val = val.replace("\\r","\\\\r");
+			val = val.replace("\\n","\\\\n");
+		}
 		val = SINGLE_QUOTE.matcher(val).replaceAll("\\\\\'");
 		val = DOUBLE_QUOTE.matcher(val).replaceAll("\\\\\"");
 		//val = OPEN_SCRIPT_TAG.matcher(val).replaceAll("&lt;$1$2$3&gt;");

@@ -397,8 +397,8 @@ public class The {
 		}
 	}
 
-	public static String javascriptText(String value) {		
-		return HtmlRegex.javascriptText(value);
+	public static String javascriptText(String value, boolean escapeIntoStr) {
+		return HtmlRegex.javascriptText(value, escapeIntoStr);
 	}
 
 	static String stringWithoutInitialNumbers(String str) {
