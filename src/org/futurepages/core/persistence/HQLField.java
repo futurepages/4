@@ -400,6 +400,15 @@ public class HQLField implements HQLable {
 		return buildlStringExpression(IN, tokens);
 	}
 
+
+	public String in(Enum... tokens) {
+		String[] strings = new String[tokens.length];
+		for(int i = 0; i<tokens.length;i++){
+			strings[i] = tokens[i].name();
+		}
+		return buildlStringExpression(IN, strings);
+	}
+
 	public String inList(Collection list) {
 		if (list == null || list.size() == 0) {
 			return "";
