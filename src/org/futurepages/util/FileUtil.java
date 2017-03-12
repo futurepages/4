@@ -431,6 +431,20 @@ public class FileUtil {
 			}
 		}
 	}
+
+	public static void deleteFolderAndContents(File folder) {
+		File[] files = folder.listFiles();
+		if (files != null) { //some JVMs return null for empty dirs
+			for (File f : files) {
+				if (f.isDirectory()) {
+					deleteFolderAndContents(f);
+				} else {
+					f.delete();
+				}
+			}
+		}
+		folder.delete();
+	}
 	
 	public static String convertStreamToString(InputStream is) {
 		/*
