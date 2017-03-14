@@ -156,6 +156,7 @@ public class HtmlRegex {
 		if(escapeIntoStr){
 			val = val.replace("\\r","\\\\r");
 			val = val.replace("\\n","\\\\n");
+			val = val.replace("\\t","\\\\t");
 		}
 		val = SINGLE_QUOTE.matcher(val).replaceAll("\\\\\'");
 		val = DOUBLE_QUOTE.matcher(val).replaceAll("\\\\\"");
