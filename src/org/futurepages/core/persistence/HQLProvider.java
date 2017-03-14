@@ -279,7 +279,9 @@ public class HQLProvider implements HQLable {
 			} else if (fields.length > 1) {
 				StringBuilder sb = new StringBuilder();
 				for (Object field : fields) {
-					sb.append(field.toString()).append(",");
+					if(!Is.empty(field)){
+						sb.append(field.toString()).append(",");
+					}
 				}
 				String result = sb.toString();
 				return result.substring(0, result.length() - 1);
