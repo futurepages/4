@@ -1,5 +1,6 @@
 package org.futurepages.menta.core;
 
+import org.futurepages.core.DeployMigrations;
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.install.InstallersManager;
@@ -11,7 +12,6 @@ import org.futurepages.core.quartz.QuartzManager;
 import org.futurepages.menta.core.resource.ResourceMinifier;
 import org.futurepages.menta.core.tags.build.TagLibBuilder;
 import org.futurepages.util.Is;
-import org.futurepages.util.The;
 import org.quartz.SchedulerException;
 
 import javax.servlet.ServletContext;
@@ -92,6 +92,11 @@ public class ApplicationListener implements ServletContextListener {
 							log("Erro de Migração... "+ex.getMessage());
 						}
 					}
+					if (Apps.get("DEPLOY_MODE").equals("production")
+					 || Apps.get("DEPLOY_MODE").equals("pre-production")) {
+						DeployMigrations.run();
+					}
+
 				}
 			} else {
 				log("WARNING: HIBERNATE is not running!");
