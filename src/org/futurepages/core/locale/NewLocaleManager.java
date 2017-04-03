@@ -1,11 +1,8 @@
 package org.futurepages.core.locale;
 
-import org.futurepages.core.config.Apps;
-import org.futurepages.core.control.UI;
-import org.futurepages.exceptions.AppsPropertiesException;
+//import org.futurepages.core.control.UI;
 import org.futurepages.menta.core.i18n.LocaleManager;
 
-import java.util.Collection;
 import java.util.Locale;
 
 public class NewLocaleManager {
