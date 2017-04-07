@@ -24,11 +24,16 @@ import org.futurepages.util.Security;
 import org.futurepages.util.The;
 import org.futurepages.util.html.HtmlMapChars;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -592,6 +597,43 @@ public abstract class AbstractAction implements Pageable, Action {
 		if (this.chain == null) {
 			this.chain = chain;
 		}
+	}
+	public String getJSPResponseContent(String jspPath) throws ServletException, IOException {
+			HttpServletResponseWrapper responseWrapper = new HttpServletResponseWrapper(this.getResponse()) {
+				private final StringWriter sw = new StringWriter();
+
+				@Override
+				public PrintWriter getWriter() throws IOException {
+					return new PrintWriter(sw);
+				}
+
+				@Override
+				public String toString() {
+					return sw.toString();
+				}
+			};
+			//chamando servlet
+			getRequest().getRequestDispatcher(jspPath).include(getRequest(), responseWrapper);
+			return responseWrapper.toString();
+	}
+
+	public String getServletResponseContent(String servletPath) throws ServletException, IOException {
+			HttpServletResponseWrapper responseWrapper = new HttpServletResponseWrapper(this.getResponse()) {
+				private final StringWriter sw = new StringWriter();
+
+				@Override
+				public PrintWriter getWriter() throws IOException {
+					return new PrintWriter(sw);
+				}
+
+				@Override
+				public String toString() {
+					return sw.toString();
+				}
+			};
+			//chamando servlet
+			this.getRequest().getRequestDispatcher(servletPath).forward(getRequest(), responseWrapper);
+			return responseWrapper.toString();
 	}
 
 	protected class Dispatcher {
