@@ -9,6 +9,7 @@ public class HtmlMapChars {
 
     private static final HashMap<Character, String> plainTable    = new HashMap<Character, String>();
     private static final HashMap<String, String> simpleTable    = new HashMap<String, String>();
+    private static final HashMap<String, String> charsetSafe = new HashMap<String, String>();
     private static final HashMap<String, String> completeTable  = new HashMap<String, String>();
     private static final HashMap<Character, String> textareaTable  = new HashMap<Character, String>();
     private static final HashMap<String,String> reverseCompleteTable  = new HashMap<String,String>();
@@ -38,80 +39,82 @@ public class HtmlMapChars {
         simpleTable.put("&"  ,"&amp;");
 
         //povoando tabela com todos os especiais alfabéticos.
+        charsetSafe.put("Á","&Aacute;");
+        charsetSafe.put("á","&aacute;");
+        charsetSafe.put("Â","&Acirc;");
+        charsetSafe.put("â","&acirc;");
+        charsetSafe.put("À","&Agrave;");
+        charsetSafe.put("à","&agrave;");
+        charsetSafe.put("Å","&Aring;");
+        charsetSafe.put("å","&aring;");
+        charsetSafe.put("Ã","&Atilde;");
+        charsetSafe.put("ã","&atilde;");
+        charsetSafe.put("Ä","&Auml;");
+        charsetSafe.put("ä","&auml;");
+        charsetSafe.put("Æ","&AElig;");
+        charsetSafe.put("æ","&aelig;");
+        charsetSafe.put("É","&Eacute;");
+        charsetSafe.put("é","&eacute;");
+        charsetSafe.put("Ê","&Ecirc;");
+        charsetSafe.put("ê","&ecirc;");
+        charsetSafe.put("È","&Egrave;");
+        charsetSafe.put("è","&egrave;");
+        charsetSafe.put("Ë","&Euml;");
+        charsetSafe.put("ë","&euml;");
+        charsetSafe.put("Ð","&ETH;");
+        charsetSafe.put("ð","&eth;");
+        charsetSafe.put("Í","&Iacute;");
+        charsetSafe.put("í","&iacute;");
+        charsetSafe.put("Î","&Icirc;");
+        charsetSafe.put("î","&icirc;");
+        charsetSafe.put("Ì","&Igrave;");
+        charsetSafe.put("ì","&igrave;");
+        charsetSafe.put("Ï","&Iuml;");
+        charsetSafe.put("ï","&iuml;");
+        charsetSafe.put("Ó","&Oacute;");
+        charsetSafe.put("ó","&oacute;");
+        charsetSafe.put("Ô","&Ocirc;");
+        charsetSafe.put("ô","&ocirc;");
+        charsetSafe.put("Ò","&Ograve;");
+        charsetSafe.put("ò","&ograve;");
+        charsetSafe.put("Ø","&Oslash;");
+        charsetSafe.put("ø","&oslash;");
+        charsetSafe.put("Õ","&Otilde;");
+        charsetSafe.put("õ","&otilde;");
+        charsetSafe.put("Ö","&Ouml;");
+        charsetSafe.put("ö","&ouml;");
+        charsetSafe.put("Ú","&Uacute;");
+        charsetSafe.put("ú","&uacute;");
+        charsetSafe.put("Û","&Ucirc;");
+        charsetSafe.put("û","&ucirc;");
+        charsetSafe.put("Ù","&Ugrave;");
+        charsetSafe.put("ù","&ugrave;");
+        charsetSafe.put("Ü","&Uuml;");
+        charsetSafe.put("ü","&uuml;");
+        charsetSafe.put("Ç","&Ccedil;");
+        charsetSafe.put("ç","&ccedil;");
+        charsetSafe.put("Ñ","&Ntilde;");
+        charsetSafe.put("ñ","&ntilde;");
+
+		charsetSafe.put("º","&ordm;");
+		charsetSafe.put("°","&deg;");
+		charsetSafe.put("ª","&ordf;");
+		charsetSafe.put("§","&sect;");
+		charsetSafe.put("©","&copy;");
+		charsetSafe.put("®","&reg;");
+		charsetSafe.put("™","&trade;");
+		charsetSafe.put("€","&euro;");
+		charsetSafe.put("£","&pound;");
+
+		charsetSafe.put("“","&ldquo;");
+		charsetSafe.put("”","&rdquo;");
+		charsetSafe.put("′","&prime;");
+		charsetSafe.put("‘","&lsquo;");
+		charsetSafe.put("’","&rsquo;");
+		charsetSafe.put("″","&Prime;");
+		
         completeTable.putAll(simpleTable);
-        completeTable.put("Á","&Aacute;");
-        completeTable.put("á","&aacute;");
-        completeTable.put("Â","&Acirc;");
-        completeTable.put("â","&acirc;");
-        completeTable.put("À","&Agrave;");
-        completeTable.put("à","&agrave;");
-        completeTable.put("Å","&Aring;");
-        completeTable.put("å","&aring;");
-        completeTable.put("Ã","&Atilde;");
-        completeTable.put("ã","&atilde;");
-        completeTable.put("Ä","&Auml;");
-        completeTable.put("ä","&auml;");
-        completeTable.put("Æ","&AElig;");
-        completeTable.put("æ","&aelig;");
-        completeTable.put("É","&Eacute;");
-        completeTable.put("é","&eacute;");
-        completeTable.put("Ê","&Ecirc;");
-        completeTable.put("ê","&ecirc;");
-        completeTable.put("È","&Egrave;");
-        completeTable.put("è","&egrave;");
-        completeTable.put("Ë","&Euml;");
-        completeTable.put("ë","&euml;");
-        completeTable.put("Ð","&ETH;");
-        completeTable.put("ð","&eth;");
-        completeTable.put("Í","&Iacute;");
-        completeTable.put("í","&iacute;");
-        completeTable.put("Î","&Icirc;");
-        completeTable.put("î","&icirc;");
-        completeTable.put("Ì","&Igrave;");
-        completeTable.put("ì","&igrave;");
-        completeTable.put("Ï","&Iuml;");
-        completeTable.put("ï","&iuml;");
-        completeTable.put("Ó","&Oacute;");
-        completeTable.put("ó","&oacute;");
-        completeTable.put("Ô","&Ocirc;");
-        completeTable.put("ô","&ocirc;");
-        completeTable.put("Ò","&Ograve;");
-        completeTable.put("ò","&ograve;");
-        completeTable.put("Ø","&Oslash;");
-        completeTable.put("ø","&oslash;");
-        completeTable.put("Õ","&Otilde;");
-        completeTable.put("õ","&otilde;");
-        completeTable.put("Ö","&Ouml;");
-        completeTable.put("ö","&ouml;");
-        completeTable.put("Ú","&Uacute;");
-        completeTable.put("ú","&uacute;");
-        completeTable.put("Û","&Ucirc;");
-        completeTable.put("û","&ucirc;");
-        completeTable.put("Ù","&Ugrave;");
-        completeTable.put("ù","&ugrave;");
-        completeTable.put("Ü","&Uuml;");
-        completeTable.put("ü","&uuml;");
-        completeTable.put("Ç","&Ccedil;");
-        completeTable.put("ç","&ccedil;");
-        completeTable.put("Ñ","&Ntilde;");
-        completeTable.put("ñ","&ntilde;");
-
-		completeTable.put("º","&ordm;");
-		completeTable.put("°","&deg;");
-		completeTable.put("ª","&ordf;");
-		completeTable.put("§","&sect;");
-		completeTable.put("©","&copy;");
-		completeTable.put("®","&reg;");
-		completeTable.put("™","&trade;");
-		completeTable.put("€","&euro;");
-		completeTable.put("£","&pound;");
-
-		completeTable.put("“","&ldquo;");
-		completeTable.put("”","&rdquo;");
-		completeTable.put("′","&prime;");
-		completeTable.put("‘","&lsquo;");
-		completeTable.put("’","&rsquo;");
-		completeTable.put("″","&Prime;");
+        completeTable.putAll(charsetSafe);
 
 		reverseCompleteTable.put("&nbsp;","	");
 		for(String str : completeTable.keySet()){
@@ -151,6 +154,22 @@ public class HtmlMapChars {
 		StringBuilder outBuffer = new StringBuilder();
         for(int i = 0; i < strIn.length();i++){
             String htmlValue = getSimple(strIn.charAt(i));
+            if(htmlValue != null){
+                outBuffer.append(htmlValue);
+            }
+            else{
+                outBuffer.append(strIn.charAt(i));
+            }
+        }
+        return outBuffer.toString();
+    }
+
+    public static String charsetSafe(String strIn){
+        if(strIn == null) return "";
+
+		StringBuilder outBuffer = new StringBuilder();
+        for(int i = 0; i < strIn.length();i++){
+            String htmlValue = charsetSafe.get(String.valueOf(strIn.charAt(i)));
             if(htmlValue != null){
                 outBuffer.append(htmlValue);
             }
