@@ -2,6 +2,7 @@ package org.futurepages.core.path;
 
 import javax.servlet.http.HttpServletRequest;
 import org.futurepages.core.config.Apps;
+import org.futurepages.util.Is;
 import org.futurepages.util.The;
 
 /**
@@ -23,7 +24,7 @@ public class StaticPaths extends Paths {
 
 	public StaticPaths(String context) {
 		hostPath = Apps.get("AUTO_REDIRECT_DOMAIN");
-		contextPath = The.concat("/",context);
+		contextPath = The.concat(hostPath,!Is.empty(context)?"/":"",context);
 		modulePath = The.concat(contextPath,"/", Apps.MODULES_PATH,"/");
 		modulesActionPath = The.concat(contextPath,"/");
 		resourceInternalPath =  Apps.get("RESOURCE_PATH");
