@@ -50,10 +50,11 @@ public class PDFUtil {
     public static void addFonts(ITextRenderer renderer, String pathFontDir) throws Exception {
         File fontDir = new File(pathFontDir);
         File[] fontFiles = fontDir.listFiles();
-        for (File fontFile : fontFiles) {
-            renderer.getFontResolver().addFont(fontFile.getAbsolutePath(), true);
-        }
-    }
+		if (fontFiles != null)
+			for (File fontFile : fontFiles) {
+				renderer.getFontResolver().addFont(fontFile.getAbsolutePath(), true);
+			}
+	}
 
     /**
      * Extrai o texto de um arquivo pdf em formato String.
