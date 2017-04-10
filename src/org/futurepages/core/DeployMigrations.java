@@ -22,7 +22,9 @@ public class DeployMigrations {
 							if(FileUtil.extensionFormat(version.getName()).equals("sql")){
 								System.out.println(" > MIGRATION-SQL: "+version.getName()+"...");
 								try {
+									Dao.getInstance().beginTransaction();
 									Dao.getInstance().executeSQLs(true,FileUtil.getStringLines(version));
+									Dao.getInstance().commitTransaction();
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
