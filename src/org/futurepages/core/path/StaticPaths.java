@@ -30,7 +30,7 @@ public class StaticPaths extends Paths {
 		resourceInternalPath =  Apps.get("RESOURCE_PATH");
 		resourcePath =  The.concat(contextPath,"/",resourceInternalPath);
 		templatePath = The.concat(contextPath,"/", Apps.TEMPLATE_PATH);
-
+		themePath = The.concat(templatePath,"/",Apps.get("THEMES_DIR_NAME"),"/",Apps.get("THEME"));
 	}
 
 	@Override
@@ -68,4 +68,9 @@ public class StaticPaths extends Paths {
 	public String getTemplate(HttpServletRequest req, String module) {
 		return (module==null? getTemplate(req) : The.concat(modulePath,module,"/", Apps.TEMPLATE_PATH));
 	}
+
+	@Override
+    public String getTheme(HttpServletRequest req){
+        return themePath;
+    }
 }

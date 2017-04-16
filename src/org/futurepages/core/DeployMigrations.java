@@ -6,6 +6,7 @@ import org.futurepages.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class DeployMigrations {
 
@@ -17,6 +18,7 @@ public class DeployMigrations {
 			if(versionsMigrationDir.exists() && versionsMigrationDir.isDirectory()){
 				File[] versions = versionsMigrationDir.listFiles();
 				if(versions != null){
+					Arrays.sort(versions);
 					for (File version : versions){
 						if(version.isFile()){
 							if(FileUtil.extensionFormat(version.getName()).equals("sql")){

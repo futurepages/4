@@ -15,15 +15,18 @@ public class Paths {
 
 	
 	public static void initialize() {
-		initialize(null);
+		INSTANCE = new Paths();
 	}
 
 	public static void initialize(String staticContext) {
-		if(staticContext != null){
-			INSTANCE = new StaticPaths(staticContext);
-		}else{
-			INSTANCE = new Paths();
+		INSTANCE = new StaticPaths(staticContext);
+	}
+
+	public Paths getInstance(){
+		if(INSTANCE==null){
+			initialize();
 		}
+		return INSTANCE;
 	}
 
 	//#### ESCOPO DINÂMICO ########################################################################
