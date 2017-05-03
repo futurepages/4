@@ -244,6 +244,10 @@ public class HQLProvider implements HQLable {
 		return new HQLQuery<>(select,entityFrom,alias,join,where,order);
 	}
 
+	public static <S extends Serializable, T extends Serializable> HQLQuery<S> hql(String select, Class<S> selectType, Class<T> entityFrom, String alias, String join, String where, String order) {
+		return new HQLQuery<>(select,selectType,entityFrom,alias,join,where,order);
+	}
+
 	public static <T extends Serializable> HQLQuery<T> hql(String select, Class<T> entityFrom, String alias, String joinType ,String join, String where, String order) {
 		return new HQLQuery<>(select,entityFrom,alias,joinType,join,where,order);
 	}

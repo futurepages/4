@@ -1,6 +1,5 @@
 package org.futurepages.core.persistence;
 
-import org.futurepages.util.ReflectionUtil;
 import org.futurepages.util.The;
 
 public class HQLQuery<T> extends HQLProvider {
@@ -8,7 +7,7 @@ public class HQLQuery<T> extends HQLProvider {
 	private String fieldToUpdate;
 	private String expression;
 	private String select;
-	private Class<T> entity;
+	private Class entity;
 	private String alias;
 	private String joinType;
 	private String join;
@@ -64,6 +63,17 @@ public class HQLQuery<T> extends HQLProvider {
 		this.where = where;
 		this.order = order;
 	}
+
+	@SuppressWarnings("UnusedParameters") // selectType só serve pra generics.
+	public HQLQuery(String select, Class<T> selectType, Class entity, String alias, String join, String where, String order) {
+		this.select = select;
+		this.entity = entity;
+		this.alias = alias;
+		this.join = join;
+		this.where = where;
+		this.order = order;
+	}
+
 	public HQLQuery(String select, Class<T> entity, String alias, String joinType, String join, String where, String order) {
 		this.select = select;
 		this.entity = entity;
