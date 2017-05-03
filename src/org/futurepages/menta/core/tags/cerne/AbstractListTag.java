@@ -1,5 +1,10 @@
 package org.futurepages.menta.core.tags.cerne;
 
+import org.futurepages.menta.annotations.SuperTag;
+import org.futurepages.menta.annotations.TagAttribute;
+import org.futurepages.menta.core.tags.PrintTag;
+
+import javax.servlet.jsp.JspException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,13 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.Tag;
-
-import org.futurepages.menta.annotations.SuperTag;
-import org.futurepages.menta.annotations.TagAttribute;
-import org.futurepages.menta.core.tags.PrintTag;
-
 /**
  * @author Sergio Oliveira
  */
@@ -22,7 +20,7 @@ import org.futurepages.menta.core.tags.PrintTag;
 public abstract class AbstractListTag<T extends Object> extends AbstractListContext<T> {
 
 	@TagAttribute(required = false)  //@TODO - não ficar aqui, deveria estar na tag List
-	private String value;
+	private Object value;
 
 	@TagAttribute
 	private String orderBy = null;
@@ -33,7 +31,7 @@ public abstract class AbstractListTag<T extends Object> extends AbstractListCont
 	@TagAttribute
 	private boolean desc = false;
 
-	public void setValue(String value) {
+	public void setValue(Object value) {
 		this.value = value;
 	}
 
@@ -47,7 +45,7 @@ public abstract class AbstractListTag<T extends Object> extends AbstractListCont
 
 	@Override
 	protected String getName() {
-		return value;
+		return "listElement";
 	}
 
 	@Override
@@ -59,7 +57,7 @@ public abstract class AbstractListTag<T extends Object> extends AbstractListCont
 		 * obj); } }
 		 */
 
-		Object obj = PrintTag.getValue(value, pageContext, false);
+		Object obj = (value instanceof String)? PrintTag.getValue((String)value, pageContext, false) : value;
 
 		if (obj == null) {
 			return null;
