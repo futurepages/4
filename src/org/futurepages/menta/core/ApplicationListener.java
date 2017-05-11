@@ -96,7 +96,6 @@ public class ApplicationListener implements ServletContextListener {
 					 || Apps.get("DEPLOY_MODE").equals("pre-production")) {
 						DeployMigrations.run();
 					}
-
 				}
 			} else {
 				log("WARNING: HIBERNATE is not running!");
