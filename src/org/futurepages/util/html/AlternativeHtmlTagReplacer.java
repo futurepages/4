@@ -25,6 +25,7 @@ public class AlternativeHtmlTagReplacer extends HtmlTagReplacer {
 	private String host;
 	private boolean styles;
 	private boolean textAlign;
+	private boolean objects;
 
 	private AlternativeHtmlTagReplacer() {
 	}
@@ -34,6 +35,10 @@ public class AlternativeHtmlTagReplacer extends HtmlTagReplacer {
 		this.styles = styles;
 		this.textAlign = styles;
 		this.host=host;
+	}
+	public AlternativeHtmlTagReplacer(String host, boolean styles,boolean textAlign, boolean objects) {
+		this(host,styles,textAlign);
+		this.objects = objects;
 	}
 
 	//caso nao queira textAlign: ficará styles = true e textAlign = false.
@@ -96,7 +101,13 @@ public class AlternativeHtmlTagReplacer extends HtmlTagReplacer {
 		reduce("kbd");
 		reduce("dfn");
 
-		//reduce("img", attrs("src","alt"));
+		if(objects){
+			keep("img");
+			keep("iframe");
+			keep("object");
+		}else{
+
+		}
 
 		//âncoras
 		if (host != null) {
@@ -136,8 +147,9 @@ public class AlternativeHtmlTagReplacer extends HtmlTagReplacer {
 
 	@Override
 	public String afterTreatment(String treatedHtml) {
-		treatedHtml = anchorTreatment(treatedHtml);
-
+		if(!objects){
+			treatedHtml = anchorTreatment(treatedHtml);
+		}
 		treatedHtml = styleTreatment(treatedHtml);
 
 		return treatedHtml;
