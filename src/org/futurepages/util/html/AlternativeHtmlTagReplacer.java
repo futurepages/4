@@ -131,8 +131,10 @@ public class AlternativeHtmlTagReplacer extends HtmlTagReplacer {
 	@Override
 	public String beforeTreatment(String htmlContent) {
 		htmlContent = noTrashText(htmlContent);
-		htmlContent = htmlContent.replaceAll(tagAndContentPattern("style") , "");
-		htmlContent = replaceInTags(htmlContent, attrPattern("class"), "");
+		if(!objects){
+			htmlContent = htmlContent.replaceAll(tagAndContentPattern("style") , "");
+			htmlContent = replaceInTags(htmlContent, attrPattern("class"), "");
+		}
 		htmlContent = htmlContent.replaceAll(spanWithStylePropertiePattern("font-weight","bold"),tagWithContentReplacement("strong"));    //estilizados com negrito
 		htmlContent = htmlContent.replaceAll(spanWithStylePropertiePattern("text-decoration","underline"),tagWithContentReplacement("u"));//estilizados com sublinhado
 		if(!styles){
@@ -149,9 +151,8 @@ public class AlternativeHtmlTagReplacer extends HtmlTagReplacer {
 	public String afterTreatment(String treatedHtml) {
 		if(!objects){
 			treatedHtml = anchorTreatment(treatedHtml);
+			treatedHtml = styleTreatment(treatedHtml);
 		}
-		treatedHtml = styleTreatment(treatedHtml);
-
 		return treatedHtml;
 	}
 	
