@@ -580,7 +580,7 @@ public class GenericDao extends HQLProvider {
 					|| (trimmedSql.startsWith("/*") && !trimmedSql.startsWith("/*!") )) {
 				continue;
 			} else {
-				int posComment = trimmedSql.indexOf("--");
+				int posComment = trimmedSql.indexOf("-- "); //BREAK-ALERT: se possuir essa string dentro de uma variável string, vai quebrar!
 				if(posComment>0){
 					trimmedSql = trimmedSql.substring(0, posComment);
 				}
