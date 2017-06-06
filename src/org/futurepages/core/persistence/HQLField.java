@@ -486,7 +486,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String isNotEmpty() {
-		return concat(fieldName, DIFFERENT, "''");
+		return concat(isNotNull(),AND,fieldName,DIFFERENT,"''");
 	}
 
 	public String endsWith(String value) {
