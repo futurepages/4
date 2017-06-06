@@ -48,6 +48,6 @@ public abstract class Installer implements Installation {
 
 	protected void executeSQLFromFile(String path) throws IOException {
 		String[] sqls = FileUtil.getStringLines(this.getClass(), path);
-		Dao.getInstance().executeSQLs(sqls);
+		Dao.getInstance().executeSQLs(true,sqls);
 	}
 }
