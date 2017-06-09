@@ -16,6 +16,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.Tag;
 
 import org.futurepages.core.exception.AppLogger;
+import org.futurepages.menta.actions.NullAction;
 import org.futurepages.menta.annotations.SuperTag;
 import org.futurepages.menta.annotations.TagAttribute;
 import org.futurepages.menta.core.action.Action;
@@ -200,6 +201,9 @@ public abstract class PrintTag extends BodyTagSupport {
         this.req = (HttpServletRequest) pageContext.getRequest();
         this.res = (HttpServletResponse) pageContext.getResponse();
 		this.action = (Action) req.getAttribute(Forward.ACTION_REQUEST);
+		if(this.action==null){
+			this.action = new NullAction(req,res);
+		}
 		this.loc = LocaleManager.getLocale(req);
         return super.doStartTag();
     }

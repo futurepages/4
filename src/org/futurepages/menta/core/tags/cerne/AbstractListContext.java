@@ -13,6 +13,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
+import org.futurepages.menta.actions.NullAction;
 import org.futurepages.menta.annotations.TagAttribute;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.consequences.Forward;
@@ -58,6 +59,9 @@ public abstract class AbstractListContext<T extends Object> extends BodyTagSuppo
         this.res = (HttpServletResponse) pageContext.getResponse();
         this.loc = LocaleManager.getLocale(req);
         this.action = (Action) req.getAttribute(Forward.ACTION_REQUEST);
+		if(this.action==null){
+			this.action = new NullAction(req,res);
+		}
 
         List<T> list = getList();
         if (list != null) {
