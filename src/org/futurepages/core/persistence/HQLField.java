@@ -445,6 +445,14 @@ public class HQLField implements HQLable {
 		return buildlStringExpression(NOT_IN, tokens);
 	}
 
+	public String notIn(Enum... tokens) {
+		String[] strings = new String[tokens.length];
+		for(int i = 0; i<tokens.length;i++){
+			strings[i] = tokens[i].name();
+		}
+		return buildlStringExpression(NOT_IN, strings);
+	}
+
 	public String notIn(List<String> elements) {
 		if (elements != null && elements.size() > 0) {
 			return concat(fieldName, NOT_IN + "(", HQLUtil.imploded(elements), ")");
