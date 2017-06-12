@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.jndi.JndiException;
 
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -43,9 +44,24 @@ public class HibernateManager {
 					Configuration config;
 					config = configurations.get(schemaId).getEntitiesConfig();
 
-					ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(config.getProperties()).buildServiceRegistry();
-
-					factories.put(schemaId, config.buildSessionFactory(serviceRegistry));
+					try{
+						ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(config.getProperties()).buildServiceRegistry();
+						factories.put(schemaId, config.buildSessionFactory(serviceRegistry));
+					} catch(JndiException ex){
+						// caso esteja desenvolvendo localmente com mysql e precise usar o pool de conexoes:
+							// crie um pool casando o nome com o nome do banco de dados, usuário 'root' e senha ''
+						if(ex.getMessage().startsWith("Error parsing JNDI name [java:/comp/env/jdbc/")){
+							String databaseName = ex.getMessage().replace("Error parsing JNDI name [java:/comp/env/jdbc/","").replace("]","");
+							config.getProperties().remove("hibernate.connection.datasource");
+							config.getProperties().setProperty("hibernate.connection.url","jdbc:mysql://localhost:3306/"+databaseName);
+							config.getProperties().setProperty("hibernate.connection.username","root");
+							config.getProperties().setProperty("hibernate.connection.password","");
+							ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(config.getProperties()).buildServiceRegistry();
+							factories.put(schemaId, config.buildSessionFactory(serviceRegistry));
+						} else {
+							throw ex;
+						}
+					}
 					sessionsTL.put(schemaId, new ThreadLocal<Session>());
 					genericDaos.put(schemaId, GenericDao.newInstance(schemaId));
 				}
