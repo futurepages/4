@@ -80,12 +80,12 @@ public class HQLField implements HQLable {
 		if (Is.empty(enumeration)) {
 			return "";
 		}
-		return concat(fieldName, " = '", escQuoteAndSlashes(enumeration.name()), "'");
+		return concat(fieldName, EQUALS,"'", escQuoteAndSlashes(enumeration.name()), "'");
 	}
 
 	public String equalsTo(Object bean) {
 		if(bean.getClass().isAnnotationPresent(Entity.class)){
-			return concat(fieldName, " = '", escQuoteAndSlashes(Dao.getInstance().getIdValue(bean).toString()), "'");
+			return concat(fieldName, EQUALS,"'", escQuoteAndSlashes(Dao.getInstance().getIdValue(bean).toString()), "'");
 		}else{
 			throw new RuntimeException("HQLProvider.equalsTo(Object) must be used to an @Entity");
 		}
@@ -95,44 +95,36 @@ public class HQLField implements HQLable {
 		if (Is.empty(value)) {
 			return "";
 		}
-		//TODO Isso tá muito errado!! VERIFICAR OUTROS EQUALS. É PRA SER TUDO COMO ESSE AÍ...
-		// APAGA O DE CIMA E DESCOMENTA OS DEBAIXO...
-//		if(value==null){
-//			return this.isNull();
-//		}
-//		if(Is.empty(value)){
-//			return this.isEmpty();
-//		}
-		return concat(fieldName, " = '", escQuoteAndSlashes(value), "'");
+		return concat(fieldName, EQUALS, "'", escQuoteAndSlashes(value), "'");
 	}
 
 	public String equalsTo(long value) {
-		return fieldName + " = " + value;
+		return concat(fieldName , EQUALS , value);
 	}
 
 	public String equalsTo(double value) {
-		return fieldName + " = " + value;
+		return concat(fieldName , EQUALS , value);
 	}
 
 	public String equalsTo(Integer value) {
 		if (value == null) {
 			return "";
 		}
-		return fieldName + " = " + value;
+		return concat(fieldName , EQUALS , value);
 	}
 
 	public String equalsTo(Long value) {
 		if (value == null) {
 			return "";
 		}
-		return fieldName + " = " + value;
+		return concat(fieldName , EQUALS , value);
 	}
 
 	public String equalsTo(BigDecimal value) {
 		if (value == null) {
 			return "";
 		}
-		return fieldName + " = " + value;
+		return concat(fieldName , EQUALS , value);
 	}
 
 	//Este foge do padrão dos demais. Portanto, não modificá-lo para padronizar, para não causar transtorno em sistemas legados.
@@ -205,8 +197,18 @@ public class HQLField implements HQLable {
 	}
 
 	public String differentFrom(int value) {
-		return fieldName + DIFFERENT + value;
+		return concat(fieldName , DIFFERENT , value);
 	}
+
+
+	public String differentFrom(Object bean) {
+		if(bean.getClass().isAnnotationPresent(Entity.class)){
+			return concat(fieldName, DIFFERENT , "'",escQuoteAndSlashes(Dao.getInstance().getIdValue(bean).toString()), "'");
+		}else{
+			throw new RuntimeException("HQLProvider.differentFrom(Object) must be used to an @Entity");
+		}
+	}
+
 
 	public String differentFrom(long value) {
 		return differentFrom(new Long(value));
@@ -226,11 +228,11 @@ public class HQLField implements HQLable {
 	}
 
 	public String greaterThen(long value) {
-		return fieldName + GREATER + value;
+		return concat(fieldName , GREATER , value);
 	}
 
 	public String greaterThen(double value) {
-		return fieldName + GREATER + value;
+		return concat(fieldName , GREATER , value);
 	}
 
 	public String greaterThen(Calendar cal) {
@@ -251,11 +253,11 @@ public class HQLField implements HQLable {
 	}
 
 	public String greaterEqualsThen(long value) {
-		return fieldName + GREATER_EQUALS + value;
+		return concat(fieldName , GREATER_EQUALS , value);
 	}
 
 	public String greaterEqualsThen(double value) {
-		return fieldName + GREATER_EQUALS + value;
+		return concat(fieldName , GREATER_EQUALS , value);
 	}
 
 	public String greaterEqualsThen(HQLField field) {
@@ -268,11 +270,11 @@ public class HQLField implements HQLable {
 	}
 
 	public String lowerThen(long value) {
-		return fieldName + LOWER + value;
+		return concat(fieldName , LOWER , value);
 	}
 
 	public String lowerThen(double value) {
-		return fieldName + LOWER + value;
+		return concat(fieldName , LOWER , value);
 	}
 
 	public String lowerThen(Calendar cal) {
@@ -289,11 +291,11 @@ public class HQLField implements HQLable {
 	}
 
 	public String lowerEqualsThen(long value) {
-		return fieldName + LOWER_EQUALS + value;
+		return concat(fieldName , LOWER_EQUALS , value);
 	}
 
 	public String lowerEqualsThen(double value) {
-		return fieldName + LOWER_EQUALS + value;
+		return concat(fieldName , LOWER_EQUALS , value);
 	}
 
 	public String lowerEqualsThen(Calendar cal) {
@@ -304,11 +306,9 @@ public class HQLField implements HQLable {
 		return compareTo(LOWER_EQUALS, field);
 	}
 
-
 	public String compareTo(String signal, HQLField field) {
 		return concat(fieldName, signal, field.fieldName);
 	}
-
 
 	public String hasAllWordsInSequence(String... words) {
 		return hasAllWordsInSameSequence(words);
@@ -367,19 +367,19 @@ public class HQLField implements HQLable {
 	}
 
 	public String isTrue() {
-		return fieldName + " = true";
+		return concat(fieldName , EQUALS , true);
 	}
 
 	public String isFalse() {
-		return fieldName + " = false";
+		return concat(fieldName , EQUALS , false);
 	}
 
 	public String isNull() {
-		return fieldName + " = null";
+		return concat(fieldName , EQUALS , null);
 	}
 
 	public String isNotNull() {
-		return fieldName + " != null";
+		return concat(fieldName , DIFFERENT , null);
 	}
 
 	private String buildlStringExpression(String logicConector, String... tokens) {
@@ -552,7 +552,7 @@ public class HQLField implements HQLable {
 		return concat(fieldName, comparator, "'", escQuoteAndSlashes(DateUtil.getInstance().dbDateTime(cal.getTime())), "'");
 	}
 
-	private String concat(String... str) {
+	private String concat(Object... str) {
 		return The.concat(str);
 	}
 }
