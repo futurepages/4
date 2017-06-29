@@ -205,6 +205,15 @@ public class ImageUtil {
 			image = bufferedCutInRatioWithNoAlpha(JAI.create("stream", pb).getAsBufferedImage(), thumbW, thumbH);
 		}
 
+		resizeCropping(image, thumbW,thumbH, pathNewFile, stretchWhenSmaller);
+	}
+
+	//se pathNewFile é != null, então espera-se que a image já venha cortada.
+	public static BufferedImage resizeCropping(BufferedImage image,int thumbW, int thumbH, String pathNewFile, boolean stretchWhenSmaller) throws IOException {
+		if(pathNewFile==null){
+			image = bufferedCutInRatioWithNoAlpha(image, thumbW, thumbH);
+		}
+
 		//RESIZING....
 		if (thumbW >= image.getWidth() || thumbH >= image.getHeight()) {
 			//quando imagem é menor que o resultado final, faz um esticamento para crescer até o tamanho desejado.
@@ -218,16 +227,17 @@ public class ImageUtil {
 			image = poorResize(image, null, thumbW, thumbH, 100, pathNewFile);
 		}
 
-		if(FileUtil.extensionFormat(pathNewFile).equals("png")){
-			ImageIO.write(image, "png", new File(pathNewFile));
-		}else{
-			createJPEG(image, 100, pathNewFile);
+		if(pathNewFile!=null){
+			if(FileUtil.extensionFormat(pathNewFile).equals("png")){
+				ImageIO.write(image, "png", new File(pathNewFile));
+			}else{
+				createJPEG(image, 100, pathNewFile);
+			}
+			image.flush();
+			image = null;
+			System.gc();
 		}
-
-
-		image.flush();
-		image = null;
-		System.gc();
+		return image;
 	}
 
 	//reduz imagem mantendo o aspect-ratio. As larguras e alturas passadas como parâmetro são os max possíveis de cada um.
@@ -484,7 +494,7 @@ public class ImageUtil {
 
 
 		BufferedImage thumbImage;
-		if(FileUtil.extensionFormat(pathNewFile).equals("jpg")){
+		if(pathNewFile == null || FileUtil.extensionFormat(pathNewFile).equals("jpg")){
 			image = bufferedImgWithNoAlpha((BufferedImage) image);
 			thumbImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		}else{
