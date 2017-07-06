@@ -1,9 +1,11 @@
 package org.futurepages.core.persistence;
 
+import org.futurepages.util.CollectionUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author leandro
@@ -272,6 +274,10 @@ public class HQLProvider implements HQLable {
 	 */
 	public static String ands(String... clauses) {
 		return connectClauses(AND, clauses);
+	}
+
+	public static String ands(List<String> clauses) {
+		return ands(CollectionUtil.toArray(clauses));
 	}
 
 	public static String commas(String... fields) {
