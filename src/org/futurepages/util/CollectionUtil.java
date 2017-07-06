@@ -2,16 +2,20 @@ package org.futurepages.util;
 
 import org.futurepages.exceptions.EmptyCollectionException;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class CollectionUtil {
 
-	//TODO FIX ME não estou funcionando :(
-	@Deprecated
-	public static <T> T[] toArray(Collection<T> colecao) {
-		T[] array = (T[]) colecao.toArray();
+	public static <T> T[] toArray(List<T> list) {
+		T[] array = null;
+		if(list!=null && !list.isEmpty()){
+			array = (T[]) Array.newInstance(list.get(0).getClass(),list.size());
+			list.toArray(array);
+
+		}
 		return array;
 	}
 
