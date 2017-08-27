@@ -5,7 +5,6 @@ import org.futurepages.core.persistence.Dao;
 import org.futurepages.util.FileUtil;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 
 public class DeployMigrations {
