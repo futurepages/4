@@ -116,7 +116,7 @@ public class Is {
 
 	public static boolean validStringKey(String str, Integer min, Integer max, boolean allowsInitialNumber) {
 		        
-		if ((min != null && (str.length() < min)) || (max != null && (str.length() >= max))) {
+		if ((min != null && (str.length() < min)) || (max != null && (str.length() > max))) {
             return false;
         }
 
