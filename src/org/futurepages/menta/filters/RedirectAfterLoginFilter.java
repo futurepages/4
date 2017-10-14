@@ -56,6 +56,9 @@ public class RedirectAfterLoginFilter implements Filter {
 		Action action = chain.getAction();
 		Context session = action.getSession();
 		String result = chain.invoke();
+		if(action.loggedUser()==null){
+			return result;
+		}
 		String callback = (String) session.getAttribute(AuthenticationFilter.URL_KEY);
 
 		Controller control = Controller.getInstance();
