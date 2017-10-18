@@ -308,48 +308,84 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public <T extends Serializable> T saveTransaction(T obj) {
-		beginTransaction();
+		boolean openAndCloseHere = false;
+		if(!isTransactionActive()){
+			beginTransaction();
+			openAndCloseHere = true;
+		}
 		session().save(obj);
-		commitTransaction();
+		if(openAndCloseHere){
+			commitTransaction();
+		}
 		return obj;
 	}
 
 	public <T extends Serializable> Collection<T> saveTransaction(Collection<T> objs) {
-		beginTransaction();
+		boolean openAndCloseHere = false;
+		if(!isTransactionActive()){
+			beginTransaction();
+			openAndCloseHere = true;
+		}
 		for (T obj : objs) {
 			save(obj);
 		}
-		commitTransaction();
+		if(openAndCloseHere){
+			commitTransaction();
+		}
 		return objs;
 	}
 
 	public <T extends Serializable> T updateTransaction(T obj) {
-		beginTransaction();
+		boolean openAndCloseHere = false;
+		if(!isTransactionActive()){
+			beginTransaction();
+			openAndCloseHere = true;
+		}
 		session().update(obj);
-		commitTransaction();
+		if(openAndCloseHere){
+			commitTransaction();
+		}
 		return obj;
 	}
 
 	public <T extends Serializable> T saveOrUpdateTransaction(T obj) {
-		beginTransaction();
+		boolean openAndCloseHere = false;
+		if(!isTransactionActive()){
+			beginTransaction();
+			openAndCloseHere = true;
+		}
 		session().saveOrUpdate(obj);
-		commitTransaction();
+		if(openAndCloseHere){
+			commitTransaction();
+		}
 		return obj;
 	}
 
 	public <T extends Serializable> T deleteTransaction(T obj) {
-		beginTransaction();
+		boolean openAndCloseHere = false;
+		if(!isTransactionActive()){
+			beginTransaction();
+			openAndCloseHere = true;
+		}
 		session().delete(obj);
-		commitTransaction();
+		if(openAndCloseHere){
+			commitTransaction();
+		}
 		return obj;
 	}
 
 	public <T extends Serializable> void deleteTransaction(Collection<T> objs) {
-		beginTransaction();
+		boolean openAndCloseHere = false;
+		if(!isTransactionActive()){
+			beginTransaction();
+			openAndCloseHere = true;
+		}
 		for (T obj : objs) {
 			delete(obj);
 		}
-		commitTransaction();
+		if(openAndCloseHere){
+			commitTransaction();
+		}
 	}
 
 	public <T extends Serializable> T save(T obj) {
