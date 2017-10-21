@@ -122,9 +122,9 @@ public class ApplicationListener implements ServletContextListener {
 				log("Taglib criada com sucesso.");
 			}
 
-			if(!Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN")) && Apps.get("AUTO_REDIRECT_DOMAIN").contains("://") ){
+			if(!Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))){
 				log("Auto Redirect Domain ON. Inicializando 'Static Paths'...");
-				Paths.initialize(context); //somente se o AUTO_REDIRECT_DOMAIN for completo com protocolo.
+				Paths.initialize(context); //somente se o AUTO_REDIRECT_DOMAIN houver sido informado
 			}else{
 				if(Apps.get("DEPLOY_MODE").equals("production")){
 					if(Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))){
