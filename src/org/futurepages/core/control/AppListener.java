@@ -143,7 +143,9 @@ public class AppListener implements ServletContextListener {
 	}
 
 	private void initAutoRedirectionEngine(String context) {
-			if(!Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN")) && Apps.get("AUTO_REDIRECT_DOMAIN").contains("://") ){
+			if(!Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))
+//					&& Apps.get("AUTO_REDIRECT_DOMAIN").contains("://")
+			){
 				log("Auto Redirect Domain ON. Starting 'Static Paths'...");
 				Paths.initialize(context); //only if the AUTO_REDIRECT_DOMAIN is complete with protocol.
 			}else{
