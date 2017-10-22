@@ -44,17 +44,19 @@ public class AutoRedirectDomainFilter implements Filter {
 	@Override
 	public String filter(InvocationChain chain) throws Exception {
 		HttpServletRequest req = chain.getAction().getRequest();
-		if(mainProtocol==null){
-			if(!req.getHeader("Host").equals(mainDomain)){
-				chain.getAction().getOutput().setValue(Action.REDIR_URL, changeDomain(chain.getAction().getRequest()));
-				return REDIR;
-			}
-		}else{
-			if(!req.getHeader("Host").equals(mainDomain)
-		    || !req.getScheme().equals(mainProtocol)
-			  ) {
-				chain.getAction().getOutput().setValue(Action.REDIR_URL, changeDomainAndProtocol(chain.getAction().getRequest()));
-				return REDIR;
+		if(!req.getHeader("Host").equals("localhost")){
+			if(mainProtocol==null){
+				if(!req.getHeader("Host").equals(mainDomain)){
+					chain.getAction().getOutput().setValue(Action.REDIR_URL, changeDomain(chain.getAction().getRequest()));
+					return REDIR;
+				}
+			}else{
+				if(!req.getHeader("Host").equals(mainDomain)
+				|| !req.getScheme().equals(mainProtocol)
+				  ) {
+					chain.getAction().getOutput().setValue(Action.REDIR_URL, changeDomainAndProtocol(chain.getAction().getRequest()));
+					return REDIR;
+				}
 			}
 		}
 		return chain.invoke();
