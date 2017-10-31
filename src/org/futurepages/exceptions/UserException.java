@@ -20,7 +20,9 @@ public class UserException extends RuntimeException {
 	}
 
 	public UserException(Exception ex) {
-		this.message = ex.getMessage();
+		if(ex.getMessage()!=null){
+			this.message = ex.getMessage();
+		}
 	}
 
 	@Override
