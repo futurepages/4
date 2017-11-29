@@ -49,6 +49,11 @@ public class MoneyUtil {
     }
 
 
+	public static int intFormat(BigDecimal value){
+		return  Integer.valueOf(moneyFormat(value).replaceFirst(",",""));
+	}
+
+
     /**
      * Recebe um double como entrada e converte para a formataçao padrao de número (NumberFormat) do sistema.
      * com o número de casas decimais especificadas através do parâmetro 'decimals'
