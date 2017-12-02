@@ -112,4 +112,8 @@ public class MoneyUtil {
 	public static double roundValue(String rawValue){
 		return  ((double) Math.round((valueOf(rawValue))*100)) / 100;
 	}
+
+	public static String intInMoneyFormat(int i) {
+		return moneyFormat(fromIntFormat(i));
+	}
 }
