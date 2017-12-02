@@ -1,6 +1,7 @@
 package org.futurepages.util.brazil;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 
 /**
@@ -53,6 +54,10 @@ public class MoneyUtil {
 		return  Integer.valueOf(moneyFormat(value).replaceFirst(",",""));
 	}
 
+
+	public static BigDecimal fromIntFormat(int value){
+		return new BigDecimal(value).divide(new BigDecimal(100d),2,BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP);
+	}
 
     /**
      * Recebe um double como entrada e converte para a formataçao padrao de número (NumberFormat) do sistema.
