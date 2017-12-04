@@ -30,7 +30,12 @@ public class MoneyUtil {
      *
      */
     public static BigDecimal valueBigDecimalOf(String moneyFormat){
-            return BigDecimal.valueOf(valueOf(moneyFormat));
+		Double val = valueOf(moneyFormat);
+		if(val!=null){
+			return BigDecimal.valueOf(val).setScale(2,RoundingMode.HALF_UP);
+		}else{
+			return null;
+		}
     }
 
     /**
