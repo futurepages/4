@@ -241,6 +241,16 @@ public class Apps {
 		}
 	}
 
+	public static boolean devLocalMode(){
+		try{
+			return getInstance().devMode && (get("APP_HOST").startsWith("http://localhost:") || get("APP_HOST").startsWith("http://127.0.0.1:"));
+
+		}catch(NullPointerException e){
+			initStandAlone();
+			return getInstance().devMode && (get("APP_HOST").startsWith("http://localhost:") || get("APP_HOST").startsWith("http://127.0.0.1:"));
+		}
+	}
+
 	public static boolean  connectExternalModules(){
 		try{
 			return getInstance().connectExternalModules;
