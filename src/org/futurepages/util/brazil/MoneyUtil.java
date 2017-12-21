@@ -38,6 +38,10 @@ public class MoneyUtil {
 		}
     }
 
+	public static boolean areEquals(BigDecimal obj1, BigDecimal obj2){
+        return moneyFormat(obj1).equals(moneyFormat(obj2));
+	}
+
     /**
      * Recebe um double como entrada e converte para uma string no formato 9.999,99 (duas casas decimais)
      *
