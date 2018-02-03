@@ -64,6 +64,10 @@ public class MoneyUtil {
 	}
 
 
+	public static BigDecimal fromIntFormat(String value){
+		return fromIntFormat(Integer.parseInt(value));
+	}
+
 	public static BigDecimal fromIntFormat(int value){
 		return new BigDecimal(value).divide(new BigDecimal(100d),2,BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP);
 	}
