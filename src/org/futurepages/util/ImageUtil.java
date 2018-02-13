@@ -10,6 +10,7 @@ import org.apache.commons.lang.NotImplementedException;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.JAI;
+import javax.media.jai.RenderedOp;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -34,10 +35,7 @@ public class ImageUtil {
 	}
 
 	public static BufferedImage getBufferedImage(File file) throws IOException {
-		SeekableStream seekableStream = new FileSeekableStream(file);
-		ParameterBlock pb = new ParameterBlock();
-		pb.add(seekableStream);
-		return bufferedImgWithNoAlpha(JAI.create("stream", pb).getAsBufferedImage());
+		return bufferedImgWithNoAlpha(imageFrom(file));
 	}
 
 	/*
@@ -195,17 +193,35 @@ public class ImageUtil {
 	}
 
 	public static void resizeCropping(File file,int thumbW, int thumbH, String pathNewFile, boolean stretchWhenSmaller) throws IOException {
+		BufferedImage image;
+		if(FileUtil.extensionFormat(file.getAbsolutePath()).equals("png") && FileUtil.extensionFormat(pathNewFile).equals("png")){
+			image = bufferedCutInRatio(imageFrom(file), thumbW, thumbH);
+		} else {
+			image = bufferedCutInRatioWithNoAlpha(imageFrom(file), thumbW, thumbH);
+		}
+
+		resizeCropping(image, thumbW,thumbH, pathNewFile, stretchWhenSmaller);
+	}
+
+	private static BufferedImage imageFrom(File file) throws IOException {
 		SeekableStream seekableStream = new FileSeekableStream(file);
 		ParameterBlock pb = new ParameterBlock();
 		pb.add(seekableStream);
 		BufferedImage image;
-		if(FileUtil.extensionFormat(file.getAbsolutePath()).equals("png") && FileUtil.extensionFormat(pathNewFile).equals("png")){
-			image = bufferedCutInRatio(JAI.create("stream", pb).getAsBufferedImage(), thumbW, thumbH);
-		} else {
-			image = bufferedCutInRatioWithNoAlpha(JAI.create("stream", pb).getAsBufferedImage(), thumbW, thumbH);
+		try {
+			RenderedOp rop = JAI.create("stream", pb);
+			image = rop.getAsBufferedImage();
+			if(image.getType()>5){
+					image = new JpegReader().readImage(file);
+			}
+		} catch (Exception ex) {
+			try {
+				image = new JpegReader().readImage(file);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
-
-		resizeCropping(image, thumbW,thumbH, pathNewFile, stretchWhenSmaller);
+		return image;
 	}
 
 	//se pathNewFile é != null, então espera-se que a image já venha cortada.
@@ -242,14 +258,11 @@ public class ImageUtil {
 
 	//reduz imagem mantendo o aspect-ratio. As larguras e alturas passadas como parâmetro são os max possíveis de cada um.
 	public static void reduceImage(File file,int thumbW, int thumbH, String pathNewFile, boolean stretchWhenSmaller) throws IOException {
-		SeekableStream seekableStream = new FileSeekableStream(file);
-		ParameterBlock pb = new ParameterBlock();
-		pb.add(seekableStream);
 		BufferedImage image;
 		if(FileUtil.extensionFormat(file.getAbsolutePath()).equals("png") && FileUtil.extensionFormat(pathNewFile).equals("png")){
-			image = JAI.create("stream", pb).getAsBufferedImage();
+			image = imageFrom(file);
 		} else {
-			image = bufferedImgWithNoAlpha(JAI.create("stream", pb).getAsBufferedImage());
+			image = bufferedImgWithNoAlpha(imageFrom(file));
 		}
 
 		int imageWidth = image.getWidth(null);
@@ -489,7 +502,7 @@ public class ImageUtil {
 		}
 	}
 
-	private static BufferedImage poorResize(Image image, Color colorSquare, int width, int height, int quality, String pathNewFile) throws FileNotFoundException, IOException {
+private static BufferedImage poorResize(Image image, Color colorSquare, int width, int height, int quality, String pathNewFile) throws FileNotFoundException, IOException {
 
 
 
