@@ -96,5 +96,9 @@ public class MonthYear implements Comparable<MonthYear> {
 	@Override
 	public String toString() {
 		return this.year + "/" + The.intWithLeftZeros(month, 2);
-	}	
+	}
+
+	public static MonthYear get(Calendar cal) {
+		return new MonthYear(cal.get(Calendar.MONTH)+1,cal.get(Calendar.YEAR));
+	}
 }
