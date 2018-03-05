@@ -265,10 +265,10 @@ public class GenericDao extends HQLProvider {
 		return map;
 	}
 
-	public Object reportTotal(HQLQuery hqlQuery, Class reportClass) {
+	public <T extends Serializable> T reportTotal(HQLQuery hqlQuery, Class<T> reportClass) {
 		Query query = selectQuery(hqlQuery);
 		query.setResultTransformer(new AliasToBeanResultTransformer(reportClass));
-		return query.uniqueResult();
+		return (T) query.uniqueResult();
 	}
 
 
