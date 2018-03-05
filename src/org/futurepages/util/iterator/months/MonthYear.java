@@ -22,6 +22,13 @@ public class MonthYear implements Comparable<MonthYear> {
 		this.year = year;
 	}
 
+	// input: YYYY/MM
+	public MonthYear(String monthYearStr) {
+		String[] montYearStrParts = monthYearStr.split("/");
+		this.year = Integer.parseInt(montYearStrParts[0]);
+		this.month = Integer.parseInt(montYearStrParts[1]);
+	}
+
 	public int getMonth() {
 		return month;
 	}
