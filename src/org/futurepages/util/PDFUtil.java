@@ -1,5 +1,10 @@
 package org.futurepages.util;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
+import org.apache.pdfbox.pdmodel.encryption.StandardDecryptionMaterial;
+import org.apache.pdfbox.util.PDFText2HTML;
+import org.apache.pdfbox.util.PDFTextStripper;
 import org.futurepages.core.config.Apps;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -8,11 +13,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import org.pdfbox.pdmodel.PDDocument;
-import org.pdfbox.pdmodel.encryption.AccessPermission;
-import org.pdfbox.pdmodel.encryption.StandardDecryptionMaterial;
-import org.pdfbox.util.PDFText2HTML;
-import org.pdfbox.util.PDFTextStripper;
 import org.w3c.dom.Document;
 import org.w3c.tidy.Tidy;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -101,7 +101,7 @@ public class PDFUtil {
 
             PDFTextStripper stripper = null;
             if (toHTML) {
-                stripper = new PDFText2HTML();
+                stripper = new PDFText2HTML(Apps.get("PAGE_ENCODING"));
             } else {
                 stripper = new PDFTextStripper();
             }
