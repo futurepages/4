@@ -1,8 +1,10 @@
 package org.futurepages.util;
 
+import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.pdmodel.encryption.StandardDecryptionMaterial;
+import org.apache.pdfbox.util.PDFMergerUtility;
 import org.apache.pdfbox.util.PDFText2HTML;
 import org.apache.pdfbox.util.PDFTextStripper;
 import org.futurepages.core.config.Apps;
@@ -13,6 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+
 import org.w3c.dom.Document;
 import org.w3c.tidy.Tidy;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -115,4 +119,13 @@ public class PDFUtil {
             }
             return extractedText;
         }
+
+    public static void merge(List<File> files, String outputFilePath) throws IOException, COSVisitorException {
+		PDFMergerUtility ut = new PDFMergerUtility();
+		for(File d : files){
+			ut.addSource(d);
+		}
+		ut.setDestinationFileName(outputFilePath);
+		ut.mergeDocuments();
+    }
 }
