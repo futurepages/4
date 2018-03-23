@@ -1,5 +1,8 @@
 package org.futurepages.core.persistence;
 
+import org.hibernate.transform.AliasToBeanResultTransformer;
+
+import java.io.Serializable;
 import java.util.List;
 
 public class PaginationSlice<T> extends HQLProvider{
@@ -12,6 +15,7 @@ public class PaginationSlice<T> extends HQLProvider{
     private int firstResult;
     private HQLQuery hqlQuery;
     private GenericDao dao;
+    private Class<? extends Serializable> beansResultClass;
     private List<T> list;
 
     public PaginationSlice(int pageNumber, int pageSize, int pagesOffset, GenericDao dao, HQLQuery<T> hqlQuery) {
@@ -23,13 +27,30 @@ public class PaginationSlice<T> extends HQLProvider{
         loadPage(pageNumber);
     }
 
+    public PaginationSlice(int pageNumber, int pageSize, int pagesOffset, GenericDao dao, HQLQuery<T> hqlQuery, Class<? extends Serializable> beansResultClass) {
+        this.dao = dao;
+        this.hqlQuery = hqlQuery;
 
-    public PaginationSlice(GenericDao dao, HQLQuery<T> hqlQuery) {
+        this.pagesOffset = pagesOffset; // have a public set
+        this.pageSize = pageSize; // have a public set
+		this.beansResultClass = beansResultClass;
+        loadPage(pageNumber);
+	}
+
+	public PaginationSlice(GenericDao dao, HQLQuery<T> hqlQuery) {
         this.dao = dao;
         this.hqlQuery = hqlQuery;
         this.totalSize = calcTotalSize();
         this.firstResult = 0;
     }
+
+    public PaginationSlice(GenericDao dao, HQLQuery hqlQuery,Class<? extends Serializable> resultClass) {
+        this.dao = dao;
+		this.beansResultClass = resultClass;
+        this.hqlQuery = hqlQuery;
+        this.totalSize = calcTotalSize();
+        this.firstResult = 0;
+	}
 
     public PaginationSlice<T> loadPage(int rawPageNumber) {
         this.totalSize = calcTotalSize();
@@ -62,13 +83,21 @@ public class PaginationSlice<T> extends HQLProvider{
     }
 
 
-    private List<T> loadList() {
+    private List loadList() {
         //System.out.println(hqlQuery.toString() + "first:" + firstResult + "; pageSize:" + pageSize);
         //System.out.println();
-        return dao.selectQuery(hqlQuery)
-                  .setFirstResult(firstResult)
-                  .setMaxResults(pageSize)
-                  .list();
+		if(this.beansResultClass==null){
+			return dao.selectQuery(hqlQuery)
+					  .setFirstResult(firstResult)
+					  .setMaxResults(pageSize)
+					  .list();
+		}else{
+			return dao.selectQuery(hqlQuery)
+					  .setFirstResult(firstResult)
+					  .setMaxResults(pageSize)
+					  .setResultTransformer(new AliasToBeanResultTransformer(beansResultClass))
+					  .list();
+		}
     }
 
     public PaginationSlice<T> loadPrevious(){
@@ -93,7 +122,12 @@ public class PaginationSlice<T> extends HQLProvider{
     }
 
     public long calcTotalSize(){
-        return dao.numRows(hql(count("*"),hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
+		if(hqlQuery.getGroup()==null){
+			return dao.numRows(hql(count("*"),hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
+		}else{
+			return dao.numRows(hql(count(distinct(hqlQuery.getGroup())),hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
+
+		}
     }
 
     public Integer getPageSize() {

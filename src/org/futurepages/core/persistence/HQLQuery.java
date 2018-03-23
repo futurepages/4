@@ -95,6 +95,19 @@ public class HQLQuery<T> extends HQLProvider {
 		this.order = order;
 	}
 
+
+	public HQLQuery(String select, Class<T> entity, String alias, String joinType, String join, String where, String group, String having, String order) {
+		this.select = select;
+		this.entity = entity;
+		this.alias = alias;
+		this.joinType = joinType;
+		this.join = join;
+		this.where = where;
+		this.group = group;
+		this.having = having;
+		this.order = order;
+	}
+
 	@Override
 	public String toString() {
 		if(fieldToUpdate !=null){

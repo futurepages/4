@@ -231,6 +231,19 @@ public class GenericDao extends HQLProvider {
 		return new PaginationSlice<T>(page, pageSize, pagesOffset, this, hqlQuery);
 	}
 
+	public <T extends Serializable> PaginationSlice<T> paginationSlice(HQLQuery hqlQuery,Class<T> result) {
+		return new PaginationSlice(this, hqlQuery,result);
+	}
+
+	public <T extends Serializable> PaginationSlice<T> paginationSlice(int page, int pageSize, HQLQuery hql, Class<T> resultClass) {
+		return paginationSlice(page, pageSize, 0, hql,resultClass);
+	}
+
+	public <T extends Serializable> PaginationSlice<T> paginationSlice(int page, int pageSize, int pagesOffset, HQLQuery hqlQuery, Class<T> resultClass) {
+		return new PaginationSlice<T>(page, pageSize, pagesOffset, this, hqlQuery,resultClass);
+	}
+
+
 
 	public <T extends Serializable> List<T> topList(int topSize, HQLQuery<T> hqlQuery) {
 		Query query = selectQuery(hqlQuery);

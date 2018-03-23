@@ -258,6 +258,10 @@ public class HQLProvider implements HQLable {
 		return new HQLQuery<>(select,entityFrom,alias,join,where,group,having,order);
 	}
 
+	public static <T extends Serializable> HQLQuery<T> hql(String select, Class<T> entityFrom, String alias, String joinType, String join, String where, String group, String having, String order) {
+		return new HQLQuery<>(select,entityFrom,alias,joinType,join,where,group,having,order);
+	}
+
 	public static String asc(String field) {
 		return field + ASC;
 	}
@@ -348,7 +352,7 @@ public class HQLProvider implements HQLable {
 
 	public static String groupBy(String groupClause) {
 		if (!Is.empty(groupClause)) {
-			return HAVING + groupClause;
+			return GROUP_BY + groupClause;
 		} else {
 			return "";
 		}
