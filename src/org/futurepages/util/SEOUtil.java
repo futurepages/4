@@ -18,6 +18,7 @@ public class SEOUtil {
     	String empty =  "";
         specials.put('#',"_");
         specials.put('-',"_");
+//      specials.put('+',"_"); se adicionar isso, vai quebrar a visualização dos convites (convite.in)
         specials.put(' ',"-");
         specials.put('@',"_");
         specials.put('º', empty);
