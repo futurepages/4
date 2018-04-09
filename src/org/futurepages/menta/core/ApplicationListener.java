@@ -36,12 +36,12 @@ public class ApplicationListener implements ServletContextListener {
 		try {
 			ServletContext servletContext = evt.getServletContext();
 			String context = evt.getServletContext().getContextPath();
-			contextName = (!Is.empty(context) ? context : "ROOT");
+			contextName = (!Is.empty(context) ? context.substring(1) : "ROOT");
 
 			log("Inicializando " + servletContext.getServletContextName() + "...");
 
 			log("Inicializando Parâmetros...");
-			Apps.init(context);
+			Apps.init(contextName);
 			log("Parâmetros OK");
 
 			System.setProperty("file.encoding", Apps.get("PAGE_ENCODING"));
