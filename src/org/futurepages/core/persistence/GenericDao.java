@@ -610,6 +610,14 @@ public class GenericDao extends HQLProvider {
 		}
 	}
 
+	public List listSQL(String sql) {
+		if (!Is.empty(sql)) {
+			return sqlQuery(sql).list();
+		}else{
+			return null;
+		}
+	}
+
 	public void executeSQLs(String... sqls) {
 		executeSQLs(false, sqls);
 	}
