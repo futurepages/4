@@ -251,6 +251,14 @@ public class GenericDao extends HQLProvider {
 		return query.list();
 	}
 
+	public <T extends Serializable> T getFirst(HQLQuery<T> hqlQuery) {
+		List<T> objs = topList(1, hqlQuery);
+		if(objs.size()>0){
+			return objs.get(0);
+		}
+		return null;
+	}
+
 	public <T extends Serializable> List<T> listReports(HQLQuery<T> hqlQuery, Class<T> reportClass) {
 		Query query = selectQuery(hqlQuery);
 		query.setResultTransformer(new AliasToBeanResultTransformer(reportClass));
