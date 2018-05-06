@@ -243,12 +243,25 @@ public class Apps {
 
 	public static boolean devLocalMode(){
 		try{
-			return getInstance().devMode && (get("APP_HOST").startsWith("http://localhost:") || get("APP_HOST").startsWith("http://127.0.0.1:"));
-
-		}catch(NullPointerException e){
-			initStandAlone();
-			return getInstance().devMode && (get("APP_HOST").startsWith("http://localhost:") || get("APP_HOST").startsWith("http://127.0.0.1:"));
+			return isDevLocal();
 		}
+		catch(NullPointerException e){
+			initStandAlone();
+			return isDevLocal();
+		}
+	}
+
+	private static boolean isDevLocal(){
+		return getInstance().devMode &&
+				(
+						(get("DEV_LOCAL")!=null && get("DEV_LOCAL").equals("true"))
+								|| get("APP_HOST").equals("http://localhost")
+								|| get("APP_HOST").startsWith("http://localhost:")
+								|| get("APP_HOST").startsWith("http://localhost/")
+								|| get("APP_HOST").equals("http://127.0.0.1")
+								|| get("APP_HOST").startsWith("http://127.0.0.1:")
+								|| get("APP_HOST").startsWith("http://127.0.0.1/")
+				);
 	}
 
 	public static boolean  connectExternalModules(){

@@ -23,10 +23,7 @@ public class StaticPaths extends Paths {
 	private String themePath;
 
 	public StaticPaths(String context) {
-		hostPath = Apps.get("AUTO_REDIRECT_DOMAIN");
-		if(!hostPath.contains("://")){
-			hostPath = Apps.get("APP_HOST");
-		}
+		hostPath = Apps.get("APP_HOST");
 		contextPath = The.concat(hostPath,!Is.empty(context)?"/":"",context);
 		modulePath = The.concat(contextPath,"/", Apps.MODULES_PATH,"/");
 		modulesActionPath = The.concat(contextPath,"/");
