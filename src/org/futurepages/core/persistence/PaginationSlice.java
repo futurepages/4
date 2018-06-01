@@ -184,4 +184,11 @@ public class PaginationSlice<T> extends HQLProvider{
     public void reloadPage() {
         loadPage(pageNumber);
     }
+
+    public PaginationSlice toRest() {
+        this.dao = null;
+        this.hqlQuery = null;
+        this.beansResultClass =  null;
+        return this;
+    }
 }
