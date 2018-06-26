@@ -183,6 +183,13 @@ public class BrazilDateUtil {
 		correctDate = df.parse(in);
 		return correctDate;
 	}
+	public static Date dateTime(String in) throws ParseException {
+		Date correctDate;
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", NewLocaleManager.getDefaultLocale());
+		df.setLenient(false);
+		correctDate = df.parse(in);
+		return correctDate;
+	}
 
 	/**
 	 * Valida datas no formato DD/MM/YYYY
