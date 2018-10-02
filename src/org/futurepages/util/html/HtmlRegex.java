@@ -14,6 +14,7 @@ public class HtmlRegex {
 	private static Pattern COMPILED_TAGS_PATTERN;
 	private static Pattern COMPILED_TAGS_WITH_CONTENT_PATTERN;
 	private static Pattern COMPILED_URL_PATTERN;
+	private static Pattern ANY_CHAR;
 
 	// Patterns usados para "santinizar" Strings em relação ao JavaScript
 	private static Pattern NEW_LINE = Pattern.compile("\n");
@@ -30,7 +31,7 @@ public class HtmlRegex {
 	 * @return
 	 */
 	public static String tagAndContentPattern(String tagName){
-		return concat("(?i)(?s)(<",tagName,"((\\s+).*?>.*?</",tagName,">)|(<",tagName,">.*?</",tagName,">))");		
+		return concat("(?i)(?s)(<",tagName,"((\\s+).*?>.*?</",tagName,">)|(<",tagName,">.*?</",tagName,">))");
 	}
 
 	//(?s)(?i)<span\s*style\s*=\s*"text-decoration:\s*underline\b.*?"[^>]*>.*?</span\s*>
@@ -74,7 +75,7 @@ public class HtmlRegex {
 		return "(?i)(?s) ?\\b("+atributos+")\\s*=\\s*\"([^\"]+)\"";
 	}
 
-//text-decoration:underline;padding-left : 30px;
+	//text-decoration:underline;padding-left : 30px;
 	public static String attrValuesPattern(String... attrs) {
 		String atributos="";
 		if(attrs!=null && attrs.length>0){
@@ -109,7 +110,7 @@ public class HtmlRegex {
 		return concat(has ? "(?s)(?i)</?":"<",tagNamesPattern(has,tagNames),".*?>");
 	}
 
-    private static String tagNamesPattern(boolean has, String... ids){
+	private static String tagNamesPattern(boolean has, String... ids){
 		if(ids.length>0){
 			StringBuilder sb = new StringBuilder("(");
 			sb.append(tagNamePattern(has,ids[0]));
@@ -163,5 +164,12 @@ public class HtmlRegex {
 		//val = OPEN_SCRIPT_TAG.matcher(val).replaceAll("&lt;$1$2$3&gt;");
 		val = CLOSE_SCRIP_TAG.matcher(val).replaceAll("&lt;/$1>");
 		return val;
+	}
+
+	public static Pattern getAnyCharPattern() {
+		if(ANY_CHAR == null){
+			ANY_CHAR = Pattern.compile(".");
+		}
+		return ANY_CHAR;
 	}
 }
