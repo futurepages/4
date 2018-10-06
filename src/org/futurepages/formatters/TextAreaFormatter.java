@@ -1,5 +1,6 @@
 package org.futurepages.formatters;
 
+import org.futurepages.util.EmojiUtil;
 import org.futurepages.util.html.HtmlMapChars;
 import java.util.Locale;
 import org.futurepages.core.formatter.AbstractFormatter;
@@ -11,6 +12,6 @@ import org.futurepages.core.formatter.AbstractFormatter;
  	
 	@Override
  	public String format(Object value, Locale loc) {
-            return HtmlMapChars.textAreaValue((String) value);
+            return HtmlMapChars.textAreaValue(EmojiUtil.decodeAll((String) value));
  	}
  }
