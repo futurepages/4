@@ -12,6 +12,6 @@ import org.futurepages.core.formatter.AbstractFormatter;
  	
 	@Override
  	public String format(Object value, Locale loc) {
-            return HtmlMapChars.textAreaValue(EmojiUtil.decodeAll((String) value));
+            return HtmlMapChars.textAreaValue(value!=null? EmojiUtil.decodeAll((String) value): (String) value);
  	}
  }

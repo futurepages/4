@@ -7,6 +7,7 @@ import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.menta.core.formatter.FormatterManager;
 import org.futurepages.menta.core.tags.PrintTag;
 import org.futurepages.menta.core.tags.build.ContentTypeEnum;
+import org.futurepages.util.EmojiUtil;
 import org.futurepages.util.Is;
 
 import javax.servlet.jsp.JspException;
@@ -45,7 +46,7 @@ public class ValueFormatter extends PrintTag {
 
 			return f.format(object, action.getLocale());
 		} else {
-			return (object != null) ? object.toString() : "";
+			return (object != null) ? EmojiUtil.decodeAll(object.toString()) : "";
 		}
 	}
 
