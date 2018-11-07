@@ -27,7 +27,7 @@ import org.futurepages.core.formatter.AbstractFormatter;
 					return value.toString();
 				}
 			}
-            return BrazilDateUtil.literalDateFromDB(value) +" "+time;
+            return BrazilDateUtil.literalDateFromDB(value) +" às "+time;
 
 	}
  }
