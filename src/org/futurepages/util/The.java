@@ -283,7 +283,11 @@ public class The {
 	 * @return a string com os caracteres especiais convertidos para a codificação HTML
 	 */
 	public static String htmlSimpleValue(String strIn) {
-		return HtmlMapChars.htmlSimpleValue(strIn);
+		return htmlSimpleValue(strIn,null);
+	}
+
+	public static String htmlSimpleValue(String strIn, String excludedChars) {
+		return HtmlMapChars.htmlSimpleValue(strIn, excludedChars);
 	}
 
 	/**

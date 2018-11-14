@@ -1,5 +1,7 @@
 package org.futurepages.util.html;
 
+import org.futurepages.util.Is;
+
 import java.util.HashMap;
 /**
  * Mapa de caracteres HTLM
@@ -37,6 +39,8 @@ public class HtmlMapChars {
         simpleTable.put("<"  ,"&lt;");
         simpleTable.put(">"  ,"&gt;");
         simpleTable.put("&"  ,"&amp;");
+        simpleTable.put("'"  ,"&apos;");
+        simpleTable.put("`"  ,"&apos;");
 
         //povoando tabela com todos os especiais alfabéticos.
         charsetSafe.put("Á","&Aacute;");
@@ -148,13 +152,14 @@ public class HtmlMapChars {
      * contempla somente os HTML Brakers: aspa dupla, menor que e maior que.
      * @return a string com os caracteres especiais críticos convertidos para a codificação HTML
      */
-    public static String htmlSimpleValue(String strIn){
+    public static String htmlSimpleValue(String strIn, String excludedChars){
         if(strIn == null) return "";
 
 		StringBuilder outBuffer = new StringBuilder();
+        String htmlValue;
         for(int i = 0; i < strIn.length();i++){
-            String htmlValue = getSimple(strIn.charAt(i));
-            if(htmlValue != null){
+            htmlValue = getSimple(strIn.charAt(i));
+            if(htmlValue != null && (Is.empty(excludedChars) || !excludedChars.contains(""+strIn.charAt(i)))){
                 outBuffer.append(htmlValue);
             }
             else{

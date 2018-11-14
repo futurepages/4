@@ -11,7 +11,10 @@ import org.futurepages.core.formatter.AbstractFormatter;
  */
 public class HTMLFormatter extends AbstractFormatter<String> {
     
-    public String format(String value, Locale loc) {
-        return The.htmlSimpleValue(value);
+    public String format(String value, Locale locale) {
+        return The.htmlSimpleValue(value,null);
+    }
+    public String format(String value, Locale locale, String excludedChars) {
+        return The.htmlSimpleValue(value,excludedChars);
     }
 }
