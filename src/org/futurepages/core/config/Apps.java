@@ -261,6 +261,8 @@ public class Apps {
 								|| get("APP_HOST").equals("http://127.0.0.1")
 								|| get("APP_HOST").startsWith("http://127.0.0.1:")
 								|| get("APP_HOST").startsWith("http://127.0.0.1/")
+								|| get("APP_HOST").startsWith("http://192.168.")
+								|| get("APP_HOST").startsWith("http://10.0.")
 				);
 	}
 
