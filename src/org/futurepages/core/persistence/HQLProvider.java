@@ -1,6 +1,7 @@
 package org.futurepages.core.persistence;
 
 import org.futurepages.util.CollectionUtil;
+import org.futurepages.util.HQLUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
 
@@ -371,6 +372,6 @@ public class HQLProvider implements HQLable {
 	}
 
 	public static String quoted(String value) {
-		return concat("'",value,"'");
+		return concat("'",HQLUtil.escQuotesAndSlashes(value) ,"'");
 	}
 }
