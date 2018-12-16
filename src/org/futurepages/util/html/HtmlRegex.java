@@ -152,16 +152,14 @@ public class HtmlRegex {
 
 	public static String javascriptText(String value, boolean escapeIntoStr) {
 		String val = value;
-		val = NEW_LINE.matcher(val).replaceAll("\\\\n");
-		val = CARRIAGE_RETURN.matcher(val).replaceAll("\\\\r");
 		if(escapeIntoStr){
-			val = val.replace("\\r","\\\\r");
-			val = val.replace("\\n","\\\\n");
-			val = val.replace("\\t","\\\\t");
+			val = val.replace("\\","\\\\");
+		}else{
+			val = NEW_LINE.matcher(val).replaceAll("\\\\n");
+			val = CARRIAGE_RETURN.matcher(val).replaceAll("\\\\r");
+			val = DOUBLE_QUOTE.matcher(val).replaceAll("\\\\\"");
 		}
 		val = SINGLE_QUOTE.matcher(val).replaceAll("\\\\\'");
-		val = DOUBLE_QUOTE.matcher(val).replaceAll("\\\\\"");
-		//val = OPEN_SCRIPT_TAG.matcher(val).replaceAll("&lt;$1$2$3&gt;");
 		val = CLOSE_SCRIP_TAG.matcher(val).replaceAll("&lt;/$1>");
 		return val;
 	}

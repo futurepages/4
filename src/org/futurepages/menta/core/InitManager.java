@@ -3,6 +3,7 @@ package org.futurepages.menta.core;
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.formatters.DBDateFormatter;
+import org.futurepages.formatters.HTMLScriptFormatter;
 import org.futurepages.formatters.brazil.AnniversaryAbbrFormatter;
 import org.futurepages.formatters.brazil.AnniversaryFormatter;
 import org.futurepages.formatters.brazil.CPFCNPJFormatter;
@@ -126,6 +127,7 @@ public class InitManager extends AbstractApplicationManager{
         FormatterManager.addFormatter("fullDateTime", new FullDateTimeFormatter(true));
         FormatterManager.addFormatter("fullDateLiteral", new FullDateTimeFormatter(false, true));
         FormatterManager.addFormatter("html", new HTMLFormatter());
+        FormatterManager.addFormatter("htmlScript", new HTMLScriptFormatter());
         FormatterManager.addFormatter("javascript", new JavascriptFormatter());
         FormatterManager.addFormatter("literalDate", new LiteralDateFormatter());
         FormatterManager.addFormatter("literalDateTime", new LiteralDateTimeFormatter());
