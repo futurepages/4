@@ -9,20 +9,20 @@ import java.util.HashMap;
  */
 public class HtmlMapChars {
 
-    private static final HashMap<Character, String> plainTable    = new HashMap<Character, String>();
-    private static final HashMap<String, String> simpleTable    = new HashMap<String, String>();
-    private static final HashMap<String, String> charsetSafe = new HashMap<String, String>();
-    private static final HashMap<String, String> completeTable  = new HashMap<String, String>();
-    private static final HashMap<Character, String> textareaTable  = new HashMap<Character, String>();
-    private static final HashMap<String,String> reverseCompleteTable  = new HashMap<String,String>();
+    private static final HashMap<Character, String> plainTable    = new HashMap<>();
+    private static final HashMap<String, String> simpleTable    = new HashMap<>();
+    private static final HashMap<String, String> charsetSafe = new HashMap<>();
+    private static final HashMap<String, String> completeTable  = new HashMap<>();
+    private static final HashMap<Character, String> textareaTable  = new HashMap<>();
+    private static final HashMap<String,String> reverseCompleteTable  = new HashMap<>();
 
     static
     {
 
 		plainTable.put('<'  ,"&lt;");
         plainTable.put('>'  ,"&gt;");
-        plainTable.put('\t' ,"&nbsp;"); //  \t
-        plainTable.put('\n' ,"<br/>");  //  \n
+        plainTable.put('\t' ,"&nbsp;");
+        plainTable.put('\n' ,"<br/>");
         plainTable.put('\r' ,"");
 		
         //Povoando tabela de textarea
@@ -30,9 +30,9 @@ public class HtmlMapChars {
         textareaTable.put('<'  ,"&lt;");
         textareaTable.put('>'  ,"&gt;");
         textareaTable.put('&'  ,"&amp;");
-        textareaTable.put('\t' ,"&nbsp;"); //  \t
-        textareaTable.put('\n' ,"<br/>");  //  \n
-        textareaTable.put('\r' ,"");       //  \r
+        textareaTable.put('\t' ,"&nbsp;");
+        textareaTable.put('\n' ,"<br/>");
+        textareaTable.put('\r' ,"");
 
 		//Povoando tabela simples (somente html brakers)
         simpleTable.put("\"" ,"&quot;");
@@ -209,7 +209,6 @@ public class HtmlMapChars {
 
     /**
      * Converte as quebras de texto e aspas escrito em textarea para os caracteres válidos de html.
-     * @param strIn
      */
     public static String textAreaValue(String strIn){
         if(strIn == null) return "&nbsp;";
@@ -227,7 +226,6 @@ public class HtmlMapChars {
     }
     /**
      * Converte as quebras de texto escrito em textarea para as quebras de html.
-     * @param strIn
      */
     public static String plainTextValue(String strIn){
         if(strIn == null) return "&nbsp;";
