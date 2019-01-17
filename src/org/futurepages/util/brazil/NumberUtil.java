@@ -212,4 +212,8 @@ public class NumberUtil {
 			return null;
 		}
 	}
+
+	public static int onlyPositivesOrZero(int number){
+		return number>0?number:0;
+	}
 }
