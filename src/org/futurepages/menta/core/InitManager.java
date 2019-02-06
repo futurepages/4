@@ -2,6 +2,7 @@ package org.futurepages.menta.core;
 
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.AppLogger;
+import org.futurepages.formatters.CapitalizeFormatter;
 import org.futurepages.formatters.DBDateFormatter;
 import org.futurepages.formatters.HTMLScriptFormatter;
 import org.futurepages.formatters.brazil.AnniversaryAbbrFormatter;
@@ -114,6 +115,7 @@ public class InitManager extends AbstractApplicationManager{
         FormatterManager.addFormatter("anniversary", new AnniversaryFormatter());
         FormatterManager.addFormatter("anniversaryAbbr", new AnniversaryAbbrFormatter());
         FormatterManager.addFormatter("bigLong", new BigLongFormatter());
+        FormatterManager.addFormatter("capitalize", new CapitalizeFormatter());
         FormatterManager.addFormatter("collectionSize", new CollectionSizeFormatter());
 		FormatterManager.addFormatter("collapsedText", new CollapsedTextFormatter());
         FormatterManager.addFormatter("cpfCnpj", new CPFCNPJFormatter());
