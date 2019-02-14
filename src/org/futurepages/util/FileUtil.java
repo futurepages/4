@@ -47,7 +47,7 @@ public class FileUtil {
 	public static String getStringContent(String path) throws FileNotFoundException, IOException {
 		File file = new File(path);
 		return getStringContent(file);
-	
+
 	}
 
 	public static String getStringContent(File file) throws FileNotFoundException, IOException {
@@ -72,42 +72,42 @@ public class FileUtil {
 		return sb.toString();
 	}
 
-    public static byte[] getBytesFromUrl(String url, Long maxAllowed)  throws IOException {
-	    return getBytesFromUrl(url, new StringBuilder(), maxAllowed) ;
-    }
+	public static byte[] getBytesFromUrl(String url, Long maxAllowed)  throws IOException {
+		return getBytesFromUrl(url, new StringBuilder(), maxAllowed) ;
+	}
 
-    public static byte[] getBytesFromUrl(String url, StringBuilder sbContentType, Long maxAllowed)  throws IOException {
+	public static byte[] getBytesFromUrl(String url, StringBuilder sbContentType, Long maxAllowed)  throws IOException {
 		ByteArrayOutputStream bais = new ByteArrayOutputStream();
 		InputStream is = null;
 		URL theURL = new URL(url.replace(" ","%20").replace("+","%20"));
-        URLConnection c =  theURL.openConnection();
-	    try {
-		  if(sbContentType!=null){
-			sbContentType.append(c.getContentType());
-		  }
-		  if(maxAllowed!=null){
-			if(maxAllowed.longValue() < Long.parseLong(c.getHeaderField("Content-Length"))){
-				return null;
+		URLConnection c =  theURL.openConnection();
+		try {
+			if(sbContentType!=null){
+				sbContentType.append(c.getContentType());
 			}
-		  }
-	      is = c.getInputStream();
-		  byte[] byteChunk = new byte[4096];
-		  int n;
-		  while ( (n = is.read(byteChunk)) > 0 ) {
-			bais.write(byteChunk, 0, n);
-		  }
-		  return bais.toByteArray();
+			if(maxAllowed!=null){
+				if(maxAllowed.longValue() < Long.parseLong(c.getHeaderField("Content-Length"))){
+					return null;
+				}
+			}
+			is = c.getInputStream();
+			byte[] byteChunk = new byte[4096];
+			int n;
+			while ( (n = is.read(byteChunk)) > 0 ) {
+				bais.write(byteChunk, 0, n);
+			}
+			return bais.toByteArray();
 		}
 		catch (IOException e) {
-		  throw e;
+			throw e;
 		}
 		finally {
-		  if (is != null) {
-			  bais.close();
-			  is.close();
-		  }
+			if (is != null) {
+				bais.close();
+				is.close();
+			}
 		}
-    }
+	}
 
 	public static String getStringContent(Class cls, String path) throws FileNotFoundException, IOException {
 		return getStringContent(classRealPath(cls)+path);
@@ -135,6 +135,10 @@ public class FileUtil {
 		BufferedOutputStream target = null;
 		try {
 			byte[] content = replaceAll(map, source,false).getBytes();
+			File outputFile = new File(targetUrl);
+			if(!outputFile.exists()){
+				outputFile.createNewFile();
+			}
 			target = new BufferedOutputStream(new FileOutputStream(targetUrl));
 			target.write(content);
 			target.flush();
@@ -320,7 +324,7 @@ public class FileUtil {
 				}
 			}
 
-		// cópia de arquivo...
+			// cópia de arquivo...
 		} else {
 
 			FileInputStream from = null;
@@ -445,7 +449,7 @@ public class FileUtil {
 		}
 		folder.delete();
 	}
-	
+
 	public static String convertStreamToString(InputStream is) {
 		/*
 		 * To convert the InputStream to String we use the BufferedReader.readLine()
@@ -474,29 +478,29 @@ public class FileUtil {
 		return sb.toString();
 	}
 
-    public static void writeFile(final URL fromURL, final File toFile)
-            throws IOException {
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = new BufferedInputStream(fromURL.openStream());
-            out = new BufferedOutputStream(new FileOutputStream(toFile));
-            int len;
-            byte[] buffer = new byte[4096];
-            while ((len = in.read(buffer, 0, buffer.length)) != -1) {
-                out.write(buffer, 0, len);
-            }
-            out.flush();
-        } finally {
-            in.close();
-            out.close();
-        }
-    }
+	public static void writeFile(final URL fromURL, final File toFile)
+			throws IOException {
+		InputStream in = null;
+		OutputStream out = null;
+		try {
+			in = new BufferedInputStream(fromURL.openStream());
+			out = new BufferedOutputStream(new FileOutputStream(toFile));
+			int len;
+			byte[] buffer = new byte[4096];
+			while ((len = in.read(buffer, 0, buffer.length)) != -1) {
+				out.write(buffer, 0, len);
+			}
+			out.flush();
+		} finally {
+			in.close();
+			out.close();
+		}
+	}
 
-    public static void writeFile(final URL fromURL, final String toFile)
-            throws IOException {
-        writeFile(fromURL, new File(toFile));
-    }
+	public static void writeFile(final URL fromURL, final String toFile)
+			throws IOException {
+		writeFile(fromURL, new File(toFile));
+	}
 
 	class PatternFileParser extends FileParser<File>{
 		private Pattern pattern = null;
