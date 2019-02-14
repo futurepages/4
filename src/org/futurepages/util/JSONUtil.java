@@ -11,17 +11,7 @@ public class JSONUtil {
 
 	public static JsonObject getObject(String url) {
 		try {
-			OkHttpClient client = new OkHttpClient();
-			Request request = new Request.Builder()
-					.url(url)
-					.build();
-			Response response = client.newCall(request).execute();
-			String jsonStr = response.body().string();
-
-			// Close OkHttpClient according to:
-			// https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html
-			client.dispatcher().executorService().shutdown();
-			client.connectionPool().evictAll();
+			String jsonStr = HttpUtil.getURLContent(url);
 			return new JsonParser().parse(jsonStr).getAsJsonObject();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
