@@ -25,7 +25,7 @@ public class JavaScriptMinifier {
 			FileWriter resultFileWriter = new FileWriter(alreadyCompressed);
 			for (File f : jsFiles) {
 				String jsPath = (f.getAbsolutePath().substring(pathInit));
-				if(!jsPath.startsWith("/init/") && !f.getAbsolutePath().endsWith(".min.js")){
+				if(!jsPath.startsWith("/init/") && !f.getAbsolutePath().endsWith(".min.js") && !f.getAbsolutePath().endsWith("-min.js")){
 					FileInputStream fis = null;
 					FileWriter fileWriter = null;
 					InputStreamReader inReader = null;
