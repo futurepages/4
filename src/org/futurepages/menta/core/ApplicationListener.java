@@ -108,6 +108,10 @@ public class ApplicationListener implements ServletContextListener {
 				log("Quartz Inicializado.");
 			}
 
+			AppLogger.getInstance().init();
+			log("AppLogger Inicializado.");
+
+
 			//Inicializa os parâmetros de configuração de Email se solicitado.
 			if (Apps.get("EMAIL_ACTIVE").equals("true")) {
 				log("Configurando Email...: ");

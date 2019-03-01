@@ -1,8 +1,11 @@
 package org.futurepages.core.exception;
 
-//import org.futurepages.core.control.UI;
-//import org.futurepages.core.locale.Txt;
-//import org.futurepages.core.locale.TxtNotFoundException;
+import org.futurepages.core.config.Apps;
+import org.futurepages.menta.actions.HiddenRequestAction;
+import org.futurepages.menta.consequences.Forward;
+import org.futurepages.menta.core.action.AbstractAction;
+import org.futurepages.menta.core.action.Action;
+import org.futurepages.menta.exceptions.PageNotFoundException;
 import org.futurepages.util.DateUtil;
 import org.futurepages.util.EncodingUtil;
 import org.futurepages.util.The;
@@ -10,11 +13,26 @@ import org.futurepages.util.brazil.BrazilDateUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import static org.futurepages.core.exception.ExceptionLogType.*;
 
 
 public class AppLogger implements ExceptionLogger{
+
+	private ExceptionExecutor exceptionExecutor;
+
+	public void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+		if(Apps.get("LOG_EXCEPTIONS_EXECUTOR")!=null){
+			exceptionExecutor = (ExceptionExecutor) Class.forName(Apps.get("LOG_EXCEPTIONS_EXECUTOR")).newInstance();
+			exceptionExecutor.init();
+			logln(">> LOG EXECUTOR INITIALIZED: "+Apps.get("LOG_EXCEPTIONS_EXECUTOR"));
+		}
+	}
 
     private static final AppLogger INSTANCE = new AppLogger();
 
@@ -24,107 +42,132 @@ public class AppLogger implements ExceptionLogger{
 
 	private AppLogger() {}
 
-	public String execute(Throwable throwable) {
-		return execute(throwable, null);
+	public String execute(Throwable throwable, HttpServletRequest req) {
+		return execute(throwable, ExceptionLogType.SILENT_EXCEPTION, req, null);
 	}
 
-	public String execute(Throwable throwable, HttpServletRequest vaadinReq) {
-		HttpServletRequest req = null;
-		if(vaadinReq!=null){
-			req = (HttpServletRequest) vaadinReq;
-		}
-		ExceptionLogType logType;
-//TODO: txt not installed yet.
-//		if(throwable instanceof TxtNotFoundException){
-//			logType = ExceptionLogType.TXT_NOT_FOUND;
-//		}else{
-			logType = ExceptionLogType.INTERNAL_FAIL;
-//		}
+	public String execute(Throwable throwable, Map mapInputs) {
+		return execute(throwable,SILENT_EXCEPTION, null, mapInputs);
+	}
+
+	public String execute(Throwable throwable, String... inputs) {
+        Map<Object, Object> mapInputs = null;
+    	if(inputs!=null && inputs.length>0){
+	        mapInputs = new HashMap<>();
+	        int i = 1;
+	        for(Object input : inputs){
+				mapInputs.put("input#"+i,input!=null?input.toString():"null");
+				i++;
+		    }
+	    }
+		return execute(throwable, SILENT_EXCEPTION, null, mapInputs);
+	}
+
+	public String execute(Throwable throwable, ExceptionLogType logType, HttpServletRequest req, Map mapInputs) {
+
+		logType = (throwable instanceof PageNotFoundException)  ? ExceptionLogType.NOT_FOUND : logType;
 
 		String failNumber = System.currentTimeMillis()+"-"+Thread.currentThread().getId();
 
+		StringBuilder logSB = new StringBuilder();
 		String exceptionId =  The.concat("[",logType,"] ",failNumber);
 
-//		if(logType!=ExceptionLogType.TXT_NOT_FOUND){
-	        log(exceptionId, "  (", DateUtil.getInstance().viewDateTime(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
-			throwable.printStackTrace();
-//		}
+        logSB.append(logln(exceptionId, "  (", DateUtil.getInstance().viewDateTime(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"));
 
-//		if(logType==ExceptionLogType.TXT_NOT_FOUND){
-//			log("\n[",logType,"] "," (", DateUtil.getInstance().viewDateTime(new Date()), ")");
-//			log("\t",throwable.getMessage());
-//			for(StackTraceElement el : throwable.getStackTrace()){
-//				if(!el.getClassName().equals(Txt.class.getName())){
-//					log("\t\tat "+el+"\n");
-//					break;
-//				}
-//			}
-//		}
+        if(logType==ExceptionLogType.NOT_FOUND){
+	        logSB.append(logln("\n[ PAGE NOT FOUND - PAGE NOT FOUND - unnecessary stack trace. ]\n"));
+        } else{
+			StringWriter errors = new StringWriter();
+			throwable.printStackTrace(new PrintWriter(errors));
+			logSB.append(logln(errors.toString()));
+        }
 
 		if(req!=null){
-			log("\n>[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():""));
-			log(">[referer]  ", req.getHeader("referer"));
-			log(">[browser]  ", req.getHeader("user-agent"));
-			log(">[proxy  ]  ", req.getHeader("Proxy-Authorization"));
+        	Action action  = req.getAttribute(Forward.ACTION_REQUEST) instanceof Action? (Action) req.getAttribute(Forward.ACTION_REQUEST) : null;
+			logSB.append(logln(  "\n>[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():"")));
+			logSB.append(logln(    ">[referer]  ", req.getHeader("referer")));
+			logSB.append(logln(    ">[from   ]  ", AbstractAction.getIpsFromRequest(req)));
+			logSB.append(logln(    ">[browser]  ", req.getHeader("user-agent")));
+			logSB.append(logln(    ">[proxy  ]  ", req.getHeader("Proxy-Authorization")));
+			if (AbstractAction.isLogged(req)) {
+				logSB.append(logln(">[user   ]  ", AbstractAction.loggedUser(req).getLogin()));
+			}
+			logSB.append(logln(   ">[method ]  ", req.getMethod()));
 
-// TODO: new futurepages need UI implemented.
-//			if(UI.getCurrent().getLoggedUser()!=null){
-//				log(">[user   ]  ", UI.getCurrent().getLoggedUser().getLogin());
-//			}
-			log(">[method ]  ", req.getMethod());
-
-			logInline(">[request]  ");
-			for (Object key : req.getParameterMap().keySet()) {
-				log(key.toString(), ": ",
-						The.implodedArray(req.getParameterValues(key.toString()), ",", "'"),
-						";"
+			if(logType!=ExceptionLogType.NOT_FOUND){
+				logSB.append(
+						log(  ">[request]  ")
 				);
-			}
-			System.err.println();
-			log(">[session]  id: ", req.getSession().getId(), "; ",
-					"creation: ", BrazilDateUtil.viewDateTime(new Date(req.getSession().getCreationTime())), "; ",
-					"last access: ", BrazilDateUtil.viewDateTime(new Date(req.getSession().getLastAccessedTime())), "; ",
-					"max inative interval: ", String.valueOf(req.getSession().getMaxInactiveInterval() / 60), " minutes;"
-			);
-			logInline(">[session] ");
-			Enumeration ralist = req.getSession().getAttributeNames();
-			while (ralist.hasMoreElements()) {
-				String name = (String) ralist.nextElement();
-				String toStringValue = req.getSession().getAttribute(name).toString();
-				if(toStringValue.length()>200){
-					toStringValue = toStringValue.substring(0,197)+" (...)";
-				}
-				if(toStringValue.contains("\n")){
-					toStringValue = toStringValue.replaceAll("\\s+"," ");
-				}
-				logInline(name, ": '", toStringValue, "';");
-			}
-			System.err.println();
 
-			if (req.getCookies() != null) {
-				logInline(">[cookies]  (", req.getCookies().length, ") ");
-				for (Cookie cookie : req.getCookies()) {
-					logInline(cookie.getName(), ": '", EncodingUtil.decodeUrl(cookie.getValue()), "'; ");
+				if(action!=null &&  HiddenRequestAction.class.isAssignableFrom(action.getClass())){
+					logSB.append(logln("Hidden because it's a Hidden Request Action (maybe some kind of login)."));
+				}else{
+					for (Object key : req.getParameterMap().keySet()) {
+						logSB.append(
+								log(key.toString(), ": ",
+								The.implodedArray(req.getParameterValues(key.toString()), ",", "'"),
+								";"
+						));
+					}
 				}
-				System.err.println();
+				logSB.append(logln(""));
+
+				logSB.append(logln(">[session-id] ", req.getSession().getId(), "; ",
+						"creation: ", BrazilDateUtil.viewDateTime(new Date(req.getSession().getCreationTime())), "; ",
+						"last access: ", BrazilDateUtil.viewDateTime(new Date(req.getSession().getLastAccessedTime())), "; ",
+						"max inative interval: ", String.valueOf(req.getSession().getMaxInactiveInterval() / 60), " minutes;"
+				));
+				logSB.append(log(">[session] "));
+				Enumeration ralist = req.getSession().getAttributeNames();
+				while (ralist.hasMoreElements()) {
+					String name = (String) ralist.nextElement();
+					String toStringValue = req.getSession().getAttribute(name).toString();
+					if(toStringValue.length()>200){
+						toStringValue = toStringValue.substring(0,197)+" (...)";
+					}
+					if(toStringValue.contains("\n")){
+						toStringValue = toStringValue.replaceAll("\\s+"," ");
+					}
+					logSB.append(log(name, ": '", toStringValue, "';"));
+				}
+				logSB.append(logln(""));
+
+				if (req.getCookies() != null) {
+					logSB.append(log(">[cookies]  (", req.getCookies().length, ") "));
+					for (Cookie cookie : req.getCookies()) {
+						logSB.append(log(cookie.getName(), ": '", EncodingUtil.decodeUrl(cookie.getValue()), "'; "));
+					}
+					logSB.append(logln(""));
+				}
 			}
 		}
-		if(logType!=ExceptionLogType.TXT_NOT_FOUND){
-			log("\n",exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+		if(mapInputs!=null){
+			for(Object key : mapInputs.keySet()){
+				logSB.append(logln(  ">[",key,"]  ", mapInputs.get(key)));
+			}
+		}
+		logSB.append(logln("\n",exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"));
+		if(exceptionExecutor!=null && logType!=ExceptionLogType.NOT_FOUND){
+			exceptionExecutor.execute(failNumber, throwable.getMessage()!=null?throwable.getMessage() :"...", logSB.toString());
 		}
 		return failNumber;
 	}
 
-
-	private void log(Object... strs){
-		System.err.println(The.concat(strs));
+	private String logln(Object... strs){
+    	String log = The.concat(strs);
+		System.out.println(log);
+		return log;
 	}
 
-	private void logInline(Object... strs){
-		System.err.print(The.concat(strs));
+	private String log(Object... strs){
+    	String log = The.concat(strs);
+		System.out.print(log);
+		return log;
 	}
-	
-	private enum ExceptionLogType {
-		INTERNAL_FAIL, TXT_NOT_FOUND
+
+	public interface ExceptionExecutor {
+    	void init();
+    	void execute(String failNum, String logTitle, String logStack);
 	}
 }
+
