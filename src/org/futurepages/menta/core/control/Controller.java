@@ -66,6 +66,7 @@ public class Controller extends HttpServlet {
 	private ThreadLocal<InvocationChain> chainTL = new ThreadLocal<InvocationChain>();
 	private static ServletConfig conf;
 	private static ClassGetActionUrlParts objectGetActionUrlParts;
+	private static boolean initialized = false;
 
 	static  {
 		boolean isDebugging = false;
@@ -97,6 +98,7 @@ public class Controller extends HttpServlet {
 		super.init(conf);
 		Controller.conf = conf;
 		try {
+			initialized = false;
 			startPage = Apps.get("START_PAGE_NAME");
 
 			innerActionSeparator = '-';
@@ -104,10 +106,15 @@ public class Controller extends HttpServlet {
 
 			this.configureServlet(conf);
 			initApplicationManager();
+			initialized = true;
 		} catch (Exception ex) {
 			ExceptionFilter.Logger.getInstance().execute(ex, null, null, true);
 		}
 
+	}
+
+	public static boolean isInitialized(){
+		return initialized;
 	}
 
 

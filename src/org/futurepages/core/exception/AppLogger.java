@@ -5,6 +5,7 @@ import org.futurepages.menta.actions.HiddenRequestAction;
 import org.futurepages.menta.consequences.Forward;
 import org.futurepages.menta.core.action.AbstractAction;
 import org.futurepages.menta.core.action.Action;
+import org.futurepages.menta.core.control.Controller;
 import org.futurepages.menta.exceptions.PageNotFoundException;
 import org.futurepages.util.DateUtil;
 import org.futurepages.util.EncodingUtil;
@@ -147,7 +148,7 @@ public class AppLogger implements ExceptionLogger{
 			}
 		}
 		logSB.append(logln("\n",exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"));
-		if(exceptionExecutor!=null && logType!=ExceptionLogType.NOT_FOUND){
+		if(exceptionExecutor!=null && logType!=ExceptionLogType.NOT_FOUND && Controller.isInitialized()){
 			exceptionExecutor.execute(failNumber, throwable.getMessage()!=null?throwable.getMessage() :"...", logSB.toString());
 		}
 		return failNumber;
