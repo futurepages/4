@@ -1,5 +1,7 @@
 package org.futurepages.util;
 
+import org.futurepages.core.config.Apps;
+
 import java.util.Collection;
 
 /**
@@ -76,8 +78,8 @@ public class Is {
      */
     public static boolean validURL(String urlStr) {
         if (urlStr != null) {
-            return urlStr.contains(".") && ((urlStr.startsWith("http://") || urlStr.startsWith("https://") ||
-                urlStr.startsWith("HTTPS://") || urlStr.startsWith("HTTP://")));
+            return (urlStr.contains(".") || (!Is.empty(Apps.get("APP_HOST")) && urlStr.startsWith(Apps.get("APP_HOST"))))
+	            && ((urlStr.startsWith("http://") || urlStr.startsWith("https://") || urlStr.startsWith("HTTPS://") || urlStr.startsWith("HTTP://")));
         } else {
             return false;
         }
