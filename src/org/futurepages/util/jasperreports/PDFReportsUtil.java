@@ -17,7 +17,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 
-import org.futurepages.core.persistence.Dao;
 
 /**
  *
@@ -80,10 +79,7 @@ public class PDFReportsUtil {
         exporter.exportReport();
 		return out;
     }
-	public static OutputStream createPDF(String fileName,	JasperPrint report, HttpServletResponse response) throws JRException, IOException {
-		response.setHeader("Content-Disposition","inline; filename="+fileName);
-		response.setContentType("application/pdf");
-		OutputStream out = response.getOutputStream();				
+	public static OutputStream createPDF(String fileName, JasperPrint report, OutputStream out) throws JRException, IOException {
         JRExporter exporter = new JRPdfExporter();
 		exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, fileName);
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, report);
@@ -91,6 +87,7 @@ public class PDFReportsUtil {
         exporter.exportReport();
 		return out;
     }
+
 	public static JasperPrint jasperPrint( InputStream inputStream, Map<String, Object> parameters, List lista) throws JRException {
 		JRDataSource dsCollection = new JRBeanCollectionDataSource(lista);
 		JasperPrint jp = JasperFillManager.fillReport(inputStream, parameters, dsCollection);

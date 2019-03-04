@@ -14,6 +14,7 @@ import org.futurepages.menta.core.control.InvocationChain;
 import org.futurepages.menta.core.filter.Filter;
 import org.futurepages.menta.exceptions.FuturepagesServletException;
 import org.futurepages.menta.exceptions.ServletUserException;
+import org.futurepages.util.The;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -104,7 +105,7 @@ public class ExceptionFilter implements Filter {
 				String protocolNumber = AppLogger.getInstance().execute(throwable, actionType , chain.getAction().getRequest() , null);
 				chain.getAction().getOutput().setValue(EXCEPTION, new Exception(protocolNumber, throwable));
 			}
-			return actionType!=null ? actionType.name() : null;
+			return actionType!=null ? The.camelFromSnake(actionType.name()) : null;
 		}
 	}
 }
