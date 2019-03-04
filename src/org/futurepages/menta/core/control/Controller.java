@@ -241,7 +241,9 @@ public class Controller extends HttpServlet {
 		innerAction = prettyUrlParts[1];
 
 		// Para exibir a url requisitada que chegou ao Controller.
-//		System.out.println(">> "+req.getRequestURL().append((req.getQueryString()!=null?"?"+req.getQueryString():""))); //for DEBUG-MODE
+		if(Apps.devLocalMode()){
+			System.out.println("\n"+req.getRequestURL().append((req.getQueryString()!=null?"?"+req.getQueryString():""))); //for DEBUG-MODE
+		}
 
 		ActionConfig ac = null;
 

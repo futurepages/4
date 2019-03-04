@@ -93,7 +93,9 @@ public class TemplateServlet extends HttpServlet {
 			}
 			processTemplate(path, createTemplateManager(), request, response, getServletContext());
 		} catch (Exception ex) {
-			ExceptionFilter.Logger.getInstance().execute(ex, null, request, true);
+			throw new ServletException(ex);
+			// antes a linha de cima era assim.... (removi pra evitar logs repetidos)
+//			ExceptionFilter.Logger.getInstance().execute(ex, null, request, true);
 		}
 	}
 

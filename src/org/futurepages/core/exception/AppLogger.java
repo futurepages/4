@@ -71,9 +71,9 @@ public class AppLogger implements ExceptionLogger{
 		String failNumber = System.currentTimeMillis()+"-"+Thread.currentThread().getId();
 
 		StringBuilder logSB = new StringBuilder();
-		String exceptionId =  The.concat("[",logType,"] ",failNumber);
+		String exceptionId =  The.concat("\n[",logType,"] ",failNumber);
 
-        logSB.append(logln(exceptionId, "  (", DateUtil.getInstance().viewDateTime(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"));
+        logSB.append(logln(exceptionId, "  (", DateUtil.getInstance().viewDateTime(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"));
 
         if(logType==ExceptionLogType.NOT_FOUND){
 	        logSB.append(logln("\n[ PAGE NOT FOUND - PAGE NOT FOUND - unnecessary stack trace. ]\n"));
@@ -85,7 +85,7 @@ public class AppLogger implements ExceptionLogger{
 
 		if(req!=null){
         	Action action  = req.getAttribute(Forward.ACTION_REQUEST) instanceof Action? (Action) req.getAttribute(Forward.ACTION_REQUEST) : null;
-			logSB.append(logln(  "\n>[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():"")));
+			logSB.append(logln(    ">[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():"")));
 			logSB.append(logln(    ">[referer]  ", req.getHeader("referer")));
 			logSB.append(logln(    ">[from   ]  ", AbstractAction.getIpsFromRequest(req)));
 			logSB.append(logln(    ">[browser]  ", req.getHeader("user-agent")));
@@ -147,7 +147,7 @@ public class AppLogger implements ExceptionLogger{
 				logSB.append(logln(  ">[",key,"]  ", mapInputs.get(key)));
 			}
 		}
-		logSB.append(logln("\n",exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"));
+		logSB.append(logln(exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"));
 		if(exceptionExecutor!=null && logType!=ExceptionLogType.NOT_FOUND && Controller.isInitialized()){
 			exceptionExecutor.execute(failNumber, throwable.getMessage()!=null?throwable.getMessage() :"...", logSB.toString());
 		}

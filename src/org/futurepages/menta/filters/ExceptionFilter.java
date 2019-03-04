@@ -100,7 +100,9 @@ public class ExceptionFilter implements Filter {
 					throw (ServletUserException) ex;
 				}
 				String protocolNumber = AppLogger.getInstance().execute(ex, ExceptionLogType.SERVLET_500, req, null);
-				throw new FuturepagesServletException(protocolNumber,(actionType!=null? actionType.name() : null), ex);
+
+				// linha a seguir é quem faz aparecer a exception na tela de erro.
+				throw new FuturepagesServletException(protocolNumber,(actionType!=null?  The.camelFromSnake(actionType.name()) : null), ex);
 			} else if (chain != null) {
 				String protocolNumber = AppLogger.getInstance().execute(throwable, actionType , chain.getAction().getRequest() , null);
 				chain.getAction().getOutput().setValue(EXCEPTION, new Exception(protocolNumber, throwable));
