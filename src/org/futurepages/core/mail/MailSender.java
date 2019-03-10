@@ -155,10 +155,10 @@ public class MailSender {
 
 	}
 
-	public void sendHtmlEmailWithFrom(String nameFrom, String emailReplayTo, String emailAccountFrom, String emailPassword, String subject, String message, String... mailAdresses) {
+	public void sendHtmlEmailWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String emailPassword, String subject, String message, String... mailAdresses) {
 
 	try {
-			List<Email> emails = criarListaEmailsWithFrom(nameFrom, emailReplayTo, emailAccountFrom, emailPassword, mailAdresses, subject, message, TypeEmail.HTML_EMAIL);
+			List<Email> emails = criarListaEmailsWithFrom(nameFrom, emailReplyTo, emailAccountFrom, emailPassword, mailAdresses, subject, message, TypeEmail.HTML_EMAIL);
 			ThreadEmail threadEmail = new ThreadEmail(emails);
 			Thread thread = new Thread(threadEmail);
 			thread.start();
