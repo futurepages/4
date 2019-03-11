@@ -154,7 +154,7 @@ public class AppLogger implements ExceptionLogger{
 		}
 		logSB.append(logln(exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"));
 		if(exceptionExecutor!=null && !simple404 && Controller.isInitialized()){
-			exceptionExecutor.execute(failNumber, throwable.getMessage()!=null?throwable.getMessage() :throwable.getClass().getName(), stackHash, logSB.toString());
+			exceptionExecutor.execute(failNumber, throwable.getMessage()!=null?throwable.getMessage() :throwable.getClass().getSimpleName(), stackHash, logSB.toString());
 		}
 		return failNumber;
 	}
