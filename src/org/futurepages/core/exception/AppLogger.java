@@ -159,7 +159,7 @@ public class AppLogger implements ExceptionLogger{
 
 	private String logln(Object... strs){
     	String log = The.concat(strs)+"\n";
-		System.out.println(log);
+		System.out.print(log);
 		return log;
 	}
 
