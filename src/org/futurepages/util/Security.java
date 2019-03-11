@@ -91,7 +91,7 @@ public class Security {
 	/**
 	 * Retorna o valor da string de entrada com codificação md5
 	 */
-	public static String md5(String senha) {
+	public static String md5(String inputText) {
 		String sen = "";
 		MessageDigest md = null;
 		try {
@@ -99,7 +99,7 @@ public class Security {
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		}
-		BigInteger hash = new BigInteger(1, md.digest(senha.getBytes()));
+		BigInteger hash = new BigInteger(1, md.digest(inputText.getBytes()));
 		sen = hash.toString(16);
 
 		//correção da falta de zeros

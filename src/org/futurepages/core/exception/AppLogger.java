@@ -9,6 +9,7 @@ import org.futurepages.menta.core.control.Controller;
 import org.futurepages.menta.exceptions.PageNotFoundException;
 import org.futurepages.util.DateUtil;
 import org.futurepages.util.EncodingUtil;
+import org.futurepages.util.Security;
 import org.futurepages.util.The;
 import org.futurepages.util.brazil.BrazilDateUtil;
 
@@ -75,12 +76,14 @@ public class AppLogger implements ExceptionLogger{
 
         logSB.append(logln(exceptionId, "  (", DateUtil.getInstance().viewDateTime(new Date()), ") >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"));
 
+		StringWriter errors = new StringWriter();
+        String stackHash = "";
         if(logType==ExceptionLogType.NOT_FOUND){
 	        logSB.append(logln("\n[ PAGE NOT FOUND - PAGE NOT FOUND - unnecessary stack trace. ]\n"));
         } else{
-			StringWriter errors = new StringWriter();
 			throwable.printStackTrace(new PrintWriter(errors));
 			logSB.append(logln(errors.toString()));
+	        stackHash = Security.md5(errors.toString());
         }
 
 		if(req!=null){
@@ -149,7 +152,7 @@ public class AppLogger implements ExceptionLogger{
 		}
 		logSB.append(logln(exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"));
 		if(exceptionExecutor!=null && logType!=ExceptionLogType.NOT_FOUND && Controller.isInitialized()){
-			exceptionExecutor.execute(failNumber, throwable.getMessage()!=null?throwable.getMessage() :"...", logSB.toString());
+			exceptionExecutor.execute(failNumber, throwable.getMessage()!=null?throwable.getMessage() :"NullPointer?", stackHash, logSB.toString());
 		}
 		return failNumber;
 	}
@@ -168,7 +171,7 @@ public class AppLogger implements ExceptionLogger{
 
 	public interface ExceptionExecutor {
     	void init();
-    	void execute(String failNum, String logTitle, String logStack);
+    	void execute(String failNum, String logTitle, String stackHash, String logStack);
 	}
 }
 
