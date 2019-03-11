@@ -78,7 +78,8 @@ public class AppLogger implements ExceptionLogger{
 
 		StringWriter errors = new StringWriter();
         String stackHash = "";
-        if(logType==ExceptionLogType.NOT_FOUND){
+        boolean simple404 = logType==ExceptionLogType.NOT_FOUND && (req!=null &&  (req.getHeader("referer")==null));
+        if(simple404){
 	        logSB.append(logln("\n[ PAGE NOT FOUND - PAGE NOT FOUND - unnecessary stack trace. ]\n"));
         } else{
 			throwable.printStackTrace(new PrintWriter(errors));
@@ -89,16 +90,15 @@ public class AppLogger implements ExceptionLogger{
 		if(req!=null){
         	Action action  = req.getAttribute(Forward.ACTION_REQUEST) instanceof Action? (Action) req.getAttribute(Forward.ACTION_REQUEST) : null;
 			logSB.append(logln(    ">[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():"")));
-			logSB.append(logln(    ">[referer]  ", req.getHeader("referer")));
-			logSB.append(logln(    ">[from   ]  ", AbstractAction.getIpsFromRequest(req)));
-			logSB.append(logln(    ">[browser]  ", req.getHeader("user-agent")));
-			logSB.append(logln(    ">[proxy  ]  ", req.getHeader("Proxy-Authorization")));
-			if (AbstractAction.isLogged(req)) {
-				logSB.append(logln(">[user   ]  ", AbstractAction.loggedUser(req).getLogin()));
-			}
-			logSB.append(logln(   ">[method ]  ", req.getMethod()));
-
-			if(logType!=ExceptionLogType.NOT_FOUND){
+			if(!simple404){
+				logSB.append(logln(    ">[referer]  ", req.getHeader("referer")));
+				logSB.append(logln(    ">[from   ]  ", AbstractAction.getIpsFromRequest(req)));
+				logSB.append(logln(    ">[browser]  ", req.getHeader("user-agent")));
+				logSB.append(logln(    ">[proxy  ]  ", req.getHeader("Proxy-Authorization")));
+				if (AbstractAction.isLogged(req)) {
+					logSB.append(logln(">[user   ]  ", AbstractAction.loggedUser(req).getLogin()));
+				}
+				logSB.append(logln(   ">[method ]  ", req.getMethod()));
 				logSB.append(
 						log(  ">[request]  ")
 				);
@@ -144,6 +144,8 @@ public class AppLogger implements ExceptionLogger{
 					logSB.append(logln(""));
 				}
 			}
+		} else{
+			logSB.append(logln(    ">[request]  null"));
 		}
 		if(mapInputs!=null){
 			for(Object key : mapInputs.keySet()){
@@ -151,8 +153,8 @@ public class AppLogger implements ExceptionLogger{
 			}
 		}
 		logSB.append(logln(exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"));
-		if(exceptionExecutor!=null && logType!=ExceptionLogType.NOT_FOUND && Controller.isInitialized()){
-			exceptionExecutor.execute(failNumber, throwable.getMessage()!=null?throwable.getMessage() :"NullPointer?", stackHash, logSB.toString());
+		if(exceptionExecutor!=null && !simple404 && Controller.isInitialized()){
+			exceptionExecutor.execute(failNumber, throwable.getMessage()!=null?throwable.getMessage() :throwable.getClass().getName(), stackHash, logSB.toString());
 		}
 		return failNumber;
 	}
