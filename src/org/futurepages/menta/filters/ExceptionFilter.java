@@ -13,6 +13,7 @@ import org.futurepages.menta.core.action.Manipulable;
 import org.futurepages.menta.core.control.InvocationChain;
 import org.futurepages.menta.core.filter.Filter;
 import org.futurepages.menta.exceptions.FuturepagesServletException;
+import org.futurepages.menta.exceptions.PageNotFoundException;
 import org.futurepages.menta.exceptions.ServletUserException;
 import org.futurepages.util.The;
 
@@ -102,7 +103,9 @@ public class ExceptionFilter implements Filter {
 				String protocolNumber = AppLogger.getInstance().execute(ex, ExceptionLogType.SERVLET_500, req, null);
 
 				// linha a seguir é quem faz aparecer a exception na tela de erro.
-				throw new FuturepagesServletException(protocolNumber,(actionType!=null?  The.camelFromSnake(actionType.name()) : null), ex);
+				if(!(ex instanceof PageNotFoundException)){
+					throw new FuturepagesServletException(protocolNumber,(actionType!=null?  The.camelFromSnake(actionType.name()) : null), ex);
+				}
 			} else if (chain != null) {
 				String protocolNumber = AppLogger.getInstance().execute(throwable, actionType , chain.getAction().getRequest() , null);
 				chain.getAction().getOutput().setValue(EXCEPTION, new Exception(protocolNumber, throwable));

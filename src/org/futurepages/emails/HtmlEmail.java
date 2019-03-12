@@ -243,8 +243,8 @@ public class HtmlEmail extends MultiPartEmail {
 			System.out.println();
 			System.out.println("<HTML MSG>---------------------------------------------------------");
 			System.out.println(this.html);
-			System.out.println("<TEXT MSG>---------------------------------------------------------");
-			System.out.println(this.text);
+//			System.out.println("<TEXT MSG>---------------------------------------------------------");
+//			System.out.println(this.text);
 			System.out.println("##################################################################");
 		}
     }

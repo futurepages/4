@@ -221,6 +221,9 @@ public class Controller extends HttpServlet {
 			doService(req, res);
 		} catch (Exception ex) {
 			ExceptionFilter.Logger.getInstance().execute(ex, getChain(), req, true);
+			if((ex instanceof PageNotFoundException) || (ex.getCause()!=null && ex.getCause() instanceof PageNotFoundException)){
+				res.sendError(HttpServletResponse.SC_NOT_FOUND);
+			}
 		} finally {
 			chainTL.remove();
 		}

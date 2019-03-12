@@ -80,7 +80,7 @@ public class AppLogger implements ExceptionLogger{
         String stackHash = "";
         boolean simple404 = logType==ExceptionLogType.NOT_FOUND && (req!=null &&  (req.getHeader("referer")==null));
         if(simple404){
-	        logSB.append(logln("\n[ PAGE NOT FOUND - PAGE NOT FOUND - unnecessary stack trace. ]\n"));
+	        logSB.append(logln(throwable.getMessage()));
         } else{
 			throwable.printStackTrace(new PrintWriter(errors));
 			logSB.append(logln(errors.toString()));
@@ -89,8 +89,8 @@ public class AppLogger implements ExceptionLogger{
 
 		if(req!=null){
         	Action action  = req.getAttribute(Forward.ACTION_REQUEST) instanceof Action? (Action) req.getAttribute(Forward.ACTION_REQUEST) : null;
-			logSB.append(logln(    ">[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():"")));
 			if(!simple404){
+				logSB.append(logln(    ">[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():"")));
 				logSB.append(logln(    ">[referer]  ", req.getHeader("referer")));
 				logSB.append(logln(    ">[from   ]  ", AbstractAction.getIpsFromRequest(req)));
 				logSB.append(logln(    ">[browser]  ", req.getHeader("user-agent")));
@@ -152,23 +152,23 @@ public class AppLogger implements ExceptionLogger{
 				logSB.append(logln(  ">[",key,"]  ", mapInputs.get(key)));
 			}
 		}
-		logSB.append(logln(exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"));
+		if(!simple404){
+			logSB.append(logln(exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"));
+		}
 		if(exceptionExecutor!=null && !simple404 && Controller.isInitialized()){
 			exceptionExecutor.execute(failNumber, throwable.getMessage()!=null?throwable.getMessage() :throwable.getClass().getSimpleName(), stackHash, logSB.toString());
+		}else{
+			System.out.println(logSB.toString());
 		}
 		return failNumber;
 	}
 
 	private String logln(Object... strs){
-    	String log = The.concat(strs)+"\n";
-		System.out.print(log);
-		return log;
+		return The.concat(strs)+"\n";
 	}
 
 	private String log(Object... strs){
-    	String log = The.concat(strs);
-		System.out.print(log);
-		return log;
+		return The.concat(strs);
 	}
 
 	public interface ExceptionExecutor {
