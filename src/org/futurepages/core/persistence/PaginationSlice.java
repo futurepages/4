@@ -1,5 +1,6 @@
 package org.futurepages.core.persistence;
 
+import org.futurepages.util.Is;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import java.io.Serializable;
@@ -123,7 +124,7 @@ public class PaginationSlice<T> extends HQLProvider{
 
     public long calcTotalSize(){
 		if(hqlQuery.getGroup()==null){
-			return dao.numRows(hql(count("*"),hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
+            return dao.numRows(hql(!Is.empty(hqlQuery.getSelect())? count(hqlQuery.getSelect()) : count("*") ,hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(), hqlQuery.getWhere(),null));
 		}else{
 			return dao.numRows(hql(count(distinct(hqlQuery.getGroup())),hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
 
