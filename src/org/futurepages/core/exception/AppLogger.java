@@ -28,6 +28,18 @@ public class AppLogger implements ExceptionLogger{
 
 	private ExceptionExecutor exceptionExecutor;
 
+	public static Map mappedInputs(String... inputs) {
+		Map<Object, Object> mapInputs = new HashMap<>();
+		if(inputs!=null && inputs.length>0){
+			int i = 1;
+			for(Object input : inputs){
+				mapInputs.put("input#"+i,input!=null?input.toString():"(null)");
+				i++;
+			}
+		}
+		return mapInputs;
+	}
+
 	public void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
 		if(Apps.get("LOG_EXCEPTIONS_EXECUTOR")!=null){
 			exceptionExecutor = (ExceptionExecutor) Class.forName(Apps.get("LOG_EXCEPTIONS_EXECUTOR")).newInstance();
@@ -53,16 +65,7 @@ public class AppLogger implements ExceptionLogger{
 	}
 
 	public String execute(Throwable throwable, String... inputs) {
-        Map<Object, Object> mapInputs = null;
-    	if(inputs!=null && inputs.length>0){
-	        mapInputs = new HashMap<>();
-	        int i = 1;
-	        for(Object input : inputs){
-				mapInputs.put("input#"+i,input!=null?input.toString():"null");
-				i++;
-		    }
-	    }
-		return execute(throwable, SILENT_EXCEPTION, null, mapInputs);
+		return execute(throwable, SILENT_EXCEPTION, null, mappedInputs(inputs));
 	}
 
 	public String execute(Throwable throwable, ExceptionLogType logType, HttpServletRequest req, Map mapInputs) {
