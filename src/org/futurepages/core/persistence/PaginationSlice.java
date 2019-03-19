@@ -63,7 +63,7 @@ public class PaginationSlice<T> extends HQLProvider{
     }
 
     public PaginationSlice<T> loadPageByFirstResult(int firstResult) {
-        this.totalSize = dao.numRows(hql(count("*"), hqlQuery.getEntity() ,hqlQuery.getAlias() , hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
+        this.totalSize = dao.numRows(hql(countFun(), hqlQuery.getEntity() ,hqlQuery.getAlias() , hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
         this.totalPages  = calcTotalPages(totalSize,pageSize);
         this.pageNumber = calcCorrectPageNumberByFirstResult(firstResult);
         this.firstResult = firstResult;
@@ -124,11 +124,16 @@ public class PaginationSlice<T> extends HQLProvider{
 
     public long calcTotalSize(){
 		if(hqlQuery.getGroup()==null){
-            return dao.numRows(hql(!Is.empty(hqlQuery.getSelect())? count(hqlQuery.getSelect()) : count("*") ,hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(), hqlQuery.getWhere(),null));
+            return dao.numRows(hql(countFun(),hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(), hqlQuery.getWhere(),null));
 		}else{
 			return dao.numRows(hql(count(distinct(hqlQuery.getGroup())),hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
 
 		}
+    }
+
+    private String countFun() {
+        return !Is.empty(hqlQuery.getSelect()) && !hqlQuery.getSelect().contains(" as ") && !hqlQuery.getSelect().contains(" AS ") && !hqlQuery.getSelect().contains(",") ?
+                count(hqlQuery.getSelect()) : count("*");
     }
 
     public Integer getPageSize() {
