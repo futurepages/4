@@ -45,9 +45,9 @@ public class JavaScriptMinifier {
 					} catch (Exception ex) {
 						String jsFileNotOK = ("[# JS-ERROR  #]");
 						resultFileWriter.write(jsFileNotOK+"\n");
-						resultFileWriter.write(ex.getMessage()+"\n");
-						resultFileWriter.write(ex.getLocalizedMessage()+"\n");
-						resultFileWriter.write(ex.getStackTrace().toString()+"\n");
+//						resultFileWriter.write(ex.getMessage()+"\n");
+//						resultFileWriter.write(ex.getLocalizedMessage()+"\n");
+//						resultFileWriter.write(ex.getStackTrace().toString()+"\n");
 						System.out.println(jsFileNotOK);
 						try {
 							fis.close();
