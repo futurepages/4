@@ -45,7 +45,9 @@ public class PDFUtil {
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocument(doc, null);
 
-        addFonts(renderer, pathFontDir);
+        if(!Is.empty(pathFontDir)){
+            addFonts(renderer, pathFontDir);
+        }
 
         renderer.layout();
         renderer.createPDF(out);
