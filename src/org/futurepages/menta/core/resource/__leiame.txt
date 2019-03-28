@@ -1,0 +1,9 @@
+https://www.npmjs.com/package/terser
+com root:
+# se nao tiver npm, se tiver pule:
+yum install npm
+# instale o compactador:
+npm install terser -g
+
+Instale no servidor que está a aplicação o serviço acima para que seja possível compactar os Javascripts.
+Ao ser instalado, o terser deve estar no caminho: /usr/bin/terser
