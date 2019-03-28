@@ -15,27 +15,32 @@ import java.util.List;
 public class ResourceMinifier {
 
 	public void execute(String minifyMode) {
-		boolean js = (minifyMode.equals("js")||minifyMode.equals("both"));
-		boolean css = (minifyMode.equals("css")||minifyMode.equals("both"));
-		File webDir = new File(Apps.get("WEB_REAL_PATH"));
+		new Thread(() -> {
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException ignored) {}
+			boolean js = (minifyMode.equals("js")||minifyMode.equals("both"));
+			boolean css = (minifyMode.equals("css")||minifyMode.equals("both"));
+			File webDir = new File(Apps.get("WEB_REAL_PATH"));
 
-		if(js){
-			List<File> jsFiles = FileUtil.listFilesFromDirectory(webDir, true, ".*\\.js");
-			try {
-				(new JavaScriptMinifier()).execute(jsFiles);
-			} catch (IOException ex) {
-				System.out.println("[ Erro ao Compactar Javascript ... ]");
-				ex.printStackTrace();
+			if(js){
+				List<File> jsFiles = FileUtil.listFilesFromDirectory(webDir, true, ".*\\.js");
+				try {
+					(new JavaScriptMinifier()).execute(jsFiles);
+				} catch (IOException ex) {
+					System.out.println("[ Erro ao Compactar Javascript ... ]");
+					ex.printStackTrace();
+				}
 			}
-		}
-		if(css){
-			List<File> cssFiles = FileUtil.listFilesFromDirectory(webDir, true, ".*\\.css");
-			try {
-				(new CSSMinifier()).execute(cssFiles);
-			} catch (IOException ex) {
-				System.out.println("[ Erro ao Compactar CSS ... ]");
-				ex.printStackTrace();
+			if(css){
+				List<File> cssFiles = FileUtil.listFilesFromDirectory(webDir, true, ".*\\.css");
+				try {
+					(new CSSMinifier()).execute(cssFiles);
+				} catch (IOException ex) {
+					System.out.println("[ Erro ao Compactar CSS ... ]");
+					ex.printStackTrace();
+				}
 			}
-		}
+		}).start();
 	}
 }

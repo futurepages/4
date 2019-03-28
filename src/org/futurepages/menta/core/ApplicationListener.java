@@ -143,7 +143,7 @@ public class ApplicationListener implements ServletContextListener {
 			if (!minifyMode.equals("none")) {  //none, js, css, both
 				log("MINIFY RESOURCE MODE = " + minifyMode);
 				(new ResourceMinifier()).execute(minifyMode);
-				log("MINIFY RESOURCE DONE.");
+				log("MINIFY RESOURCE THREAD LAUNCHED.");
 			}
 			if (Apps.get("DEPLOY_MODE").equals("production")
 			 || Apps.get("DEPLOY_MODE").equals("pre-production")) {
