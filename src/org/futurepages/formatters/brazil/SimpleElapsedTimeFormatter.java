@@ -19,7 +19,7 @@ public class SimpleElapsedTimeFormatter extends AbstractFormatter {
 			momentoNoPassado = (Calendar) dateOrCalendar;
 		}
 
-		Calendar agora = Calendar.getInstance();
+		Calendar agora = CalendarUtil.now();
 		return formatValue(agora, momentoNoPassado);
 	}
 

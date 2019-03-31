@@ -244,7 +244,7 @@ public class BrazilCalendarUtil extends CalendarUtil {
 	}
 
 	public static String literalRangeOfDates(Calendar calIni, Calendar calFim) {
-		return literalRangeOfDates(calIni, calFim, Calendar.getInstance());
+		return literalRangeOfDates(calIni, calFim, CalendarUtil.now());
 	}
 
 	public static String getElapsedTimeUntilNowStatement(Calendar start, String commonPrefix, String exceptionPrefix) {
@@ -257,7 +257,7 @@ public class BrazilCalendarUtil extends CalendarUtil {
 
 	public static String getElapsedTimeUntilNowStatement(Calendar start, UnitTimeEnum unitLimit, int limitValue,
 	                                                     String commonPrefix, String exceptionPrefix) {
-		return getElapsedTimeUntilNowStatementPriv(start, Calendar.getInstance(), unitLimit, limitValue, commonPrefix, exceptionPrefix);
+		return getElapsedTimeUntilNowStatementPriv(start, CalendarUtil.now(), unitLimit, limitValue, commonPrefix, exceptionPrefix);
 	}
 
 	private static String getElapsedTimeUntilNowStatementPriv(Calendar start, Calendar end, UnitTimeEnum unitLimit, int limitValue,

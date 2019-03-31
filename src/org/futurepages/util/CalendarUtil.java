@@ -19,8 +19,13 @@ public class CalendarUtil {
 	/*
 	 * A shortcut to "Calendar.getInstance()".
 	 */
-	private static Calendar now() {
-		return Calendar.getInstance();
+//	public static Calendar now() {
+//		return Calendar.getInstance();
+//	}
+	// ONLY FOR DEBUG:
+	public static Calendar FAKE_NOW = null;
+	public static Calendar now() {
+		return FAKE_NOW!=null? (Calendar) FAKE_NOW.clone() : Calendar.getInstance();
 	}
 
 	/**
@@ -153,7 +158,7 @@ public class CalendarUtil {
 	}
 
 	public static Calendar buildCalendar(int field, int addValue) {
-		Calendar dataInicial = Calendar.getInstance();
+		Calendar dataInicial = CalendarUtil.now();
 		dataInicial.add(field, addValue);
 		return dataInicial;
 	}
@@ -238,7 +243,7 @@ public class CalendarUtil {
 	}
 
 	public static boolean dateIsOfCurrentYear(Calendar cal1) {
-		return dateIsOfCurrentYear(cal1, Calendar.getInstance());
+		return dateIsOfCurrentYear(cal1, CalendarUtil.now());
 	}
 
 	public static boolean dateIsOfCurrentYear(Calendar cal1, Calendar hoje) {
@@ -396,7 +401,7 @@ public class CalendarUtil {
 	}
 
 	public static Calendar getToday() {
-		return buildDate(Calendar.getInstance());
+		return buildDate(CalendarUtil.now());
 	}
 
 	public static class TooBigDateException extends Exception {
@@ -415,11 +420,11 @@ public class CalendarUtil {
 	}
 
 	public static boolean isInFuture(Calendar cal) {
-		return cal.after(Calendar.getInstance());
+		return cal.after(CalendarUtil.now());
 	}
 
 	public static boolean isInPast(Calendar cal) {
-		return cal.before(Calendar.getInstance());
+		return cal.before(CalendarUtil.now());
 	}
 
 	public static boolean isAnniversaryToday(Calendar birthday) {
@@ -435,7 +440,7 @@ public class CalendarUtil {
 	 *
 	 */
 	public static int getLastDay(int mounth) {
-		Calendar c = Calendar.getInstance();
+		Calendar c = CalendarUtil.now();
 		c.set(Calendar.MONTH, mounth - 1);
 		return c.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
@@ -445,7 +450,7 @@ public class CalendarUtil {
 	 *
 	 */
 	public static Calendar getLastDay(int mounth, int year) {
-		Calendar c = Calendar.getInstance();
+		Calendar c = CalendarUtil.now();
 		c.set(Calendar.MONTH, mounth - 1);
 		c.set(Calendar.YEAR, year);
 		int i = c.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -457,21 +462,21 @@ public class CalendarUtil {
 	 * Returns the actual month.
 	 */
 	public static int getActualMonth() {
-		return (new GregorianCalendar()).get(Calendar.MONTH) + 1;
+		return (now()).get(Calendar.MONTH) + 1;
 	}
 
 	/**
 	 * Returns the actual year.
 	 */
 	public static int getActualYear() {
-		return (new GregorianCalendar()).get(Calendar.YEAR);
+		return (now()).get(Calendar.YEAR);
 	}
 
 	/**
 	 * Returns the actual day of month.
 	 */
 	public static int getActualDay() {
-		return (new GregorianCalendar()).get(Calendar.DAY_OF_MONTH);
+		return (now()).get(Calendar.DAY_OF_MONTH);
 	}
 
 
@@ -480,7 +485,7 @@ public class CalendarUtil {
 	 *
 	 */
 	public static Calendar getFirstDay(int mounth, int year) {
-		Calendar c = Calendar.getInstance();
+		Calendar c = CalendarUtil.now();
 		c.set(Calendar.MONTH, mounth - 1);
 		c.set(Calendar.YEAR, year);
 		c.set(Calendar.DAY_OF_MONTH, 1);
@@ -541,7 +546,7 @@ public class CalendarUtil {
 			DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, NewLocaleManager.getDefaultLocale());
 			df.setLenient(false);
 			Date date = df.parse(inputInMediumFormat);
-			Calendar cal = Calendar.getInstance();
+			Calendar cal = CalendarUtil.now();
 			cal.setTime(date);
 			return cal;
 		} catch (Exception ex) {

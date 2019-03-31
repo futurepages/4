@@ -50,7 +50,7 @@ public class BrazilDateUtil {
 	}
 
 	public static String literalDayOfWeek(Date date) {
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = CalendarUtil.now();
 		cal.setTime(date);
 		return BrazilCalendarUtil.literalDayOfWeek(cal);
 	}
@@ -127,7 +127,7 @@ public class BrazilDateUtil {
 			}
 			if (in instanceof GregorianCalendar) {
 				GregorianCalendar date = (GregorianCalendar) in;
-				return new SimpleDateFormat("dd/MM/yyyy", NewLocaleManager.getDefaultLocale()).format((Date) date.getTime());
+				return new SimpleDateFormat("dd/MM/yyyy", NewLocaleManager.getDefaultLocale()).format(date.getTime());
 			}
 		} catch (Exception ex) {
 		}

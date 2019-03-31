@@ -46,7 +46,7 @@ public class CalendarInjectionFilter implements Filter {
 			int hourInt = dateTime? Integer.parseInt(hour):0;
 			int minuteInt = dateTime? Integer.parseInt(minute):0;
 
-			Calendar cal = Calendar.getInstance();
+			Calendar cal = CalendarUtil.now();
 			cal.set(Calendar.YEAR, yearInt);
 			boolean anoBissexto = CalendarUtil.isLeapYear(cal);
 			if(dayInt>31 || monthInt > 12 || yearInt > 2999 || hourInt > 23 || minuteInt > 59

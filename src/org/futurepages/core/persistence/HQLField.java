@@ -42,7 +42,7 @@ public class HQLField implements HQLable {
 
 
 	public String inDate(Date date) {
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = CalendarUtil.now();
 		cal.setTime(date);
 		return inDate(cal);
 	}
@@ -53,7 +53,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String inDate(Calendar calendar) {
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = CalendarUtil.now();
 		cal.setTime(calendar.getTime());
 
 		cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY));

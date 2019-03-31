@@ -1,6 +1,7 @@
 package org.futurepages.formatters.brazil;
 
 import org.futurepages.core.formatter.AbstractFormatter;
+import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.The;
 import org.futurepages.util.brazil.enums.MonthEnum;
 
@@ -11,7 +12,7 @@ public class SimpleLiteralDateFormatter extends AbstractFormatter<Calendar> {
 
 	@Override
 	public String format(Calendar momentoNoPassado, Locale loc) {
-		Calendar agora = Calendar.getInstance();
+		Calendar agora = CalendarUtil.now();
 		return formatValue(agora, momentoNoPassado);
 	}
 

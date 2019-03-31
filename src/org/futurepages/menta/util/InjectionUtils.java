@@ -4,6 +4,7 @@ import org.futurepages.core.exception.AppLogger;
 import org.futurepages.menta.core.i18n.LocaleManager;
 import org.futurepages.menta.core.input.Input;
 import org.futurepages.menta.core.output.Output;
+import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.ReflectionUtil;
 import org.futurepages.util.The;
@@ -144,10 +145,7 @@ public class InjectionUtils {
 		if (target.equals(float.class) && source.equals(Float.class)) {
 			return true;
 		}
-		if (target.equals(double.class) && source.equals(Double.class)) {
-			return true;
-		}
-		return false;
+		return target.equals(double.class) && source.equals(Double.class);
 
 	}
 
@@ -251,7 +249,7 @@ public class InjectionUtils {
 		else if (className.equals("java.util.Calendar") && loc != null) {
 			try {
 				Date date = BrazilDateUtil.parseView(value);
-				Calendar calendar = Calendar.getInstance();
+				Calendar calendar = CalendarUtil.now();
 				calendar.setTime(date);
 				newValue = calendar;
 			} catch (Exception e) {
@@ -288,7 +286,7 @@ public class InjectionUtils {
 	}
 
 	public static Object trimValue(String source) {
-		String cleanValue = source.toString().trim();
+		String cleanValue = source.trim();
 		if (cleanValue.length() == 0) {
 			source = cleanValue;
 		}
@@ -406,7 +404,7 @@ public class InjectionUtils {
 			Class primitive = getPrimitiveFrom(source);
 			if (primitive != null) {
 				try {
-					m = target.getMethod(methodName, new Class[]{primitive});
+					m = target.getMethod(methodName, primitive);
 				} catch (Exception e) {
 				}
 			}
@@ -455,9 +453,7 @@ public class InjectionUtils {
 	private static final boolean isBlank(Object value) {
 		if (value != null && value instanceof String) {
 			String s = ((String) value).trim();
-			if (s.length() == 0) {
-				return true;
-			}
+			return s.length() == 0;
 		}
 		return false;
 	}
@@ -482,7 +478,7 @@ public class InjectionUtils {
 				|| (tryToConvert && ((isBlank(value) && (value = shouldConvertToNull(value, type)) == null)
 				|| (value = tryToConvert(value, type, loc)) != null)))) {
 			try {
-				m.invoke(target, new Object[]{value});
+				m.invoke(target, value);
 				return true;
 			} catch (Exception e) {
 				System.err.println("Error injecting by method: " + value + " in " + target + " thru " + m);
@@ -710,7 +706,7 @@ public class InjectionUtils {
 					}
 					try {
 						methods[i].setAccessible(true);
-						Object value = methods[i].invoke(bean, new Object[0]);
+						Object value = methods[i].invoke(bean);
 						output.setValue(adjusted, value);
 					} catch (Exception e) {
 						System.err.println("Error calling method in InjectionUtils: " + name);
@@ -733,13 +729,13 @@ public class InjectionUtils {
 			sb = new StringBuilder(name.length() - 3);
 			sb.append(name.substring(3, 4).toLowerCase());
 			if (name.length() > 4) {
-				sb.append(name.substring(4, name.length()));
+				sb.append(name, 4, name.length());
 			}
 		} else if (name.length() >= 3 && name.startsWith("is")) {
 			sb = new StringBuilder(name.length() - 2);
 			sb.append(name.substring(2, 3).toLowerCase());
 			if (name.length() > 3) {
-				sb.append(name.substring(3, name.length()));
+				sb.append(name, 3, name.length());
 			}
 		} else {
 			throw new IllegalArgumentException("Cannot adjust method: " + name);
@@ -772,7 +768,7 @@ public class InjectionUtils {
 		for (Method method : methods) {
 			String methodName = getter(nameProperty);
 			if (method.getName().equals(methodName) && method.getParameterTypes().length == 0) {
-				Object value = method.invoke(bean, new Object[0]);
+				Object value = method.invoke(bean);
 				if (value == null) {
 					return null;
 				}
@@ -817,7 +813,7 @@ public class InjectionUtils {
 						&& method.getParameterTypes().length == 0) {
 
 					method.setAccessible(true);
-					Object value = method.invoke(bean, new Object[0]);
+					Object value = method.invoke(bean);
 					map.put(name, value.toString());
 				}
 			}
