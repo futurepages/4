@@ -3,10 +3,12 @@ package org.futurepages.formatters.brazil;
 import java.util.Calendar;
 import java.util.Locale;
 
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.DateUtil;
 import org.futurepages.util.The;
 import org.futurepages.util.brazil.BrazilCalendarUtil;
+import org.futurepages.util.brazil.BrazilDateUtil;
 import org.futurepages.util.brazil.enums.UnitTimeEnum;
 import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.brazil.enums.MonthEnum;
@@ -43,7 +45,7 @@ public class RemainingTimeFormatter extends AbstractFormatter<Calendar> {
 				int anoFuturo = momentoNoFuturo.get(Calendar.YEAR);
 				String dia = (diaFuturo==1? "1º": String.valueOf(diaFuturo));
 				String mes = MonthEnum.get(mesFuturo);
-				String ano = null;
+				String ano;
 				if((anoFuturo>anoAtual) &&
 				   ((mesFuturo>=mesAtual) || (mesAtual-mesFuturo<=4) || (anoFuturo-anoAtual > 1))){
 						ano = " de "+anoFuturo;
@@ -52,6 +54,14 @@ public class RemainingTimeFormatter extends AbstractFormatter<Calendar> {
 				}
 				return The.concat("em ", dia, " de ", mes, ano);
 			}
+		} catch (NullPointerException ex){
+			// devido a bug misterioso que dava NullPointer na data futura (provavelmente). Fizemos isto.
+			AppLogger.getInstance().execute(ex,AppLogger.mappedInputs(
+							agora!=null?BrazilDateUtil.viewDateTime(agora):"[null]",
+						    momentoNoFuturo!=null? BrazilDateUtil.viewDateTime(momentoNoFuturo):"[null]",
+							String.valueOf(daysCountdown))
+			);
+			return "";
 		}
 	}
 }

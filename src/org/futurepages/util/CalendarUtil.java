@@ -19,14 +19,15 @@ public class CalendarUtil {
 	/*
 	 * A shortcut to "Calendar.getInstance()".
 	 */
-//	public static Calendar now() {
-//		return Calendar.getInstance();
-//	}
-	// ONLY FOR DEBUG:
-	public static Calendar FAKE_NOW = null;
 	public static Calendar now() {
-		return FAKE_NOW!=null? (Calendar) FAKE_NOW.clone() : Calendar.getInstance();
+		return Calendar.getInstance();
 	}
+
+// ONLY FOR DEBUG:
+//	public static Calendar FAKE_NOW = null;
+//	public static Calendar now() {
+//		return FAKE_NOW!=null? (Calendar) FAKE_NOW.clone() : Calendar.getInstance();
+//	}
 
 	/**
 	 *  TODO translate:
