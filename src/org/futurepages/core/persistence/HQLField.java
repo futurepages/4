@@ -77,6 +77,7 @@ public class HQLField implements HQLable {
 	 * @return true if equals
 	 */
 	public String equalsTo(Enum<?> enumeration) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (Is.empty(enumeration)) {
 			return "";
 		}
@@ -92,6 +93,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String equalsTo(String value) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (Is.empty(value)) {
 			return "";
 		}
@@ -107,6 +109,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String equalsTo(Integer value) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (value == null) {
 			return "";
 		}
@@ -114,6 +117,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String equalsTo(Long value) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (value == null) {
 			return "";
 		}
@@ -121,6 +125,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String equalsTo(BigDecimal value) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (value == null) {
 			return "";
 		}
@@ -147,6 +152,7 @@ public class HQLField implements HQLable {
 
 
 	public String matches(String value, boolean bringAll, boolean findSmaller) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (Is.empty(value)) {
 			return "";
 		}
@@ -154,6 +160,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String matches(String value) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (Is.empty(value)) {
 			return "";
 		}
@@ -162,6 +169,7 @@ public class HQLField implements HQLable {
 
 
 	public String is(Boolean bool) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (Is.empty(bool)) {
 			return "";
 		}
@@ -174,6 +182,7 @@ public class HQLField implements HQLable {
 
 
 	public String differentFrom(String value) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (Is.empty(value)) {
 			return "";
 		}
@@ -315,6 +324,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String hasAllWordsInSameSequence(String[] words) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (words == null) {
 			return "";
 		}
@@ -322,6 +332,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String hasAllWordsInSameSequence(String words) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (words == null) {
 			return "";
 		}
@@ -329,6 +340,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String hasAllWords(String[] tokens) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (tokens == null) {
 			return "";
 		}
@@ -336,6 +348,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String hasAllWords(String tokens) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (Is.empty(tokens)) {
 			return "";
 		}
@@ -343,6 +356,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String hasAnyOfWords(String[] tokens) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (tokens == null) {
 			return "";
 		}
@@ -356,7 +370,7 @@ public class HQLField implements HQLable {
 	 */
 	public String hasAnyOfWords(String tokens) {
 		String[] arrayTokens;
-
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (Is.empty(tokens)) {
 			return "";
 		}
@@ -383,6 +397,7 @@ public class HQLField implements HQLable {
 	}
 
 	private String buildlStringExpression(String logicConector, String... tokens) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (tokens == null || tokens.length == 0) {
 			return "";
 		}
@@ -390,6 +405,7 @@ public class HQLField implements HQLable {
 	}
 
 	private String buildlLongExpression(String logicConector, long... tokens) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (tokens == null || tokens.length == 0) {
 			return "";
 		}
@@ -410,6 +426,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String inList(Collection list) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (list == null || list.size() == 0) {
 			return "";
 		}
@@ -417,6 +434,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String notInList(List list) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (list == null || list.size() == 0) {
 			return "";
 		}
@@ -424,6 +442,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String inSubQuery(String subQuery) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (subQuery == null || subQuery.length() == 0) {
 			return "";
 		}
@@ -431,6 +450,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String notInSubQuery(String subQuery) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (subQuery == null || subQuery.length() == 0) {
 			return "";
 		}
@@ -457,6 +477,7 @@ public class HQLField implements HQLable {
 		if (elements != null && elements.size() > 0) {
 			return concat(fieldName, NOT_IN + "(", HQLUtil.imploded(elements), ")");
 		} else {
+			//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 			return "";
 		}
 	}
@@ -465,6 +486,7 @@ public class HQLField implements HQLable {
 		if (tokensStr != null && tokensStr.length() > 0) {
 			return concat(fieldName, NOT_IN + "(", HQLUtil.imploded(tokensStr), ")");
 		} else {
+			//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 			return "";
 		}
 	}
@@ -506,6 +528,7 @@ public class HQLField implements HQLable {
 	}
 
 	private String likeExpression(String prefix, String value, String sufix) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (Is.empty(value)) {
 			return "";
 		}
@@ -513,6 +536,7 @@ public class HQLField implements HQLable {
 	}
 
 	private String notLikeExpression(String prefix, String value, String sufix) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (Is.empty(value)) {
 			return "";
 		}
@@ -546,6 +570,7 @@ public class HQLField implements HQLable {
 	}
 
 	private String timeExpression(Calendar cal, String comparator) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
 		if (cal == null) {
 			return "";
 		}
