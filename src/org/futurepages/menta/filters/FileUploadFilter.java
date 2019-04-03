@@ -4,12 +4,14 @@ import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.context.Context;
 import org.futurepages.menta.core.context.SessionContext;
 import org.futurepages.menta.core.control.InvocationChain;
 import org.futurepages.menta.core.filter.Filter;
 import org.futurepages.menta.core.input.Input;
+import org.futurepages.menta.exceptions.ServletUserException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
@@ -99,7 +101,10 @@ public class FileUploadFilter implements Filter {
 
 		try {
 			if (FileUpload.isMultipartContent(req)) {
-
+				//DESCOMENTE PARA TESTAR FALHA DE UPLOAD, COMO ESTÁ SENDO TRATADO O RETORNO.
+//				if(true){
+//					throw new NullPointerException("ou");
+//				}
 				List items = upload.parseRequest(req);
 				Iterator iter = items.iterator();
 
@@ -141,8 +146,8 @@ public class FileUploadFilter implements Filter {
 					}
 				}
 			}
-		} catch (FileUploadException e) {
-			throw new FilterException(e);
+		} catch (Exception e) {
+			throw new ServletUserException(e.getMessage());
 		}
 
 		return chain.invoke();
