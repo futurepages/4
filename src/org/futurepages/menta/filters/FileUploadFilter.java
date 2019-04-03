@@ -3,7 +3,6 @@ package org.futurepages.menta.filters;
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
-import org.apache.commons.fileupload.FileUploadException;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.context.Context;
@@ -147,6 +146,7 @@ public class FileUploadFilter implements Filter {
 				}
 			}
 		} catch (Exception e) {
+			AppLogger.getInstance().execute(e,getRequest(action));
 			throw new ServletUserException(e.getMessage());
 		}
 
