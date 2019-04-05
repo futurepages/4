@@ -54,14 +54,6 @@ public class RemainingTimeFormatter extends AbstractFormatter<Calendar> {
 				}
 				return The.concat("em ", dia, " de ", mes, ano);
 			}
-		} catch (NullPointerException ex){
-			// devido a bug misterioso que dava NullPointer na data futura (provavelmente). Fizemos isto.
-			AppLogger.getInstance().execute(ex,AppLogger.mappedInputs(
-							agora!=null?BrazilDateUtil.viewDateTime(agora):"[null]",
-						    momentoNoFuturo!=null? BrazilDateUtil.viewDateTime(momentoNoFuturo):"[null]",
-							String.valueOf(daysCountdown))
-			);
-			return "";
 		}
 	}
 }
