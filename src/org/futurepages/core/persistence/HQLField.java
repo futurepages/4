@@ -40,6 +40,10 @@ public class HQLField implements HQLable {
 		return concat("(", fieldName, BETWEEN, "'", CalendarUtil.dbDate(start), "'", AND, "'", CalendarUtil.dbDate(end), "'", ")");
 	}
 
+	public String is(String nativeValue){
+		return concat(fieldName, " ",nativeValue);
+	}
+
 
 	public String inDate(Date date) {
 		Calendar cal = CalendarUtil.now();
