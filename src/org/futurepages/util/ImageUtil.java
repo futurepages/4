@@ -203,7 +203,7 @@ public class ImageUtil {
 		resizeCropping(image, thumbW,thumbH, pathNewFile, stretchWhenSmaller);
 	}
 
-	private static BufferedImage imageFrom(File file) throws IOException {
+	public static BufferedImage imageFrom(File file) throws IOException {
 		SeekableStream seekableStream = new FileSeekableStream(file);
 		ParameterBlock pb = new ParameterBlock();
 		pb.add(seekableStream);
@@ -299,7 +299,7 @@ public class ImageUtil {
 		System.gc();
 	}
 
-	private static BufferedImage bufferedCutInRatio(BufferedImage image, int w, int h) {
+	public static BufferedImage bufferedCutInRatio(BufferedImage image, int w, int h) {
 
 		int oH = image.getHeight();
 		int oW = image.getWidth();
