@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 
 /**
@@ -539,7 +540,7 @@ private static BufferedImage poorResize(Image image, Color colorSquare, int widt
 		return thumbImage;
 	}
 
-	private static void createJPEG(BufferedImage image, int quality, String pathNewFile) throws FileNotFoundException, IOException {
+	public static void createJPEG(BufferedImage image, int quality, String pathNewFile) throws FileNotFoundException, IOException {
 //		ImageIO.write(image, "jpg", new File(pathNewFile)); // TODO um dia pode ser necessário substituir tudo abaixo por este código.
 
 		FileOutputStream fos = new FileOutputStream(pathNewFile);
@@ -557,5 +558,14 @@ private static BufferedImage poorResize(Image image, Color colorSquare, int widt
 		fos.flush();
 		fos.close();
 		out.close();
+	}
+
+	public static void createJPEG(BufferedImage image, int quality, OutputStream out) throws IOException {
+		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+		JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(image);
+		quality = Math.max(0, Math.min(quality, 100));
+		param.setQuality((float) quality / 100.0f, false);
+		encoder.setJPEGEncodeParam(param);
+		encoder.encode(image);
 	}
 }
