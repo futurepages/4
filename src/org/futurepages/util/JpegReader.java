@@ -130,9 +130,8 @@ public class JpegReader {
 
 	public static BufferedImage convertCmykToRgb(Raster cmykRaster, ICC_Profile cmykProfile) throws IOException {
 		if (cmykProfile == null)
-			cmykProfile = ICC_Profile.getInstance(JpegReader.class.getResourceAsStream("/ISOcoated_v2_300_eci.icc"));
+			cmykProfile = ICC_Profile.getInstance(JpegReader.class.getResourceAsStream("icc/ISOcoated_v2_300_eci.icc"));
 
-		//nao sei ainda se é aqui, TODO...
 		if (cmykProfile.getProfileClass() != ICC_Profile.CLASS_DISPLAY) {
 			byte[] profileData = cmykProfile.getData(); // Need to clone entire profile, due to a JDK 7 bug
 

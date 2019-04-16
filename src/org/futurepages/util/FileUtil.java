@@ -109,6 +109,27 @@ public class FileUtil {
 		}
 	}
 
+	public File getFileFromUrl(String urlStr, String outputPath) throws IOException {
+		URL url = new URL(urlStr);
+		URLConnection connection = url.openConnection();
+		InputStream in = connection.getInputStream();
+		File f = new File(outputPath);
+		FileOutputStream fos = new FileOutputStream(f);
+		byte[] buf = new byte[4096];
+		while (true) {
+			int len = in.read(buf);
+			if (len == -1) {
+				break;
+			}
+			fos.write(buf, 0, len);
+		}
+		in.close();
+		fos.flush();
+		fos.close();
+		return f;
+	}
+
+
 	public static String getStringContent(Class cls, String path) throws FileNotFoundException, IOException {
 		return getStringContent(classRealPath(cls)+path);
 	}

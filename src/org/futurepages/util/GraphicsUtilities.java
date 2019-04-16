@@ -86,6 +86,7 @@ import javax.imageio.ImageIO;
  * @author Romain Guy <romain.guy@mac.com>
  * @author rbair
  */
+@Deprecated
 public class GraphicsUtilities {
     private GraphicsUtilities() {
     }
@@ -244,52 +245,6 @@ public class GraphicsUtilities {
                 new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB) :
                 getGraphicsConfiguration().createCompatibleImage(width, height,
                                                    Transparency.TRANSLUCENT);
-    }
-
-    /**
-     * <p>
-     * Returns a new compatible image from a stream. The image is loaded from
-     * the specified stream and then turned, if necessary into a compatible
-     * image.
-     * </p>
-     * 
-     * @see #createCompatibleImage(java.awt.image.BufferedImage)
-     * @see #createCompatibleImage(java.awt.image.BufferedImage, int, int)
-     * @see #createCompatibleImage(int, int)
-     * @see #createCompatibleTranslucentImage(int, int)
-     * @see #toCompatibleImage(java.awt.image.BufferedImage)
-     * @param in
-     *            the stream of the picture to load as a compatible image
-     * @return a new translucent compatible <code>BufferedImage</code> of the
-     *         specified width and height
-     * @throws java.io.IOException
-     *             if the image cannot be read or loaded
-     */
-    public static BufferedImage loadCompatibleImage(InputStream in) throws IOException {
-        BufferedImage image = ImageIO.read(in);
-        if(image == null) return null;
-        return toCompatibleImage(image);
-    }
-
-    /**
-     * <p>Returns a new compatible image from a URL. The image is loaded from the
-     * specified location and then turned, if necessary into a compatible
-     * image.</p>
-     *
-     * @see #createCompatibleImage(java.awt.image.BufferedImage)
-     * @see #createCompatibleImage(java.awt.image.BufferedImage, int, int)
-     * @see #createCompatibleImage(int, int)
-     * @see #createCompatibleTranslucentImage(int, int)
-     * @see #toCompatibleImage(java.awt.image.BufferedImage)
-     * @param resource the URL of the picture to load as a compatible image
-     * @return a new translucent compatible <code>BufferedImage</code> of the
-     *   specified width and height
-     * @throws java.io.IOException if the image cannot be read or loaded
-     */
-    public static BufferedImage loadCompatibleImage(URL resource)
-            throws IOException {
-        BufferedImage image = ImageIO.read(resource);
-        return toCompatibleImage(image);
     }
 
     /**
@@ -593,6 +548,7 @@ public class GraphicsUtilities {
      *   the width of <code>image</code> or if code>newHeight</code> is larger
      *   than the height of <code>image or if one the dimensions is not &gt; 0</code>
      */
+    @Deprecated
     public static BufferedImage createThumbnail(BufferedImage image,
                                                 int newWidth, int newHeight) {
         int width = image.getWidth();

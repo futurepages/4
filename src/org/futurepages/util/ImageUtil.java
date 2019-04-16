@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -104,6 +105,7 @@ public class ImageUtil {
 	 * width, height: largura e altura da nova imagem
 	 * pathNewFile: endereço real completo incluindo o nome do arquivo
 	 */
+	@Deprecated
 	public static void resizeImage(File file, int width, int height, int quality, String pathNewFile) throws MalformedURLException, FileNotFoundException, IOException {
 		BufferedImage image = getBufferedImage(file);
 		resize(image, width, height, quality, pathNewFile, true, true, null);
@@ -112,6 +114,7 @@ public class ImageUtil {
 		System.gc();
 	}
 
+	@Deprecated
 	public static void resizeImage(File file, int width, int height, int quality, String pathNewFile, int[] subimage) throws MalformedURLException, FileNotFoundException, IOException {
 		BufferedImage image = getBufferedImage(file);
 		resize(image, width, height, quality, pathNewFile, true, true, subimage);
@@ -120,6 +123,7 @@ public class ImageUtil {
 		System.gc();
 	}
 
+	@Deprecated
 	public static void resizeImagePriorHeight(File file, int width, int height, int quality, String pathNewFile) throws MalformedURLException, FileNotFoundException, IOException {
 		BufferedImage image = getBufferedImage(file);
 		resize(image, width, height, quality, pathNewFile, false, true, null);
@@ -177,6 +181,7 @@ public class ImageUtil {
 		image.flush();
 	}
 
+	@Deprecated
 	public static void resizeImageByOneDimension(Color colorSquare, boolean byWidth, byte[] bytesOfImageFile, int theDimension, int quality, String pathNewFile, boolean stretchWhenSmaller) throws MalformedURLException, FileNotFoundException, IOException {
 		BufferedImage image = getBufferedImage(bytesOfImageFile);
 		resizeByWidth(byWidth, colorSquare, image, theDimension, quality, pathNewFile, stretchWhenSmaller);
@@ -217,7 +222,9 @@ public class ImageUtil {
 			}
 		} catch (Exception ex) {
 			try {
-				image = new JpegReader().readImage(file);
+				FileInputStream fis = new FileInputStream(file);
+				image = JPEGCodec.createJPEGDecoder(fis).decodeAsBufferedImage();
+				fis.close();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -397,6 +404,7 @@ public class ImageUtil {
 	//		            #### somente resize padrão (sem esticar para crescer)
 //    B) se altura diferente de largura (imageWidth == imageHeight)
 	//		            #### somente resize padrão (sem esticar para crescer)
+	@Deprecated
 	private static void resizeByWidth(boolean reallyByWidth, Color colorSquare, BufferedImage image, int theDimension, int quality, String pathNewFile, boolean stretchWhenSmaller) throws FileNotFoundException, IOException {
 		// Calculos necessários para manter as propoçoes da imagem, conhecido como "aspect ratio"
 		int oW = image.getWidth(null);
