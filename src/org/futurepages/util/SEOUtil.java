@@ -20,6 +20,7 @@ public class SEOUtil {
         specials.put('-',"_");
 //      specials.put('+',"_"); se adicionar isso, vai quebrar a visualização dos convites (convite.in)
         specials.put(' ',"-");
+        specials.put(' ',"-"); // blank char from excel. cod. 160
         specials.put('@',"_");
         specials.put('º', empty);
         specials.put('!', empty);
