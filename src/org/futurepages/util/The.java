@@ -1,5 +1,6 @@
 package org.futurepages.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.futurepages.core.exception.AppLogger;
@@ -142,26 +143,24 @@ public class The {
 	}
 
 	public static String strWithRightSpaces(String s, int len) {
-		// converts integer to left-zero padded string, len  chars long.
 		if (s.length() > len) {
 			return s.substring(0, len);
-		} else if (s.length() < len) // pad on left with zeros
+		} else if (s.length() < len) // pad on right with spaces
 		{
-			return s + "                                                        ".substring(0, len - s.length());
+			return StringUtils.rightPad(s, len);
 		} else {
-			return s.substring(0, len);
+			return s;
 		}
 	}
 
 	public static String strWithLeftSpaces(String s, int len) {
-		// converts integer to left-zero padded string, len  chars long.
 		if (s.length() > len) {
 			return s.substring(0, len);
-		} else if (s.length() < len) // pad on left with zeros
+		} else if (s.length() < len) // pad on left with spaces
 		{
-			return "                                                                             ".substring(0, len - s.length()) + s;
+			return StringUtils.leftPad(s, len);
 		} else {
-			return s.substring(0, len);
+			return s;
 		}
 	}
 
