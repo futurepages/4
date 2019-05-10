@@ -442,10 +442,10 @@ public class FileUtil {
 		File[] files = origin.listFiles();
 		for (File file : files) {
 			if (file.isDirectory()) {
-				copyFolderContent(file, new File(destiny + "\\" + file.getName()), showLogCopy, showPath, overwrite);
+				copyFolderContent(file, new File(destiny + File.separator + file.getName()), showLogCopy, showPath, overwrite);
 			} else {
 				String msgLog = "";
-				File newFile = new File(destiny + "\\" + file.getName());
+				File newFile = new File(destiny + File.separator + file.getName());
 				if (overwrite || !newFile.exists()) {
 					FileUtil.copy(file.getAbsolutePath(), newFile.getAbsolutePath());
 					if (showLogCopy) {
