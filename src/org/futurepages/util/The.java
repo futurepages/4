@@ -208,7 +208,7 @@ public class The {
 			return s.substring(0, len);
 		} else if (s.length() < len) // pad on left with zeros
 		{
-			return "000000000000000000000000000000000000000000000000000".substring(0, len - s.length()) + s;
+			return StringUtils.leftPad(s, len, "0");
 		} else {
 			return s;
 		}
@@ -220,7 +220,7 @@ public class The {
 			return s.substring(0, len);
 		} else if (s.length() < len) // pad on left with zeros
 		{
-			return "000000000000000000000000000000000000000000000000000".substring(0, len - s.length()) + s;
+			return StringUtils.leftPad(s, len, "0");
 		} else {
 			return s;
 		}
