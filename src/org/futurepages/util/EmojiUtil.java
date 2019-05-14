@@ -41,6 +41,9 @@ public class EmojiUtil {
 		}
 	}
 	public static String decodeAll(String txt){
+		if(Is.empty(txt)){
+			return txt;
+		}
 		StringBuilder sb = new StringBuilder();
 		IterableString iter = new IterableString(getEmojiCharPattern(), txt);
 		String end = txt;
@@ -55,6 +58,9 @@ public class EmojiUtil {
 	}
 
 	public static String encodeAll(String txt){
+		if(Is.empty(txt)){
+			return txt;
+		}
 		StringBuilder sb = new StringBuilder();
 		IterableString iter = new IterableString(HtmlRegex.getAnyCharPattern(), txt);
 		String end = txt;

@@ -104,8 +104,12 @@ public class HtmlRegex {
 	// has = true  para "em","p" =>   </?(em\b|p\b).*?>
 	// has = false para "em","p" =>   <(?!em\b)(?!/em)(?!p\b)(?!/p).*?>
 	public static String tagsPattern(boolean has, String... tagNames){
-		if(!has && tagNames.length==0){
-			return null;
+		if(tagNames.length==0){
+			if(!has){
+				return null;
+			}else{
+				return "(?s)(?i)</?\\w.*?>";
+			}
 		}
 		return concat(has ? "(?s)(?i)</?":"<",tagNamesPattern(has,tagNames),".*?>");
 	}
