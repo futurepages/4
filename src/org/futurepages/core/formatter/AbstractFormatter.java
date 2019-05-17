@@ -20,6 +20,10 @@ public abstract class AbstractFormatter<T extends Object> {
      * @param locale The locale to use (if needed)
      * @return The value formatted to a String
      */
+	public String format(T value, Locale locale, String[] params) {
+		return format(value,locale);
+	}
+
 	public String format(T value, Locale locale, String param) {
 		return format(value,locale);
 	}
@@ -28,8 +32,13 @@ public abstract class AbstractFormatter<T extends Object> {
 		return format(value, NewLocaleManager.getDefaultLocale());
 	}
 
+	public final String format(T value, String[] params) {
+		return format(value, NewLocaleManager.getDefaultLocale(), params);
+	}
 
 	public final String format(T value, String param) {
 		return format(value, NewLocaleManager.getDefaultLocale(), param);
 	}
+
+
 }

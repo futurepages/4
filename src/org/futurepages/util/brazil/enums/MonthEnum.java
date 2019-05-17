@@ -5,18 +5,18 @@ import java.util.Calendar;
 
 public enum MonthEnum implements Serializable {
 
-	JANEIRO  (1,  "janeiro"  ),
-	FEVEREIRO(2,  "fevereiro"),
-	MARCO    (3,  "março"    ),
-	ABRIL    (4,  "abril"    ),
-	MAIO     (5,  "maio"     ),
-	JUNHO    (6,  "junho"    ),
-	JULHO    (7,  "julho"    ),
-	AGOSTO   (8,  "agosto"   ),
-	SETEMBRO (9,  "setembro" ),
-	OUTUBRO  (10, "outubro"  ),
-	NOVEMBRO (11, "novembro" ),
-	DEZEMBRO (12, "dezembro" );
+	JANUARY   (1,  "janeiro"  ),
+	FEBRUARY  (2,  "fevereiro"),
+	MARCH     (3,  "março"    ),
+	APRIL     (4,  "abril"    ),
+	MAY       (5,  "maio"     ),
+	JUNE      (6,  "junho"    ),
+	JULY      (7,  "julho"    ),
+	AUGUST    (8,  "agosto"   ),
+	SEPTEMBER (9,  "setembro" ),
+	OCTOBER   (10, "outubro"  ),
+	NOVEMBER  (11, "novembro" ),
+	DECEMBER  (12, "dezembro" );
 
 	private int id;
 	private String name;
