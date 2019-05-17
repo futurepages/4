@@ -3,12 +3,11 @@ package org.futurepages.formatters.brazil;
 import java.util.Calendar;
 import java.util.Locale;
 
-import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.DateUtil;
+import org.futurepages.util.Is;
 import org.futurepages.util.The;
 import org.futurepages.util.brazil.BrazilCalendarUtil;
-import org.futurepages.util.brazil.BrazilDateUtil;
 import org.futurepages.util.brazil.enums.UnitTimeEnum;
 import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.brazil.enums.MonthEnum;
@@ -30,7 +29,7 @@ public class RemainingTimeFormatter extends AbstractFormatter<Calendar> {
 	}
 
 	public static String formatValue(Calendar agora, Calendar momentoNoFuturo, Integer daysCountdown, String lang){
-		boolean en = lang!=null && lang.equals("en");
+		boolean en = !Is.empty(lang) && lang.equals("en");
 		try {
 			if(CalendarUtil.isNeighborDays(momentoNoFuturo, agora)){
 					if(!en){

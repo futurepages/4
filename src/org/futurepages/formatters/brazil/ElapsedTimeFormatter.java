@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.DateUtil;
+import org.futurepages.util.Is;
 import org.futurepages.util.The;
 import org.futurepages.util.brazil.enums.UnitTimeEnum;
 import org.futurepages.util.brazil.BrazilCalendarUtil;
@@ -26,7 +27,7 @@ public class ElapsedTimeFormatter extends AbstractFormatter<Calendar> {
 	}
 
 	public static String formatValue(Calendar agora, Calendar momentoNoPassado, Integer daysCountup, String lang){
-		boolean en = lang!=null && lang.equals("en");
+		boolean en = !Is.empty(lang) && lang.equals("en");
 		try {
 			if(BrazilCalendarUtil.isNeighborDays(momentoNoPassado, agora) && BrazilCalendarUtil.getDifferenceInDays(momentoNoPassado, agora)>0){
 				if(!en){

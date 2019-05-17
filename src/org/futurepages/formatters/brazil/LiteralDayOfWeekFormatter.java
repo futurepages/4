@@ -2,6 +2,7 @@ package org.futurepages.formatters.brazil;
 
 import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.CalendarUtil;
+import org.futurepages.util.Is;
 import org.futurepages.util.The;
 import org.futurepages.util.brazil.BrazilCalendarUtil;
 import org.futurepages.util.brazil.BrazilDateUtil;
@@ -30,7 +31,7 @@ public class LiteralDayOfWeekFormatter extends AbstractFormatter {
 
 	@Override
 	public String format(Object date, Locale locale, String param) {
-		if(param==null || !param.equals("en")){
+		if(Is.empty(param) || !param.equals("en")){
 			return format(date,locale);
 		}
 		// in english...
