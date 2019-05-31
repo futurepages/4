@@ -21,6 +21,12 @@ public class ElapsedTimeFormatter extends AbstractFormatter<Calendar> {
 	}
 
 	@Override
+	public String format(Calendar momentoNoPassado, Locale loc, String param) {
+		Calendar agora = CalendarUtil.now();
+		return formatValue(agora, momentoNoPassado, Integer.valueOf(param), null);
+	}
+
+	@Override
 	public String format(Calendar momentoNoPassado, Locale loc, String[] params) {
 		Calendar agora = CalendarUtil.now();
 		return formatValue(agora, momentoNoPassado, Integer.valueOf(params[0]), params[1]);

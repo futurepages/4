@@ -18,6 +18,7 @@ public class RemainingTimeFormatter extends AbstractFormatter<Calendar> {
 	public String format(Calendar futureMoment, Locale loc) {
 		return formatValue(CalendarUtil.now(), futureMoment,null,null);
 	}
+
 	@Override
 	public String format(Calendar futureMoment, Locale locale, String param) {
 		return formatValue(CalendarUtil.now(), futureMoment, Integer.valueOf(param),null);
