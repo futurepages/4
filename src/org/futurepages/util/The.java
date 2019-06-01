@@ -41,6 +41,13 @@ public class The {
 		return ReflectionUtil.clone(fromObj);
 	}
 
+	public static void sleepOf(long timeMillis){
+		try {
+			Thread.sleep(timeMillis);
+		} catch (InterruptedException e) {
+			AppLogger.getInstance().execute(e);
+		}
+	}
 
 	public static String implodedArray(String[] array, String delim, String quote) {
 		if (quote == null) {
