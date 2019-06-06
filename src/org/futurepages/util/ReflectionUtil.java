@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -424,6 +425,24 @@ public final class ReflectionUtil {
 				}
 			}
 		}
+	}
+
+	public static List<Field> getAllFields(Object obj) {
+		Class clss = obj.getClass();
+		List<Field> fieldsList = new ArrayList<>();
+		do {
+			Field[] fields = clss.getDeclaredFields();
+			for (Field field : fields) {
+				try {
+					field.setAccessible(true);
+					fieldsList.add(field);
+				} catch (Exception ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+			clss = clss.getSuperclass();
+		} while (clss != null && clss != Object.class);
+		return fieldsList;
 	}
 
 	public static <T extends Object> T clone(T fromObj){
