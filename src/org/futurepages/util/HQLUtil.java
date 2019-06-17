@@ -133,6 +133,17 @@ public class HQLUtil {
 		return out.toString();
 	}
 
+	public static String imploded(int[] array) {
+		StringBuffer out = new StringBuffer("");
+		for (int i = 0; i < array.length; i++) {
+			if (i != 0) {
+				out.append(",");
+			}
+			out.append(array[i]);
+		}
+		return out.toString();
+	}
+
 	public static String imploded(long[] array) {
 		StringBuffer out = new StringBuffer("");
 		for (int i = 0; i < array.length; i++) {
@@ -143,6 +154,7 @@ public class HQLUtil {
 		}
 		return out.toString();
 	}
+
 
 	public static String matches(String field, String value) {
 		return matches(field, value, true, false);

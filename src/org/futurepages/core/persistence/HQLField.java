@@ -416,6 +416,14 @@ public class HQLField implements HQLable {
 		return concat(fieldName, logicConector, "(", HQLUtil.imploded(tokens), ")");
 	}
 
+	private String buildlIntExpression(String logicConector, int... tokens) {
+		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
+		if (tokens == null || tokens.length == 0) {
+			return "";
+		}
+		return concat(fieldName, logicConector, "(", HQLUtil.imploded(tokens), ")");
+	}
+
 	public String in(String... tokens) {
 		return buildlStringExpression(IN, tokens);
 	}
@@ -463,6 +471,10 @@ public class HQLField implements HQLable {
 
 	public String in(long... tokens) {
 		return buildlLongExpression(IN, tokens);
+	}
+
+	public String in(int... tokens) {
+		return buildlIntExpression(IN, tokens);
 	}
 
 	public String notIn(String... tokens) {
@@ -516,7 +528,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String isEmpty() {
-		return concat(fieldName, EQUALS, "''");
+		return concat(fieldName, EQUALS, "''",OR,fieldName,EQUALS,null);
 	}
 
 	public String isNotEmpty() {
