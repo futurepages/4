@@ -23,7 +23,7 @@ public class DateTime extends PrintTag{
 	private Object date;
 	
 	public DateTime(){
-		mask = "dd/MM/yyyy";
+		mask = "dd/MM/yyyy HH:mm:ss";
 	}
 
 	public void setMask(String mask) {
