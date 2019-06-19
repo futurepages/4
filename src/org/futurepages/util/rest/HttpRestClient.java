@@ -99,6 +99,7 @@ public abstract class HttpRestClient {
                 List<Field> fields = ReflectionUtil.getAllFields(object);
                 String valor;
                 File uploadFile;
+                int i = 0;
                 for(Field field : fields){
                     if(field.get(object)!=null){
                         if(field.getType()==File.class){
@@ -129,10 +130,14 @@ public abstract class HttpRestClient {
                                   .append("Content-Disposition: form-data; name=\"").append(field.getName()).append("\"")
                                   .append(crlf)
                                   .append(crlf)
-                                  .append(valor)
-                                  .append(crlf);
+                                  .append(valor);
                             writer.flush();
                         }
+                    }
+                    i++;
+                    if(i<fields.size()){
+                          writer.append(crlf);
+                          writer.flush();
                     }
                 }
                 writer.append(crlf);
