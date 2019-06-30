@@ -534,6 +534,16 @@ public class CalendarUtil {
 		}
 		return bdDate;
 	}
+	/**
+	 * Output: YYYY-MM-DD HH:mm:ss
+	 */
+	public static String dbDateTime(Calendar calendar) {
+		String bdDate = "";
+		if (calendar != null) {
+			return DateUtil.getInstance().dbDateTime(calendar.getTime());
+		}
+		return bdDate;
+	}
 
 	public static String viewDateTime(Calendar inputCalendar, String mask){
 		return new SimpleDateFormat(mask, NewLocaleManager.getDefaultLocale()).format(inputCalendar.getTime());
