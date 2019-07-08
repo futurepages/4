@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.ReflectionUtil;
 import org.futurepages.util.rest.auth.HttpAuthentication;
+import org.hibernate.cfg.NotYetImplementedException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -80,6 +81,10 @@ public abstract class HttpRestClient {
                 authentication.authenticate(conn);
             }
             if(method.equals("POST+FILE") && object!=null){
+                if(object instanceof String){
+                    // TODO: not implemented
+                    throw new NotYetImplementedException("Object must not be json string when posting with file. It's Not implemented yet!");
+                }
 
                 String boundary =  "*****"+System.currentTimeMillis()+"*****",
                        crlf = "\r\n" ,
@@ -161,7 +166,12 @@ public abstract class HttpRestClient {
             responseCode = conn.getResponseCode();
 
             responseBody = readBody(conn.getResponseCode()==200? conn.getInputStream():conn.getErrorStream());
-            return getGson().fromJson(responseBody.toString(), type);
+            if(type != String.class){
+                return getGson().fromJson(responseBody.toString(), type);
+            }else{
+	            //noinspection SingleStatementInBlock,unchecked
+	            return (T) responseBody.toString();
+            }
         }catch (Exception ex){
             if(responseCode!=502 && responseCode!=503){
                 AppLogger.getInstance().execute(ex,
@@ -188,10 +198,12 @@ public abstract class HttpRestClient {
     }
 
     private String getBody(Object object, String contentType) {
+        String data = object instanceof  String ?  (String) object   :   getGson().toJson(object);
+
         if (contentType.equals("application/x-www-form-urlencoded")) {
-            return jsonToUrlEncodedString((JsonObject) new JsonParser().parse(getGson().toJson(object)),"");
+            return jsonToUrlEncodedString((JsonObject) new JsonParser().parse(data),"");
         }
-        return getGson().toJson(object);
+        return data;
     }
 
     @SuppressWarnings("Duplicates")
