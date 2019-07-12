@@ -1,5 +1,6 @@
 package org.futurepages.core.exception;
 
+import org.futurepages.core.auth.DefaultUser;
 import org.futurepages.core.config.Apps;
 import org.futurepages.menta.actions.HiddenRequestAction;
 import org.futurepages.menta.consequences.Forward;
@@ -98,8 +99,9 @@ public class AppLogger implements ExceptionLogger{
 				logSB.append(logln(    ">[from   ]  ", AbstractAction.getIpsFromRequest(req)));
 				logSB.append(logln(    ">[browser]  ", req.getHeader("user-agent")));
 				logSB.append(logln(    ">[proxy  ]  ", req.getHeader("Proxy-Authorization")));
-				if (AbstractAction.isLogged(req)) {
-					logSB.append(logln(">[user   ]  ", AbstractAction.loggedUser(req).getLogin()));
+				DefaultUser user = AbstractAction.loggedUser(req);
+				if (user!=null) {
+					logSB.append(logln(">[user   ]  ", user.getLogin()," | ", user.getEmail() ," | ",user.getFullName()));
 				}
 				logSB.append(logln(   ">[method ]  ", req.getMethod()));
 				logSB.append(
