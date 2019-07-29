@@ -79,7 +79,9 @@ public class Is {
     public static boolean validURL(String urlStr) {
         if (urlStr != null) {
             return (urlStr.contains(".") || (!Is.empty(Apps.get("APP_HOST")) && urlStr.startsWith(Apps.get("APP_HOST"))))
-	            && ((urlStr.startsWith("http://") || urlStr.startsWith("https://") || urlStr.startsWith("HTTPS://") || urlStr.startsWith("HTTP://")));
+	            && ((urlStr.startsWith("http://") || urlStr.startsWith("https://") || urlStr.startsWith("HTTPS://") || urlStr.startsWith("HTTP://")))
+	            && !urlStr.contains(" ")
+            ;
         } else {
             return false;
         }
