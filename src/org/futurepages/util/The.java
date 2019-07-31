@@ -44,9 +44,7 @@ public class The {
 	public static void sleepOf(long timeMillis){
 		try {
 			Thread.sleep(timeMillis);
-		} catch (InterruptedException e) {
-			AppLogger.getInstance().execute(e);
-		}
+		} catch (InterruptedException e) { }
 	}
 
 	public static String implodedArray(String[] array, String delim, String quote) {
