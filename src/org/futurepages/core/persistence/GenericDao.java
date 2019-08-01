@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -685,5 +686,9 @@ public class GenericDao extends HQLProvider {
 		}catch(Exception ignored){
 			throw new RuntimeException(ignored);
 		}
+	}
+
+	public boolean sqlExists(String fromTable, String whereSQL) {
+		return Dao.getInstance().getSQL(concat("SELECT EXISTS(SELECT 1 FROM ",fromTable, where(whereSQL),")")).equals(new BigInteger("1"));
 	}
 }
