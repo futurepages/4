@@ -143,6 +143,11 @@ public class Is {
 
     }
 
+    // DETALHE IMPORTANTE DO MÉTODO: null == ""
+    public static boolean bothValuesEquals(String str1, String str2) {
+	    return (empty(str1) ? empty(str2) : str1.equals(str2));
+    }
+
 	public static boolean validCapitalizedPersonName(String in){
 		if(in.equals(in.toUpperCase()) || in.equals(in.toLowerCase())){
 			return false;
