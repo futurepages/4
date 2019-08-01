@@ -267,6 +267,13 @@ public class HQLProvider implements HQLable {
 		return field + ASC;
 	}
 
+	public static String ascEnum(String clause) {
+		return ("CASE WHEN "+clause+" THEN 1 else 0 END ");
+	}
+	public static String descEnum(String clause) {
+		return ("CASE WHEN "+clause+" THEN 0 else 1 END ");
+	}
+
 	public static String desc(String field) {
 		return field + DESC;
 	}
