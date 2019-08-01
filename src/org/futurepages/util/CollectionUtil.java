@@ -12,7 +12,13 @@ public class CollectionUtil {
 	public static <T> T[] toArray(List<T> list) {
 		T[] array = null;
 		if(list!=null && !list.isEmpty()){
-			array = (T[]) Array.newInstance(list.get(0).getClass(),list.size());
+			Object firstEl = list.get(0);
+			//noinspection unchecked
+			array = (T[]) Array.newInstance(!(firstEl instanceof Enum<?>)
+																	? firstEl.getClass()
+																	: ((Enum)firstEl).getDeclaringClass()
+											,list.size()
+			);
 			list.toArray(array);
 
 		}
