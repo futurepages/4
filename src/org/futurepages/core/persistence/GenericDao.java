@@ -691,4 +691,8 @@ public class GenericDao extends HQLProvider {
 	public boolean sqlExists(String fromTable, String whereSQL) {
 		return Dao.getInstance().getSQL(concat("SELECT EXISTS(SELECT 1 FROM ",fromTable, where(whereSQL),")")).equals(new BigInteger("1"));
 	}
+
+	public boolean sqlExists(String fromSql) {
+		return Dao.getInstance().getSQL(concat("SELECT EXISTS(SELECT 1 FROM ",fromSql,")")).equals(new BigInteger("1"));
+	}
 }
