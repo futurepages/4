@@ -406,7 +406,7 @@ public class The {
 	}
 
 	public static String javascriptText(String value, boolean escapeIntoStr) {
-		return HtmlRegex.javascriptText(value, escapeIntoStr);
+		return !Is.empty(value)?HtmlRegex.javascriptText(value, escapeIntoStr):"";
 	}
 
 	static String stringWithoutInitialNumbers(String str) {
@@ -716,4 +716,8 @@ public class The {
 		}
 		return sb.toString();
 	}
+
+    public static String safeString(String str) {
+		return Is.empty(str)?null:str.trim();
+    }
 }
