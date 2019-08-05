@@ -720,4 +720,8 @@ public class The {
     public static String safeString(String str) {
 		return Is.empty(str)?null:str.trim();
     }
+
+	public static String lastCharsOf(int n, String str) {
+		return str.substring(str.length()-n, str.length());
+	}
 }
