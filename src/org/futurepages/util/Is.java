@@ -51,25 +51,10 @@ public class Is {
      * Verifica a valiade do email dado com entrada
      * @param mailStr email de entrada
      * @return verdadeiro se o email é válido
-     * TODO altera para regex
      */
     public static boolean validMail(String mailStr) {
-
-	    if (mailStr.startsWith(".") || mailStr.endsWith(".")) {
-		    return false;
-	    }
-
-        String[] mailParts = mailStr.split("@");
-
-        // Como o operador && é curto-circuito, as duas próximas operações
-		// só serão realizadas se a primeira operação "mailParts.length == 2"
-		// for verdadeira. Evitando assim que hava uma exceção, caso o array
-		// possua menos de 2 elementos.
-		if (mailParts.length == 2 && !empty(mailParts[0]) && !empty(mailParts[1])) {
-            return validStringKey(mailParts[0],null,null,true) && validStringKey(mailParts[1],null,null,true) && (mailParts[1].indexOf(".") > 0);
-        } else {
-            return false;
-        }
+    	String regex = "^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])$";
+    	return mailStr.matches(regex);
     }
 
     /**
@@ -86,8 +71,8 @@ public class Is {
             return false;
         }
     }
-	
-    public static boolean validURLOrScript(String urlStr) {		
+
+    public static boolean validURLOrScript(String urlStr) {
 		return urlStr != null && (urlStr.startsWith("javascript:") || validURL(urlStr));
     }
 
@@ -119,7 +104,7 @@ public class Is {
     }
 
 	public static boolean validStringKey(String str, Integer min, Integer max, boolean allowsInitialNumber) {
-		        
+
 		if ((min != null && (str.length() < min)) || (max != null && (str.length() > max))) {
             return false;
         }
