@@ -189,7 +189,7 @@ public abstract class AbstractAction implements Pageable, Action {
 	/**
 	 * @return Pega o numero da página corrente em uso
 	 */
-	protected int getPageNum() {
+	public int getPageNum() {
 		return getPaginator().getPageNum();
 	}
 
@@ -200,11 +200,11 @@ public abstract class AbstractAction implements Pageable, Action {
 		return getPaginator().getPagesOffset();
 	}
 
-	protected int getPageSize(int defaultPageSize) {
+	public int getPageSize(int defaultPageSize) {
 		return getPaginator().getPageSize(defaultPageSize);
 	}
 
-	protected int getPageSize(int defaultPageSize, int maxPageSize) {
+	public int getPageSize(int defaultPageSize, int maxPageSize) {
 		return getPaginator().getPageSize(defaultPageSize, maxPageSize);
 	}
 
