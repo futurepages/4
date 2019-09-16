@@ -103,7 +103,7 @@ public class MailSender {
 	 * O usuário aguarda a excução para receber uma
 	 * resposta do servidor.
 	 */
-	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String emailPassword, String subject, String message, String... mailAdresses) throws EmailException {
+	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String emailPassword, String subject, String message, String... mailAdresses) throws Exception {
 		for (String mail : mailAdresses) {
 			HtmlEmail email = newHtmlEmail(mail, subject, message);
 			if(!Is.empty(emailAccountFrom)){
@@ -121,7 +121,7 @@ public class MailSender {
 			if(!Is.empty(emailReplyTo)){
 				email.addReplyTo(emailReplyTo,nameFrom);
 			}
-			send(email);
+			email.send();
 		}
 	}
 
