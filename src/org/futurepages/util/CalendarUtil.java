@@ -405,7 +405,7 @@ public class CalendarUtil {
 		return buildDate(CalendarUtil.now());
 	}
 
-	public static class TooBigDateException extends Exception {
+    public static class TooBigDateException extends Exception {
 	}
 
 	public static boolean isToday(Calendar cal) {
@@ -544,6 +544,10 @@ public class CalendarUtil {
 		}
 		return bdDate;
 	}
+
+    public static String dbDateTime() {
+		return  dbDateTime(now());
+    }
 
 	public static String viewDateTime(Calendar inputCalendar, String mask){
 		return new SimpleDateFormat(mask, NewLocaleManager.getDefaultLocale()).format(inputCalendar.getTime());
