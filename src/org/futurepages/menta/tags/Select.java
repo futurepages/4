@@ -55,11 +55,14 @@ public class Select extends HTMLTag {
     @TagAttribute
     private String defaultValue = "0";
 
+	@TagAttribute
+	private boolean disabled = false;
+
 	@Override
     public String getStringToPrint() throws JspException {
         String[] values = findValues(name);
         StringBuilder sb = new StringBuilder();
-        sb.append("<select ").append(klass).append(" ").append(id).append(" name=\"").append(name).append("\" ").append(onchange).append(" ").append(style).append(" ").append(onblur).append(" ").append(getExtraAttributes()).append(">");
+		sb.append("<select ").append(disabled ? "disabled " : "").append(klass).append(" ").append(id).append(" name=\"").append(name).append("\" ").append(onchange).append(" ").append(style).append(" ").append(onblur).append(" ").append(getExtraAttributes()).append(">");
 
         if (list != null) {
 
@@ -178,4 +181,12 @@ public class Select extends HTMLTag {
     public void setShowAttr(String showAttr) {
         this.showAttr = showAttr;
     }
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
 }
