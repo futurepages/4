@@ -542,6 +542,9 @@ public class HQLField implements HQLable {
 	public String contains(String value) {
 		return likeExpression("'%", value, "%'");
 	}
+	public String notContains(String value) {
+		return notLikeExpression("'%", value, "%'");
+	}
 
 	private String likeExpression(String prefix, String value, String sufix) {
 		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
