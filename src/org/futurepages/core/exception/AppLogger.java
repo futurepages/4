@@ -91,6 +91,10 @@ public class AppLogger implements ExceptionLogger{
 	        stackHash = Security.md5(errors.toString());
         }
 
+        if(req==null){
+            req = Controller.getInstance().getChain().getAction().getRequest();
+		}
+
 		if(req!=null){
         	Action action  = req.getAttribute(Forward.ACTION_REQUEST) instanceof Action? (Action) req.getAttribute(Forward.ACTION_REQUEST) : null;
 			if(!simple404){
