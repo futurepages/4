@@ -91,7 +91,7 @@ public class AppLogger implements ExceptionLogger{
 	        stackHash = Security.md5(errors.toString());
         }
 
-        if(req==null){
+        if(req==null && Controller.getInstance()!=null && Controller.getInstance().getChain()!=null && Controller.getInstance().getChain().getAction()!=null){
             req = Controller.getInstance().getChain().getAction().getRequest();
 		}
 
