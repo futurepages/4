@@ -471,6 +471,11 @@ public class FileUtil {
 		folder.delete();
 	}
 
+	public static void deleteFolderAndContents(String path) {
+		File dir = new File(path);
+		deleteFolderAndContents(dir);
+	}
+
 	public static String convertStreamToString(InputStream is) {
 		/*
 		 * To convert the InputStream to String we use the BufferedReader.readLine()
