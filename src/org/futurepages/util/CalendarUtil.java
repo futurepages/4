@@ -159,7 +159,7 @@ public class CalendarUtil {
 	}
 
 	public static Calendar buildCalendar(int field, int addValue) {
-		Calendar dataInicial = CalendarUtil.now();
+		Calendar dataInicial = now();
 		dataInicial.add(field, addValue);
 		return dataInicial;
 	}
@@ -244,7 +244,7 @@ public class CalendarUtil {
 	}
 
 	public static boolean dateIsOfCurrentYear(Calendar cal1) {
-		return dateIsOfCurrentYear(cal1, CalendarUtil.now());
+		return dateIsOfCurrentYear(cal1, now());
 	}
 
 	public static boolean dateIsOfCurrentYear(Calendar cal1, Calendar hoje) {
@@ -402,7 +402,7 @@ public class CalendarUtil {
 	}
 
 	public static Calendar getToday() {
-		return buildDate(CalendarUtil.now());
+		return buildDate(now());
 	}
 
     public static class TooBigDateException extends Exception {
@@ -421,11 +421,11 @@ public class CalendarUtil {
 	}
 
 	public static boolean isInFuture(Calendar cal) {
-		return cal.after(CalendarUtil.now());
+		return cal.after(now());
 	}
 
 	public static boolean isInPast(Calendar cal) {
-		return cal.before(CalendarUtil.now());
+		return cal.before(now());
 	}
 
 	public static boolean isAnniversaryToday(Calendar birthday) {
@@ -441,7 +441,7 @@ public class CalendarUtil {
 	 *
 	 */
 	public static int getLastDay(int mounth) {
-		Calendar c = CalendarUtil.now();
+		Calendar c = now();
 		c.set(Calendar.MONTH, mounth - 1);
 		return c.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
@@ -451,7 +451,7 @@ public class CalendarUtil {
 	 *
 	 */
 	public static Calendar getLastDay(int mounth, int year) {
-		Calendar c = CalendarUtil.now();
+		Calendar c = now();
 		c.set(Calendar.MONTH, mounth - 1);
 		c.set(Calendar.YEAR, year);
 		int i = c.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -486,7 +486,7 @@ public class CalendarUtil {
 	 *
 	 */
 	public static Calendar getFirstDay(int mounth, int year) {
-		Calendar c = CalendarUtil.now();
+		Calendar c = now();
 		c.set(Calendar.MONTH, mounth - 1);
 		c.set(Calendar.YEAR, year);
 		c.set(Calendar.DAY_OF_MONTH, 1);
@@ -561,7 +561,7 @@ public class CalendarUtil {
 			DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, NewLocaleManager.getDefaultLocale());
 			df.setLenient(false);
 			Date date = df.parse(inputInMediumFormat);
-			Calendar cal = CalendarUtil.now();
+			Calendar cal = now();
 			cal.setTime(date);
 			return cal;
 		} catch (Exception ex) {
