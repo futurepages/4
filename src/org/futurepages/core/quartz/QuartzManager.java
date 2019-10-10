@@ -5,7 +5,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.futurepages.exceptions.NotModuleException;
 
@@ -57,5 +59,15 @@ public class QuartzManager {
 			}
 		}
 		System.out.println("Quartz's Jobs successful killed.");
+	}
+
+	public static void newDelayedJob(int numThreads, String threadName, int initialDelay, int delayToRerun, TimeUnit timeUnit, Thread threadToExecute) {
+		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(numThreads<1?1:numThreads);
+		addOther(scheduler);
+		if(threadName!=null){
+			threadToExecute.setName(threadName);
+		}
+		scheduler.scheduleWithFixedDelay(threadToExecute, initialDelay, delayToRerun, timeUnit);
+
 	}
 }
