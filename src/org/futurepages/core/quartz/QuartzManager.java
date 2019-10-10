@@ -62,7 +62,7 @@ public class QuartzManager {
 	}
 
 	public static void newDelayedJob(Object caller, int delayToRerun, TimeUnit timeUnit, Thread threadToExecute) {
-		newDelayedJob(1, caller.getClass().getName(), 0, delayToRerun, timeUnit, threadToExecute);
+		newDelayedJob(1, caller!=null? caller.getClass().getName():null, 0, delayToRerun, timeUnit, threadToExecute);
 	}
 
 	public static void newDelayedJob(int numThreads, String threadName, int initialDelay, int delayToRerun, TimeUnit timeUnit, Thread threadToExecute) {
