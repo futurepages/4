@@ -61,6 +61,10 @@ public class QuartzManager {
 		System.out.println("Quartz's Jobs successful killed.");
 	}
 
+	public static void newDelayedJob(Object caller, int delayToRerun, TimeUnit timeUnit, Thread threadToExecute) {
+		newDelayedJob(1, caller.getClass().getName(), 0, delayToRerun, timeUnit, threadToExecute);
+	}
+
 	public static void newDelayedJob(int numThreads, String threadName, int initialDelay, int delayToRerun, TimeUnit timeUnit, Thread threadToExecute) {
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(numThreads<1?1:numThreads);
 		addOther(scheduler);
@@ -68,6 +72,5 @@ public class QuartzManager {
 			threadToExecute.setName(threadName);
 		}
 		scheduler.scheduleWithFixedDelay(threadToExecute, initialDelay, delayToRerun, timeUnit);
-
 	}
 }
