@@ -404,6 +404,15 @@ public final class ReflectionUtil {
 		return fieldValue;
 	}
 
+	public static void setStaticField(Class klass, String fieldName, Object value) {
+		try {
+			Field field = klass.getField(fieldName);
+			field.set(null, value);
+		} catch (Exception ignored) {
+
+		}
+	}
+
 	/**
 	 * Um objeto 'child' recebe todos os valores herdados de seu pai 'parent'.
 	 * Os campos não herdados continuam com o valor nulo.
