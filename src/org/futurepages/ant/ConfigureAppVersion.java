@@ -5,10 +5,8 @@ import org.apache.tools.ant.Task;
 import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.FileUtil;
 import org.futurepages.util.Is;
-import org.hibernate.cache.spi.FilterKey;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.HashMap;
 
 public class ConfigureAppVersion extends Task {
