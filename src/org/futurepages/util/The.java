@@ -724,4 +724,8 @@ public class The {
 	public static String lastCharsOf(int n, String str) {
 		return str.substring(str.length()-n, str.length());
 	}
+
+	public static String[] array(String... array) {
+		return array;
+	}
 }
