@@ -82,6 +82,7 @@ public class Apps {
 			getInstance().parsePropertiesFile();
 			getInstance().cachedParams();
 			System.out.println(" >> Apps: Only Basic Properties Loaded [NO WEB PROPERTIES].");
+			System.out.println(" >> Params's APP_HOST: "+getInstance().getParamsMap().get("APP_HOST"));
 		}
 	}
 
