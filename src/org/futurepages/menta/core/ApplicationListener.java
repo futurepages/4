@@ -160,14 +160,12 @@ public class ApplicationListener implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent evt) {
 		log("Parando: " + evt.getServletContext().getServletContextName());
-		if (Apps.get("QUARTZ_MODE").equals(ON)) {
-			try {
-				QuartzManager.shutdown();
-				log("Schedulers do Quartz parado.");
-			} catch (SchedulerException ex) {
-				log("Erro ao tentar parar Schedulers do Quartz: " + ex.getMessage());
-				AppLogger.getInstance().execute(ex);
-			}
+		try {
+			QuartzManager.shutdown();
+			log("Schedulers do Quartz parado.");
+		} catch (SchedulerException ex) {
+			log("Erro ao tentar parar Schedulers do Quartz: " + ex.getMessage());
+			ex.printStackTrace();
 		}
 		if (HibernateManager.isRunning()) {
 			HibernateManager.shutdown();

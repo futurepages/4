@@ -34,6 +34,7 @@ import java.util.Map;
  *  - etc.
  * @author leandro
  */
+@Deprecated
 public class AppListener implements ServletContextListener {
 
 	private String contextName;
@@ -226,14 +227,12 @@ public class AppListener implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent evt) {
 		log("Stopping: " + evt.getServletContext().getServletContextName());
-		if (Apps.get("QUARTZ_MODE").equals("on")) {
-			try {
-				QuartzManager.shutdown();
-				log("Quartz Schedulers stopped.");
-			} catch (SchedulerException ex) {
-				log("Quartz Schedulers ERROR: " + ex.getMessage());
-				AppLogger.getInstance().execute(ex);
-			}
+		try {
+			QuartzManager.shutdown();
+			log("Quartz Schedulers stopped.");
+		} catch (SchedulerException ex) {
+			log("Quartz Schedulers ERROR: " + ex.getMessage());
+			ex.printStackTrace();
 		}
 		if (HibernateManager.isRunning()) {
 			HibernateManager.shutdown();

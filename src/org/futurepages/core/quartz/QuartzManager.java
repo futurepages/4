@@ -46,7 +46,7 @@ public class QuartzManager {
 
 	public static void shutdown() throws SchedulerException {
 		System.out.println("Killing Quartz's Jobs...");
-		Collection<Scheduler> schedulers = schedulerFactory.getAllSchedulers();
+		Collection<Scheduler> schedulers = schedulerFactory!=null? schedulerFactory.getAllSchedulers():null;
 		if(schedulers!=null){
 			for(Scheduler scheduler : schedulers){
 				scheduler.shutdown();
