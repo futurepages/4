@@ -223,6 +223,10 @@ public class ActionConfig {
 	 * @since 1.2
 	 */
 	public ActionConfig on(String result, String innerAction, Consequence c) {
+//      // DESCOMENTAR PARA CONTABILIZAR CASOS DE USO DO SISTEMA
+//		if(innerAction!=null && !innerAction.equals("execute")){
+//			System.out.println(this.getName()+"-"+innerAction+" -> "+result);
+//		}
 		return addConsequence(result, innerAction, c);
 	}
 

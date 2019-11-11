@@ -146,6 +146,8 @@ public abstract class AbstractApplicationManager  implements Manipulable{
         if(parts.length > 2){
             Controller.getInstance().getAppManager().addSubModule(parts[0],parts[1]);
         }
+//      // DESCOMENTAR PARA CONTABILIZAR CASOS DE USO DO SISTEMA
+//		System.out.println(ac.toString());
         return ac;
 	}
 
