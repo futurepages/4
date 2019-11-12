@@ -36,7 +36,7 @@ public abstract class CPFUtil {
 	/**
 	 * Calcula o dígito verificador a partir do número de entrada
 	 */
-	private static String calcDigVerif(String num) {
+	public static String calcDigVerif(String num) {
 		Integer primDig, segDig;
 		int soma = 0, peso = 10;
 		for (int i = 0; i < num.length(); i++) {
