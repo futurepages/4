@@ -260,12 +260,8 @@ public class GenericDao extends HQLProvider {
 		return null;
 	}
 
-	public <T extends Serializable> T getLast(HQLQuery<T> hqlQuery) {
-		List<T> objs = list(hqlQuery);
-		if(objs.size()>0){
-			return objs.get(objs.size()-1);
-		}
-		return null;
+	public <T extends Serializable> T getLast(Class<T> entityClass) {
+		return getFirst(hql(entityClass, null, desc(getIdName(entityClass))));
 	}
 
 	public <T extends Serializable> List<T> listReports(HQLQuery<T> hqlQuery, Class<T> reportClass) {
