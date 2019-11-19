@@ -220,13 +220,18 @@ public class ImageUtil {
 			if(image.getType()>5){
 					image = new JpegReader().readImage(file);
 			}
-		} catch (Exception ex) {
+		} catch (Exception ex1) {
+			FileInputStream fis = new FileInputStream(file);
 			try {
-				FileInputStream fis = new FileInputStream(file);
 				image = JPEGCodec.createJPEGDecoder(fis).decodeAsBufferedImage();
 				fis.close();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
+			} catch (Exception ex2) {
+				try {
+					fis.close();
+					image = new JpegReader().readImage(file);
+				}catch (Exception ex3){
+					throw new RuntimeException(ex3);
+				}
 			}
 		}
 		return image;

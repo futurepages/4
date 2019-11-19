@@ -287,6 +287,7 @@ public class Controller extends HttpServlet {
 			conseqExecuted = true;
 		} catch (Exception e) {
 			Throwable cause = getRootCause(e);
+			res.sendError(500);
 			throw new ServletException("Exception while invoking action " + actionName + ": " + e.getMessage() + " / " + e.getClass().getName() + " / " + cause.getMessage() + " / " + cause.getClass().getName(), cause);
 		} finally {
 			/*
