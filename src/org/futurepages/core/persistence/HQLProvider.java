@@ -98,8 +98,11 @@ public class HQLProvider implements HQLable {
 	}
 
 	public static String sum(String sumClause) {
+		return sum(sumClause,null);
+	}
+	public static String sum(String sumClause, String asClause) {
 		if (!Is.empty(sumClause)) {
-			return concat(" SUM(", sumClause, ")");
+			return concat(" SUM(", sumClause, ")",!Is.empty(asClause)? as(asClause) : "");
 		} else {
 			return "";
 		}
