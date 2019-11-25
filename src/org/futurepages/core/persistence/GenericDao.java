@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -307,7 +308,7 @@ public class GenericDao extends HQLProvider {
 	}
 
 	public long numRows(HQLQuery hqlQuery){
-		if(hqlQuery.getSelect()==null){
+		if(hqlQuery.getSelect()==null || !hqlQuery.getSelect().startsWith("COUNT(")){
 			hqlQuery.setSelect("COUNT(*)");
 		}
 		return (Long) selectQuery(hqlQuery).uniqueResult();
@@ -698,5 +699,23 @@ public class GenericDao extends HQLProvider {
 
 	public boolean sqlExists(String fromSql) {
 		return Dao.getInstance().getSQL(concat("SELECT EXISTS(SELECT 1 FROM ",fromSql,")")).equals(new BigInteger("1"));
+	}
+
+	// pode ser que a lista vem com o array de objetos devido a join com having. O convidado sempre será o primeiro do array.
+	public <T extends Serializable> List<T> list(Class<T> entityClass, HQLQuery hql) {
+		List resultSet = Dao.getInstance().list(hql);
+		if(resultSet.size()>0){
+			if(resultSet.get(0) instanceof Object[]){
+				if(!entityClass.isAssignableFrom(((Object[])resultSet.get(0))[0].getClass())){
+					throw new IllegalArgumentException("the returned array rows must have the first element as instance of "+entityClass.getName());
+				}
+				List<T> objs = new ArrayList<>();
+				for(Object[] objectsRow : (List<Object[]>) resultSet){
+					objs.add((T) objectsRow[0]);
+				}
+				return (List<T>) objs;
+			}
+		}
+		return (List<T>) resultSet;
 	}
 }
