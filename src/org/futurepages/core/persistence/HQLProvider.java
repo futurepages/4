@@ -124,6 +124,10 @@ public class HQLProvider implements HQLable {
 		return new HQLField(concat(" DATE(", date, ")"));
 	}
 
+	public static HQLField trim(String date) {
+		return new HQLField(concat(" TRIM(", date, ")"));
+	}
+
 	public static HQLField size(String element) {
 		return new HQLField(concat(" SIZE(", element, ")"));
 	}

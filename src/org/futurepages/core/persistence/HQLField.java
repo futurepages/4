@@ -81,9 +81,8 @@ public class HQLField implements HQLable {
 	 * @return true if equals
 	 */
 	public String equalsTo(Enum<?> enumeration) {
-		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
-		if (Is.empty(enumeration)) {
-			return "";
+		if(enumeration == null){
+			return isNull();
 		}
 		return concat(fieldName, EQUALS,"'", escQuoteAndSlashes(enumeration.name()), "'");
 	}
@@ -97,11 +96,11 @@ public class HQLField implements HQLable {
 	}
 
 	public String equalsTo(String value) {
-		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
-		if (Is.empty(value)) {
-			return "";
+		if(value!=null){
+			return concat(fieldName, EQUALS, "'", escQuoteAndSlashes(value), "'");
+		}else{
+			return isNull();
 		}
-		return concat(fieldName, EQUALS, "'", escQuoteAndSlashes(value), "'");
 	}
 
 	public String equalsTo(long value) {
@@ -113,18 +112,10 @@ public class HQLField implements HQLable {
 	}
 
 	public String equalsTo(Integer value) {
-		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
-		if (value == null) {
-			return "";
-		}
 		return concat(fieldName , EQUALS , value);
 	}
 
 	public String equalsTo(Long value) {
-		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
-		if (value == null) {
-			return "";
-		}
 		return concat(fieldName , EQUALS , value);
 	}
 
@@ -173,10 +164,6 @@ public class HQLField implements HQLable {
 
 
 	public String is(Boolean bool) {
-		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
-		if (Is.empty(bool)) {
-			return "";
-		}
 		return concat(fieldName, IS, String.valueOf(bool));
 	}
 
@@ -186,9 +173,8 @@ public class HQLField implements HQLable {
 
 
 	public String differentFrom(String value) {
-		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
-		if (Is.empty(value)) {
-			return "";
+		if(value == null){
+			return isNotNull();
 		}
 		return concat(fieldName, DIFFERENT, "'", escQuoteAndSlashes(value), "'");
 	}
@@ -528,7 +514,7 @@ public class HQLField implements HQLable {
 	}
 
 	public String isEmpty() {
-		return concat(fieldName, EQUALS, "''",OR,fieldName,EQUALS,null);
+		return  concat("TRIM(",fieldName,")", EQUALS, "''",OR,fieldName,IS,null);
 	}
 
 	public String isNotEmpty() {
@@ -589,10 +575,6 @@ public class HQLField implements HQLable {
 	}
 
 	private String timeExpression(Calendar cal, String comparator) {
-		//TODO: ESTE IF É MUITO PROBLEMÁTICO. ESTUDAR SUA RETIRADA E O IMPACTO NO SISTEMA.
-		if (cal == null) {
-			return "";
-		}
 		return concat(fieldName, comparator, "'", escQuoteAndSlashes(DateUtil.getInstance().dbDateTime(cal.getTime())), "'");
 	}
 
