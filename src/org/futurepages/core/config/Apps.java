@@ -128,6 +128,7 @@ public class Apps {
 		paramsMap.put("DEPLOY_MODE" , "none");
 		paramsMap.put("DEV_MODE" , "off");
     	paramsMap.put("EMAIL_ACTIVE", "false");
+    	paramsMap.put("EMAIL_LOG_WHEN_INACTIVE", "true");
 		paramsMap.put("EMAIL_DEFAULT_PORT", "25");
 		paramsMap.put("EMAIL_SSL_CONNECTION", "false");
 		paramsMap.put("INSTALL_MODE", "off");

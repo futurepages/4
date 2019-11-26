@@ -226,8 +226,8 @@ public class HtmlEmail extends MultiPartEmail {
 				throw new EmailException(me);
 			}
 			super.send();
-		} else {
-			System.out.println("### EMAIL_ACTIVE = FALSE #########################################");
+		} else if(Apps.get("EMAIL_LOG_WHEN_INACTIVE").equals("true")){
+			System.out.println("### EMAIL_ACTIVE = false #########################################");
 			System.out.println("... email not sent, see its content below.........................");
 			for(InternetAddress ia : this.toList){
 				System.out.print("TO: <"+ia.getAddress()+"> ");

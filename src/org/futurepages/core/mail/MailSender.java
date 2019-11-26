@@ -1,6 +1,5 @@
 package org.futurepages.core.mail;
 
-import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.emails.Email;
 import org.futurepages.emails.HtmlEmail;
@@ -47,18 +46,12 @@ public class MailSender {
 		return emails;
 	}
 
-	private List<Email> criarListaEmailsWithFrom(String nameFrom, String emailReplyTo,String emailAccountFrom, String emailPassword, String[] mailAdresses, String subject, String message, TypeEmail typeEmail) throws EmailException {
+	private List<Email> criarListaEmailsWithFrom(String nameFrom, String emailReplyTo,String emailAccountFrom, String[] mailAdresses, String subject, String message, TypeEmail typeEmail) throws EmailException {
 		List<Email> emails = new ArrayList<Email>();
 		for (String emailAdr : mailAdresses) {
 			Email email = newEmail(typeEmail,emailAdr, subject,message);
 			if(!Is.empty(emailAccountFrom)){
-				//email.setAuthentication(emailAccountFrom,!Is.empty(emailPassword)?emailPassword: Apps.get("EMAIL_USER_PASSWORD"));
-				email.setSmtpPort(Integer.valueOf(Apps.get("EMAIL_DEFAULT_PORT")));
-				email.setSSLConnection(Apps.get("EMAIL_SSL_CONNECTION").equals("true"));
-				email.setHostName(Apps.get("EMAIL_HOST_NAME"));
-				email.setFrom(emailAccountFrom, nameFrom);
-			}else{
-				email.setFrom(Apps.get("EMAIL_FROM"), Apps.get("EMAIL_FROM_NAME"));
+				email.setFrom(emailAccountFrom, nameFrom, MailConfig.getInstance().EMAIL_CHARSET);
 			}
 
 			if(nameFrom.length()>60){
@@ -103,17 +96,11 @@ public class MailSender {
 	 * O usuário aguarda a excução para receber uma
 	 * resposta do servidor.
 	 */
-	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String emailPassword, String subject, String message, String... mailAdresses) throws Exception {
+	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String subject, String message, String... mailAdresses) throws Exception {
 		for (String mail : mailAdresses) {
 			HtmlEmail email = newHtmlEmail(mail, subject, message);
 			if(!Is.empty(emailAccountFrom)){
-				//email.setAuthentication(emailAccountFrom,!Is.empty(emailPassword)?emailPassword: Apps.get("EMAIL_USER_PASSWORD"));
-				email.setSmtpPort(Integer.valueOf(Apps.get("EMAIL_DEFAULT_PORT")));
-				email.setSSLConnection(Apps.get("EMAIL_SSL_CONNECTION").equals("true"));
-				email.setHostName(Apps.get("EMAIL_HOST_NAME"));
-				email.setFrom(emailAccountFrom, nameFrom);
-			}else{
-				email.setFrom(Apps.get("EMAIL_FROM"), Apps.get("EMAIL_FROM_NAME"));
+				email.setFrom(emailAccountFrom, nameFrom, MailConfig.getInstance().EMAIL_CHARSET);
 			}
 			if(nameFrom.length()>60){
 				nameFrom = nameFrom.substring(0,60)+"...";
@@ -155,10 +142,10 @@ public class MailSender {
 
 	}
 
-	public void sendHtmlEmailWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String emailPassword, String subject, String message, String... mailAdresses) {
+	public void sendHtmlEmailWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String subject, String message, String... mailAdresses) {
 
 	try {
-			List<Email> emails = criarListaEmailsWithFrom(nameFrom, emailReplyTo, emailAccountFrom, emailPassword, mailAdresses, subject, message, TypeEmail.HTML_EMAIL);
+			List<Email> emails = criarListaEmailsWithFrom(nameFrom, emailReplyTo, emailAccountFrom, mailAdresses, subject, message, TypeEmail.HTML_EMAIL);
 			ThreadEmail threadEmail = new ThreadEmail(emails);
 			Thread thread = new Thread(threadEmail);
 			thread.start();

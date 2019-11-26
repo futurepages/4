@@ -15,8 +15,6 @@ import java.security.AccessControlException;
 import java.security.Security;
 import java.util.*;
 
-// Revision: 193103
-
 /**
  * This code belongs to the Apache Commons Email project.
  * 
@@ -172,45 +170,7 @@ public abstract class Email {
 
     /** The Session to mail with */
     private Session session;
-    
-    // http://www.mentaframework.org/
-    // by Sergio Oliveira Jr. (30/06/2005) 
-    private static String def_username = null;
-    private static String def_password = null;
-    private static String def_hostname = "localhost";
-    private static String def_bounce_email = null;
-    private static InternetAddress def_from = null;
-    private static String def_charset = null;    
-    private static boolean send_email = true;
-    
-    public static void setSendEmail(boolean sendEmail) {
-       send_email = sendEmail;
-    }
-    
-    public static void setDefaultCharset(String charset) {
-        def_charset = charset;
-    }
-    
-    public static void setDefaultAuthentication(String user, String pass) {
-        def_username = user;
-        def_password = pass;
-    }
-    
-    public static void setDefaultHostName(String host) {
-        def_hostname = host;
-    }
-    
-    public static void setDefaultFrom(String email, String name) {
-        try {
-            def_from = createInternetAddress(email, name, def_charset);
-        } catch(EmailException e) {
-			AppLogger.getInstance().execute(e);
-        }
-    }
-    
-    public static void setDefaultBounceAddress(String email) {
-        def_bounce_email = email;
-    }
+
     
     //--------------------------------------------------------------------------
     // @BEGIN: alteracoes de codigo, suporte conexao SSL
@@ -226,25 +186,17 @@ public abstract class Email {
     
     public static final String MAIL_FACTORY_FALLBACK = "mail.smtp.socketFactory.fallback";
     /* @END: Constantes */
-    
+
     private static String factory_fallback = "false";
+
+    private boolean sslConnection = false;
+
     
-    /** possibilitar a definicao de uma outra porta como default, uma unica vez */
-    private static String def_port = null;
-    /** para smtp com conexao via ssl, como o caso do smtp do Gmail */
-    private static boolean ssl_connection = false;
-    
-    
-    public static void setDefaultPort( int port ) {
-    	def_port = String.valueOf( port );
-    }
-    
-    public static void setDefaultPort( String port ) {
-    	def_port = port;
-    }
-    
-    public static void setSSLConnection ( boolean active ) {
-    	ssl_connection = active;
+    public void setSSLConnection ( boolean sslConnection) {
+    	this.sslConnection = sslConnection;
+    	if(this.sslConnection){
+            Security.addProvider( new com.sun.net.ssl.internal.ssl.Provider() );
+        }
     }
     
     /** 
@@ -262,28 +214,36 @@ public abstract class Email {
      * Construtor da classe 
      */
     public Email() {
-        if ( def_charset != null ) {
-            this.setCharset( def_charset );
+        MailConfig config = MailConfig.getInstance();
+//        Email.setDefaultFrom(EMAIL_FROM, EMAIL_FROM_NAME);
+
+        if (config.EMAIL_CHARSET != null) {
+            this.setCharset( config.EMAIL_CHARSET);
         }
-        if ( def_username != null && def_password != null ) {
-        	this.setAuthentication( def_username, def_password );
+
+        if ( config.EMAIL_USER_NAME != null && config.EMAIL_USER_PASSWORD != null ) {
+        	this.setAuthentication( config.EMAIL_USER_NAME, config.EMAIL_USER_PASSWORD );
         }
-        if ( def_hostname != null ) {
-        	this.setHostName( def_hostname );
+
+        if(config.EMAIL_HOST_NAME!=null){
+            this.setHostName(config.EMAIL_HOST_NAME);
         }
-        if ( def_from != null ) {
-            this.fromAddress = def_from;
+
+        if ( config.EMAIL_FROM != null ) {
+            this.setFrom(config.EMAIL_FROM,  config.EMAIL_FROM_NAME, config.EMAIL_CHARSET);
         }
-        if ( def_bounce_email != null ) {
-        	this.setBounceAddress( def_bounce_email );
+        if(config.EMAIL_DEFAULT_PORT != null ) {
+        	this.setSmtpPort( Integer.parseInt( config.EMAIL_DEFAULT_PORT ) );
         }
-        if( def_port != null ) {
-        	this.setSmtpPort( Integer.parseInt( def_port ) );
+
+        if(config.EMAIL_SSL_CONNECTION) {
+            setSSLConnection(true);
         }
-        if( ssl_connection ) {
-        	Security.addProvider( new com.sun.net.ssl.internal.ssl.Provider() );
-        }
-        
+
+        // TODO: Falta bounce default do MailConfig
+//        if ( def_bounce_email != null ) {
+//        	this.setBounceAddress( def_bounce_email );
+//        }
     }
 
     /**
@@ -432,7 +392,7 @@ public abstract class Email {
 	                properties.setProperty( MAIL_SMTP_AUTH, "true" );
 	            }
 	            
-	            if( ssl_connection ) {
+	            if(sslConnection) {
 	            	properties.setProperty( MAIL_FACTORY_PORT, this.smtpPort );
 	            	properties.setProperty( MAIL_FACTORY_CLASS, SSL_FACTORY );
 	            	properties.setProperty( MAIL_FACTORY_FALLBACK, factory_fallback );
@@ -484,53 +444,20 @@ public abstract class Email {
         return address;
     }
 
-    /**
-     * Set the FROM field of the email.
-     *
-     * @param email A String.
-     * @return An Email.
-     * @throws EmailException Indicates an invalid email address.
-     */
-    public Email setFrom(String email)
-        throws EmailException {
-        return setFrom(email, null);
-    }
-
-    /**
-     * Set the FROM field of the email.
-     *
-     * @param email A String.
-     * @param name A String.
-     * @throws EmailException Indicates an invalid email address.
-     * @return An Email.
-     */
-    public Email setFrom(String email, String name)
-        throws EmailException {
-        this.fromAddress = createInternetAddress(email, name, charset);
-
+    public Email setFrom(String email, String name, String charset) {
+        try {
+            this.fromAddress = createInternetAddress(email, name, charset);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
         return this;
     }
 
-    /**
-     * Add a recipient TO to the email.
-     *
-     * @param email A String.
-     * @throws EmailException Indicates an invalid email address.
-     * @return An Email.
-     */
     public Email addTo(String email)
         throws EmailException {
         return addTo(email, null);
     }
 
-    /**
-     * Add a recipient TO to the email.
-     *
-     * @param email A String.
-     * @param name A String.
-     * @throws EmailException Indicates an invalid email address.
-     * @return An Email.
-     */
     public Email addTo(String email, String name)
         throws EmailException {
         this.toList.add(createInternetAddress(email, name, charset));
@@ -750,9 +677,6 @@ public abstract class Email {
      * @throws EmailException if there was an error.
      */
     public void send() throws EmailException {
-       
-       if (!send_email) return;
-       
         try {
             this.getMailSession();
             this.message = new MimeMessage(this.session);
@@ -784,8 +708,7 @@ public abstract class Email {
             }
 
             if (this.toList.size() + this.ccList.size() + this.bccList.size() == 0) {
-                throw new EmailException(
-                        "At least one receiver address required");
+                throw new EmailException("At least one receiver address required");
             }
 
             if (this.toList.size() > 0) {
@@ -831,9 +754,7 @@ public abstract class Email {
 
                 store.connect(this.popHost, this.popUsername, this.popPassword);
             }
-
             Transport.send(this.message);
-			MailConfig.initialize(); //necessário pois pode acontecer de o sistema enviar emails que não sejam o padrão.
         } catch (Exception ex) {
 	        throw new EmailException("Problem trying to send email to "+The.implodedArray(destinyAddress(),",","'")+": "+ex.getMessage(), ex);
         }
