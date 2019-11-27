@@ -718,4 +718,14 @@ public class GenericDao extends HQLProvider {
 		}
 		return (List<T>) resultSet;
 	}
+
+//	public <T extends Serializable> PaginationSlice<T> paginationSlice(int page, int pageSize, HQLQuery<T> hql) {
+
+		public <T extends Serializable> T getNth(int position, HQLQuery<T> hql) {
+		List<T> objs = Dao.getInstance().paginationSlice(position, 1, hql).getList();
+		if(objs!=null && objs.size()>0){
+			return objs.get(0);
+		}
+		return null;
+	}
 }
