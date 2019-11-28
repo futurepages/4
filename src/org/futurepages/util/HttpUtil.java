@@ -25,11 +25,32 @@ public class HttpUtil {
 
 			// Close OkHttpClient according to:
 			// https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html
+			response.body().close();
+			response.close();
 			client.dispatcher().executorService().shutdown();
 			client.connectionPool().evictAll();
 			return str;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	public static Response getURLResponse(String url){
+		OkHttpClient client = new OkHttpClient();
+		try {
+			Request request = new Request.Builder()
+					.url(url)
+					.build();
+			return client.newCall(request).execute();
+
+			// Close OkHttpClient according to:
+			// https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		finally {
+			client.dispatcher().executorService().shutdown();
+			client.connectionPool().evictAll();
 		}
 	}
 }
