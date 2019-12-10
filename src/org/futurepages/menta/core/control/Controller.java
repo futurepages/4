@@ -412,6 +412,10 @@ public class Controller extends HttpServlet {
 		return c;
 	}
 
+	public void setThredLocalChain(InvocationChain chain) {
+		this.chainTL.set(chain);
+	}
+
 	private boolean hasGlobalFilterFreeMarkerFilter(List<Filter> filters, String innerAction) {
 		for (Filter f : filters) {
 			if (GlobalFilterFreeFilter.class.isAssignableFrom(f.getClass())) {
