@@ -61,6 +61,14 @@ public class AppLogger implements ExceptionLogger{
 		return execute(throwable, ExceptionLogType.SILENT_EXCEPTION, req, null);
 	}
 
+	public String exception(Throwable throwable, String... inputs) {
+		return execute(throwable, EXCEPTION, null, mappedInputs(inputs));
+	}
+
+	public String silent(Throwable throwable, String... inputs) {
+		return execute(throwable, SILENT_EXCEPTION, null, mappedInputs(inputs));
+	}
+
 	public String execute(Throwable throwable, Map mapInputs) {
 		return execute(throwable,SILENT_EXCEPTION, null, mapInputs);
 	}
