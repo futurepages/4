@@ -728,4 +728,9 @@ public class GenericDao extends HQLProvider {
 		}
 		return null;
 	}
+
+	public <T extends Serializable> T getRandom(HQLQuery<T> hql) {
+		hql.setOrder("RAND()");
+		return Dao.getInstance().getFirst(hql);
+	}
 }
