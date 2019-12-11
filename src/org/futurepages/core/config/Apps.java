@@ -102,6 +102,11 @@ public class Apps {
 		}
 	}
 
+	public static void set(String name,String value) {
+		get(name);
+		getInstance().paramsMap.put(name,value);
+	}
+
 	public Map<String, String> getParamsMap(){
 		return  paramsMap;
 	}
