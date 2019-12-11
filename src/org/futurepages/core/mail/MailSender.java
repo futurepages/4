@@ -7,6 +7,9 @@ import org.futurepages.emails.SimpleEmail;
 import org.futurepages.exceptions.EmailException;
 import org.futurepages.util.Is;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +36,15 @@ public class MailSender {
 		email.addTo(mail);
 		email.setSubject(subject);
 		email.setMsg(message);
+		email.setSentDate(new Date());
+		return email;
+	}
+
+	private HtmlEmail newHtmlEmail(String mail, String subject, String message, File file) throws EmailException, MalformedURLException {
+		HtmlEmail email = new HtmlEmail();
+		email.addTo(mail);
+		email.setSubject(subject);
+		email.setMsg(message + email.embed(new URL("file:" + file.getPath()), file.getName()));
 		email.setSentDate(new Date());
 		return email;
 	}
@@ -96,9 +108,9 @@ public class MailSender {
 	 * O usuário aguarda a excução para receber uma
 	 * resposta do servidor.
 	 */
-	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String subject, String message, String... mailAdresses) throws Exception {
+	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String subject, String message, File file, String... mailAdresses) throws Exception {
 		for (String mail : mailAdresses) {
-			HtmlEmail email = newHtmlEmail(mail, subject, message);
+			HtmlEmail email = file == null ? newHtmlEmail(mail, subject, message) : newHtmlEmail(mail, subject, message, file);
 			if(!Is.empty(emailAccountFrom)){
 				email.setFrom(emailAccountFrom, nameFrom, MailConfig.getInstance().EMAIL_CHARSET);
 			}
