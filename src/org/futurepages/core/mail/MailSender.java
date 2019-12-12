@@ -44,7 +44,11 @@ public class MailSender {
 		HtmlEmail email = new HtmlEmail();
 		email.addTo(mail);
 		email.setSubject(subject);
-		email.setMsg(message + email.embed(new URL("file:" + file.getPath()), file.getName()));
+		if(file!=null){
+			email.setMsg(message + email.embed(new URL("file:" + file.getPath()), file.getName()));
+		}else {
+			email.setMsg(message);
+		}
 		email.setSentDate(new Date());
 		return email;
 	}
@@ -110,7 +114,7 @@ public class MailSender {
 	 */
 	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String subject, String message, File file, String... mailAdresses) throws Exception {
 		for (String mail : mailAdresses) {
-			HtmlEmail email = file == null ? newHtmlEmail(mail, subject, message) : newHtmlEmail(mail, subject, message, file);
+			HtmlEmail email = newHtmlEmail(mail, subject, message, file);
 			if(!Is.empty(emailAccountFrom)){
 				email.setFrom(emailAccountFrom, nameFrom, MailConfig.getInstance().EMAIL_CHARSET);
 			}
@@ -122,6 +126,9 @@ public class MailSender {
 			}
 			email.send();
 		}
+	}
+	public void sendHtmlEmailNowWithFrom(String nameFrom, String emailReplyTo, String emailAccountFrom, String subject, String message, String... mailAdresses) throws Exception {
+		sendHtmlEmailNowWithFrom(nameFrom, emailReplyTo, emailAccountFrom, subject, message, null, mailAdresses);
 	}
 
 	/*
