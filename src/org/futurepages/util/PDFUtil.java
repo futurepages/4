@@ -21,7 +21,6 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.tidy.Tidy;
 import org.xhtmlrenderer.pdf.ITextRenderer;
-import org.xhtmlrenderer.pdf.ITextRendererCustom;
 
 public class PDFUtil {
 
@@ -44,7 +43,7 @@ public class PDFUtil {
     public static void html2pdf(InputStream input, OutputStream out, String pathFontDir) throws Exception {
         Tidy tidy = new Tidy();
         Document doc = tidy.parseDOM(input, null);
-        ITextRendererCustom renderer = new ITextRendererCustom();
+        ITextRenderer renderer = new ITextRenderer();
         renderer.setDocument(doc, null);
 
         if(!Is.empty(pathFontDir)){
