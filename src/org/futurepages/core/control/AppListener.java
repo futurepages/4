@@ -143,21 +143,21 @@ public class AppListener implements ServletContextListener {
 		log("Properties OK");
 	}
 
-	private void initAutoRedirectionEngine(String context) {
-			if(!Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))
-//					&& Apps.get("AUTO_REDIRECT_DOMAIN").contains("://")
-			){
-				log("Auto Redirect Domain ON. Starting 'Static Paths'...");
-				Paths.initialize(context); //only if the AUTO_REDIRECT_DOMAIN is complete with protocol.
-			}else{
-				if(Apps.get("DEPLOY_MODE").equals("production")){
-					if(Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))){
-						log("Auto Redirect Domain OFF. Consider the usage of the param AUTO_REDIRECT_DOMAIN in production environments.");
-					}
-				}
-				Paths.initialize();
-			}
-	}
+//	private void initAutoRedirectionEngine(String context) {
+//			if(!Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))
+////					&& Apps.get("AUTO_REDIRECT_DOMAIN").contains("://")
+//			){
+//				log("Auto Redirect Domain ON. Starting 'Static Paths'...");
+//				Paths.initialize(context); //only if the AUTO_REDIRECT_DOMAIN is complete with protocol.
+//			}else{
+//				if(Apps.get("DEPLOY_MODE").equals("production")){
+//					if(Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))){
+//						log("Auto Redirect Domain OFF. Consider the usage of the param AUTO_REDIRECT_DOMAIN in production environments.");
+//					}
+//				}
+//				Paths.initialize();
+//			}
+//	}
 
 	//Start Quartz Manager (Task Scheduler) if QUARTZ_MODE = on
 	private void initQuartzManager(File[] modules) throws ClassNotFoundException, NotModuleException, ParseException, SchedulerException {

@@ -13,19 +13,19 @@ public class Paths {
 
 	private static Paths INSTANCE = null;
 
-	
-	public static void initialize() {
-		INSTANCE = new Paths();
-	}
+//  @Deprecated
+//	public static void initialize() {
+//		INSTANCE = new Paths();
+//	}
 
 	public static void initialize(String staticContext) {
 		INSTANCE = new StaticPaths(staticContext);
 	}
 
 	public Paths getInstance(){
-		if(INSTANCE==null){
-			initialize();
-		}
+//		if(INSTANCE==null){
+//			initialize();
+//		}
 		return INSTANCE;
 	}
 

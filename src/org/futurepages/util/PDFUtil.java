@@ -8,6 +8,7 @@ import org.apache.pdfbox.util.PDFMergerUtility;
 import org.apache.pdfbox.util.PDFText2HTML;
 import org.apache.pdfbox.util.PDFTextStripper;
 import org.futurepages.core.config.Apps;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.tidy.Tidy;
 import org.xhtmlrenderer.pdf.ITextRenderer;
+import org.xhtmlrenderer.pdf.ITextRendererCustom;
 
 public class PDFUtil {
 
@@ -42,13 +44,12 @@ public class PDFUtil {
     public static void html2pdf(InputStream input, OutputStream out, String pathFontDir) throws Exception {
         Tidy tidy = new Tidy();
         Document doc = tidy.parseDOM(input, null);
-        ITextRenderer renderer = new ITextRenderer();
+        ITextRendererCustom renderer = new ITextRendererCustom();
         renderer.setDocument(doc, null);
 
         if(!Is.empty(pathFontDir)){
             addFonts(renderer, pathFontDir);
         }
-
         renderer.layout();
         renderer.createPDF(out);
     }
