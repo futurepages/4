@@ -154,7 +154,6 @@ public class ITextRendererCustom extends ITextRenderer {
 		root.setContainingBlock(new ViewportBox(this.getInitialExtents(c)));
 		root.layout(c);
 		Dimension dim = root.getLayer().getPaintingDimension(c);
-		dim.setSize(dim.getHeight(), dim.getWidth());
 		root.getLayer().trimEmptyPages(c, dim.width);
 		root.getLayer().layoutPages(c);
 		this._root = root;
