@@ -265,6 +265,11 @@ public class GenericDao extends HQLProvider {
 		return getFirst(hql(entityClass, null, desc(getIdName(entityClass))));
 	}
 
+	public <T extends Serializable> T getLast(HQLQuery<T> hqlQuery) {
+		hqlQuery.setOrder(desc((hqlQuery.getAlias()!=null?hqlQuery.getAlias()+".":"")+getIdName(hqlQuery.getEntity())));
+		return getFirst(hqlQuery);
+	}
+
 	public <T extends Serializable> List<T> listReports(HQLQuery<T> hqlQuery, Class<T> reportClass) {
 		Query query = selectQuery(hqlQuery);
 		query.setResultTransformer(new AliasToBeanResultTransformer(reportClass));
