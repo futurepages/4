@@ -58,6 +58,9 @@ public class StaticPaths extends Paths {
         return templatePath;
     }
 
+	public String getContext(HttpServletRequest req){
+		return contextPath;
+	}
 
 	@Override
     public String getHost(HttpServletRequest req){
