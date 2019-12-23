@@ -14,7 +14,6 @@ import org.futurepages.menta.core.filter.AfterConsequenceFilter;
 import org.futurepages.menta.exceptions.PageNotFoundException;
 import org.hibernate.TransactionException;
 
-import javax.servlet.ServletException;
 import java.lang.reflect.Method;
 
 public class HibernateFilter implements AfterConsequenceFilter {
