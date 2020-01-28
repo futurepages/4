@@ -147,7 +147,9 @@ public class FileUploadFilter implements Filter {
 				}
 			}
 		} catch (Exception e) {
-			AppLogger.getInstance().execute(e,getRequest(action));
+			if(Apps.devMode()){  //comentar aqui se não quiser mais silenciar um pouco este carinha.
+				AppLogger.getInstance().execute(e,getRequest(action));
+			}
 			throw new ServletUserException(e.getMessage());
 		}
 
