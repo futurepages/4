@@ -16,6 +16,7 @@ public class HtmlStripper {
 	private String strippedHtml;
 
 	public HtmlStripper(String htmlToStrip) {
+		htmlToStrip = htmlToStrip == null ? "" : htmlToStrip;
 		this.originalHtml = htmlToStrip;
 		this.strippedHtml = htmlToStrip;
 	}
