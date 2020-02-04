@@ -46,6 +46,7 @@ public class CSSMinifier {
 					}
 				}
 			}
+			System.out.println("[CSS-Min Success - CSS_COMPRESSED created]");
 			alreadyCompressed.createNewFile();
 		}
 	}
