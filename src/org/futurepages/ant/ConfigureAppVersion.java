@@ -13,6 +13,7 @@ public class ConfigureAppVersion extends Task {
 
 	private String baseDir;
 	private String env;
+	private String build;
 
 	@Override
 	public void execute() throws BuildException {
@@ -28,7 +29,10 @@ public class ConfigureAppVersion extends Task {
 
 
 			HashMap<String,String> contentMap = new HashMap<>();
-			contentMap.put("<!--RELEASE-->","<param name=\"RELEASE\" value=\""+ CalendarUtil.format(CalendarUtil.now(), "yyyy-MM-dd_HH_mm_ss")+"\" />");
+			if(!Is.empty(build)){
+				contentMap.put("<!--RELEASE-->","<param name=\"APP_BUILD_ID\" value=\""+ build+"\" />\n    <!--RELEASE-->");
+			}
+			contentMap.put("<!--RELEASE-->","<param name=\"RELEASE\" value=\""+CalendarUtil.format(CalendarUtil.now(), "yyyy-MM-dd_HH_mm_ss")+"\" />");
 			String filePath = baseDir +"/web/WEB-INF/classes/conf/app-params.xml";
 			FileUtil.putKeyValue(contentMap, filePath, filePath);
 
@@ -44,5 +48,9 @@ public class ConfigureAppVersion extends Task {
 
 	public void setEnv(String env) {
 		this.env = env;
+	}
+
+	public void setBuild(String build) {
+		this.build = build;
 	}
 }

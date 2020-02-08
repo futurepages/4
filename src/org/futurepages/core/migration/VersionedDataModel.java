@@ -3,8 +3,10 @@ package org.futurepages.core.migration;
 import org.futurepages.util.Is;
 
 public interface VersionedDataModel {
+
 	String getVersion();
-	void setVersion(String value);
+	void addVersion(String newVersion, String oldVersion, String log, int success, int fail);
+	void registerNoChanges(String oldVer);
 
 	default double getVersionNum(){
 		if(Is.empty(getVersion())){
@@ -13,4 +15,6 @@ public interface VersionedDataModel {
 			return Double.valueOf(getVersion().replace("_","."));
 		}
 	}
+
+	boolean installed();
 }

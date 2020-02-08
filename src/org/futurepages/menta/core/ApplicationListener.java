@@ -1,10 +1,10 @@
 package org.futurepages.menta.core;
 
-import org.futurepages.core.DeployMigrations;
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.install.InstallersManager;
 import org.futurepages.core.mail.MailConfig;
+import org.futurepages.core.migration.DataModelMigrationController;
 import org.futurepages.core.path.Paths;
 import org.futurepages.core.persistence.HibernateManager;
 import org.futurepages.core.persistence.SchemaGeneration;
@@ -92,11 +92,13 @@ public class ApplicationListener implements ServletContextListener {
 							log("Erro de Migração... "+ex.getMessage());
 						}
 					}
-					if (Apps.get("DEPLOY_MODE").equals("production")
-					 || Apps.get("DEPLOY_MODE").equals("pre-production")) {
-						DeployMigrations.run();
-					}
+					// @Deprecated
+					//if (Apps.get("DEPLOY_MODE").equals("production")
+					// || Apps.get("DEPLOY_MODE").equals("pre-production")) {
+					//	DeployMigrations.run();
+					//}
 				}
+				DataModelMigrationController.execute();
 			} else {
 				log("WARNING: HIBERNATE is not running!");
 			}
