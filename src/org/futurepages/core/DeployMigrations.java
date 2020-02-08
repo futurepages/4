@@ -7,6 +7,7 @@ import org.futurepages.util.FileUtil;
 import java.io.File;
 import java.util.Arrays;
 
+@Deprecated
 public class DeployMigrations {
 
 	public static void run() {
