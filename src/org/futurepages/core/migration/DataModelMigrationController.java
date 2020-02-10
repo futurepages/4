@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class DataModelMigrationController {
 
@@ -154,7 +155,20 @@ public class DataModelMigrationController {
 					appModel.addVersion(newVersion, oldVersion, logTxt.toString(), success, skipped);
 				}else{
 					System.out.println("[fpg] DMMC: No changes found! Still on version: "+appModel.getVersion());
-					appModel.registerNoChanges(oldVersion,logTxt.toString(), skipped);
+
+					//só registra na produção se: 1) não for 'production', OU 2) sendo deploy, tem build_id ou mandou-se explicitamente logar.
+					if(     !Apps.get("DEPLOY_MODE").equals("production")
+						 || (!Is.empty(Apps.get("APP_BUILD_ID")) || Apps.get("LOG_RESTART").equals("true"))
+					){
+						appModel.registerNoChanges(oldVersion,logTxt.toString(), skipped);
+					}
+				}
+
+				// clean build info.
+				if(!Is.empty(Apps.get("APP_BUILD_ID"))){
+					HashMap<String,String> contentMap = new HashMap<>();
+					contentMap.put("<param.*\\bname=\"APP_BUILD_ID\".*?>","");
+					FileUtil.replaceAll(contentMap, Apps.getInstance().getPropertiesFilePath(), true);
 				}
 			}
 		}

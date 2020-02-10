@@ -131,7 +131,8 @@ public class Apps {
 		paramsMap.put("CONNECT_EXTERNAL_MODULES", "false"); //só quando for dar suporte a mais de um banco de dados
 		paramsMap.put("DATABASE_DIR_NAME", "database");
 		paramsMap.put("DEPLOY_MODE" , "none");
-		paramsMap.put("DEV_MODE" , "off");
+		paramsMap.put("DEV_MODE" ,    "off");
+		paramsMap.put("LOG_RESTART" , "false");
     	paramsMap.put("EMAIL_ACTIVE", "false");
     	paramsMap.put("EMAIL_LOG_WHEN_INACTIVE", "true");
 		paramsMap.put("EMAIL_DEFAULT_PORT", "25");
@@ -296,5 +297,9 @@ public class Apps {
 		map.put(regexParam("INSTALL_MODE"),"");
 		map.put(regexParam("MIGRATION_CLASSPATH"),"");
 		FileUtil.putStrings(map, propertiesFilePath, propertiesFilePath, true);
+	}
+
+	public String getPropertiesFilePath(){
+		return propertiesFilePath;
 	}
 }
