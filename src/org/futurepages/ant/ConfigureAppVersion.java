@@ -29,10 +29,12 @@ public class ConfigureAppVersion extends Task {
 
 
 			HashMap<String,String> contentMap = new HashMap<>();
+			String releaseContent = "<param name=\"RELEASE\" value=\""+CalendarUtil.format(CalendarUtil.now(), "yyyy-MM-dd_HH_mm_ss")+"\" />";
 			if(!Is.empty(build)){
-				contentMap.put("<!--RELEASE-->","<param name=\"APP_BUILD_ID\" value=\""+ build+"\" />\n    <!--RELEASE-->");
+				contentMap.put("<!--RELEASE-->","<param name=\"APP_BUILD_ID\" value=\""+ build+"\" />\n    "+releaseContent);
+			}else{
+				contentMap.put("<!--RELEASE-->",releaseContent);
 			}
-			contentMap.put("<!--RELEASE-->","<param name=\"RELEASE\" value=\""+CalendarUtil.format(CalendarUtil.now(), "yyyy-MM-dd_HH_mm_ss")+"\" />");
 			String filePath = baseDir +"/web/WEB-INF/classes/conf/app-params.xml";
 			FileUtil.putKeyValue(contentMap, filePath, filePath);
 
