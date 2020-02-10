@@ -1,7 +1,9 @@
 package org.futurepages.core.migration;
 
 import org.futurepages.core.config.Apps;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.persistence.Dao;
+import org.futurepages.menta.core.control.Controller;
 import org.futurepages.util.FileUtil;
 import org.futurepages.util.Is;
 
@@ -30,6 +32,9 @@ public class DataModelMigrationController {
 		try{
 			Class dataModelClass = Class.forName(dataModelClassName);
 			appModel = (VersionedDataModel) dataModelClass.newInstance();
+			if(!appModel.installed()){
+				System.out.println("[fpg] DMMC: Your Migration Data Model Control Structure isn't built.");
+			}
 		}catch (Exception ex){
 			System.out.println("[fpg] You didn't define a "+VersionedDataModel.class.getName()+" correctly. APP_DATA_MODEL_CLASS="+Apps.get("APP_DATA_MODEL_CLASS"));
 			throw ex;
@@ -54,8 +59,9 @@ public class DataModelMigrationController {
 				}
 			}
 
+			// SE ESTIVERMOS EM MODO DE DESENVOLVIMENTO, A SUBPASTA "past" É CONSIDERADA.
 			File pastVersionsDir = new File(versionsMigrationDir.getAbsoluteFile()+"/past");
-			if(Apps.devMode() && !Apps.get("DEPLOY_MODE").equals("production") && pastVersionsDir.exists() && pastVersionsDir.isDirectory() && appModel.getVersionNum() < getVersionNumOf(migrationFiles.get(0).getName())){
+			if(Apps.devMode() && pastVersionsDir.exists() && pastVersionsDir.isDirectory() && appModel.getVersionNum() < getVersionNumOf(migrationFiles.get(0).getName())){
 				System.out.println("[fpg] DMMC: Loading migrations on 'past' dir ...");
 				ArrayList pastFiles = new ArrayList();
 				Files.walk(Paths.get(versionsMigrationDir.getAbsolutePath()+"/past")).filter(Files::isRegularFile).forEach(pastFiles::add);
@@ -71,35 +77,36 @@ public class DataModelMigrationController {
 			}
 
 
+
 			StringBuilder logTxt = new StringBuilder();
 			String newVersion = null;
+
 			if(avoidExecutions){
-				String infoLog = "SCHEMA_GENERATION_TYPE="+Apps.get("SCHEMA_GENERATION_TYPE")+", migrations will not run unless you put 'none'!";
+				String infoLog = "SCHEMA_GENERATION_TYPE="+Apps.get("SCHEMA_GENERATION_TYPE")+", migrations skipped. To run you need to set to 'none'!";
 				System.out.println("[fpg] DMMC: "+infoLog);
-				newVersion = getVersionStrOf(migrationFiles.get(migrationFiles.size()-1).getName());
-				try{
-					appModel.addVersion(newVersion, oldVersion, infoLog, 0,0);
-				}catch (Exception ex){
-					if(!appModel.installed()){
-						System.out.println("[fpg] DMMC: Your metadata for your Migration Data Model Control isn't built. Try to set SCHEMA_GENERATION_TYPE to 'none'");
-					}else{
-						throw ex;
-					}
-				}
-			}else{
-				double appVersionNum = appModel.getVersionNum();
-				int success = 0;
-				int fail = 0;
-				// O MIGRATION STARTS HERE.........................................................................................
-				if(migrationFiles.size()>0){
-					System.out.println("[fpg] DMMC: Scanned "+migrationFiles.size()+" element(s) at /migration/versions/*");
-					if(getVersionNumOf(migrationFiles.get(migrationFiles.size()-1).getName()) > appVersionNum ){
-						System.out.println("[fpg] DMMC: Starting to apply changes");
-						for(File versionFile : migrationFiles){
-							double fileVersionNum = getVersionNumOf(versionFile.getName());
-							if(fileVersionNum > appVersionNum){
-								logTxt.append(">> ").append(versionFile.getName());
-								try {
+				logTxt.append(infoLog).append("\n");
+			}
+
+			double appVersionNum = appModel.getVersionNum();
+			int success = 0;
+			int skipped = 0;
+			// O MIGRATION STARTS HERE.........................................................................................
+			Exception exCaused = null;
+			if(migrationFiles.size()>0){
+				System.out.println("[fpg] DMMC: Scanned "+migrationFiles.size()+" element(s) at /migration/versions/*");
+				if(getVersionNumOf(migrationFiles.get(migrationFiles.size()-1).getName()) > appVersionNum ){
+					System.out.println("[fpg] DMMC: Starting to apply changes");
+					for(File versionFile : migrationFiles){
+						double fileVersionNum = getVersionNumOf(versionFile.getName());
+						if(fileVersionNum > appVersionNum){
+							logTxt.append(">> ").append(versionFile.getName());
+							try {
+								if(avoidExecutions){
+									//SKIPPED
+									logTxt.append(" [IGNORED]\n");
+									skipped++;
+								}
+								else if(exCaused==null){
 									Dao.getInstance().beginTransaction();
 									if (versionFile.getName().endsWith(".sql")) {
 										//System.out.println("[fpg] DMMC: running " + versionFile.getName());
@@ -112,30 +119,42 @@ public class DataModelMigrationController {
 									newVersion = getVersionStrOf(versionFile.getName());
 									logTxt.append(" [OK]\n");
 									success++;
-								} catch (Exception e) {
-									logTxt.append(" [FAIL]\n");
-									fail++;
-									StringWriter errors = new StringWriter();
-									e.printStackTrace(new PrintWriter(errors));
-									logTxt.append(errors);
-									if (Dao.getInstance().isTransactionActive()) {
-										Dao.getInstance().rollBackTransaction();
-									}
+								}else{
+									//SKIPPED
+									logTxt.append(" [HALTED]\n");
+									skipped++;
 								}
+							} catch (Exception e) {
+								logTxt.append(" [FAIL]\n");
+								skipped++;
+								StringWriter errors = new StringWriter();
+								e.printStackTrace(new PrintWriter(errors));
+								logTxt.append(errors);
+								if (Dao.getInstance().isTransactionActive()) {
+									Dao.getInstance().rollBackTransaction();
+								}
+								exCaused = e;
 							}
 						}
 					}
-
+					if(exCaused!=null){
+						AppLogger.getInstance().execute(exCaused);
+						Controller.makeUnavailable();
+						System.out.println("### APPLICATION IS UNAVAILABLE FOR USERS (code 503) ###");
+					}
 				}
-				if(newVersion!=null){
-					System.out.println("[fpg] DMMC: New version: "+newVersion+". Success: "+success+", Fail: "+fail);
-					appModel.addVersion(newVersion, oldVersion, logTxt.toString(), success,fail);
-					System.out.println(logTxt.toString());
+			}
+			if(newVersion!=null){
+				System.out.println("[fpg] DMMC: New version: "+newVersion+". Executed with Success: "+success+", Skipped because of Fail: "+skipped);
+				appModel.addVersion(newVersion, oldVersion, logTxt.toString(), success, skipped);
+				System.out.println(logTxt.toString());
+			}else{
+				if(avoidExecutions){
+					newVersion = getVersionStrOf(migrationFiles.get(migrationFiles.size()-1).getName());
+					appModel.addVersion(newVersion, oldVersion, logTxt.toString(), success, skipped);
 				}else{
 					System.out.println("[fpg] DMMC: No changes found! Still on version: "+appModel.getVersion());
-					if(Apps.get("DEPLOY_MODE").equals("production")){
-						appModel.registerNoChanges(oldVersion);
-					}
+					appModel.registerNoChanges(oldVersion,logTxt.toString(), skipped);
 				}
 			}
 		}

@@ -67,6 +67,15 @@ public class Controller extends HttpServlet {
 	private static ServletConfig conf;
 	private static ClassGetActionUrlParts objectGetActionUrlParts;
 	private static boolean initialized = false;
+	private static boolean up = true;
+
+	public static void makeUnavailable() {
+		up = false;
+	}
+
+	public static void makeAvailable() {
+		up = true;
+	}
 
 	static  {
 		boolean isDebugging = false;
@@ -218,7 +227,11 @@ public class Controller extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
-			doService(req, res);
+			if(up){
+				doService(req, res);
+			}else{
+				res.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+			}
 		} catch (Exception ex) {
 			ExceptionFilter.Logger.getInstance().execute(ex, getChain(), req, true);
 			if((ex instanceof PageNotFoundException) || (ex.getCause()!=null && ex.getCause() instanceof PageNotFoundException)){

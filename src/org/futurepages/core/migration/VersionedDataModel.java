@@ -6,7 +6,7 @@ public interface VersionedDataModel {
 
 	String getVersion();
 	void addVersion(String newVersion, String oldVersion, String log, int success, int fail);
-	void registerNoChanges(String oldVer);
+	void registerNoChanges(String oldVersion, String logTxt, int fail);
 
 	default double getVersionNum(){
 		if(Is.empty(getVersion())){
