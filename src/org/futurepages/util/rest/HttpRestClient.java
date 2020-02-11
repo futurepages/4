@@ -234,7 +234,7 @@ public abstract class HttpRestClient {
             }
 
         } catch(UnsupportedEncodingException e) {
-            e.printStackTrace();
+            AppLogger.getInstance().execute(e);
         }
         return url.toString();
     }

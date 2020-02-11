@@ -52,7 +52,7 @@ public class AppListener implements ServletContextListener {
 			configEncoding();
 
 			File[] appsAndModules = loadAppsAndModules();
-			initHibernateAndConsequences(appsAndModules);
+//			initHibernateAndConsequences(appsAndModules); //TODO enable it.
 			initTxts(appsAndModules);
 			initQuartzManager(appsAndModules);
 
@@ -177,52 +177,52 @@ public class AppListener implements ServletContextListener {
 			}
 	}
 
-	private void initHibernateAndConsequences(File[] modules) throws Exception {
-			if (HibernateManager.isRunning()) {
-				log("Hibernate OK");
-
-				// Update/generate database scheme as params configuration file.
-				// only if it's not DEPLOY_MODE=production, it will try to generate and install database.
-				log("Deploy Mode: "+ Apps.get("DEPLOY_MODE"));
-				if (!Apps.get("DEPLOY_MODE").equals("production")) {
-					if (Apps.get("SCHEMA_GENERATION_TYPE").startsWith("update")) {
-						if (Apps.get("SCHEMA_GENERATION_TYPE").equals("update")) {
-							log("SCHEMA UPDATE - Begin");
-							SchemaGeneration.update(false);
-							log("SCHEMA UPDATE - End");
-						} else if (Apps.get("SCHEMA_GENERATION_TYPE").equals("update_beans")) {
-							log("SCHEMA UPDATE JUST BEANS - Begin");
-							SchemaGeneration.update(true);
-							log("SCHEMA UPDATE JUST BEANS - End");
-						}
-					} else if (Apps.get("SCHEMA_GENERATION_TYPE").equals("export")) {
-						log("SCHEMA EXPORT - Begin");
-						SchemaGeneration.export();
-						log("SCHEMA EXPORT - End");
-					}
-
-					//If INSTALL_MODE=on, install-modules will start.
-					String installMode = Apps.get("INSTALL_MODE");
-					if (!installMode.equals("off") && !installMode.equals("none") && !Is.empty(installMode)) {
-						log("Install Mode: " + installMode);
-						InstallersManager.initialize(modules, installMode);
-						log("Install - End");
-					}
-				}else{
-					//Micro-migration. Instantiate the class where we put migration executions.
-					if(!Is.empty(Apps.get("MIGRATION_CLASSPATH"))){
-						try{
-							log("Migration Class: "+ Apps.get("MIGRATION_CLASSPATH"));
-							Class.forName(Apps.get("MIGRATION_CLASSPATH")).newInstance();
-						}catch(Exception ex){
-							log("Migration ERROR... "+ex.getMessage());
-						}
-					}
-				}
-			} else {
-				log("WARNING: HIBERNATE is not running!");
-			}
-	}
+//	private void initHibernateAndConsequences(File[] modules) throws Exception {
+//			if (HibernateManager.isRunning()) {
+//				log("Hibernate OK");
+//
+//				// Update/generate database scheme as params configuration file.
+//				// only if it's not DEPLOY_MODE=production, it will try to generate and install database.
+//				log("Deploy Mode: "+ Apps.get("DEPLOY_MODE"));
+//				if (!Apps.get("DEPLOY_MODE").equals("production")) {
+//					if (Apps.get("SCHEMA_GENERATION_TYPE").startsWith("update")) {
+//						if (Apps.get("SCHEMA_GENERATION_TYPE").equals("update")) {
+//							log("SCHEMA UPDATE - Begin");
+//							SchemaGeneration.update(false);
+//							log("SCHEMA UPDATE - End");
+//						} else if (Apps.get("SCHEMA_GENERATION_TYPE").equals("update_beans")) {
+//							log("SCHEMA UPDATE JUST BEANS - Begin");
+//							SchemaGeneration.update(true);
+//							log("SCHEMA UPDATE JUST BEANS - End");
+//						}
+//					} else if (Apps.get("SCHEMA_GENERATION_TYPE").equals("export")) {
+//						log("SCHEMA EXPORT - Begin");
+//						SchemaGeneration.export();
+//						log("SCHEMA EXPORT - End");
+//					}
+//
+//					//If INSTALL_MODE=on, install-modules will start.
+//					String installMode = Apps.get("INSTALL_MODE");
+//					if (!installMode.equals("off") && !installMode.equals("none") && !Is.empty(installMode)) {
+//						log("Install Mode: " + installMode);
+//						InstallersManager.initialize(modules, installMode);
+//						log("Install - End");
+//					}
+//				}else{
+//					//Micro-migration. Instantiate the class where we put migration executions.
+//					if(!Is.empty(Apps.get("MIGRATION_CLASSPATH"))){
+//						try{
+//							log("Migration Class: "+ Apps.get("MIGRATION_CLASSPATH"));
+//							Class.forName(Apps.get("MIGRATION_CLASSPATH")).newInstance();
+//						}catch(Exception ex){
+//							log("Migration ERROR... "+ex.getMessage());
+//						}
+//					}
+//				}
+//			} else {
+//				log("WARNING: HIBERNATE is not running!");
+//			}
+//	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent evt) {

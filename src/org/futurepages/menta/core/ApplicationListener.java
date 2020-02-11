@@ -9,6 +9,7 @@ import org.futurepages.core.path.Paths;
 import org.futurepages.core.persistence.HibernateManager;
 import org.futurepages.core.persistence.SchemaGeneration;
 import org.futurepages.core.quartz.QuartzManager;
+import org.futurepages.menta.core.control.Controller;
 import org.futurepages.menta.core.resource.ResourceMinifier;
 import org.futurepages.menta.core.tags.build.TagLibBuilder;
 import org.futurepages.util.Is;
@@ -47,6 +48,16 @@ public class ApplicationListener implements ServletContextListener {
 			System.setProperty("file.encoding", Apps.get("PAGE_ENCODING"));
 			System.setProperty("sun.jnu.encoding", Apps.get("PAGE_ENCODING"));
 			log("File Encoding: "+ System.getProperty("file.encoding"));
+
+			AppLogger.getInstance().init();
+			log("AppLogger Inicializado.");
+
+			//Inicializa os parâmetros de configuração de Email se solicitado.
+			if (Apps.get("EMAIL_ACTIVE").equals("true")) {
+				log("Configurando Email...: ");
+				MailConfig.initialize();
+				log("Config Email OK");
+			}
 
 			log("Carregando módulos...");
 			File[] modules = (new File(Apps.get("MODULES_CLASSES_REAL_PATH"))).listFiles();
@@ -110,17 +121,6 @@ public class ApplicationListener implements ServletContextListener {
 				log("Quartz Inicializado.");
 			}
 
-			AppLogger.getInstance().init();
-			log("AppLogger Inicializado.");
-
-
-			//Inicializa os parâmetros de configuração de Email se solicitado.
-			if (Apps.get("EMAIL_ACTIVE").equals("true")) {
-				log("Configurando Email...: ");
-				MailConfig.initialize();
-				log("Config Email OK");
-			}
-
 			//Por padrão gera o arquivo taglib.tld com as tags dos módulos da aplicação
 			if (Apps.get("GENERATE_TAGLIB").equals("true")) {
 				log("Iniciando criação da Taglib.");
@@ -153,7 +153,8 @@ public class ApplicationListener implements ServletContextListener {
 
 			log(servletContext.getServletContextName() + " inicializado.");
 		} catch (Exception ex) {
-			log("Erro ao inicializar contexto.");
+			log("Erro ao inicializar contexto. Aplicação indisponível.");
+			Controller.makeUnavailable();
 			AppLogger.getInstance().execute(ex);
 		}
 	}
@@ -166,7 +167,7 @@ public class ApplicationListener implements ServletContextListener {
 			log("Schedulers do Quartz parado.");
 		} catch (SchedulerException ex) {
 			log("Erro ao tentar parar Schedulers do Quartz: " + ex.getMessage());
-			ex.printStackTrace();
+			AppLogger.getInstance().execute(ex);
 		}
 		if (HibernateManager.isRunning()) {
 			HibernateManager.shutdown();
