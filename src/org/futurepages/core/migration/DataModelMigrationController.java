@@ -174,7 +174,16 @@ public class DataModelMigrationController {
 					if(Apps.get("DEPLOY_MODE").equals("production")){
 						// save info to build tools.
 						String finalVersion = newVersion!=null? newVersion: (!Is.empty(oldVersion)?oldVersion:"0");
-						FileUtil.createTextFile(finalVersion, Apps.get("CLASSES_REAL_PATH")+"/migration/ACTUAL_VERSION");
+						File initDir = new File(Apps.get("WEB_REAL_PATH")+"/init");
+						if(!initDir.exists()){
+							//noinspection ResultOfMethodCallIgnored
+							initDir.mkdir();
+						}
+						if(initDir.exists() && initDir.isDirectory()){
+							FileUtil.createTextFile(finalVersion, Apps.get("WEB_REAL_PATH")+"/init/DMMC_VERSION.info");
+						}else{
+							System.out.println("[fpg] DMMC: web/init isn't a dir or doesnt exists. Impossible to make info about the version.");
+						}
 					}
 				}
 			}
