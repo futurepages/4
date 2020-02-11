@@ -158,7 +158,8 @@ public class DataModelMigrationController {
 
 					//só registra na produção se: 1) não for 'production', OU 2) sendo deploy, tem build_id ou mandou-se explicitamente logar.
 					if(     !Apps.get("DEPLOY_MODE").equals("production")
-						 || (!Is.empty(Apps.get("APP_BUILD_ID")) || Apps.get("LOG_RESTART").equals("true"))
+						 || !Is.empty(Apps.get("APP_BUILD_ID"))
+						 ||  Apps.get("LOG_RESTART").equals("true")
 					){
 						appModel.registerNoChanges(oldVersion,logTxt.toString(), skipped);
 					}
@@ -169,6 +170,12 @@ public class DataModelMigrationController {
 					HashMap<String,String> contentMap = new HashMap<>();
 					contentMap.put("<param.*\\bname=\"APP_BUILD_ID\".*?>","");
 					FileUtil.putStrings(contentMap, Apps.getInstance().getPropertiesFilePath(),Apps.getInstance().getPropertiesFilePath(), true);
+
+					if(Apps.get("DEPLOY_MODE").equals("production")){
+						// save info to build tools.
+						String finalVersion = newVersion!=null? newVersion: (!Is.empty(oldVersion)?oldVersion:"0");
+						FileUtil.createTextFile(finalVersion, Apps.get("CLASSES_REAL_PATH")+"/migration/ACTUAL_VERSION");
+					}
 				}
 			}
 		}
