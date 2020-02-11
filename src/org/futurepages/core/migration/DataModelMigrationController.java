@@ -168,7 +168,7 @@ public class DataModelMigrationController {
 				if(!Is.empty(Apps.get("APP_BUILD_ID"))){
 					HashMap<String,String> contentMap = new HashMap<>();
 					contentMap.put("<param.*\\bname=\"APP_BUILD_ID\".*?>","");
-					FileUtil.replaceAll(contentMap, Apps.getInstance().getPropertiesFilePath(), true);
+					FileUtil.putStrings(contentMap, Apps.getInstance().getPropertiesFilePath(),Apps.getInstance().getPropertiesFilePath(), true);
 				}
 			}
 		}
