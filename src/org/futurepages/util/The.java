@@ -37,6 +37,13 @@ public class The {
 		return false;
 	}
 
+	public static boolean bool(String x) {
+		if (x != null) {
+			return x.equalsIgnoreCase("true");
+		}
+		return false;
+	}
+
 	public static <T> T cloneOf(T fromObj){
 		return ReflectionUtil.clone(fromObj);
 	}
