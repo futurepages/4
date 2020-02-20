@@ -164,26 +164,25 @@ public class DataModelMigrationController {
 						appModel.registerNoChanges(oldVersion,logTxt.toString(), skipped);
 					}
 				}
+			}
+			// clean build info.
+			if(!Is.empty(Apps.get("APP_BUILD_ID"))){
+				HashMap<String,String> contentMap = new HashMap<>();
+				contentMap.put("<param.*\\bname=\"APP_BUILD_ID\".*?>","");
+				FileUtil.putStrings(contentMap, Apps.getInstance().getPropertiesFilePath(),Apps.getInstance().getPropertiesFilePath(), true);
 
-				// clean build info.
-				if(!Is.empty(Apps.get("APP_BUILD_ID"))){
-					HashMap<String,String> contentMap = new HashMap<>();
-					contentMap.put("<param.*\\bname=\"APP_BUILD_ID\".*?>","");
-					FileUtil.putStrings(contentMap, Apps.getInstance().getPropertiesFilePath(),Apps.getInstance().getPropertiesFilePath(), true);
-
-					if(Apps.get("DEPLOY_MODE").equals("production")){
-						// save info to build tools.
-						String finalVersion = newVersion!=null? newVersion: (!Is.empty(oldVersion)?oldVersion:"0");
-						File initDir = new File(Apps.get("WEB_REAL_PATH")+"/init");
-						if(!initDir.exists()){
-							//noinspection ResultOfMethodCallIgnored
-							initDir.mkdir();
-						}
-						if(initDir.exists() && initDir.isDirectory()){
-							FileUtil.createTextFile(finalVersion, Apps.get("WEB_REAL_PATH")+"/init/DMMC_VERSION.info");
-						}else{
-							System.out.println("[fpg] DMMC: web/init isn't a dir or doesnt exists. Impossible to make info about the version.");
-						}
+				if(Apps.get("DEPLOY_MODE").equals("production")){
+					// save info to build tools.
+					String finalVersion = newVersion!=null? newVersion: (!Is.empty(oldVersion)?oldVersion:"0");
+					File initDir = new File(Apps.get("WEB_REAL_PATH")+"/init");
+					if(!initDir.exists()){
+						//noinspection ResultOfMethodCallIgnored
+						initDir.mkdir();
+					}
+					if(initDir.exists() && initDir.isDirectory()){
+						FileUtil.createTextFile(finalVersion, Apps.get("WEB_REAL_PATH")+"/init/DMMC_VERSION.info");
+					}else{
+						System.out.println("[fpg] DMMC: web/init isn't a dir or doesnt exists. Impossible to make info about the version.");
 					}
 				}
 			}
