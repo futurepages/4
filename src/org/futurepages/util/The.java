@@ -2,6 +2,8 @@ package org.futurepages.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.math.RandomUtils;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.html.HtmlMapChars;
@@ -19,6 +21,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -360,6 +363,22 @@ public class The {
 			strOut = strOut.substring(0, strOut.length() - 1);
 		}
 		return strOut;
+	}
+
+	public static String contentOf(Object o){
+		String ostr = ToStringBuilder.reflectionToString(o,ToStringStyle.MULTI_LINE_STYLE);
+		StringBuilder sb = new StringBuilder();
+		String end = ostr;
+		//
+		IterableString it = new IterableString("(?s)(?i)\\=java\\.util\\.GregorianCalendar\\[time\\=(\\d+),.*?\\].*?\\]",ostr);
+		for (MatchedToken token : it) {
+			sb.append(token.getBefore());
+			String ms = token.getMatched().replaceFirst("(?s)(?i)\\=java\\.util\\.GregorianCalendar\\[time\\=(\\d+),.*?\\].*?\\]","$1");
+			sb.append("=").append(DateUtil.getInstance().dbDateTime(new Date(Long.parseLong(ms))));
+			end = token.getAfter();
+		}
+		sb.append(end);
+		return sb.toString();
 	}
 
 	/**
