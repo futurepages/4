@@ -105,6 +105,12 @@ public class GenericDao extends HQLProvider {
 		return query.list();
 	}
 
+	public <T extends Serializable> T sqlToObject(String sql, Class<T> clss) {
+		SQLQuery query = sqlQuery(sql);
+		query.setResultTransformer(new AliasToBeanResultTransformer(clss));
+		return (T) query.uniqueResult();
+	}
+
 	public String getIdName(Class entity) {
 		ClassMetadata classMetadata = session().getSessionFactory().getClassMetadata(entity);
 		if (classMetadata == null) {
