@@ -227,9 +227,25 @@ public class GenericDao extends HQLProvider {
 
 	}
 
-	public <T extends Serializable> PaginationSlice<T> paginationSlice(HQLQuery<T> hqlQuery) {
-		return new PaginationSlice<T>(this, hqlQuery);
+	// pode ser que a lista vem com o array de objetos devido a join com having. O convidado sempre será o primeiro do array.
+	public <T extends Serializable> PaginationSlice<T> paginationSlice(Class<T> entityClass, int page, int pageSize, int pagesOffset, HQLQuery<T> hqlQuery) {
+		PaginationSlice<T> pagination = new PaginationSlice<T>(page, pageSize, pagesOffset, this, hqlQuery);
+		List resultSet = pagination.getList();
+		if(resultSet.size()>0){
+			if(resultSet.get(0) instanceof Object[]){
+				if(!entityClass.isAssignableFrom(((Object[])resultSet.get(0))[0].getClass())){
+					throw new IllegalArgumentException("the returned array rows must have the first element as instance of "+entityClass.getName());
+				}
+				List<T> objs = new ArrayList<>();
+				for(Object[] objectsRow : (List<Object[]>) resultSet){
+					objs.add((T) objectsRow[0]);
+				}
+				pagination.setList(objs);
+			}
+		}
+		return pagination;
 	}
+
 
 	public <T extends Serializable> PaginationSlice<T> paginationSlice(int page, int pageSize, HQLQuery<T> hql) {
 		return paginationSlice(page, pageSize, 0, hql);

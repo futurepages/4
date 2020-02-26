@@ -197,4 +197,8 @@ public class PaginationSlice<T> extends HQLProvider{
         this.beansResultClass =  null;
         return this;
     }
+
+    public void setList(List<T> list) {
+        this.list = list;
+    }
 }
