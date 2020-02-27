@@ -1,6 +1,7 @@
 package org.futurepages.core.persistence;
 
 import org.futurepages.util.Is;
+import org.futurepages.util.ReflectionUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -334,11 +335,39 @@ public class GenericDao extends HQLProvider {
 		return query.list();
 	}
 
-	public long numRows(HQLQuery hqlQuery){
-		if(hqlQuery.getSelect()==null || !hqlQuery.getSelect().startsWith("COUNT(")){
-			hqlQuery.setSelect("COUNT(*)");
+
+	public long numRows(HQLQuery hql){
+		hql = ReflectionUtil.clone(hql); // clone to avoid problems outside
+		hql.setOrder(null);
+
+		String newSelect = null;
+
+		if(Is.empty(hql.getSelect()) && Is.empty(hql.getSelectForSpecialCount()) && Is.empty(hql.getGroup())){
+			newSelect = count("*");
+		}else if(!Is.empty(hql.getSelectForSpecialCount())) {
+			newSelect = hql.getSelectForSpecialCount();
+		}else if(   Is.empty(hql.getGroup())
+				&& !Is.empty(hql.getSelect())
+				&& !hql.getSelect().contains(" as ")
+				&& !hql.getSelect().contains(" AS ")
+				&& !hql.getSelect().contains(",")
+				&& !hql.getSelect().matches("(?i)^\\s*COUNT\\(.*\\)\\s*$")
+		){
+			newSelect = count(hql.getSelect());
+		} else if(!Is.empty(hql.getGroup()) && !hql.getSelect().contains(",") && !hql.getGroup().contains(",") && (Is.empty(hql.getJoinType()) || hql.getJoinType().trim().equalsIgnoreCase("inner"))){
+			newSelect = count(distinct(hql.getGroup()));
+			hql.setGroup(null);
+			hql.setHaving(null);
 		}
-		return (Long) selectQuery(hqlQuery).uniqueResult();
+
+		if(newSelect!=null){
+			hql.setSelect(newSelect);
+		}
+		if(!Is.empty(hql.getSelectForSpecialCount())){
+			return selectQuery(hql).list().size();
+		}else{
+			return (Long) selectQuery(hql).uniqueResult();
+		}
 	}
 
 	public void beginTransaction() {

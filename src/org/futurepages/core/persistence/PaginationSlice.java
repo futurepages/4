@@ -1,6 +1,5 @@
 package org.futurepages.core.persistence;
 
-import org.futurepages.util.Is;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import java.io.Serializable;
@@ -62,29 +61,7 @@ public class PaginationSlice<T> extends HQLProvider{
         return this;
     }
 
-    public PaginationSlice<T> loadPageByFirstResult(int firstResult) {
-        this.totalSize = dao.numRows(hql(countFun(), hqlQuery.getEntity() ,hqlQuery.getAlias() , hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
-        this.totalPages  = calcTotalPages(totalSize,pageSize);
-        this.pageNumber = calcCorrectPageNumberByFirstResult(firstResult);
-        this.firstResult = firstResult;
-        this.list = loadList();
-        return this;
-    }
-
-    public PaginationSlice<T> loadRows(int firstResult,int maxResult) {
-        this.pageSize = maxResult;
-        loadPageByFirstResult(firstResult);
-        return this;
-    }
-
-    private int calcCorrectPageNumberByFirstResult(int firstResult) {
-       int page = (int) Math.ceil((firstResult+1)/pageSize);
-       pagesOffset =  (firstResult+1)-(pageSize*page-1);
-       return page;
-    }
-
-
-    private List loadList() {
+	private List loadList() {
         //System.out.println(hqlQuery.toString() + "first:" + firstResult + "; pageSize:" + pageSize);
         //System.out.println();
 		if(this.beansResultClass==null){
@@ -123,17 +100,7 @@ public class PaginationSlice<T> extends HQLProvider{
     }
 
     public long calcTotalSize(){
-		if(hqlQuery.getGroup()==null){
-            return dao.numRows(hql(countFun(),hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(), hqlQuery.getWhere(),null));
-		}else{
-			return dao.numRows(hql(count(distinct(hqlQuery.getGroup())),hqlQuery.getEntity() ,hqlQuery.getAlias(), hqlQuery.getJoinType(), hqlQuery.getJoin(),  hqlQuery.getWhere(),null));
-
-		}
-    }
-
-    private String countFun() {
-        return !Is.empty(hqlQuery.getSelect()) && !hqlQuery.getSelect().contains(" as ") && !hqlQuery.getSelect().contains(" AS ") && !hqlQuery.getSelect().contains(",") ?
-                count(hqlQuery.getSelect()) : count("*");
+    	return dao.numRows(hqlQuery);
     }
 
     public Integer getPageSize() {

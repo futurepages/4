@@ -15,6 +15,7 @@ public class HQLQuery<T> extends HQLProvider {
 	private String group;
 	private String having;
 	private String order;
+	private String selectForSpecialCount;
 
 	public HQLQuery(){
 
@@ -211,5 +212,13 @@ public class HQLQuery<T> extends HQLProvider {
 
 	public String getJoinType() {
 		return joinType;
+	}
+
+	public String getSelectForSpecialCount() {
+		return selectForSpecialCount;
+	}
+
+	public void setSelectForSpecialCount(String selectForSpecialCount) {
+		this.selectForSpecialCount = selectForSpecialCount;
 	}
 }
