@@ -22,46 +22,54 @@ public class JavaScriptMinifier {
 			int pathInit = Apps.get("WEB_REAL_PATH").length() - 1;
 			for (File f : jsFiles) {
 				String jsPath = (f.getAbsolutePath().substring(pathInit));
-				if (!jsPath.startsWith("/init/") && !f.getAbsolutePath().endsWith(".min.js") && !f.getAbsolutePath().endsWith("-min.js")) {
-					String outLogJsPath = "[ JS-Min ...  ] " + jsPath;
-					System.out.println(outLogJsPath);
-					String s;
+				String outLogJsPath = "[ JS-Min ...  ] " + jsPath;
+				System.out.print(outLogJsPath);
+				if(new File(f.getParent()+"/.jsminifier-ignore").exists()
+					|| jsPath.startsWith("/init/")
+					|| f.getAbsolutePath().endsWith(".min.js")
+					|| f.getAbsolutePath().endsWith("-min.js")
+					|| f.getAbsolutePath().endsWith(".bundle.js")
+				) {
+					System.out.print("   IGNORED!");
+					continue;
+				}else{
+					System.out.println();
+				}
+				String s;
+				BufferedReader stdInput = null;
+				BufferedReader stdError = null;
+				try {
+					Process p = Runtime.getRuntime().exec("./usr/bin/terser " + f.getAbsolutePath() + " -c -o " + f.getAbsolutePath());
+					stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
-					BufferedReader stdInput = null;
-					BufferedReader stdError = null;
-					try {
-						Process p = Runtime.getRuntime().exec("./usr/bin/terser " + f.getAbsolutePath() + " -c -o " + f.getAbsolutePath());
-						stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-						stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-
-						// read the output from the command
-						boolean hasSomethingWrong = false;
-						while ((s = stdInput.readLine()) != null) {
-							System.out.println("\t\t\t\t" + s);
-							hasSomethingWrong = true;
-						}
-
-						// read any errors from the attempted command
-						while ((s = stdError.readLine()) != null) {
-							System.out.println("\t\t\t\t" + s);
-							hasSomethingWrong = true;
-						}
-						if (hasSomethingWrong) {
-							System.out.println();
-						}
-						stdInput.close();
-						stdError.close();
-					} catch (Exception ex) {
-						System.out.println("PROBLEM RUNNING: ./usr/bin/terser");
-						ex.printStackTrace();
-						if (stdInput != null) {
-							stdInput.close();
-						}
-						if (stdError != null) {
-							stdError.close();
-						}
-						break;
+					// read the output from the command
+					boolean hasSomethingWrong = false;
+					while ((s = stdInput.readLine()) != null) {
+						System.out.println("\t\t\t\t" + s);
+						hasSomethingWrong = true;
 					}
+
+					// read any errors from the attempted command
+					while ((s = stdError.readLine()) != null) {
+						System.out.println("\t\t\t\t" + s);
+						hasSomethingWrong = true;
+					}
+					if (hasSomethingWrong) {
+						System.out.println();
+					}
+					stdInput.close();
+					stdError.close();
+				} catch (Exception ex) {
+					System.out.println("PROBLEM RUNNING: ./usr/bin/terser");
+					ex.printStackTrace();
+					if (stdInput != null) {
+						stdInput.close();
+					}
+					if (stdError != null) {
+						stdError.close();
+					}
+					break;
 				}
 			}
 		}
