@@ -30,7 +30,7 @@ public class JavaScriptMinifier {
 					|| f.getAbsolutePath().endsWith("-min.js")
 					|| f.getAbsolutePath().endsWith(".bundle.js")
 				) {
-					System.out.print("   IGNORED!");
+					System.out.println("   IGNORED!");
 					continue;
 				}else{
 					System.out.println();
