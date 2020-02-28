@@ -354,7 +354,7 @@ public class GenericDao extends HQLProvider {
 				&& !hql.getSelect().matches("(?i)^\\s*COUNT\\(.*\\)\\s*$")
 		){
 			newSelect = count(hql.getSelect());
-		} else if(!Is.empty(hql.getGroup()) && !hql.getSelect().contains(",") && !hql.getGroup().contains(",") && (Is.empty(hql.getJoinType()) || hql.getJoinType().trim().equalsIgnoreCase("inner"))){
+		} else if(!Is.empty(hql.getGroup()) && !hql.getGroup().contains(",") && Is.empty(hql.getHaving())){
 			newSelect = count(distinct(hql.getGroup()));
 			hql.setGroup(null);
 			hql.setHaving(null);
