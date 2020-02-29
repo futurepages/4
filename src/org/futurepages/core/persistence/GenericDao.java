@@ -340,29 +340,28 @@ public class GenericDao extends HQLProvider {
 		hql = ReflectionUtil.clone(hql); // clone to avoid problems outside
 		hql.setOrder(null);
 
-		String newSelect = null;
+		String newSelect = count("*");
 
-		if(Is.empty(hql.getSelect()) && Is.empty(hql.getSelectForSpecialCount()) && Is.empty(hql.getGroup())){
-			newSelect = count("*");
-		}else if(!Is.empty(hql.getSelectForSpecialCount())) {
-			newSelect = hql.getSelectForSpecialCount();
-		}else if(   Is.empty(hql.getGroup())
-				&& !Is.empty(hql.getSelect())
-				&& !hql.getSelect().contains(" as ")
-				&& !hql.getSelect().contains(" AS ")
-				&& !hql.getSelect().contains(",")
-				&& !hql.getSelect().matches("(?i)^\\s*COUNT\\(.*\\)\\s*$")
-		){
-			newSelect = count(hql.getSelect());
-		} else if(!Is.empty(hql.getGroup()) && !hql.getGroup().contains(",") && Is.empty(hql.getHaving())){
-			newSelect = count(distinct(hql.getGroup()));
-			hql.setGroup(null);
-			hql.setHaving(null);
+		if(!Is.empty(hql.getSelect()) || !Is.empty(hql.getSelectForSpecialCount()) || !Is.empty(hql.getGroup())) {
+			if (!Is.empty(hql.getSelectForSpecialCount())) {
+				newSelect = hql.getSelectForSpecialCount();
+			} else if (hql.getSelect().matches("(?i)^\\s*COUNT\\(.*\\)\\s*$")) {
+				newSelect = hql.getSelect();
+			} else if (Is.empty(hql.getGroup())
+					&& !Is.empty(hql.getSelect())
+					&& !hql.getSelect().contains(" as ")
+					&& !hql.getSelect().contains(" AS ")
+					&& !hql.getSelect().contains(",")
+					) {
+				newSelect = count(hql.getSelect());
+			} else if (!Is.empty(hql.getGroup()) && !hql.getGroup().contains(",") && Is.empty(hql.getHaving())) {
+				newSelect = count(distinct(hql.getGroup()));
+				hql.setGroup(null);
+				hql.setHaving(null);
+			}
 		}
+		hql.setSelect(newSelect);
 
-		if(newSelect!=null){
-			hql.setSelect(newSelect);
-		}
 		if(!Is.empty(hql.getSelectForSpecialCount())){
 			return selectQuery(hql).list().size();
 		}else{
