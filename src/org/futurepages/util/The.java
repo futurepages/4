@@ -1,5 +1,6 @@
 package org.futurepages.util;
 
+import net.sf.json.JSONArray;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -83,6 +84,10 @@ public class The {
 			out.append(quote).append(ReflectionUtil.getField(array[i], attributeName)).append(quote);
 		}
 		return out.toString();
+	}
+
+	public static String implodedJSONArray(JSONArray array) {
+		return implodedArray(JSONArray.toArray(array), ",", null);
 	}
 
 	public static String implodedArray(Object[] array, String delim, String quote) {
