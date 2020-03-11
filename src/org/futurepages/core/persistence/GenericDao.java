@@ -567,6 +567,12 @@ public class GenericDao extends HQLProvider {
 		}
 	}
 
+	public <T extends Serializable> void evict(Collection<T> objs) {
+		for (T obj: objs){
+			evict(obj);
+		}
+	}
+
 	//alreadyDeatached is necessary because of possible duplicate references in the object tree. If it happens, it will be detached just the first time.
 	private <T extends Serializable> T detachedObject(HashMap<Class<? extends Serializable>,HashMap<Serializable,Serializable>> alreadyDetached, T object, boolean detachCollectionElements){
 		if(alreadyDetached.get(object.getClass())!=null){
