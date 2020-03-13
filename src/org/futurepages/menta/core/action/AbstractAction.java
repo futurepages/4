@@ -636,6 +636,18 @@ public abstract class AbstractAction implements Pageable, Action {
 			return responseWrapper.toString();
 	}
 
+	protected void releaseOutputsAndMessages(String kmsgID) {
+		if (input.getStringValue(kmsgID) != null) {
+			try {
+				dispatcher.load(kmsgID);
+			} catch (DispatcherNotPresentException ignored) {}
+		}
+	}
+
+	protected void releaseOutputsAndMessages() {
+		releaseOutputsAndMessages("kmsg");
+	}
+
 	protected class Dispatcher {
 
 		private String hash;
