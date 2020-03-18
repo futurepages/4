@@ -62,7 +62,7 @@ public class DataModelMigrationController {
 
 			// SE ESTIVERMOS EM MODO DE DESENVOLVIMENTO, A SUBPASTA "past" É CONSIDERADA.
 			File pastVersionsDir = new File(versionsMigrationDir.getAbsoluteFile()+"/past");
-			if(Apps.devMode() && pastVersionsDir.exists() && pastVersionsDir.isDirectory() && appModel.getVersionNum() < getVersionNumOf(migrationFiles.get(0).getName())){
+			if(Apps.devMode() && pastVersionsDir.exists() && pastVersionsDir.isDirectory() && (migrationFiles.size()==0 || appModel.getVersionNum() < getVersionNumOf(migrationFiles.get(0).getName()))){
 				System.out.println("[fpg] DMMC: Loading migrations on 'past' dir ...");
 				ArrayList pastFiles = new ArrayList();
 				Files.walk(Paths.get(versionsMigrationDir.getAbsolutePath()+"/past")).filter(Files::isRegularFile).forEach(pastFiles::add);

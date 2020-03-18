@@ -14,12 +14,13 @@ public class ConfigureAppVersion extends Task {
 	private String baseDir;
 	private String env;
 	private String build;
+	private String path;
 
 	@Override
 	public void execute() throws BuildException {
 		try {
 			if(!Is.empty(env)){
-				File filesEnvFrom = new File(baseDir+"/test/env/"+env);
+				File filesEnvFrom = new File(baseDir+ (!Is.empty(path)? path:"/env")+"/"+env);
 //				System.out.println(filesEnvFrom.getAbsoluteFile());
 				File filesEnvTo = new File(baseDir+"/web");
 //				System.out.println(filesEnvTo.getAbsoluteFile());
@@ -54,5 +55,9 @@ public class ConfigureAppVersion extends Task {
 
 	public void setBuild(String build) {
 		this.build = build;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 }
