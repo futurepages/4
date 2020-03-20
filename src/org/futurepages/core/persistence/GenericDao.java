@@ -65,6 +65,10 @@ public class GenericDao extends HQLProvider {
 		}
 	}
 
+	public boolean isOpen(){
+		return session().isOpen();
+	}
+
 	public void close() {
 		if (session().isOpen()) {
 			session().close();

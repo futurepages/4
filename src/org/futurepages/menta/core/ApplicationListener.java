@@ -12,7 +12,9 @@ import org.futurepages.core.quartz.QuartzManager;
 import org.futurepages.menta.core.control.Controller;
 import org.futurepages.menta.core.resource.ResourceMinifier;
 import org.futurepages.menta.core.tags.build.TagLibBuilder;
+import org.futurepages.util.HttpUtil;
 import org.futurepages.util.Is;
+import org.futurepages.util.The;
 import org.quartz.SchedulerException;
 
 import javax.servlet.ServletContext;
@@ -156,6 +158,36 @@ public class ApplicationListener implements ServletContextListener {
 			log("Erro ao inicializar contexto. Aplicação indisponível.");
 			Controller.makeUnavailable();
 			AppLogger.getInstance().execute(ex);
+		}
+
+		if(!Controller.isInitialized()){
+			new Thread(() -> {
+				int secs = 5;
+				System.out.println("Wainting for "+secs+" secs to force Controller to init calling the start page, if not initialized.");
+					The.sleepOf(secs*1000); // for some reason, if you not wait, it will not works.
+					String indexURL = The.concat(Apps.get("APP_LOCAL_HOST") , "/" , Apps.get("START_PAGE_NAME"));
+
+					if(!Controller.isInitialized()){
+						try{
+							String out = HttpUtil.getURLContent(indexURL);
+							if(Apps.devMode()){
+								System.out.println(The.concat("content of ",indexURL,": ",out));
+								System.out.println(out);
+							}
+						}catch (Exception e){
+							The.sleepOf(2000);
+							if(!Controller.isInitialized()){
+								String out = HttpUtil.getURLContent(indexURL);
+								if(Apps.devMode()){
+									System.out.println(The.concat("content of ",indexURL,": ",out));
+									System.out.println(out);
+								}
+							} else {
+								System.out.println("Managers started!");
+							}
+						}
+					}
+			}).start();
 		}
 	}
 

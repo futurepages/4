@@ -127,7 +127,7 @@ public class HibernateFilter implements AfterConsequenceFilter {
 		}
 	}
 
-	private boolean isTransactionActive(boolean multiTransactional) {
+	public static boolean isTransactionActive(boolean multiTransactional) {
 		if (Apps.connectExternalModules() && multiTransactional) {
 			for (String keySession : HibernateManager.getInstance().getConfigurationsMap().keySet()) {
 				if(Dao.getInstance(keySession).isTransactionActive()){ //presume-se que todas estão, retornará na primeira.
@@ -139,7 +139,40 @@ public class HibernateFilter implements AfterConsequenceFilter {
 		return Dao.getInstance().isTransactionActive();
 	}
 
-	private void rollbackTransaction(boolean multiTransactional) {
+	public static boolean isOpen(boolean multiTransactional) {
+		if (Apps.connectExternalModules() && multiTransactional) {
+			for (String keySession : HibernateManager.getInstance().getConfigurationsMap().keySet()) {
+				if(Dao.getInstance(keySession).isOpen()){ //presume-se que todas estão, retornará na primeira.
+					return true;
+				}
+			}
+			return false;
+		}else{
+			return Dao.getInstance().isOpen();
+		}
+	}
+
+	public static void finallly(){
+		if(isOpen(true)){
+			if(isTransactionActive(true)){
+				rollbackTransaction(true);
+			}
+			close(true);
+		}
+	}
+
+	private static void close(boolean multiTransactional) {
+		if (Apps.connectExternalModules() && multiTransactional) {
+			for (String keySession : HibernateManager.getInstance().getConfigurationsMap().keySet()) {
+				Dao.getInstance(keySession).close();
+			}
+		}else{
+			Dao.getInstance().close();
+		}
+	}
+
+
+	private static void rollbackTransaction(boolean multiTransactional) {
 		if (Apps.connectExternalModules() && multiTransactional) {
 			for (String keySession : HibernateManager.getInstance().getConfigurationsMap().keySet()) {
 				try{

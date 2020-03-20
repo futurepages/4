@@ -1,10 +1,13 @@
 package org.futurepages.menta.actions;
 
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.menta.consequences.Forward;
 import org.futurepages.menta.core.context.ApplicationContext;
 import org.futurepages.menta.core.context.CookieContext;
 import org.futurepages.menta.core.context.MapContext;
 import org.futurepages.menta.core.context.SessionContext;
+import org.futurepages.menta.core.control.Controller;
+import org.futurepages.menta.core.control.InvocationChain;
 import org.futurepages.menta.core.i18n.LocaleManager;
 import org.futurepages.menta.core.input.PrettyURLRequestInput;
 import org.futurepages.menta.core.output.ResponseOutput;
@@ -27,5 +30,11 @@ public class NullAction extends FreeAction {
 		this.setLocale(LocaleManager.getLocale(req));
 		this.setCallback(new MapContext());
 		req.setAttribute(Forward.ACTION_REQUEST, this);
+
+		if(Controller.getInstance()!=null){
+			Controller.getInstance().setThredLocalChain(new InvocationChain(this.getClass().getName(), this));
+		}else{
+			AppLogger.getInstance().execute(new RuntimeException("Controller not found"),req);
+		}
 	}
 }
