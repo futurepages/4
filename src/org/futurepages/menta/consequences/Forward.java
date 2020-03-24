@@ -65,26 +65,8 @@ public class Forward implements Consequence {
             // put output values in the request...
             
             if (a != null) {
-            
-                Output output = a.getOutput();
-                Iterator<String> iter = output.keys();
-                while(iter.hasNext()) {
-                    String key = (String) iter.next();
-                    Object value = output.getValue(key);
-                    req.setAttribute(key, value);
-                }
-                
-                // put the application in the request...
-                req.setAttribute(APPLICATION_REQUEST, a.getApplication());
-                
-                // put the session in the request...
-                req.setAttribute(SESSION_REQUEST, a.getSession());
-                
-                // put the input in the request...
-                req.setAttribute(INPUT_REQUEST, a.getInput());
-                
-                // put the action in the request...
-                req.setAttribute(ACTION_REQUEST, a);
+
+	            outputValues(a, req);
             
             }
             forward(this.getUrl(), req, res);
@@ -93,8 +75,30 @@ public class Forward implements Consequence {
             throw new ConsequenceException(e);
         }
     }
-    
-    /**
+
+	public static void outputValues(Action a, HttpServletRequest req) {
+		Output output = a.getOutput();
+		Iterator<String> iter = output.keys();
+		while(iter.hasNext()) {
+		    String key = (String) iter.next();
+		    Object value = output.getValue(key);
+		    req.setAttribute(key, value);
+		}
+
+		// put the application in the request...
+		req.setAttribute(APPLICATION_REQUEST, a.getApplication());
+
+		// put the session in the request...
+		req.setAttribute(SESSION_REQUEST, a.getSession());
+
+		// put the input in the request...
+		req.setAttribute(INPUT_REQUEST, a.getInput());
+
+		// put the action in the request...
+		req.setAttribute(ACTION_REQUEST, a);
+	}
+
+	/**
      * Forward your web application to an URL.
      *
      * @param url The url for the forward.

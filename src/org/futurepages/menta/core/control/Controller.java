@@ -63,7 +63,7 @@ public class Controller extends HttpServlet {
 	protected static Context appContext = null;
 	private static ConsequenceProvider defaultConsequenceProvider = new DefaultConsequenceProvider();
 	public static Controller INSTANCE;
-	private ThreadLocal<InvocationChain> chainTL = new ThreadLocal<InvocationChain>();
+	private static ThreadLocal<InvocationChain> chainTL = new ThreadLocal<>();
 	private static ServletConfig conf;
 	private static ClassGetActionUrlParts objectGetActionUrlParts;
 	private static boolean initialized = false;
@@ -425,8 +425,8 @@ public class Controller extends HttpServlet {
 		return c;
 	}
 
-	public void setThredLocalChain(InvocationChain chain) {
-		this.chainTL.set(chain);
+	public static void setThredLocalChain(InvocationChain chain) {
+		chainTL.set(chain);
 	}
 
 	private boolean hasGlobalFilterFreeMarkerFilter(List<Filter> filters, String innerAction) {
@@ -528,7 +528,7 @@ public class Controller extends HttpServlet {
 	}
 
 	public InvocationChain getChain(){
-		return this.chainTL.get();
+		return chainTL.get();
 	}
 
 	public String[] getActionUrlParts(String context, String uri) {

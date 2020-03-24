@@ -16,6 +16,8 @@ public class JerseySseManager extends ResourceConfig {
 
 		packages("www.sse");
 
+		register(GlobalFilters.Sse.class);
+
 		register(SseFeature.class);
 
 		register(AppExceptionMapper.class);

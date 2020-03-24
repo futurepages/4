@@ -83,7 +83,7 @@ public class Redirect implements Consequence {
 
 			String urlPath = pathWithPrettyParams(uri.getPath(), output);
 			String urlQuery = theURL.contains("?")? theURL.substring(theURL.indexOf("?")+1) : null;
-			
+
 			StringBuilder urlToRedir = builBasicUrlToRedir(uri);
 
 			urlToRedir.append(urlPath);

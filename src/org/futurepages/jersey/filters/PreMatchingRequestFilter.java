@@ -10,7 +10,7 @@ import javax.ws.rs.container.PreMatching;
 public class PreMatchingRequestFilter implements ContainerRequestFilter {
 	@Override
 	public void filter(ContainerRequestContext crc){
-		System.out.print(">>> MyPreMatchingRequestFilter: ");
+		System.out.print(">>> PreMatchingRequestFilter: ");
 		System.out.println(JerseyAction.invoked());
 	}
 }

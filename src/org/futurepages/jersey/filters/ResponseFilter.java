@@ -9,7 +9,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
 public class ResponseFilter implements ContainerResponseFilter {
 	@Override
 	public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
-		System.out.print(">>> MyResponseFilter: ");
+		System.out.print(">>> ResponseFilter: ");
 		System.out.println(JerseyAction.invoked());
 	}
 }

@@ -1,11 +1,20 @@
 package org.futurepages.jersey.actions;
 
 import org.futurepages.menta.actions.NullAction;
+import org.futurepages.menta.consequences.Forward;
 import org.futurepages.menta.core.action.Action;
+import org.futurepages.menta.core.input.Input;
+import org.futurepages.menta.core.output.Output;
+import org.glassfish.jersey.server.mvc.Viewable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import static org.futurepages.util.The.concat;
 
 public class JerseyAction {
 
@@ -25,13 +34,56 @@ public class JerseyAction {
 		this.res = res;
 		action = new NullAction(req, res);
 		arTL.set(this);
-		// para simular erro na estrutura do framework antes da 'action'
-		//if(true){
-		//	throw new RuntimeException("quebrou");
-		//}
 	}
 
 	public static JerseyAction invoked(){
 		return arTL.get();
+	}
+
+	public void output(String key, Object value){
+		action.output(key,value);
+	}
+
+	public Input getInput(){
+		return action.getInput();
+	}
+
+	public Output getOutput(){
+		return action.getOutput();
+	}
+
+	public Response jsp(String path) {
+		Forward.outputValues(action,action.getRequest());
+		return  Response.ok(new Viewable(path,null)).build();
+	}
+
+	public Response redir(String path) {
+		Forward.outputValues(action,action.getRequest());
+		try {
+			return Response.temporaryRedirect(new URI(fixedURLByType("/app"+path,req))).build();
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
+	public Response redir_out(String path) {
+		Forward.outputValues(action,action.getRequest());
+		try {
+			return Response.temporaryRedirect(new URI(fixedURLByType(path,req))).build();
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@SuppressWarnings("Duplicates")
+	private String fixedURLByType(String theURL, HttpServletRequest req) {
+		if (theURL.indexOf("://") > 0) {
+			return theURL;
+		} else if (theURL.startsWith("//")) {
+			return theURL.substring(1, theURL.length());
+		} else {
+			return concat(req.getContextPath(), (!theURL.startsWith("/") ? "/" : ""), theURL);
+		}
 	}
 }

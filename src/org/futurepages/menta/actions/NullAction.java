@@ -31,10 +31,6 @@ public class NullAction extends FreeAction {
 		this.setCallback(new MapContext());
 		req.setAttribute(Forward.ACTION_REQUEST, this);
 
-		if(Controller.getInstance()!=null){
-			Controller.getInstance().setThredLocalChain(new InvocationChain(this.getClass().getName(), this));
-		}else{
-			AppLogger.getInstance().execute(new RuntimeException("Controller not found"),req);
-		}
+		Controller.setThredLocalChain(new InvocationChain(this.getClass().getName(), this));
 	}
 }
