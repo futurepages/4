@@ -29,14 +29,18 @@ public class PluralOrSingular extends PrintTag{
 	private String zero;
 	    
 	public String getStringToPrint() throws JspException {
-		String before = valueBefore ? value+" " : "" ;
-        if(value==1){
-            return before+singular;
-        }
-        if((value == 0) && (zero!=null)){
-            return zero;
-        }
-        return before+plural;
+		return doItFor(valueBefore, value, zero, singular, plural);
+    }
+
+    public static String doItFor(boolean valueBefore, long value, String zero, String singular, String plural){
+	    String before = valueBefore ? value+" " : "" ;
+	    if(value==1){
+		    return before+singular;
+	    }
+	    if((value == 0) && (zero!=null)){
+		    return zero;
+	    }
+	    return before+plural;
     }
 
 	public void setValue(long value) {
