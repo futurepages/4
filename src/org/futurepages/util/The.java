@@ -759,4 +759,8 @@ public class The {
 	public static String[] array(String... array) {
 		return array;
 	}
+
+	public static String croppedText(String txt, int max, String endText) {
+		return (txt.length() <= max? txt : txt.substring(0,max)+endText);
+	}
 }
