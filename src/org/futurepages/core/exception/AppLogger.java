@@ -90,7 +90,7 @@ public class AppLogger implements ExceptionLogger{
 
 		StringWriter errors = new StringWriter();
         String stackHash = "";
-        boolean simple404 = logType==ExceptionLogType.NOT_FOUND && (req!=null &&  (req.getHeader("referer")==null));
+        boolean simple404 = logType==ExceptionLogType.NOT_FOUND && (req!=null &&  (req.getHeader("referer")==null || req.getHeader("referer").equals(req.getRequestURL().toString())));
         if(simple404){
 	        logSB.append(logln(throwable.getMessage()));
         } else{
