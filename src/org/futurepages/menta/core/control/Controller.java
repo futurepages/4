@@ -255,7 +255,7 @@ public class Controller extends HttpServlet {
 		if(!Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))) {
 			return new StaticPaths(req);
 		}else{
-			return new Paths();
+			return new Paths(req);
 		}
 	}
 

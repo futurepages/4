@@ -19,9 +19,14 @@ public class Paths {
 		if(instance==null){
 			return getStatic();
 		}else {
-			staticPaths = new StaticPaths(Controller.getInstance().getChain().getAction().getRequest());
+			return instance;
 		}
-		return instance;
+	}
+
+	public Paths(){}
+
+	public Paths(HttpServletRequest req) {
+		staticPaths = new StaticPaths(req);
 	}
 
 	private static StaticPaths staticPaths;
