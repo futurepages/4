@@ -75,7 +75,7 @@ public abstract class HttpRestClient {
             URL url = new URL(getEndpoint() + path);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setUseCaches(false); // será se precisa mesmo?
-            conn.setRequestProperty("User-Agent", "convite.in/rsvpgo-sdk");
+            conn.setRequestProperty("User-Agent", "fpg/http-cli");
             conn.setRequestProperty("Cache-Control", "no-cache");
             if (authentication != null) {
                 authentication.authenticate(conn);
