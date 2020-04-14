@@ -12,8 +12,8 @@ import org.futurepages.util.The;
  */
 public class StaticPaths extends Paths {
 
-
 	private String hostPath;
+	private String contextName;
 	private String contextPath;
 	private String modulePath;
 	private String modulesActionPath;
@@ -22,9 +22,33 @@ public class StaticPaths extends Paths {
 	private String templatePath;
 	private String themePath;
 
-	public StaticPaths(String context) {
-		hostPath = Apps.get("APP_HOST");
-		contextPath = The.concat(hostPath,!Is.empty(context)?"/":"",context);
+	public StaticPaths() {
+		configure();
+	}
+
+	public StaticPaths(HttpServletRequest req) {
+		if(req!=null){
+			String requestedHost = The.concat("https://",req.getHeader("Host"));
+			if(!requestedHost.equals(Apps.get("APP_HOST")) && !Is.empty(Apps.get("ALTERNATIVE_DOMAINS"))){
+				if(Apps.get("ALTERNATIVE_DOMAINS").matches(The.concat(".*\\b"+req.getHeader("Host")+"\\b.*"))){
+					this.hostPath = requestedHost;
+				}
+			}
+			contextName = req.getContextPath();
+		}
+		configure();
+	}
+
+	private void configure() {
+		if(Is.empty(this.hostPath)){
+			hostPath =  Apps.get("APP_HOST");
+		}
+		if(Is.empty(contextName)){
+			contextName = Apps.get("CONTEXT_NAME");
+			contextName = (contextName == null || contextName.equals("ROOT"))? "" : contextName;
+		}
+		String contextRelativePath = The.concat(!Is.empty(contextName)?"/":"", contextName);
+		contextPath = The.concat(hostPath,contextRelativePath);
 		modulePath = The.concat(contextPath,"/", Apps.MODULES_PATH,"/");
 		modulesActionPath = The.concat(contextPath,"/");
 		resourceInternalPath =  Apps.get("RESOURCE_PATH");
@@ -44,7 +68,7 @@ public class StaticPaths extends Paths {
     }
 
 	@Override
-    public String getResource(HttpServletRequest req) {
+    public String getResource(HttpServletRequest req)  {
         return resourcePath;
     }
 
@@ -76,4 +100,8 @@ public class StaticPaths extends Paths {
     public String getTheme(HttpServletRequest req){
         return themePath;
     }
+
+	public String context() {
+		return this.contextPath;
+	}
 }

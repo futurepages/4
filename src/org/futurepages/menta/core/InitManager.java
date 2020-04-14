@@ -65,7 +65,7 @@ public class InitManager extends AbstractApplicationManager{
     public final void loadActions() {
             //Filtros Globais
 			if(!Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))){
-				filter(new AutoRedirectDomainFilter(Apps.get("AUTO_REDIRECT_DOMAIN")));
+				filter(new AutoRedirectDomainFilter(Apps.get("AUTO_REDIRECT_DOMAIN"), Apps.get("ALTERNATIVE_DOMAINS")));
 			}
 
 			if(HibernateManager.isRunning()){

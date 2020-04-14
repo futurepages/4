@@ -1,6 +1,8 @@
 package org.futurepages.menta.core.control;
 
 import org.futurepages.core.config.Apps;
+import org.futurepages.core.path.Paths;
+import org.futurepages.core.path.StaticPaths;
 import org.futurepages.menta.core.ApplicationManager;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.callback.ConsequenceCallback;
@@ -24,6 +26,7 @@ import org.futurepages.menta.exceptions.PageNotFoundException;
 import org.futurepages.menta.filters.ConsequenceCallbackFilter;
 import org.futurepages.menta.filters.ExceptionFilter;
 import org.futurepages.menta.filters.GlobalFilterFreeFilter;
+import org.futurepages.util.Is;
 import org.futurepages.util.The;
 
 import javax.servlet.ServletConfig;
@@ -64,6 +67,7 @@ public class Controller extends HttpServlet {
 	private static ConsequenceProvider defaultConsequenceProvider = new DefaultConsequenceProvider();
 	public static Controller INSTANCE;
 	private static ThreadLocal<InvocationChain> chainTL = new ThreadLocal<>();
+	private static ThreadLocal<Paths> pathsTL = new ThreadLocal<>();
 	private static ServletConfig conf;
 	private static ClassGetActionUrlParts objectGetActionUrlParts;
 	private static boolean initialized = false;
@@ -209,6 +213,7 @@ public class Controller extends HttpServlet {
 			appManager.destroy(appContext);
 		}
 		chainTL.remove();
+		pathsTL.remove();
 
 		super.destroy();
 		//comentado - não se sabe para que servia no menta.
@@ -228,6 +233,7 @@ public class Controller extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
 			if(up){
+				pathsTL.set(getPathsFor(req));
 				doService(req, res);
 			}else{
 				res.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -238,7 +244,18 @@ public class Controller extends HttpServlet {
 				res.sendError(HttpServletResponse.SC_NOT_FOUND);
 			}
 		} finally {
-			chainTL.remove();
+			if (up) {
+				chainTL.remove();
+				pathsTL.remove();
+			}
+		}
+	}
+
+	private Paths getPathsFor(HttpServletRequest req) {
+		if(!Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))) {
+			return new StaticPaths(req);
+		}else{
+			return new Paths();
 		}
 	}
 
@@ -529,6 +546,10 @@ public class Controller extends HttpServlet {
 
 	public InvocationChain getChain(){
 		return chainTL.get();
+	}
+
+	public Paths getPaths(){
+		return pathsTL.get();
 	}
 
 	public String[] getActionUrlParts(String context, String uri) {

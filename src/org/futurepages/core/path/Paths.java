@@ -2,6 +2,8 @@ package org.futurepages.core.path;
 
 import org.futurepages.core.config.Apps;
 import javax.servlet.http.HttpServletRequest;
+
+import org.futurepages.menta.core.control.Controller;
 import org.futurepages.util.The;
 
 /**
@@ -11,24 +13,25 @@ import org.futurepages.util.The;
  */
 public class Paths {
 
-	private static Paths INSTANCE = null;
 
-//  @Deprecated
-//	public static void initialize() {
-//		INSTANCE = new Paths();
-//	}
-
-	public static void initialize(String staticContext) {
-		INSTANCE = new StaticPaths(staticContext);
+	public static Paths getInstance(){
+		Paths instance = Controller.getInstance().getPaths();
+		if(instance==null){
+			return getStatic();
+		}else {
+			staticPaths = new StaticPaths(Controller.getInstance().getChain().getAction().getRequest());
+		}
+		return instance;
 	}
 
-	public Paths getInstance(){
-//		if(INSTANCE==null){
-//			initialize();
-//		}
-		return INSTANCE;
-	}
+	private static StaticPaths staticPaths;
 
+	public static StaticPaths getStatic(){
+		if(staticPaths == null){
+			staticPaths = new StaticPaths();
+		}
+		return staticPaths;
+	}
 	//#### ESCOPO DINÂMICO ########################################################################
 
     public String getModule(HttpServletRequest req,String module) {
@@ -69,72 +72,40 @@ public class Paths {
 
 	
 	//#### ESCOPO ESTÁTICO ########################################################################
-	//#### ATENÇÃO: AO ALTERAR QUALQUER LÓGICA DESTES MÉTODOS, DEVERÁ ALTERAR TAMBÉM EM StaticPaths
-	
-   /**
-     * @param req Requisição
-     * @param module id do módulo
-     * @return a url completa do módulo
-     */
+
     public static String module(HttpServletRequest req,String module) {
-        return INSTANCE.getModule(req, module);
+        return getInstance().getModule(req, module);
     }
 
     public static String moduleAction(HttpServletRequest req, String moduleId) {
-       return INSTANCE.getModuleAction(req, moduleId);
+       return getInstance().getModuleAction(req, moduleId);
     }
 
-    /**
-     * @param req Requisição
-     * @return a url completa da pasta de recursos da aplicação
-     */
     public static String resource(HttpServletRequest req) {
-        return INSTANCE.getResource(req);
+        return getInstance().getResource(req);
     }
 
-	/**
-     * @param req Requisição
-     * @return a url completa da pasta de recursos da aplicação
-     */
     public static String resource(HttpServletRequest req, String module) {
-        return INSTANCE.getResource(req,module);
+        return getInstance().getResource(req,module);
     }
 
-    /**
-     * @param req Requisição
-     * @return a url completa da pasta de arquivos do template da aplicação
-     */
     public static String template(HttpServletRequest req){
-        return INSTANCE.getTemplate(req);
+        return getInstance().getTemplate(req);
     }
 
-    /**
-     *
-     * @param req Requisição
-     * @return o endereço do contexto da aplicação, exemplo: /application
-     */
     public static String context(HttpServletRequest req){
-        return INSTANCE.getContext(req);
+        return getInstance().getContext(req);
     }
 
-    /**
-     *
-     * @param req Requisição
-     * @return a url completa do host server da aplicação
-     */
     public static String host(HttpServletRequest req){
-        return INSTANCE.getHost(req);
+        return getInstance().getHost(req);
     }
 
 	public static String template(HttpServletRequest req, String module) {
-		return INSTANCE.getTemplate(req, module);
+		return getInstance().getTemplate(req, module);
 	}
 
-    /**
-     * @param req Requisição
-     * @return a url completa da pasta de temas da aplicação
-     */
     public static String theme(HttpServletRequest req){
-        return INSTANCE.getTheme(req);
+        return getInstance().getTheme(req);
     }
 }

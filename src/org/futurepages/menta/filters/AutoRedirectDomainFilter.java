@@ -5,10 +5,13 @@ import org.futurepages.core.config.Apps;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.control.InvocationChain;
 import org.futurepages.menta.core.filter.Filter;
+import org.futurepages.util.CollectionUtil;
 import org.futurepages.util.Is;
-import org.futurepages.util.brazil.NumberUtil;
+import org.futurepages.util.The;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Filtro responsável pela modificação do domínio da url para um domínio padronizado. Isto é útil para
@@ -21,8 +24,14 @@ public class AutoRedirectDomainFilter implements Filter {
 
 	private String mainDomain;
 
-	public AutoRedirectDomainFilter(String baseURL) {
+	private Set<String> alternativeDomains;
+
+	public AutoRedirectDomainFilter(String baseURL, String alternativeDomains) {
 		this.mainDomain = baseURL;
+		if(!Is.empty(alternativeDomains)){
+			this.alternativeDomains = new HashSet<>();
+			this.alternativeDomains.addAll(CollectionUtil.getListToElements(The.explodedToArray(alternativeDomains, ",")));
+		}
 		if(!Is.validURL("http://"+mainDomain)){
 			throw new RuntimeException("Erro ao inicializar o filtro AutoRedirectDomainFilter. Especifique um domínio válido em app-params.xml[param=AUTO_REDIRECT_DOMAIN]");
 		}
@@ -31,8 +40,9 @@ public class AutoRedirectDomainFilter implements Filter {
 	@Override
 	public String filter(InvocationChain chain) throws Exception {
 		HttpServletRequest req = chain.getAction().getRequest();
-		if(!req.getHeader("Host").equals("localhost") && !Apps.devLocalMode() ) {
-			if(!req.getHeader("Host").equals(mainDomain)){
+			String hostRequested = req.getHeader("Host");
+		if(!hostRequested.equals("localhost") && !Apps.devLocalMode() ) {
+			if(!hostRequested.equals(mainDomain) && (alternativeDomains ==null || !alternativeDomains.contains(hostRequested))){
 				chain.getAction().getOutput().setValue(Action.REDIR_URL, changeDomain(chain.getAction().getRequest()));
 				return REDIR;
 			}

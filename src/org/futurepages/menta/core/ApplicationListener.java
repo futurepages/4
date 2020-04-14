@@ -5,7 +5,6 @@ import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.install.InstallersManager;
 import org.futurepages.core.mail.MailConfig;
 import org.futurepages.core.migration.DataModelMigrationController;
-import org.futurepages.core.path.Paths;
 import org.futurepages.core.persistence.HibernateManager;
 import org.futurepages.core.persistence.SchemaGeneration;
 import org.futurepages.core.quartz.QuartzManager;
@@ -131,7 +130,7 @@ public class ApplicationListener implements ServletContextListener {
 			}
 
 			if(!Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))){
-				log("Auto Redirect Domain ON. Inicializando 'Static Paths'...");
+				log("Auto Redirect Domain ON. Controller will be in Static Paths Mode");
 			}else{
 				if(Apps.get("DEPLOY_MODE").equals("production")){
 					if(Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))){
@@ -139,7 +138,6 @@ public class ApplicationListener implements ServletContextListener {
 					}
 				}
 			}
-			Paths.initialize(context); //somente se o AUTO_REDIRECT_DOMAIN houver sido informado
 
 			//Compacta recursos web
 			String minifyMode = Apps.get("MINIFY_RESOURCE_MODE");
