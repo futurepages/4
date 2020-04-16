@@ -36,7 +36,7 @@ public abstract class HttpRestClient {
 
     private Gson gsonRestClient;
 
-    protected Gson getGson(){
+    public Gson getGson(){
         if(gsonRestClient == null){
             gsonRestClient = new Gson();
         }
