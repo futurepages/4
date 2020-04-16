@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.futurepages.core.exception.AppLogger;
+import org.futurepages.util.EncodingUtil;
 import org.futurepages.util.ReflectionUtil;
 import org.futurepages.util.rest.auth.HttpAuthentication;
 import org.hibernate.cfg.NotYetImplementedException;
@@ -34,11 +35,20 @@ public abstract class HttpRestClient {
     protected HttpAuthentication authentication;
 
     private Gson gsonRestClient;
+
     protected Gson getGson(){
         if(gsonRestClient == null){
             gsonRestClient = new Gson();
         }
         return gsonRestClient;
+    }
+
+    protected void setGson(Gson gson){
+        this.gsonRestClient = gson;
+    }
+
+    protected String encodeUrl(String url){
+        return EncodingUtil.encodeUrl(url);
     }
 
     public abstract String getEndpoint();
