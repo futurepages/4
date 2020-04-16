@@ -155,7 +155,7 @@ public class Controller extends HttpServlet {
 		}
 		response.setCharacterEncoding(charset);
 		// se algum dia precisar, para aplicativos mobile, descomentar... (by Dimmy)
-		response.setHeader("Access-Control-Allow-Origin","*");
+//		response.setHeader("Access-Control-Allow-Origin","*");
 	}
 
 	/**
