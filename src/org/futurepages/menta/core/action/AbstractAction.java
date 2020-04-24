@@ -196,7 +196,7 @@ public abstract class AbstractAction implements Pageable, Action {
 	/**
 	 * @return Pega o tamanho do deslocamento dos elementos na página
 	 */
-	protected int getOffsetPages() {
+	public int getOffsetPages() {
 		return getPaginator().getPagesOffset();
 	}
 
