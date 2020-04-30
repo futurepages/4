@@ -8,7 +8,10 @@ import org.futurepages.core.formatter.AbstractFormatter;
  public class CPFCNPJFormatter extends AbstractFormatter {
  	
  	public String format(Object value, Locale loc) {
-		String cpfCnpj = (String) value;
+ 		return format((String) value);
+ 	}
+
+	public static String format(String cpfCnpj){
 		if(cpfCnpj!=null){
 			if(cpfCnpj.length() == CPFUtil.QUANTIDADE_DIGITOS_CPF){
 				return CPFUtil.formata(cpfCnpj);
@@ -17,6 +20,6 @@ import org.futurepages.core.formatter.AbstractFormatter;
 				return CNPJUtil.formata(cpfCnpj);
 			}
 		}
-		return (String) value;
- 	}
+		return cpfCnpj;
+	}
  }
