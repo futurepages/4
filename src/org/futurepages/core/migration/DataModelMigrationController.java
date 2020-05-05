@@ -152,7 +152,11 @@ public class DataModelMigrationController {
 			}else{
 				if(avoidExecutions){
 					newVersion = getVersionStrOf(migrationFiles.get(migrationFiles.size()-1).getName());
-					appModel.addVersion(newVersion, oldVersion, logTxt.toString(), success, skipped);
+					try{
+						appModel.addVersion(newVersion, oldVersion, logTxt.toString(), success, skipped);
+					}catch (Exception e){
+						AppLogger.getInstance().silent(e);
+					}
 				}else{
 					System.out.println("[fpg] DMMC: No changes found! Still on version: "+appModel.getVersion());
 
