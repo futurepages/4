@@ -662,11 +662,15 @@ public class InjectionUtils {
 				if (value == null && !hasValue) {
 					continue;                // if (value == null) continue;
 				}
-				if (value == null
-						|| (type.isAssignableFrom(value.getClass())
-						|| checkPrimitives(type, value.getClass())
-						|| (tryToConvert && ((isBlank(value) && (value = shouldConvertToNull(value, type)) == null)
-						|| (value = tryToConvert(value, type, loc)) != null)))) {
+				if (    !f.isSynthetic()
+					    &&
+					  (      value == null
+					  	|| (type.isAssignableFrom(value.getClass())
+					  	|| checkPrimitives(type, value.getClass())
+					  	|| (tryToConvert && ((isBlank(value) && (value = shouldConvertToNull(value, type)) == null)
+					  	|| (value = tryToConvert(value, type, loc)) != null)))
+					  )
+				) {
 					try {
 						f.set(target, value);
 					} catch (Exception e) {
