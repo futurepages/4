@@ -658,12 +658,14 @@ public class InjectionUtils {
 						value = Boolean.FALSE;
 					}
 				}
-
-				if (value == null && !hasValue) {
-					continue;                // if (value == null) continue;
+				if(   (value == null && !hasValue)
+						|| Modifier.isStatic(f.getModifiers())
+						|| f.isSynthetic()
+						|| Modifier.isFinal(f.getModifiers())
+				){
+					continue;
 				}
-				if (!Modifier.isStatic(f.getModifiers()) && !f.isSynthetic()
-					    &&
+				if (
 					  (      value == null
 					  	|| (type.isAssignableFrom(value.getClass())
 					  	|| checkPrimitives(type, value.getClass())
@@ -674,8 +676,7 @@ public class InjectionUtils {
 					try {
 						f.set(target, value);
 					} catch (Exception e) {
-						System.err.println("Error injecting by field: " + value + " in " + target);
-//						throw e;
+						AppLogger.getInstance().silent(e, "Error injecting by field: " + value + " in " + target); // comentar aqui em caso de pane.
 					}
 				}else{
 					if(input.getValue(var)!=null && String[].class.isAssignableFrom(type) && input.getValue(var) instanceof String){
