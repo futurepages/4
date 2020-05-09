@@ -102,6 +102,10 @@ public class Apps {
 		}
 	}
 
+	public static boolean isTrue(String key){
+		return get(key)!=null && get(key).equals("true");
+	}
+
 	public static void set(String name,String value) {
 		get(name);
 		getInstance().paramsMap.put(name,value);
