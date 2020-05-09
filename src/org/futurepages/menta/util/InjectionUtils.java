@@ -662,7 +662,7 @@ public class InjectionUtils {
 				if (value == null && !hasValue) {
 					continue;                // if (value == null) continue;
 				}
-				if (    !f.isSynthetic()
+				if (!Modifier.isStatic(f.getModifiers()) && !f.isSynthetic()
 					    &&
 					  (      value == null
 					  	|| (type.isAssignableFrom(value.getClass())
@@ -675,7 +675,7 @@ public class InjectionUtils {
 						f.set(target, value);
 					} catch (Exception e) {
 						System.err.println("Error injecting by field: " + value + " in " + target);
-						throw e;
+//						throw e;
 					}
 				}else{
 					if(input.getValue(var)!=null && String[].class.isAssignableFrom(type) && input.getValue(var) instanceof String){
