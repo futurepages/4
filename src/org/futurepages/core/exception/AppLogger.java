@@ -106,7 +106,7 @@ public class AppLogger implements ExceptionLogger{
 		if(req!=null){
         	Action action  = req.getAttribute(Forward.ACTION_REQUEST) instanceof Action? (Action) req.getAttribute(Forward.ACTION_REQUEST) : null;
 			if(!simple404){
-				logSB.append(logln(    ">[url    ]  ", req.getRequestURL().toString(), (req.getQueryString()!=null?"?"+req.getQueryString():"")));
+				logSB.append(logln(    ">[url    ]  ", req.getRequestURL()!=null? (req.getRequestURL().toString() + (req.getQueryString()!=null?"?"+req.getQueryString():"")):"?"));
 				logSB.append(logln(    ">[referer]  ", req.getHeader("referer")));
 				logSB.append(logln(    ">[from   ]  ", AbstractAction.getIpsFromRequest(req)));
 				logSB.append(logln(    ">[browser]  ", req.getHeader("user-agent")));
