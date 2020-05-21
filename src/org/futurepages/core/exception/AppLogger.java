@@ -106,15 +106,21 @@ public class AppLogger implements ExceptionLogger{
 		if(req!=null){
         	Action action  = req.getAttribute(Forward.ACTION_REQUEST) instanceof Action? (Action) req.getAttribute(Forward.ACTION_REQUEST) : null;
 			if(!simple404){
-				logSB.append(logln(    ">[url    ]  ", req.getRequestURL()!=null? (req.getRequestURL().toString() + (req.getQueryString()!=null?"?"+req.getQueryString():"")):"?"));
+				try{
+					logSB.append(logln(    ">[url    ]  ", req.getRequestURL()!=null? (req.getRequestURL().toString() + (req.getQueryString()!=null?"?"+req.getQueryString():"")):"?"));
+				}catch (Exception ignored){}
 				logSB.append(logln(    ">[referer]  ", req.getHeader("referer")));
-				logSB.append(logln(    ">[from   ]  ", AbstractAction.getIpsFromRequest(req)));
+				try{
+					logSB.append(logln(    ">[from   ]  ", AbstractAction.getIpsFromRequest(req)));
+				}catch (Exception ignored){}
 				logSB.append(logln(    ">[browser]  ", req.getHeader("user-agent")));
 				logSB.append(logln(    ">[proxy  ]  ", req.getHeader("Proxy-Authorization")));
+				try{
 				DefaultUser user = AbstractAction.loggedUser(req);
 				if (user!=null) {
 					logSB.append(logln(">[user   ]  ", user.getLogin()," | ", user.getEmail() ," | ",user.getFullName()));
 				}
+				}catch (Exception ignored){}
 				logSB.append(logln(   ">[method ]  ", req.getMethod()));
 				logSB.append(
 						log(  ">[request]  ")
