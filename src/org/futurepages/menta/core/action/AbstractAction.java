@@ -622,7 +622,7 @@ public abstract class AbstractAction implements Pageable, Action {
 				private final StringWriter sw = new StringWriter();
 
 				@Override
-				public PrintWriter getWriter() throws IOException {
+				public PrintWriter getWriter() {
 					return new PrintWriter(sw);
 				}
 
