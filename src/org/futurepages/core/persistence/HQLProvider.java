@@ -1,11 +1,14 @@
 package org.futurepages.core.persistence;
 
+import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.CollectionUtil;
+import org.futurepages.util.DateUtil;
 import org.futurepages.util.HQLUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -122,6 +125,18 @@ public class HQLProvider implements HQLable {
 
 	public static HQLField date(String date) {
 		return new HQLField(concat(" DATE(", date, ")"));
+	}
+
+	public static HQLField weekDay(Calendar date) {
+		return new HQLField(concat(" WEEKDAY('", CalendarUtil.dbDateTime(date), "')"));
+	}
+
+	public static HQLField time(Calendar time) {
+		return new HQLField(concat(" TIME('", DateUtil.getInstance().viewDateTime(time, "HH:mm"), "')"));
+	}
+
+	public static HQLField time(String time) {
+		return new HQLField(concat(" TIME(", time, ")"));
 	}
 
 	public static HQLField trim(String date) {
