@@ -650,6 +650,10 @@ public class The {
 		return number==null? 0 : number;
 	}
 
+	public static int intVal(Long number) {
+		return number==null? 0 : number.intValue();
+	}
+
 	public static String concat(String... args) {
 		StringBuilder sb = new StringBuilder();
 		for (String string : args) {
