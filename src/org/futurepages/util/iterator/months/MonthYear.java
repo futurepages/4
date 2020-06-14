@@ -88,6 +88,16 @@ public class MonthYear implements Comparable<MonthYear> {
 		return cal.getActualMaximum(cal.DAY_OF_MONTH);
 	}
 
+	public String firstDayDBDate(){
+		Calendar cal = new GregorianCalendar(this.year,this.month-1,1);
+		return CalendarUtil.dbDate(cal);
+	}
+
+	public String lastDayDBDate(){
+		Calendar cal = new GregorianCalendar(this.year,this.month-1,lastDay());
+		return CalendarUtil.dbDate(cal);
+	}
+
 	public boolean before(MonthYear that){
 		return this.compareTo(that)<0;
 	}
