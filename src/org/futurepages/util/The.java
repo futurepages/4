@@ -767,4 +767,22 @@ public class The {
 	public static String croppedText(String txt, int max, String endText) {
 		return (txt.length() <= max? txt : txt.substring(0,max)+endText);
 	}
+
+	public static String firstNonNull(String... array) {
+		for (String value: array){
+			if (value!=null){
+				return value;
+			}
+		}
+		return null;
+	}
+
+	public static String firstNonEmpty(String... array) {
+		for (String value: array){
+			if (!Is.empty(value)){
+				return value;
+			}
+		}
+		return null;
+	}
 }
