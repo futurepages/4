@@ -138,12 +138,13 @@ public class AppLogger implements ExceptionLogger{
 					}
 				}
 				logSB.append(logln(""));
-
-				logSB.append(logln(">[session-id] ", (req.getSession()!=null?req.getSession().getId():""), "; ",
-						"creation: ", BrazilDateUtil.viewDateTime(new Date(req.getSession().getCreationTime())), "; ",
-						"last access: ", BrazilDateUtil.viewDateTime(new Date(req.getSession().getLastAccessedTime())), "; ",
-						"max inative interval: ", String.valueOf(req.getSession().getMaxInactiveInterval() / 60), " minutes;"
-				));
+				if(req.getSession()!=null) {
+					logSB.append(logln(">[session-id] ", req.getSession().getId(), "; ",
+							"creation: ", BrazilDateUtil.viewDateTime(new Date(req.getSession().getCreationTime())), "; ",
+							"last access: ", BrazilDateUtil.viewDateTime(new Date(req.getSession().getLastAccessedTime())), "; ",
+							"max inative interval: ", String.valueOf(req.getSession().getMaxInactiveInterval() / 60), " minutes;"
+					));
+				}
 				logSB.append(log(">[session] "));
 				Enumeration ralist = req.getSession().getAttributeNames();
 				while (ralist.hasMoreElements()) {
