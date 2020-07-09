@@ -66,7 +66,12 @@ public class AppLogger implements ExceptionLogger{
 	}
 
 	public String silent(Throwable throwable, String... inputs) {
-		return execute(throwable, SILENT_EXCEPTION, null, mappedInputs(inputs));
+    	try{
+			return execute(throwable, SILENT_EXCEPTION, null, mappedInputs(inputs));
+	    }catch (Exception ex){
+    		ex.printStackTrace();
+    		return "";
+	    }
 	}
 
 	public String execute(Throwable throwable, Map mapInputs) {
