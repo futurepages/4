@@ -68,7 +68,7 @@ public class Is {
         if (urlStr != null) {
             return (urlStr.contains(".") || (!Is.empty(Apps.get("APP_HOST")) && urlStr.startsWith(Apps.get("APP_HOST"))))
 	            && ((urlStr.startsWith("http://") || urlStr.startsWith("https://") || urlStr.startsWith("HTTPS://") || urlStr.startsWith("HTTP://")))
-	            && !urlStr.contains(" ")
+	            &&  validStringKey(urlStr.split("/")[2], 3, 2048, true)
             ;
         } else {
             return false;
