@@ -401,10 +401,6 @@ public class The {
 
 	}
 
-	public static String strWihoutAccents(String str) {
-		return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
-	}
-
 	/**
 	 *
 	 * @param in objeto que deseja-se alterar
