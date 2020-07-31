@@ -803,7 +803,7 @@ public class The {
 						strings.get(index).concat(" " + truncateSign) :
 						strings.get(index).substring(0, truncateSize - 1).concat(" " + truncateSign);
 				list.add(str);
-			} else {
+			} else if(strings.size() == maxOfRows){
 				list.add(strings.get(index));
 			}
 		}
