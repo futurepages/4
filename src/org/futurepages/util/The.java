@@ -785,4 +785,59 @@ public class The {
 		}
 		return null;
 	}
+
+	public static List<String> splitBySize(String in, int size, int maxOfRows, String truncateSign) {
+		List<String> strings = splitBySize(in, size);
+		List<String> list = new ArrayList<>();
+		if (strings.size() > 0) {
+			for (int i = 0; i < maxOfRows - 1; i++) {
+				if (i >= strings.size()) {
+					break;
+				}
+				list.add(strings.get(i));
+			}
+			int index = maxOfRows - 1;
+			if (strings.size() > maxOfRows) {
+				int truncateSize = strings.get(index).length() - truncateSign.length();
+				String str = truncateSize < size ?
+						strings.get(index).concat(" " + truncateSign) :
+						strings.get(index).substring(0, truncateSize - 1).concat(" " + truncateSign);
+				list.add(str);
+			} else {
+				list.add(strings.get(index));
+			}
+		}
+
+		return list;
+	}
+
+	public static List<String> splitBySize(String in, int size) {
+		List<String> list = new ArrayList<>();
+		if (in == null || in.length() <= size) {
+			list.add(in);
+		} else {
+			int flag = 0;
+			while (flag < in.length()) {
+				int newSize = flag + size;
+				while (in.charAt(flag) == ' ') {
+					flag += 1;
+				}
+				if (flag + size >= in.length()) {
+					list.add(in.substring(flag));
+				} else {
+					if (in.charAt(newSize + 1) == ' ') {
+						list.add(in.substring(flag, newSize + 1));
+					} else {
+						while (in.charAt(newSize) != ' ') {
+							newSize -= 1;
+						}
+						list.add(in.substring(flag, newSize));
+					}
+				}
+				flag = newSize + 1;
+			}
+		}
+		return list;
+	}
+
 }
