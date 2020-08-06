@@ -150,20 +150,22 @@ public class AppLogger implements ExceptionLogger{
 							"max inative interval: ", String.valueOf(req.getSession().getMaxInactiveInterval() / 60), " minutes;"
 					));
 				}
-				logSB.append(log(">[session] "));
-				Enumeration ralist = req.getSession().getAttributeNames();
-				while (ralist.hasMoreElements()) {
-					String name = (String) ralist.nextElement();
-					String toStringValue = req.getSession().getAttribute(name).toString();
-					if(toStringValue.length()>200){
-						toStringValue = toStringValue.substring(0,197)+" (...)";
+				if(req.getSession()!=null){
+					logSB.append(log(">[session] "));
+					Enumeration ralist = req.getSession().getAttributeNames();
+					while (ralist.hasMoreElements()) {
+						String name = (String) ralist.nextElement();
+						String toStringValue = req.getSession().getAttribute(name).toString();
+						if(toStringValue.length()>200){
+							toStringValue = toStringValue.substring(0,197)+" (...)";
+						}
+						if(toStringValue.contains("\n")){
+							toStringValue = toStringValue.replaceAll("\\s+"," ");
+						}
+						logSB.append(log(name, ": '", toStringValue, "';"));
 					}
-					if(toStringValue.contains("\n")){
-						toStringValue = toStringValue.replaceAll("\\s+"," ");
-					}
-					logSB.append(log(name, ": '", toStringValue, "';"));
+					logSB.append(logln(""));
 				}
-				logSB.append(logln(""));
 
 				if (req.getCookies() != null) {
 					logSB.append(log(">[cookies]  (", req.getCookies().length, ") "));
