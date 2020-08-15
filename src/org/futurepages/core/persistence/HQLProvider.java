@@ -127,6 +127,10 @@ public class HQLProvider implements HQLable {
 		return new HQLField(concat(" DATE(", date, ")"));
 	}
 
+	public static HQLField length(String string) {
+		return new HQLField(concat(" LENGTH(", string, ")"));
+	}
+
 	public static HQLField weekDay(Calendar date) {
 		return new HQLField(concat(" WEEKDAY('", CalendarUtil.dbDateTime(date), "')"));
 	}
@@ -368,6 +372,10 @@ public class HQLProvider implements HQLable {
 		if (Is.empty(clause))
 			return "";
 		return concat(AND, "(", clause, ")");
+	}
+
+	public static String ors(List<String> clauses) {
+		return ors(CollectionUtil.toArray(clauses));
 	}
 
 	public static String ors(String... clauses) {
