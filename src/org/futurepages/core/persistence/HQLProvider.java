@@ -131,7 +131,7 @@ public class HQLProvider implements HQLable {
 		return new HQLField(concat(" LENGTH(", string, ")"));
 	}
 
-	public static HQLField strReplace(String string, String target, String replacement) {
+	public static HQLField replace(String string, String target, String replacement) {
 		return new HQLField(concat(" REPLACE(", string, ",", HQLUtil.escQuotesAndSlashes(target), ", ",HQLUtil.escQuotesAndSlashes(replacement),")"));
 	}
 
