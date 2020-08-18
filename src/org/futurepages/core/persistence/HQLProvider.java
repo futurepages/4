@@ -131,6 +131,10 @@ public class HQLProvider implements HQLable {
 		return new HQLField(concat(" LENGTH(", string, ")"));
 	}
 
+	public static HQLField strReplace(String string, String target, String replacement) {
+		return new HQLField(concat(" REPLACE(", string, ",", HQLUtil.escQuotesAndSlashes(target), ", ",HQLUtil.escQuotesAndSlashes(replacement),")"));
+	}
+
 	public static HQLField weekDay(Calendar date) {
 		return new HQLField(concat(" WEEKDAY('", CalendarUtil.dbDateTime(date), "')"));
 	}
