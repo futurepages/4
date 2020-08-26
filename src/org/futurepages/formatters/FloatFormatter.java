@@ -22,4 +22,8 @@ public class FloatFormatter extends AbstractFormatter{
         DecimalFormat df = new DecimalFormat(param);
         return df.format(value);
 	}
+
+	public static String to(Object obj){
+		return (new FloatFormatter()).format(obj);
+	}
 }
