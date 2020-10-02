@@ -3,6 +3,7 @@ package org.futurepages.core.path;
 import org.futurepages.core.config.Apps;
 import javax.servlet.http.HttpServletRequest;
 
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.menta.core.control.Controller;
 import org.futurepages.util.The;
 
@@ -15,7 +16,14 @@ public class Paths {
 
 
 	public static Paths getInstance(){
-		Paths instance = Controller.getInstance().getPaths();
+		Paths instance = null;
+		try{
+			instance = Controller.getInstance().getPaths();
+		}catch (Exception e){
+			if(!Apps.isTrue("DISABLE_CONTROLLER")){
+				AppLogger.getInstance().execute(e);
+			}
+		}
 		if(instance==null){
 			return getStatic();
 		}else {
