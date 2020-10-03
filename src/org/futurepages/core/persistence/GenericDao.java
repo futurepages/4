@@ -224,11 +224,11 @@ public class GenericDao extends HQLProvider {
 		return (List<R>) query.list();
 	}
 
-	public <T> List<T> topList(int topSize, HQLQuery<T> hqlQuery, Class<T> resultClass) {
+	public <T,R> List<R> topList(int topSize, HQLQuery<T> hqlQuery, Class<R> resultClass) {
 		Query query = selectQuery(hqlQuery);
 		query.setMaxResults(topSize);
 		query.setResultTransformer(new AliasToBeanResultTransformer(resultClass));
-		return (List<T>) query.list();
+		return (List<R>) query.list();
 
 	}
 
@@ -282,6 +282,21 @@ public class GenericDao extends HQLProvider {
 
 	public <T extends Serializable> T getFirst(HQLQuery<T> hqlQuery) {
 		List<T> objs = topList(1, hqlQuery);
+		if(objs.size()>0){
+			return objs.get(0);
+		}
+		return null;
+	}
+
+	public <T,R> R getFirst(HQLQuery<T> hqlQuery, Class<R> resultClass) {
+		Query query = selectQuery(hqlQuery);
+		try {
+			query.setResultTransformer(new AliasToBeanConstructorResultTransformer(resultClass.getConstructor(hqlQuery.getEntity())));
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
+		List<R> objs = topList(1, hqlQuery, resultClass);
+
 		if(objs.size()>0){
 			return objs.get(0);
 		}
