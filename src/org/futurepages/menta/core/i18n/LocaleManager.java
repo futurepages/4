@@ -37,6 +37,10 @@ public class LocaleManager {
 //	private static long SCAN_TIME = 1000 * 60 * 5;
 	private static final Map<String, SimpleDateFormat> simpleDateFormatters = new HashMap<String, SimpleDateFormat>();
 
+	public static void addDefault() {
+		LocaleManager.add(new Locale("pt","BR"));
+	}
+
 	static {
 
 		setDateMask(new Locale("en"), "MM/dd/yyyy");

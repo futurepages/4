@@ -2,27 +2,7 @@ package org.futurepages.menta.core;
 
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.AppLogger;
-import org.futurepages.formatters.CapitalizeFormatter;
-import org.futurepages.formatters.DBDateFormatter;
-import org.futurepages.formatters.HTMLScriptFormatter;
-import org.futurepages.formatters.PhoneFormatter;
-import org.futurepages.formatters.brazil.AnniversaryAbbrFormatter;
-import org.futurepages.formatters.brazil.AnniversaryFormatter;
-import org.futurepages.formatters.brazil.CPFCNPJFormatter;
-import org.futurepages.formatters.brazil.DateFormatter;
-import org.futurepages.formatters.brazil.DateTimeFormatter;
-import org.futurepages.formatters.brazil.ElapsedTimeFormatter;
-import org.futurepages.formatters.brazil.FullDateTimeFormatter;
-import org.futurepages.formatters.brazil.LiteralAnniversaryFormatter;
-import org.futurepages.formatters.brazil.LiteralDateFormatter;
-import org.futurepages.formatters.brazil.LiteralDateTimeFormatter;
-import org.futurepages.formatters.brazil.LiteralDayOfWeekFormatter;
-import org.futurepages.formatters.brazil.MoneyFormatter;
-import org.futurepages.formatters.brazil.MonthFormatter;
-import org.futurepages.formatters.brazil.RemainingTimeFormatter;
-import org.futurepages.formatters.brazil.SimpleElapsedTimeFormatter;
-import org.futurepages.formatters.brazil.SimpleLiteralDateFormatter;
-import org.futurepages.formatters.brazil.SmartTextFormatter;
+import org.futurepages.core.persistence.HibernateManager;
 import org.futurepages.menta.consequences.NullConsequence;
 import org.futurepages.menta.consequences.StringConsequence;
 import org.futurepages.menta.core.context.Context;
@@ -34,21 +14,6 @@ import org.futurepages.menta.filters.ExceptionFilter;
 import org.futurepages.menta.filters.FileUploadFilter;
 import org.futurepages.menta.filters.HeadTitleFilter;
 import org.futurepages.menta.filters.HibernateFilter;
-import org.futurepages.core.persistence.HibernateManager;
-import org.futurepages.formatters.BigLongFormatter;
-import org.futurepages.formatters.CollapsedTextFormatter;
-import org.futurepages.formatters.CollectionSizeFormatter;
-import org.futurepages.formatters.ExtensionFileNameFormatter;
-import org.futurepages.formatters.FloatFormatter;
-import org.futurepages.formatters.HTMLFormatter;
-import org.futurepages.formatters.JavascriptFormatter;
-import org.futurepages.formatters.NoSpecialsFormatter;
-import org.futurepages.formatters.PoorTextFormatter;
-import org.futurepages.formatters.SEOURLFormatter;
-import org.futurepages.formatters.TextAreaFormatter;
-import org.futurepages.formatters.TimeFormatter;
-import org.futurepages.formatters.UpperCaseFormatter;
-import org.futurepages.formatters.UrlFormatter;
 import org.futurepages.menta.filters.InjectionFilter;
 import org.futurepages.menta.json.JSONGenericRenderer;
 import org.futurepages.util.Is;
@@ -108,48 +73,12 @@ public class InitManager extends AbstractApplicationManager{
     @Override
     public void loadLocales(){
          //Por enquanto o futurepages não contempla internacionalização.
-         LocaleManager.add(new Locale("pt","BR"));
+         LocaleManager.addDefault();
     }
     
     @Override
     public void loadFormatters() {
-        FormatterManager.addFormatter("anniversary", new AnniversaryFormatter());
-        FormatterManager.addFormatter("anniversaryAbbr", new AnniversaryAbbrFormatter());
-        FormatterManager.addFormatter("bigLong", new BigLongFormatter());
-        FormatterManager.addFormatter("capitalize", new CapitalizeFormatter());
-        FormatterManager.addFormatter("collectionSize", new CollectionSizeFormatter());
-		FormatterManager.addFormatter("collapsedText", new CollapsedTextFormatter());
-        FormatterManager.addFormatter("cpfCnpj", new CPFCNPJFormatter());
-        FormatterManager.addFormatter("date", new DateFormatter());
-        FormatterManager.addFormatter("dbDate", new DBDateFormatter());
-        FormatterManager.addFormatter("dateTime", new DateTimeFormatter());
-        FormatterManager.addFormatter("elapsedTime", new ElapsedTimeFormatter());
-        FormatterManager.addFormatter("extensionFileName", new ExtensionFileNameFormatter());
-        FormatterManager.addFormatter("float", new FloatFormatter());
-        FormatterManager.addFormatter("fullDate", new FullDateTimeFormatter(false));
-        FormatterManager.addFormatter("fullDateTime", new FullDateTimeFormatter(true));
-        FormatterManager.addFormatter("fullDateLiteral", new FullDateTimeFormatter(false, true));
-        FormatterManager.addFormatter("html", new HTMLFormatter());
-        FormatterManager.addFormatter("phone", new PhoneFormatter());
-        FormatterManager.addFormatter("htmlScript", new HTMLScriptFormatter());
-        FormatterManager.addFormatter("javascript", new JavascriptFormatter());
-        FormatterManager.addFormatter("literalDate", new LiteralDateFormatter());
-        FormatterManager.addFormatter("literalDateTime", new LiteralDateTimeFormatter());
-        FormatterManager.addFormatter("literalDayOfWeek", new LiteralDayOfWeekFormatter());
-        FormatterManager.addFormatter("literalAnniversary", new LiteralAnniversaryFormatter());
-        FormatterManager.addFormatter("money", new MoneyFormatter());
-        FormatterManager.addFormatter("month", new MonthFormatter());
-        FormatterManager.addFormatter("noSpecials", new NoSpecialsFormatter());
-        FormatterManager.addFormatter("poorText", new PoorTextFormatter());
-        FormatterManager.addFormatter("remainingTime", new RemainingTimeFormatter());
-        FormatterManager.addFormatter("seoURL", new SEOURLFormatter());
-        FormatterManager.addFormatter("simpleElapsedTime", new SimpleElapsedTimeFormatter());
-        FormatterManager.addFormatter("simpleLiteralDate", new SimpleLiteralDateFormatter());
-        FormatterManager.addFormatter("smartText", new SmartTextFormatter());
-        FormatterManager.addFormatter("textarea", new TextAreaFormatter());
-        FormatterManager.addFormatter("time", new TimeFormatter());
-        FormatterManager.addFormatter("uppercase", new UpperCaseFormatter());
-		FormatterManager.addFormatter("url", new UrlFormatter());
+        FormatterManager.loadDefaults();
     }
 
 	@Override
