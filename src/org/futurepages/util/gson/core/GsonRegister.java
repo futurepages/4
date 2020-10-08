@@ -2,25 +2,21 @@ package org.futurepages.util.gson.core;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.Is;
 
-public abstract class GsonRegister<T extends Object> {
+import java.lang.reflect.Type;
 
-	private Class<T> typeClass;
-	private boolean number;
+public abstract class GsonRegister <T> {
 
-	public GsonRegister(Class<T> typeClass, GsonBuilder gb){
-		this.typeClass = typeClass;
-		if(  Number.class.isAssignableFrom(typeClass)){
-			number = true;
-		}
-		registerFor(gb);
+	public GsonRegister(Class<T> typeClass, GsonBuilder gb, boolean defineToJson){
+		registerFor(gb, typeClass, defineToJson);
 	}
 
-	public void registerFor(GsonBuilder gb){
+	public void registerFor(GsonBuilder gb, Class<T> typeClass, boolean defineToJson){
 		gb.registerTypeAdapter(typeClass, (JsonDeserializer<T>) (json, typeOfT, context) -> {
 			try {
 				String jsonStr = json.getAsString();
@@ -32,23 +28,23 @@ public abstract class GsonRegister<T extends Object> {
 			}
 			return null;
 		});
-		gb.registerTypeHierarchyAdapter(typeClass, (JsonSerializer<T>) (data, typeOft, context) -> {
-			try {
-				if(data!=null){
-					if(number){
-						return new JsonPrimitive((Number) data);
-					}else{
-						return new JsonPrimitive(toJson(data));
+		if(defineToJson){
+			gb.registerTypeHierarchyAdapter(typeClass, (JsonSerializer<T>) (data, typeOft, context) -> {
+				try {
+					if(data!=null){
+						return toJson(data,typeOft, context);
 					}
+				}catch (Exception e) {
+					AppLogger.getInstance().execute(e);
 				}
-			}catch (Exception e) {
-				AppLogger.getInstance().execute(e);
-			}
-			return null;
-		});
+				return null;
+			});
+		}
 	}
 
 	public abstract T fromJson(String jsonStr);
 
-	public abstract String toJson(T data);
+	public JsonElement toJson(T data, Type type, JsonSerializationContext context){
+		throw new RuntimeException("You need to implement this method in the subclass");
+	}
 }
