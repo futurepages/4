@@ -18,8 +18,6 @@ import org.futurepages.menta.filters.InjectionFilter;
 import org.futurepages.menta.json.JSONGenericRenderer;
 import org.futurepages.util.Is;
 
-import java.util.Locale;
-
 /**
  * ApplicationManager que gerencia a Ação Inicial e os filtros Globais
  * Carrega a Action Inicial da Aplicação
@@ -83,6 +81,6 @@ public class InitManager extends AbstractApplicationManager{
 
 	@Override
 	public void init(Context application) {
-		application.setAttribute("params", Apps.getInstance().getParamsMap());
+    	application.setAttribute("params", Apps.getInstance().getParamsMap());
 	}
 }

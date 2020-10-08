@@ -1,7 +1,12 @@
 package org.futurepages.jersey.filters;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.apache.commons.io.IOUtils;
+import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.AppLogger;
+import org.futurepages.util.gson.GsonWithCalendarDateTime;
+import org.futurepages.util.gson.GsonWithDecimals;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -25,6 +30,21 @@ import java.lang.reflect.Type;
 public class JsonWithGsonMapper implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
   private static final String UTF_8 = "UTF-8";
 
+	public static final Gson GSON = buildGsonAdapter();
+
+	private static Gson buildGsonAdapter() {
+		if(Apps.isTrue("NEW_JERSEY_MODE")){
+			GsonBuilder gb = new GsonBuilder();
+			GsonWithCalendarDateTime.registerFor(gb);
+			GsonWithDecimals.registerFor(gb);
+			if(Apps.devMode()){
+				gb.setPrettyPrinting();
+			}
+			return gb.create();
+		}
+		return new Gson();
+	}
+
     @Override
     public boolean isReadable(Class<?> type, Type genericType,
             java.lang.annotation.Annotation[] annotations, MediaType mediaType) {
@@ -37,10 +57,12 @@ public class JsonWithGsonMapper implements MessageBodyReader<Object>, MessageBod
             MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
             throws IOException {
 	        InputStreamReader streamReader = new InputStreamReader(entityStream, UTF_8);
+	    String json = null;
 	    try {
-		    return new Gson().fromJson(streamReader, genericType);
+		    json = IOUtils.toString(streamReader);
+		    return GSON.fromJson(json, genericType);
 	    } catch (com.google.gson.JsonSyntaxException e) {
-		    AppLogger.getInstance().silent(e);
+		    AppLogger.getInstance().silent(e,json);
 	    } finally {
 		    streamReader.close();
 	    }
@@ -67,7 +89,7 @@ public class JsonWithGsonMapper implements MessageBodyReader<Object>, MessageBod
 
 	    OutputStreamWriter writer = new OutputStreamWriter(entityStream, UTF_8);
 		try {
-		    new Gson().toJson(object, genericType, writer);
+		    GSON.toJson(object, genericType, writer);
 	    } finally {
 		    writer.close();
 	    }

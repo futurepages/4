@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 
 import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.The;
+import org.futurepages.util.brazil.enums.MonthEnum;
 
 /**
  * @author Leandro Santana
@@ -27,6 +28,15 @@ public class MonthYear implements Comparable<MonthYear> {
 		String[] montYearStrParts = monthYearStr.split("/");
 		this.year = Integer.parseInt(montYearStrParts[0]);
 		this.month = Integer.parseInt(montYearStrParts[1]);
+	}
+
+	public MonthYear(Calendar calendar) {
+		this.year = calendar.get(Calendar.YEAR);
+		this.month = calendar.get(Calendar.MONTH)+1;
+	}
+
+	public String getLabel(){
+		return The.capitalizedWord(MonthEnum.get(month).toLowerCase())+" de "+year;
 	}
 
 	public int getMonth() {

@@ -1,5 +1,7 @@
 package org.futurepages.jersey.actions;
 
+import org.futurepages.jersey.core.responses.Error;
+import org.futurepages.jersey.core.responses.Success;
 import org.futurepages.menta.actions.NullAction;
 import org.futurepages.menta.consequences.Forward;
 import org.futurepages.menta.core.action.Action;
@@ -64,6 +66,14 @@ public class JerseyAction {
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public Success success(Object obj){
+		return new Success(obj);
+	}
+
+	public Error error(String... msgs){
+		return new Error(msgs);
 	}
 
 
