@@ -1,10 +1,11 @@
 package org.futurepages.util;
 
 import org.futurepages.core.locale.NewLocaleManager;
-import org.futurepages.util.iterator.months.MonthYear;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -382,16 +383,32 @@ public class CalendarUtil {
 				calendar.get(Calendar.SECOND));
 	}
 
+//  Retorna quantidade de meses baseado no dia...
+//          d1          d2          resultado
+//			31/03/2020	30/04/2020	0
+//			28/02/2020	28/03/2020	1
+//			01/01/2020	31/01/2020	0
+//			29/02/2020	28/04/2020	1
+//			29/02/2020	29/03/2020	1
+//			30/01/2010	20/04/2010	2
+//			30/01/2012	30/01/2013	12
+//			30/01/2012	28/02/2013	12
+//			30/01/2012	28/07/2013	17
+//			31/01/2012	28/07/2013	17
+//			31/03/2012	30/04/2012	0
+//			30/04/2012	31/05/2012	1
+//			30/04/2012	30/05/2012	1
+//           ------------------------
+//	        https://docs.google.com/spreadsheets/d/1dCbyK16NLLsY0hlaTwzhyf06yXowmTg5h38V86eAMxw/edit?ts=5f68bc43#gid=1456225641
+//          para testar: System.out.println(CalendarUtil.getDifferenceInMonths(BrazilCalendarUtil.viewDateTime(d1), BrazilCalendarUtil.viewDateTime(d2)));
+//          fun("30/04/2012","30/05/2012");
 	public static int getDifferenceInMonths(Calendar date1, Calendar date2) {
-		int[] elapsed = getElapsedTime(date1, date2);
-		return (12 * elapsed[0] + elapsed[1] + ((elapsed[2] > 0 || elapsed[3] > 0 || elapsed[4] > 0) ? 1 : 0));
-	}
-
-	public static int getDifferenceInMonths(MonthYear mYearIni, MonthYear mYearFim) {
-		Calendar calIni = new GregorianCalendar(mYearIni.getYear(), mYearIni.getMonth() - 1, 1);
-		Calendar calFim = new GregorianCalendar(mYearFim.getYear(), mYearFim.getMonth() - 1, 1);
-		return getDifferenceInMonths(calIni, calFim);
-
+		LocalDate d1 = LocalDate.of( date1.get(Calendar.YEAR), date1.get(Calendar.MONTH)+1, date1.get(Calendar.DAY_OF_MONTH));
+		LocalDate d2 = LocalDate.of( date2.get(Calendar.YEAR), date2.get(Calendar.MONTH)+1, date2.get(Calendar.DAY_OF_MONTH));
+		Period age = Period.between(d1, d2);
+		return age.getYears()*12 + age.getMonths();
+		//TODO: Antigamente era assim... (aqui para lembrar, caso dê algum bug - se passar muito tempo desde este commit, apagar)
+//		return (12 * elapsed[0] + elapsed[1] + ((elapsed[2] > 0 || elapsed[3] > 0 || elapsed[4] > 0) ? 1 : 0));
 	}
 
 	/**
@@ -405,7 +422,7 @@ public class CalendarUtil {
 		return buildDate(now());
 	}
 
-    public static class TooBigDateException extends Exception {
+	public static class TooBigDateException extends Exception {
 	}
 
 	public static boolean isToday(Calendar cal) {
