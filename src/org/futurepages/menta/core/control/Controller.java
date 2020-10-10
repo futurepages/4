@@ -23,6 +23,7 @@ import org.futurepages.menta.core.input.PrettyGlobalURLRequestInput;
 import org.futurepages.menta.core.input.PrettyURLRequestInput;
 import org.futurepages.menta.core.output.ResponseOutput;
 import org.futurepages.menta.exceptions.PageNotFoundException;
+import org.futurepages.menta.exceptions.ServletUserException;
 import org.futurepages.menta.filters.ConsequenceCallbackFilter;
 import org.futurepages.menta.filters.ExceptionFilter;
 import org.futurepages.menta.filters.GlobalFilterFreeFilter;
@@ -317,8 +318,13 @@ public class Controller extends HttpServlet {
 			conseqExecuted = true;
 		} catch (Exception e) {
 			Throwable cause = getRootCause(e);
-			res.sendError(500);
-			throw new ServletException("Exception while invoking action " + actionName + ": " + e.getMessage() + " / " + e.getClass().getName() + " / " + cause.getMessage() + " / " + cause.getClass().getName(), cause);
+			if(e instanceof  ServletUserException){
+				res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				res.getWriter().print(e.getMessage());
+			}else{
+				res.sendError(500);
+				throw new ServletException("Exception while invoking action " + actionName + ": " + e.getMessage() + " / " + e.getClass().getName() + " / " + cause.getMessage() + " / " + cause.getClass().getName(), cause);
+			}
 		} finally {
 			/*
 			 * Here we check all filters that were executed together with the
