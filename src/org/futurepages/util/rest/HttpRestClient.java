@@ -74,6 +74,11 @@ public abstract class HttpRestClient {
         return doRequest("GET", path, null, type, "application/json");
     }
 
+    public <T> T get(String path, Object obj, Class<T> type) {
+        return doRequest("GET", path, obj, type, "application/json");
+    }
+
+
     public <T> T delete(String path, Class<T> type) {
         return doRequest("DELETE", path, null, type, "application/json");
     }

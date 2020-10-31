@@ -23,6 +23,7 @@ public class HtmlStripper {
 
 	//somente o texto sem as tags html é coletado
 	public String poorText() {
+		strippedHtml = strippedHtml.replaceAll("&nbsp;", " ");
 		strippedHtml = strippedHtml.replaceAll("<", " <");
 		strippedHtml = strippedHtml.replaceAll(">", "> ");
 		strippedHtml = strippedHtml.replaceAll(HtmlRegex.tagsPattern(true), "");
