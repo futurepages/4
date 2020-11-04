@@ -131,6 +131,16 @@ public class GenericDao extends HQLProvider {
 			field.setAccessible(true);
 			return (Serializable) field.get(obj);
 		} catch (Exception e) {
+			if(obj.getClass().getSuperclass()!=Object.class){
+				Field field = null;
+				try {
+					field = obj.getClass().getSuperclass().getDeclaredField(getIdName(obj.getClass().getSuperclass()));
+					field.setAccessible(true);
+					return (Serializable) field.get(obj);
+				} catch (NoSuchFieldException | IllegalAccessException e2) {
+					throw new RuntimeException(e2);
+				}
+			}
 			throw new RuntimeException(e);
 		}
 	}
