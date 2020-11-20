@@ -75,4 +75,45 @@ public class CNPJUtil {
 
         return str_cnpj.equals(cnpj_calc);
     }
+
+	public static String calcDigitoVerificador(String cnpj_calc) {
+
+		char[] chr_cnpj = (cnpj_calc+"_").toCharArray();
+		int soma = 0;
+		/* Primeira parte */
+		for (int i = 0; i < 4; i++) {
+			if (chr_cnpj[i] - 48 >= 0 && chr_cnpj[i] - 48 <= 9) {
+				soma += (chr_cnpj[i] - 48) * (6 - (i + 1));
+			}
+		}
+		for (int i = 0; i < 8; i++) {
+			if (chr_cnpj[i + 4] - 48 >= 0 && chr_cnpj[i + 4] - 48 <= 9) {
+				soma += (chr_cnpj[i + 4] - 48) * (10 - (i + 1));
+			}
+		}
+		int dig = 11 - (soma % 11);
+		chr_cnpj[12] = (""+dig).charAt(0);
+		String dv = (dig == 10 || dig == 11) ? "0" : Integer.toString(dig);
+
+		/* Segunda parte */
+		soma = 0;
+		for (int i = 0; i < 5; i++) {
+			if (chr_cnpj[i] - 48 >= 0 && chr_cnpj[i] - 48 <= 9) {
+				soma += (chr_cnpj[i] - 48) * (7 - (i + 1));
+			}
+		}
+		for (int i = 0; i < 8; i++) {
+			if (chr_cnpj[i + 5] - 48 >= 0 && chr_cnpj[i + 5] - 48 <= 9) {
+				soma += (chr_cnpj[i + 5] - 48) * (10 - (i + 1));
+			}
+		}
+		dig = 11 - (soma % 11);
+		dv += (dig == 10 || dig == 11) ? "0" : Integer.toString(dig);
+
+		return dv;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(calcDigitoVerificador("286598460001"));
+	}
 }
