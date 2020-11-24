@@ -10,6 +10,7 @@ import org.futurepages.formatters.ExtensionFileNameFormatter;
 import org.futurepages.formatters.FloatFormatter;
 import org.futurepages.formatters.HTMLFormatter;
 import org.futurepages.formatters.HTMLScriptFormatter;
+import org.futurepages.formatters.JSONFormatter;
 import org.futurepages.formatters.JavascriptFormatter;
 import org.futurepages.formatters.NoSpecialsFormatter;
 import org.futurepages.formatters.PhoneFormatter;
@@ -122,5 +123,6 @@ public class FormatterManager {
 		addFormatter("time", new TimeFormatter());
 		addFormatter("uppercase", new UpperCaseFormatter());
 		addFormatter("url", new UrlFormatter());
+		addFormatter("json", new JSONFormatter());
 	}
 }
