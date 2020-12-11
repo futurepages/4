@@ -11,7 +11,8 @@ import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.consequence.Consequence;
 import org.futurepages.menta.core.control.InvocationChain;
 import org.futurepages.menta.core.filter.AfterConsequenceFilter;
-import org.futurepages.menta.exceptions.PageNotFoundException;
+import org.futurepages.menta.exceptions.NotFoundException;
+import org.futurepages.menta.exceptions.NotFoundServletException;
 import org.hibernate.TransactionException;
 
 import java.lang.reflect.Method;
@@ -41,6 +42,10 @@ public class HibernateFilter implements AfterConsequenceFilter {
 			return result;
 			
 		} catch (Throwable throwable) {
+			if(throwable instanceof NotFoundException ||
+			  (throwable.getCause()!=null && throwable.getCause() instanceof  NotFoundException)){
+				return NOT_FOUND;
+			}
 			return ExceptionFilter.treatedException(chain, throwable);
 		} finally {
 			if (isTransactionActive(isMultiTransactional)) {
@@ -79,11 +84,11 @@ public class HibernateFilter implements AfterConsequenceFilter {
 	 * <br>true: se a Classe ou o método estiverem anotados com {@link Transactional} o métoro retornará true.
 	 * <br>false: se o método estiver anotado com {@link Transactional} e {@link NonTransactional} simultaneamente
 	 */
-	protected boolean isTransactional(InvocationChain chain) throws PageNotFoundException {
+	protected boolean isTransactional(InvocationChain chain) throws NotFoundServletException {
 		boolean result;
 		Method method = chain.getMethod();
 		if(method == null){
-			throw new PageNotFoundException("Inner action '"+chain.getInnerAction()+"' for action '"+chain.getActionName()+"' not found.");
+			throw new NotFoundServletException("Inner action '"+chain.getInnerAction()+"' for action '"+chain.getActionName()+"' not found.");
 		}
 		boolean metodoNaoTransacional = method.isAnnotationPresent(NonTransactional.class);
 		if(metodoNaoTransacional){
@@ -98,11 +103,11 @@ public class HibernateFilter implements AfterConsequenceFilter {
 		return result;
 	}
 
-	private boolean isMultiTransactional(InvocationChain chain) throws PageNotFoundException {
+	private boolean isMultiTransactional(InvocationChain chain) throws NotFoundServletException {
 		boolean result;
 		Method method = chain.getMethod();
 		if(method == null){
-			throw new PageNotFoundException("Inner action '"+chain.getInnerAction()+"' for action '"+chain.getActionName()+"' not found.");
+			throw new NotFoundServletException("Inner action '"+chain.getInnerAction()+"' for action '"+chain.getActionName()+"' not found.");
 		}
 		boolean metodoNaoTransacional = method.isAnnotationPresent(NonTransactional.class);
 		if(metodoNaoTransacional){

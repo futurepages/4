@@ -22,7 +22,7 @@ import org.futurepages.menta.core.i18n.LocaleManager;
 import org.futurepages.menta.core.input.PrettyGlobalURLRequestInput;
 import org.futurepages.menta.core.input.PrettyURLRequestInput;
 import org.futurepages.menta.core.output.ResponseOutput;
-import org.futurepages.menta.exceptions.PageNotFoundException;
+import org.futurepages.menta.exceptions.NotFoundServletException;
 import org.futurepages.menta.exceptions.ServletUserException;
 import org.futurepages.menta.filters.ConsequenceCallbackFilter;
 import org.futurepages.menta.filters.ExceptionFilter;
@@ -241,7 +241,7 @@ public class Controller extends HttpServlet {
 			}
 		} catch (Exception ex) {
 			ExceptionFilter.Logger.getInstance().execute(ex, getChain(), req, true);
-			if((ex instanceof PageNotFoundException) || (ex.getCause()!=null && ex.getCause() instanceof PageNotFoundException)){
+			if((ex instanceof NotFoundServletException) || (ex.getCause()!=null && ex.getCause() instanceof NotFoundServletException)){
 				res.sendError(HttpServletResponse.SC_NOT_FOUND);
 			}
 		} finally {
@@ -293,7 +293,7 @@ public class Controller extends HttpServlet {
 			if (AbstractApplicationManager.getDefaultAction() != null) {
 				ac = AbstractApplicationManager.getDefaultAction();
 			} else {
-				throw new PageNotFoundException("Could not find the action for actionName: " + actionName + (innerAction != null ? "." + innerAction : ""));
+				throw new NotFoundServletException("Could not find the action for actionName: " + actionName + (innerAction != null ? "." + innerAction : ""));
 			}
 		}
 

@@ -7,7 +7,7 @@ import org.futurepages.menta.consequences.Forward;
 import org.futurepages.menta.core.action.AbstractAction;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.control.Controller;
-import org.futurepages.menta.exceptions.PageNotFoundException;
+import org.futurepages.menta.exceptions.NotFoundServletException;
 import org.futurepages.util.DateUtil;
 import org.futurepages.util.EncodingUtil;
 import org.futurepages.util.Security;
@@ -84,7 +84,7 @@ public class AppLogger implements ExceptionLogger{
 
 	public String execute(Throwable throwable, ExceptionLogType logType, HttpServletRequest req, Map mapInputs) {
 
-		logType = (throwable instanceof PageNotFoundException)  ? ExceptionLogType.NOT_FOUND : logType;
+		logType = (throwable instanceof NotFoundServletException)  ? ExceptionLogType.NOT_FOUND : logType;
 
 		String failNumber = System.currentTimeMillis()+"-"+Thread.currentThread().getId();
 
