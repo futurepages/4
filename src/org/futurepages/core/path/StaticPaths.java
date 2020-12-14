@@ -28,7 +28,7 @@ public class StaticPaths extends Paths {
 
 	public StaticPaths(HttpServletRequest req) {
 		if(req!=null){
-			String requestedHost = The.concat("https://",req.getHeader("Host"));
+			String requestedHost = The.concat(Apps.get("DEFAULT_SCHEME"),"://",req.getHeader("Host"));
 			if(!requestedHost.equals(Apps.get("APP_HOST")) && !Is.empty(Apps.get("ALTERNATIVE_DOMAINS"))){
 				if(Apps.get("ALTERNATIVE_DOMAINS").matches(The.concat(".*\\b"+req.getHeader("Host")+"\\b.*"))){
 					this.hostPath = requestedHost;

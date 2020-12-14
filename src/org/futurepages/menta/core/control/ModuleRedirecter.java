@@ -1,5 +1,6 @@
 package org.futurepages.menta.core.control;
 
+import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.menta.consequences.Redirect;
 import org.futurepages.util.Is;
@@ -53,7 +54,7 @@ public class ModuleRedirecter extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String url = req.getRequestURL().toString();
 		try {
-			String urlInit = The.concat(req.getScheme(), "://", req.getHeader("host"), req.getContextPath(), "");
+			String urlInit = The.concat(Apps.get("DEFAULT_SCHEME"), "://", req.getHeader("host"), req.getContextPath(), "");
 
 			String newUrl = req.getRequestURL().toString().replace(urlInit, "");
 			String[] urlParts = newUrl.split("/");

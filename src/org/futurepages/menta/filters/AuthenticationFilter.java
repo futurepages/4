@@ -1,6 +1,7 @@
 package org.futurepages.menta.filters;
 
 import org.futurepages.core.config.Apps;
+import org.futurepages.core.path.Paths;
 import org.futurepages.menta.actions.LoginAction;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.action.AsynchronousManager;
@@ -120,8 +121,7 @@ public class AuthenticationFilter implements Filter {
 
 	private String getDomain(HttpServletRequest req) {
 		StringBuilder sb = new StringBuilder();
-
-		sb.append(req.getScheme()).append("://").append(req.getServerName());
+		sb.append(Apps.get("DEFAULT_SCHEME")).append("://").append(req.getServerName());
 
 		if (!Is.empty(req.getServerPort())) {
 			sb.append(":").append(req.getServerPort());
@@ -133,7 +133,7 @@ public class AuthenticationFilter implements Filter {
 	private String getURIRedirect(HttpServletRequest req) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(req.getContextPath()).append(urlRedirect).append("?").append(nextVarName).append("=").append(EncodingUtil.encodeUrl(req.getRequestURI()));
+		sb.append(Paths.getInstance().getContext(req)).append(urlRedirect).append("?").append(nextVarName).append("=").append(EncodingUtil.encodeUrl(req.getRequestURI()));
 
 		if (!Is.empty(req.getQueryString())) {
 			sb.append(EncodingUtil.encodeUrl("?" + req.getQueryString()));

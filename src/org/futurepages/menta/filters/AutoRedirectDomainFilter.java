@@ -52,7 +52,7 @@ public class AutoRedirectDomainFilter implements Filter {
 
 	private String changeDomain(HttpServletRequest request){
 		StringBuilder newUrl = new StringBuilder();
-		newUrl.append(request.getScheme()).append("://").append(this.mainDomain);
+		newUrl.append(Apps.get("DEFAULT_SCHEME")).append("://").append(this.mainDomain);
 		//nao descomentar, erroneamente estava encaminhando a porta para a nova url, acontece que a porta deve vim no parametro da url nova.
 		//newUrl.append(request.getLocalPort()!=80 && request.getLocalPort()!=443 ? ":"+request.getLocalPort() : "" );
 		if(!request.getRequestURI().equals("/"+ Apps.get("START_PAGE_NAME"))){

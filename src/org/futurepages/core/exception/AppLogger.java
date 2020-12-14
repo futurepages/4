@@ -167,12 +167,17 @@ public class AppLogger implements ExceptionLogger{
 					logSB.append(logln(""));
 				}
 
-				if (req.getCookies() != null) {
-					logSB.append(log(">[cookies]  (", req.getCookies().length, ") "));
-					for (Cookie cookie : req.getCookies()) {
-						logSB.append(log(cookie.getName(), ": '", EncodingUtil.decodeUrl(cookie.getValue()), "'; "));
+				try{
+					if (req.getCookies() != null) {
+						logSB.append(log(">[cookies]  (", req.getCookies().length, ") "));
+						for (Cookie cookie : req.getCookies()) {
+							logSB.append(log(cookie.getName(), ": '", EncodingUtil.decodeUrl(cookie.getValue()), "'; "));
+						}
+						logSB.append(logln(""));
 					}
-					logSB.append(logln(""));
+				}catch (Exception ex){
+						logSB.append(log(">[cookies]  ????????????????????? "));
+						logSB.append(logln(""));
 				}
 			}
 		} else{

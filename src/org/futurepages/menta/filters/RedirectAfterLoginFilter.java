@@ -148,7 +148,7 @@ public class RedirectAfterLoginFilter implements Filter {
 	private String getDomain(HttpServletRequest req) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(req.getScheme()).append("://").append(req.getServerName());
+		sb.append(Apps.get("DEFAULT_SCHEME")).append("://").append(req.getServerName());
 
 		if (!Is.empty(req.getServerPort())) {
 			sb.append(":").append(req.getServerPort());

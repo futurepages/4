@@ -1,5 +1,7 @@
 package org.futurepages.menta.consequences;
 
+import org.futurepages.core.config.Apps;
+import org.futurepages.core.path.Paths;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.consequence.Consequence;
 import org.futurepages.menta.core.output.Output;
@@ -122,7 +124,7 @@ public class Redirect implements Consequence {
 			if (theURL == null || theURL.length() == 0) {
 				throw new ConsequenceException("Missing url for redirect!");
 			}
-			
+
 			if (theURL.indexOf("://") > 0) {
 				return theURL;
 			} else if (theURL.startsWith("//")) {
@@ -130,8 +132,8 @@ public class Redirect implements Consequence {
 				return theURL.substring(1, theURL.length());
 			} else {
 				// url relative to the context path...
-				return concat(req.getContextPath(), (!theURL.startsWith("/") ? "/" : ""), theURL);
-			}	
+				return concat(Paths.getInstance().getContext(req), (!theURL.startsWith("/") ? "/" : ""), theURL);
+			}
 	}
 
 	private void appendOutputToURL(StringBuilder urlToRedir, Output output, String querySeparator) {
@@ -171,7 +173,7 @@ public class Redirect implements Consequence {
 	private StringBuilder builBasicUrlToRedir(URI uri) {
 		StringBuilder urlToRedir = new StringBuilder();
 		if(uri.getHost()!=null) {
-				urlToRedir.append(concat(uri.getScheme(),"://",uri.getHost(),(uri.getPort()!=80 && uri.getPort()!=443 && uri.getPort()!=-1 ? ":"+uri.getPort() : "")));
+				urlToRedir.append(concat(Apps.get("DEFAULT_SCHEME"),"://",uri.getHost(),(uri.getPort()!=80 && uri.getPort()!=443 && uri.getPort()!=-1 ? ":"+uri.getPort() : "")));
 		}
 		return urlToRedir;
 	}

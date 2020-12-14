@@ -76,7 +76,7 @@ public class Paths {
     }
 
     public String getHost(HttpServletRequest req){
-        return The.concat(req.getScheme(),"://",req.getServerName(),(req.getServerPort()!=80 && req.getServerPort()!= 443 ? ":"+req.getServerPort() : "" ));
+        return The.concat(Apps.get("DEFAULT_SCHEME"),"://",req.getServerName(),(req.getServerPort()!=80 && req.getServerPort()!= 443 ? ":"+req.getServerPort() : "" ));
     }
 
 	public String getTemplate(HttpServletRequest req, String module) {

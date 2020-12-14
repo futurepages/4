@@ -181,6 +181,7 @@ public class Apps {
         paramsMap.put("THEME", "default");
         paramsMap.put("THEMES_DIR_NAME", "themes");
         paramsMap.put("USE_MODULE_DEPENDENCY", "false"); //control (via ModuleManager)
+        paramsMap.put("DEFAULT_SCHEME", "http");
 
 //for DEBUG-MODE
 //		for(String key : paramsMap.keySet()){
