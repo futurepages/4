@@ -75,6 +75,15 @@ public class Is {
         }
     }
 
+    public static boolean strIn(String val, String... valuesArray){
+    	for(String v : valuesArray){
+    		if(val.equals(v)){
+    			return true;
+		    }
+	    }
+	    return false;
+    }
+
     public static boolean validURLOrScript(String urlStr) {
 		return urlStr != null && (urlStr.startsWith("javascript:") || validURL(urlStr));
     }
