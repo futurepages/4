@@ -7,6 +7,7 @@ import org.futurepages.core.persistence.Dao;
 import org.futurepages.menta.core.tags.PrintTag;
 import org.futurepages.menta.core.tags.build.ContentTypeEnum;
 import org.futurepages.menta.core.tags.cerne.HTMLTag;
+import org.futurepages.util.Is;
 import org.futurepages.util.ReflectionUtil;
 
 import javax.persistence.Entity;
@@ -167,7 +168,11 @@ public class Select extends HTMLTag {
     }
 
     public void setOnchange(String onchange) {
-        this.onchange = "onchange=\"" + onchange + "\"";
+		if(!Is.empty(this.onchange)){
+	        this.onchange = "onchange=\"" + onchange + "\"";
+		}else{
+	        this.onchange = "";
+		}
     }
 
     public void setDefaultValue(String defaultValue) {
