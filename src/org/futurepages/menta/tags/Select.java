@@ -168,7 +168,7 @@ public class Select extends HTMLTag {
     }
 
     public void setOnchange(String onchange) {
-		if(!Is.empty(this.onchange)){
+		if(!Is.empty(onchange)){
 	        this.onchange = "onchange=\"" + onchange + "\"";
 		}else{
 	        this.onchange = "";
