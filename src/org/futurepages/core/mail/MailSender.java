@@ -44,10 +44,9 @@ public class MailSender {
 		HtmlEmail email = new HtmlEmail();
 		email.addTo(mail);
 		email.setSubject(subject);
+		email.setMsg(message);
 		if(file!=null){
-			email.setMsg(message + email.embed(new URL("file:" + file.getPath()), file.getName()));
-		}else {
-			email.setMsg(message);
+			email.embed(new URL("file:" + file.getPath()), file.getName());
 		}
 		email.setSentDate(new Date());
 		return email;
