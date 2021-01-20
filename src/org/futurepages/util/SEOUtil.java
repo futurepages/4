@@ -34,6 +34,9 @@ public class SEOUtil {
         specials.put('\'', empty);
         specials.put('"', empty);
         specials.put('\\', empty);
+        specials.put('`', empty);
+        specials.put('´', empty);
+        specials.put('~', empty);
         specials.put('/', "-");
         specials.put('<', empty);
         specials.put('>', empty);
