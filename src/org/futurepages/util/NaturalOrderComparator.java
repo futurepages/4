@@ -1,6 +1,9 @@
 package org.futurepages.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
+import java.util.Objects;
+import java.util.function.Function;
 
 /* @see http://www.java2s.com/Code/Java/Collections-Data-Structure/NaturalOrderComparator.htm
 Sugiro colocar no futurepages */
@@ -36,6 +39,14 @@ public class NaturalOrderComparator implements Comparator {
 				return bias;
 			}
 		}
+	}
+
+	public <T, U extends Comparable<? super U>> Comparator<T> comparing(
+			Function<? super T, ? extends U> keyExtractor)
+	{
+		Objects.requireNonNull(keyExtractor);
+		return (Comparator<T> & Serializable)
+				(c1, c2) -> compare(keyExtractor.apply(c1), keyExtractor.apply(c2));
 	}
 
 	public int compare(Object o1, Object o2) {
