@@ -58,6 +58,7 @@ public abstract class HttpRestClient {
         return doRequest("POST", path, object, type, "application/json");
     }
 
+
     public <T> T postWithFile(final String path, final Object object, final Class<T> type) {
         return doRequest("POST+FILE", path, object, type, "application/json");
     }
@@ -252,5 +253,48 @@ public abstract class HttpRestClient {
             AppLogger.getInstance().execute(e);
         }
         return url.toString();
+    }
+
+
+
+    public String postWithFormURLEncoded(String path, String formUrlEncoded) {
+        StringBuilder responseBody = new StringBuilder();
+        int responseCode = 0;
+        try {
+            URL url = new URL(getEndpoint() + path);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setUseCaches(false); // será se precisa mesmo?
+            conn.setRequestProperty("User-Agent", "fpg/http-cli");
+            conn.setRequestProperty("Cache-Control", "no-cache");
+            if (authentication != null) {
+                authentication.authenticate(conn);
+            }
+
+            conn.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            String body = formUrlEncoded;
+
+            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(wr, "UTF-8"));
+            writer.write(body);
+            writer.close();
+            wr.flush();
+            wr.close();
+            responseCode = conn.getResponseCode();
+
+            responseBody = readBody(conn.getResponseCode()==200? conn.getInputStream():conn.getErrorStream());
+            return responseBody.toString();
+        }catch (Exception ex){
+            if(responseCode!=502 && responseCode!=503){
+                AppLogger.getInstance().execute(ex,
+                        (getEndpoint()+path),
+                        String.valueOf(responseCode),
+                        responseBody.toString(),
+                        authentication!=null?authentication.getToken():"[null]"
+                );
+            }
+        }
+        return null;
     }
 }
