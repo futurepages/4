@@ -219,13 +219,11 @@ public class InjectionUtils {
 			}
 			newValue = new Double(x);
 		} else if (className.equals("java.math.BigDecimal")) {
-			float x = -1;
 			try {
-				x = realToFloat(value);
+				newValue = realToBigDecimal(value);
 			} catch (Exception e) {
 				return null;
 			}
-			newValue = new BigDecimal(x);
 		} else if (className.equals("boolean") || className.equals("java.lang.Boolean")) {
 			try {
 				int x = Integer.parseInt(value);
@@ -833,6 +831,7 @@ public class InjectionUtils {
 	public static double realToDouble(String moneyFormat) {
 		moneyFormat = moneyFormat.replace(".", "");
 		moneyFormat = moneyFormat.replace(",", ".");
+		moneyFormat = moneyFormat.replaceAll("[^0-9\\.,\\-]", "");
 		return Double.parseDouble(moneyFormat);
 	}
 
@@ -844,8 +843,15 @@ public class InjectionUtils {
 	public static float realToFloat(String moneyFormat) {
 		moneyFormat = moneyFormat.replace(".", "");
 		moneyFormat = moneyFormat.replace(",", ".");
-		moneyFormat = moneyFormat.replace("R$", "");
-		moneyFormat = moneyFormat.replace("\\s", "");
+		moneyFormat = moneyFormat.replaceAll("[^0-9\\.,\\-]", "");
 		return Float.parseFloat(moneyFormat);
+	}
+
+
+	public static BigDecimal realToBigDecimal(String moneyFormat) {
+		moneyFormat = moneyFormat.replace(".", "");
+		moneyFormat = moneyFormat.replace(",", ".");
+		moneyFormat = moneyFormat.replaceAll("[^0-9\\.,]", "");
+		return new BigDecimal(moneyFormat);
 	}
 }

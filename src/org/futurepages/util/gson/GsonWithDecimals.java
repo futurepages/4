@@ -13,7 +13,7 @@ public class GsonWithDecimals {
 		new GsonRegister<BigDecimal>(BigDecimal.class, gb, false) {
 			@Override
 			public BigDecimal fromJson(String jsonStr) {
-				return new BigDecimal(InjectionUtils.realToFloat(jsonStr));
+				return InjectionUtils.realToBigDecimal(jsonStr);
 			}
 		};
 
