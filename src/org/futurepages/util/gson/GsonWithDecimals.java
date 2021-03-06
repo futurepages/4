@@ -9,18 +9,26 @@ import java.math.BigDecimal;
 public class GsonWithDecimals {
 
 
-	public static void registerFor(GsonBuilder gb){
+	public static void registerFor(GsonBuilder gb,boolean defaultInputFloat){
 		new GsonRegister<BigDecimal>(BigDecimal.class, gb, false) {
 			@Override
 			public BigDecimal fromJson(String jsonStr) {
-				return InjectionUtils.realToBigDecimal(jsonStr);
+				if(defaultInputFloat){
+					return new BigDecimal(jsonStr); // str default
+				}else{
+					return InjectionUtils.realToBigDecimal(jsonStr); // str com format br
+				}
 			}
 		};
 
 		new GsonRegister<Float>(Float.class, gb, false) {
 			@Override
 			public Float fromJson(String jsonStr) {
-				return InjectionUtils.realToFloat(jsonStr);
+				if(defaultInputFloat){
+					return Float.valueOf(jsonStr); // str default
+				}else{
+					return InjectionUtils.realToFloat(jsonStr); // str com format br
+				}
 			}
 		};
 
@@ -28,7 +36,11 @@ public class GsonWithDecimals {
 		new GsonRegister<Double>(Double.class, gb, false) {
 			@Override
 			public Double fromJson(String jsonStr) {
-				return InjectionUtils.realToDouble(jsonStr);
+				if(defaultInputFloat){
+					return Double.valueOf(jsonStr); // str default
+				}else{
+					return InjectionUtils.realToDouble(jsonStr); // str com format br
+				}
 			}
 		};
 	}

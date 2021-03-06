@@ -30,13 +30,14 @@ import java.lang.reflect.Type;
 public class JsonWithGsonMapper implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
   private static final String UTF_8 = "UTF-8";
 
-	public static final Gson GSON = buildGsonAdapter();
+	public static final Gson GSON = buildGsonAdapter(false);
+	public static final Gson GSON_DEF_FLOAT = buildGsonAdapter(true);
 
-	private static Gson buildGsonAdapter() {
+	private static Gson buildGsonAdapter(boolean defaultFloat) {
 		if(Apps.isTrue("NEW_JERSEY_MODE")){
 			GsonBuilder gb = new GsonBuilder();
 			GsonWithCalendarDateTime.registerFor(gb);
-			GsonWithDecimals.registerFor(gb);
+			GsonWithDecimals.registerFor(gb,defaultFloat);
 			if(Apps.devMode()){
 				gb.setPrettyPrinting();
 			}
@@ -60,7 +61,12 @@ public class JsonWithGsonMapper implements MessageBodyReader<Object>, MessageBod
 	    String json = null;
 	    try {
 		    json = IOUtils.toString(streamReader);
-		    return GSON.fromJson(json, genericType);
+		    if(json.startsWith("defFloat:{")){
+		    	json = json.replaceFirst("^defFloat\\:\\{","{"); // notação utilizada para converter floats a partir do formato numerico com ponto para decimais.
+			    return GSON_DEF_FLOAT.fromJson(json, genericType);
+		    }else{
+			    return GSON.fromJson(json, genericType);
+		    }
 	    } catch (com.google.gson.JsonSyntaxException e) {
 		    AppLogger.getInstance().silent(e,json);
 	    } finally {
