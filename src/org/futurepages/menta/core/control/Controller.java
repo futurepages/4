@@ -236,6 +236,7 @@ public class Controller extends HttpServlet {
 			if(up){
 				pathsTL.set(getPathsFor(req));
 				doService(req, res);
+				//doHistory(req);
 			}else{
 				res.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
 			}
@@ -446,6 +447,26 @@ public class Controller extends HttpServlet {
 		}
 
 		return c;
+	}
+
+	private void doHistory(HttpServletRequest req) {
+		int LOG_SIZE = 50;
+		String requestURL = String.valueOf(req.getRequestURL());
+		if(req.getSession() != null && !requestURL.endsWith("/sistema/DynTrySession")){
+			List<String> urlHistory;
+
+			if(req.getSession().getAttribute("urlHistory") != null){
+				//noinspection unchecked
+				urlHistory = (List<String>) req.getSession().getAttribute("urlHistory");
+			}else{
+				urlHistory = new ArrayList<>();
+			}
+			urlHistory.add(requestURL);
+			if(urlHistory.size() > LOG_SIZE){
+				urlHistory = urlHistory.subList(urlHistory.size() - LOG_SIZE , urlHistory.size());
+			}
+			req.getSession().setAttribute("urlHistory", urlHistory);
+		}
 	}
 
 	public static void setThredLocalChain(InvocationChain chain) {
