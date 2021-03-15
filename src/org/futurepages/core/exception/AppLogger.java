@@ -188,6 +188,11 @@ public class AppLogger implements ExceptionLogger{
 				logSB.append(logln(  ">[",key,"]  ", mapInputs.get(key)));
 			}
 		}
+
+        if(req != null && !Controller.getInstance().getUrlHistory(req).isEmpty()){
+        	logSB.append(logln(  ">[urlHistory]<br/>",  String.join("<br/>", Controller.getInstance().getUrlHistory(req))));
+        }
+
 		if(!simple404){
 			logSB.append(logln(exceptionId," <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"));
 		}

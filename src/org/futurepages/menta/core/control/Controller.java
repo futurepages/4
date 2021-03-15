@@ -29,8 +29,11 @@ import org.futurepages.menta.exceptions.ServletUserException;
 import org.futurepages.menta.filters.ConsequenceCallbackFilter;
 import org.futurepages.menta.filters.ExceptionFilter;
 import org.futurepages.menta.filters.GlobalFilterFreeFilter;
+import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
+import org.futurepages.util.brazil.BrazilCalendarUtil;
+import org.futurepages.util.brazil.BrazilDateUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -59,6 +62,8 @@ import java.util.regex.Pattern;
  * @author Danilo Batista
  */
 public class Controller extends HttpServlet {
+
+	public static final String URL_HISTORY_SESSION_KEY = "_fpg__track-url-history_";
 
 	private char innerActionSeparator = '.';
 	private Set<String> moduleIDs;
@@ -453,7 +458,6 @@ public class Controller extends HttpServlet {
 	public void trackURL(HttpServletRequest req) {
 		try{
 			int LOG_SIZE = 50;
-			String URL_HISTORY_SESSION_KEY = "_fpg__track-url-history_";
 			String requestURL = String.valueOf(req.getRequestURL().append((req.getQueryString()!=null?"?"+req.getQueryString():"")));
 			if(req.getSession() != null && (!(getChain().getAction() instanceof DontTrackURL))){
 				List<String> urlHistory;
@@ -464,7 +468,7 @@ public class Controller extends HttpServlet {
 				}else{
 					urlHistory = new ArrayList<>();
 				}
-				urlHistory.add(requestURL);
+				urlHistory.add("["+ BrazilDateUtil.viewDateTime(CalendarUtil.now()) + "] " + requestURL);
 				if(urlHistory.size() > LOG_SIZE){
 					urlHistory = urlHistory.subList(urlHistory.size() - LOG_SIZE , urlHistory.size());
 				}
@@ -473,6 +477,14 @@ public class Controller extends HttpServlet {
 		}catch (Exception e){
 			AppLogger.getInstance().execute(e);
 		}
+	}
+
+	public List<String> getUrlHistory(HttpServletRequest req){
+		if(req.getSession() != null && req.getSession().getAttribute(URL_HISTORY_SESSION_KEY) != null){
+			//noinspection unchecked
+			return (List<String>) req.getSession().getAttribute(URL_HISTORY_SESSION_KEY);
+        }
+		return new ArrayList<>();
 	}
 
 	public static void setThredLocalChain(InvocationChain chain) {
