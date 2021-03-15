@@ -189,8 +189,8 @@ public class AppLogger implements ExceptionLogger{
 			}
 		}
 
-        if(req != null && !Controller.getInstance().getUrlHistory(req).isEmpty()){
-        	logSB.append(logln(  ">[urlHistory]<br/>",  String.join("<br/>", Controller.getInstance().getUrlHistory(req))));
+        if(req != null && !Controller.getInstance().getTrackUrlHistory(req).isEmpty()){
+        	logSB.append(logln(  ">[urlHistory]<br/>",  String.join("<br/>", Controller.getInstance().getTrackUrlHistory(req))));
         }
 
 		if(!simple404){

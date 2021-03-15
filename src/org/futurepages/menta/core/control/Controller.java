@@ -479,7 +479,7 @@ public class Controller extends HttpServlet {
 		}
 	}
 
-	public List<String> getUrlHistory(HttpServletRequest req){
+	public List<String> getTrackUrlHistory(HttpServletRequest req){
 		if(req.getSession() != null && req.getSession().getAttribute(URL_HISTORY_SESSION_KEY) != null){
 			//noinspection unchecked
 			return (List<String>) req.getSession().getAttribute(URL_HISTORY_SESSION_KEY);
