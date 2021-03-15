@@ -69,8 +69,11 @@ public class Forward implements Consequence {
 	            outputValues(a, req);
             
             }
+	        Controller.getInstance().trackURL(req);
+
             forward(this.getUrl(), req, res);
-            
+
+
         } catch(Exception e) {
             throw new ConsequenceException(e);
         }

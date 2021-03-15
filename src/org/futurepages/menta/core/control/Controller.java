@@ -1,8 +1,10 @@
 package org.futurepages.menta.core.control;
 
 import org.futurepages.core.config.Apps;
+import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.path.Paths;
 import org.futurepages.core.path.StaticPaths;
+import org.futurepages.menta.actions.DontTrackURL;
 import org.futurepages.menta.core.ApplicationManager;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.callback.ConsequenceCallback;
@@ -236,7 +238,6 @@ public class Controller extends HttpServlet {
 			if(up){
 				pathsTL.set(getPathsFor(req));
 				doService(req, res);
-				//doHistory(req);
 			}else{
 				res.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
 			}
@@ -449,23 +450,28 @@ public class Controller extends HttpServlet {
 		return c;
 	}
 
-	private void doHistory(HttpServletRequest req) {
-		int LOG_SIZE = 50;
-		String requestURL = String.valueOf(req.getRequestURL());
-		if(req.getSession() != null && !requestURL.endsWith("/sistema/DynTrySession")){
-			List<String> urlHistory;
+	public void trackURL(HttpServletRequest req) {
+		try{
+			int LOG_SIZE = 50;
+			String URL_HISTORY_SESSION_KEY = "_fpg__track-url-history_";
+			String requestURL = String.valueOf(req.getRequestURL().append((req.getQueryString()!=null?"?"+req.getQueryString():"")));
+			if(req.getSession() != null && (!(getChain().getAction() instanceof DontTrackURL))){
+				List<String> urlHistory;
 
-			if(req.getSession().getAttribute("urlHistory") != null){
-				//noinspection unchecked
-				urlHistory = (List<String>) req.getSession().getAttribute("urlHistory");
-			}else{
-				urlHistory = new ArrayList<>();
+				if(req.getSession().getAttribute(URL_HISTORY_SESSION_KEY) != null){
+					//noinspection unchecked
+					urlHistory = (List<String>) req.getSession().getAttribute(URL_HISTORY_SESSION_KEY);
+				}else{
+					urlHistory = new ArrayList<>();
+				}
+				urlHistory.add(requestURL);
+				if(urlHistory.size() > LOG_SIZE){
+					urlHistory = urlHistory.subList(urlHistory.size() - LOG_SIZE , urlHistory.size());
+				}
+				req.getSession().setAttribute(URL_HISTORY_SESSION_KEY, urlHistory);
 			}
-			urlHistory.add(requestURL);
-			if(urlHistory.size() > LOG_SIZE){
-				urlHistory = urlHistory.subList(urlHistory.size() - LOG_SIZE , urlHistory.size());
-			}
-			req.getSession().setAttribute("urlHistory", urlHistory);
+		}catch (Exception e){
+			AppLogger.getInstance().execute(e);
 		}
 	}
 
