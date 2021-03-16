@@ -156,11 +156,15 @@ public class AppLogger implements ExceptionLogger{
 					while (ralist.hasMoreElements()) {
 						String name = (String) ralist.nextElement();
 						String toStringValue = req.getSession().getAttribute(name).toString();
-						if(toStringValue.length()>200){
-							toStringValue = toStringValue.substring(0,197)+" (...)";
-						}
-						if(toStringValue.contains("\n")){
-							toStringValue = toStringValue.replaceAll("\\s+"," ");
+						if(!name.equals(Controller.URL_HISTORY_SESSION_KEY)){
+							if(toStringValue.length()>200){
+								toStringValue = toStringValue.substring(0,197)+" (...)";
+							}
+							if(toStringValue.contains("\n")){
+								toStringValue = toStringValue.replaceAll("\\s+"," ");
+							}
+						}else{
+							toStringValue = "(ignored content here)";
 						}
 						logSB.append(log(name, ": '", toStringValue, "';"));
 					}
@@ -190,7 +194,7 @@ public class AppLogger implements ExceptionLogger{
 		}
 
         if(req != null && !Controller.getInstance().getTrackUrlHistory(req).isEmpty()){
-        	logSB.append(logln(  ">[urlHistory]<br/>",  String.join("<br/>", Controller.getInstance().getTrackUrlHistory(req))));
+        	logSB.append(logln(  ">[urlHistory]<br/>", Controller.getInstance().printTrackUrlHistory(req)));
         }
 
 		if(!simple404){

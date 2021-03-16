@@ -5,6 +5,7 @@ import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.path.Paths;
 import org.futurepages.core.path.StaticPaths;
 import org.futurepages.menta.actions.DontTrackURL;
+import org.futurepages.menta.annotations.UntrackableURL;
 import org.futurepages.menta.core.ApplicationManager;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.callback.ConsequenceCallback;
@@ -32,8 +33,6 @@ import org.futurepages.menta.filters.GlobalFilterFreeFilter;
 import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
-import org.futurepages.util.brazil.BrazilCalendarUtil;
-import org.futurepages.util.brazil.BrazilDateUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -45,6 +44,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -459,7 +459,16 @@ public class Controller extends HttpServlet {
 		try{
 			int LOG_SIZE = 50;
 			String requestURL = String.valueOf(req.getRequestURL().append((req.getQueryString()!=null?"?"+req.getQueryString():"")));
-			if(req.getSession() != null && (!(getChain().getAction() instanceof DontTrackURL))){
+			if(req.getSession() != null &&
+				(
+						getChain()==null || getChain().getAction()==null ||
+						(
+							(!(getChain().getAction() instanceof DontTrackURL))
+							&&
+						    (!getChain().getMethod().isAnnotationPresent(UntrackableURL.class))
+
+						)
+				)){
 				List<String> urlHistory;
 
 				if(req.getSession().getAttribute(URL_HISTORY_SESSION_KEY) != null){
@@ -468,7 +477,7 @@ public class Controller extends HttpServlet {
 				}else{
 					urlHistory = new ArrayList<>();
 				}
-				urlHistory.add("["+ BrazilDateUtil.viewDateTime(CalendarUtil.now()) + "] " + requestURL);
+				urlHistory.add("["+ CalendarUtil.viewDateTime(CalendarUtil.now(),"dd/MM/yyyy HH:mm:ss") + "] " + requestURL);
 				if(urlHistory.size() > LOG_SIZE){
 					urlHistory = urlHistory.subList(urlHistory.size() - LOG_SIZE , urlHistory.size());
 				}
@@ -485,6 +494,13 @@ public class Controller extends HttpServlet {
 			return (List<String>) req.getSession().getAttribute(URL_HISTORY_SESSION_KEY);
         }
 		return new ArrayList<>();
+	}
+
+
+	public String printTrackUrlHistory(HttpServletRequest req){
+		List<String> listToPrint = new ArrayList<>(getTrackUrlHistory(req));
+		Collections.reverse(listToPrint);
+		return String.join("<br/>", listToPrint);
 	}
 
 	public static void setThredLocalChain(InvocationChain chain) {
