@@ -457,7 +457,7 @@ public class Controller extends HttpServlet {
 
 	public void trackURL(HttpServletRequest req) {
 		try{
-			int LOG_SIZE = 50;
+			int LOG_SIZE = 75;
 			String requestURL = String.valueOf(req.getRequestURL().append((req.getQueryString()!=null?"?"+req.getQueryString():"")));
 			if(req.getSession() != null &&
 				(

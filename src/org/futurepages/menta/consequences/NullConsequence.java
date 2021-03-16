@@ -2,6 +2,7 @@ package org.futurepages.menta.consequences;
 
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.consequence.Consequence;
+import org.futurepages.menta.core.control.Controller;
 import org.futurepages.menta.exceptions.ConsequenceException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ public class NullConsequence implements Consequence {
      */
 	@Override
 	public void execute(Action a, HttpServletRequest req, HttpServletResponse res) throws ConsequenceException {
+		Controller.getInstance().trackURL(req);
         // do nothing...
     }
 }

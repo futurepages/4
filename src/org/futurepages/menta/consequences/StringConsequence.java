@@ -2,6 +2,7 @@ package org.futurepages.menta.consequences;
 
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.consequence.Consequence;
+import org.futurepages.menta.core.control.Controller;
 import org.futurepages.menta.core.output.Output;
 import org.futurepages.menta.exceptions.ConsequenceException;
 
@@ -29,6 +30,8 @@ public class StringConsequence implements Consequence {
 
 	@Override
 	public void execute(Action a, HttpServletRequest req, HttpServletResponse res) throws ConsequenceException {
+		Controller.getInstance().trackURL(req);
+
 		Output output = a.getOutput();
 		res.setContentType("text/plain");
 		PrintWriter out = null;

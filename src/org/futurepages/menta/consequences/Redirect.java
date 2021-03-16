@@ -4,6 +4,7 @@ import org.futurepages.core.config.Apps;
 import org.futurepages.core.path.Paths;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.consequence.Consequence;
+import org.futurepages.menta.core.control.Controller;
 import org.futurepages.menta.core.output.Output;
 import org.futurepages.menta.exceptions.ConsequenceException;
 import org.futurepages.util.EncodingUtil;
@@ -69,7 +70,9 @@ public class Redirect implements Consequence {
 	 */
 	@Override
 	public void execute(Action act, HttpServletRequest req, HttpServletResponse res) throws ConsequenceException {
+		Controller.getInstance().trackURL(req);
 		try {
+
 			Output output = act != null ? act.getOutput() : null;
 			String theURL;
 			if (fromOutput && output != null) {

@@ -61,16 +61,15 @@ public class Forward implements Consequence {
     
 	@Override
     public void execute(Action a, HttpServletRequest req, HttpServletResponse res) throws ConsequenceException {
+	    Controller.getInstance().trackURL(req);
         try {
             // put output values in the request...
-            
+
             if (a != null) {
 
 	            outputValues(a, req);
-            
-            }
-	        Controller.getInstance().trackURL(req);
 
+            }
             forward(this.getUrl(), req, res);
 
 

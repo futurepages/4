@@ -3,6 +3,7 @@ package org.futurepages.menta.consequences;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.ajax.AjaxRenderer;
 import org.futurepages.menta.core.consequence.Consequence;
+import org.futurepages.menta.core.control.Controller;
 import org.futurepages.menta.exceptions.ConsequenceException;
 import org.futurepages.util.HttpUtil;
 
@@ -48,7 +49,6 @@ public class AjaxConsequence implements Consequence {
     private boolean pretty = false;
     
     public AjaxConsequence(AjaxRenderer renderer) {
-
     	this(KEY, renderer);
     }
   
@@ -74,8 +74,10 @@ public class AjaxConsequence implements Consequence {
      */
 	@Override
     public void execute(Action a, HttpServletRequest req, HttpServletResponse res) throws ConsequenceException {
-    	
-    	Object obj = a.getOutput().getValue(key);
+
+		Controller.getInstance().trackURL(req);
+
+		Object obj = a.getOutput().getValue(key);
     	
     	if (obj == null) {
 			obj = new HashMap();

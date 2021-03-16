@@ -2,6 +2,7 @@ package org.futurepages.menta.consequences;
 
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.consequence.Consequence;
+import org.futurepages.menta.core.control.Controller;
 import org.futurepages.menta.core.output.Output;
 import org.futurepages.menta.exceptions.ConsequenceException;
 
@@ -127,6 +128,7 @@ public class StreamConsequence implements Consequence {
 	 * has to be flushed into the servlet output stream.
 	 */
 	public void execute(Action a, HttpServletRequest req, HttpServletResponse res) throws ConsequenceException {
+		Controller.getInstance().trackURL(req);
 		Output output = a.getOutput();
         defineHeader(res, output);
 		OutputStream outputStream = null;
