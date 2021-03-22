@@ -50,7 +50,7 @@ public class HQLProvider implements HQLable {
 
 	public static String distinct(String selectClause) {
 		if (!Is.empty(selectClause)) {
-			return " DISTINCT " + selectClause;
+			return DISTINCT + selectClause;
 		} else {
 			return "";
 		}

@@ -7,6 +7,7 @@ public interface HQLable {
 
     String AND = " AND ";
     String JOIN = " JOIN ";
+    String DISTINCT = " DISTINCT ";
     String LEFT_JOIN = " LEFT JOIN ";
     String RIGHT_JOIN = " RIGHT JOIN ";
     String WHERE = " WHERE ";

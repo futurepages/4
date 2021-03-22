@@ -198,6 +198,17 @@ public class The {
 		return explodedTokens;
 	}
 
+	public static long[] explodedToLongArray(String str, String separator) {
+		StringTokenizer st = new StringTokenizer(str, separator);
+		long[] explodedTokens = new long[st.countTokens()];
+		int i = 0;
+		while (st.hasMoreTokens()) {
+			explodedTokens[i] = Long.parseLong(st.nextToken());
+			i++;
+		}
+		return explodedTokens;
+	}
+
 	/**
 	 * Retorna a lista com os tokens separados pelo 'separator'
 	 */
