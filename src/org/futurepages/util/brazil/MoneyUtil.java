@@ -71,6 +71,9 @@ public class MoneyUtil {
 	public static BigDecimal fromIntFormat(int value){
 		return new BigDecimal(value).divide(new BigDecimal(100d),2,BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP);
 	}
+	public static BigDecimal fromIntFormat(long value){
+		return new BigDecimal(value).divide(new BigDecimal(100d),2,BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP);
+	}
 
     /**
      * Recebe um double como entrada e converte para a formataçao padrao de número (NumberFormat) do sistema.
@@ -128,5 +131,9 @@ public class MoneyUtil {
 
 	public static String intInMoneyFormat(int i) {
 		return moneyFormat(fromIntFormat(i));
+	}
+
+	public static String strVal(BigDecimal value) {
+		return MoneyUtil.moneyFormat(value).replaceAll("\\.","").replaceAll(",",".");
 	}
 }

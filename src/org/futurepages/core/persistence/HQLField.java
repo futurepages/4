@@ -5,6 +5,7 @@ import org.futurepages.util.DateUtil;
 import org.futurepages.util.HQLUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
+import org.futurepages.util.brazil.MoneyUtil;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -242,6 +243,9 @@ public class HQLField implements HQLable {
 		return compareTo(GREATER, field);
 	}
 
+	public String greaterThen(BigDecimal value) {
+		return concat(fieldName , GREATER , MoneyUtil.strVal(value));
+	}
 
 	public String greaterEqualsThen(Calendar cal) {
 		return timeExpression(cal, GREATER_EQUALS);
@@ -259,6 +263,10 @@ public class HQLField implements HQLable {
 		return concat(fieldName , GREATER_EQUALS , value);
 	}
 
+	public String greaterEqualsThen(BigDecimal value) {
+		return concat(fieldName , GREATER_EQUALS , MoneyUtil.strVal(value));
+	}
+
 	public String greaterEqualsThen(HQLField field) {
 		return compareTo(GREATER_EQUALS, field);
 	}
@@ -274,6 +282,10 @@ public class HQLField implements HQLable {
 
 	public String lowerThen(double value) {
 		return concat(fieldName , LOWER , value);
+	}
+
+	public String lowerThen(BigDecimal value) {
+		return concat(fieldName , LOWER , MoneyUtil.strVal(value));
 	}
 
 	public String lowerThen(Calendar cal) {
@@ -295,6 +307,10 @@ public class HQLField implements HQLable {
 
 	public String lowerEqualsThen(double value) {
 		return concat(fieldName , LOWER_EQUALS , value);
+	}
+
+	public String lowerEqualsThen(BigDecimal value) {
+		return concat(fieldName , LOWER_EQUALS , MoneyUtil.strVal(value));
 	}
 
 	public String lowerEqualsThen(Calendar cal) {
@@ -581,4 +597,5 @@ public class HQLField implements HQLable {
 	private String concat(Object... str) {
 		return The.concat(str);
 	}
+
 }
