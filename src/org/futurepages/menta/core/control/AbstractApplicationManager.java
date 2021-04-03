@@ -130,17 +130,7 @@ public abstract class AbstractApplicationManager  implements Manipulable{
 	 */
 	public ActionConfig addActionConfig(ActionConfig ac) {
         if (ac.getName() == null) throw new IllegalStateException("Cannot add an action config without a name!");
-        String innerAction = ac.getNamedInnerAction();
-        if (innerAction == null) {
-				actions.put(ac.getName(), ac);
-        } else {
-            Map<String, ActionConfig> map = innerActions.get(ac.getName());
-            if (map == null) {
-                map = new HashMap<String, ActionConfig>();
-                innerActions.put(ac.getName(), map);
-            }
-            map.put(innerAction, ac);
-        }
+		actions.put(ac.getName(), ac);
 
         String[] parts = ac.getName().split("/");
         if(parts.length > 2){
@@ -161,16 +151,7 @@ public abstract class AbstractApplicationManager  implements Manipulable{
 	public boolean removeActionConfig(ActionConfig ac) {
 		String name = ac.getName();
 		if (name == null) throw new IllegalStateException("Cannot remove an action config without a name!");
-		String innerAction = ac.getNamedInnerAction();
-		if (innerAction == null) {
-			return actions.remove(name) != null;
-		} else {
-			Map<String, ActionConfig> map = innerActions.get(name);
-            if (map != null) {
-            	return map.remove(innerAction) != null;
-            }
-            return false;
-		}
+		return actions.remove(name) != null;
 	}
 
     /**
@@ -509,19 +490,9 @@ public abstract class AbstractApplicationManager  implements Manipulable{
        return new AjaxConsequence(AjaxConsequence.KEY, renderer);
     }
 
-    public static Consequence chain(ActionConfig ac, String innerAction) {
-       return new Chain(ac, innerAction);
-    }
-
     public static Consequence chain(Class<? extends Object> klass) {
        return new Chain(new ActionConfig(klass));
     }
-
-    public static Consequence chain(Class<? extends Object> klass, String innerAction) {
-
-       return new Chain(new ActionConfig(klass, innerAction));
-    }
-
 
     public ActionConfig action(Class<? extends Object> klass) {
 
@@ -567,12 +538,7 @@ public abstract class AbstractApplicationManager  implements Manipulable{
 	protected void registerChains(){
 		for(Chain chain : chains){
 			chain.extractInputParamsFromURI();
-			ActionConfig ac = null;
-			if(chain.getNamedInnerAction()==null){
-				ac = this.getActionConfig(chain.getActionName());
-			}else{
-				ac = this.getActionConfig(chain.getActionName(), chain.getNamedInnerAction());
-			}
+			ActionConfig ac = this.getActionConfig(chain.getActionName());
 			chain.setAc(ac);
 		}
 	}

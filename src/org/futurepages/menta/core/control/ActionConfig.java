@@ -33,7 +33,6 @@ public class ActionConfig {
 	private Map<String, Map<String, Consequence>> innerConsequences = new HashMap<String, Map<String, Consequence>>();
 	private List<Object[]> filters = new LinkedList<Object[]>();
 	private List<Object[]> firstFilters = new LinkedList<Object[]>();
-	private String namedInnerAction = null;
 	private boolean global = false;
 
 	public ActionConfig() {
@@ -65,66 +64,9 @@ public class ActionConfig {
 	 * @param klass The action implementation to use
 	 */
 	public ActionConfig(String name, Class<? extends Object> klass) {
-
-		if (name.indexOf(".") > 0) {
-
-			// use is probably defining action and inner action together...
-
-			StringTokenizer st = new StringTokenizer(name, ".");
-
-			if (st.countTokens() != 2) {
-
-				throw new IllegalArgumentException("Bad action name: " + name);
-			}
-
-			this.name = cutSlash(st.nextToken());
-			this.namedInnerAction = st.nextToken();
-
-		} else {
-
-			this.name = cutSlash(name);
-		}
-
-		this.actionClass = klass;
-
-	}
-
-	/**
-	 * Creates an ActionConfig for the given action implementation.
-	 * This action config will use the name of the action to derive its name.
-	 * This can and should also be used with chain consequence!
-	 *
-	 * Notice that this action config is specific to an inner action.
-	 *
-	 * org.myapp.blablabla.MyAction
-	 *
-	 * The name will be:
-	 *
-	 * /MyAction
-	 * 
-	 * @param name The name or alias of this ActionConfig
-	 * @param klass The action implementation to use
-	 * @param innerAction The inner action to use
-	 */
-	public ActionConfig(String name, Class<? extends Object> klass, String innerAction) {
-
-		this.actionClass = klass;
 		this.name = cutSlash(name);
-		this.namedInnerAction = innerAction;
-	}
-
-	/**
-	 * Creates an ActionConfig with the given name for the given inner action implementation.
-	 * Notice that this action config is specific to an inner action.
-	 * 
-	 * @param klass The action implementation to use
-	 * @param innerAction The inner action to use
-	 */
-	public ActionConfig(Class<? extends Object> klass, String innerAction) {
-
 		this.actionClass = klass;
-		this.name = getName(klass);
-		this.namedInnerAction = innerAction;
+
 	}
 
 	/**
@@ -186,9 +128,6 @@ public class ActionConfig {
 	 * @throws IllegalStateException If this method is called for a action config specific to an inner action
 	 */
 	public ActionConfig addConsequence(String result, String innerAction, Consequence c) {
-		if (this.namedInnerAction != null) {
-			throw new IllegalStateException("Calling addConsequence(result,innerAction,c) is illegal for inner action configs!");
-		}
 		Map<String, Consequence> map = innerConsequences.get(innerAction);
 		if (map == null) {
 			map = new HashMap<String, Consequence>();
@@ -552,19 +491,6 @@ public class ActionConfig {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * Gets the inner action that this action config represents.
-	 *
-	 * @return The inner action name that his action represents.
-	 */
-	public String getNamedInnerAction() {
-		return namedInnerAction;
-	}
-
-	void setInnerAction(String innerAction) {
-		this.namedInnerAction = innerAction;
 	}
 
 	/**

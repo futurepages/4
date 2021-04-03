@@ -28,7 +28,6 @@ public class Chain implements Consequence {
 	private ActionConfig ac;
 	
 	private String actionName = null;
-	private String namedInnerAction = null;
 	private String innerAction = null;
 	private String actionURI;
 
@@ -41,16 +40,6 @@ public class Chain implements Consequence {
 
 	public Chain(ActionConfig ac) {
 		this.ac = ac;
-	}
-
-	/**
-	 * Creates a chain consequence for the given ActionConfig
-	 * @param ac
-	 * @param namedInnerAction
-	 */
-	public Chain(ActionConfig ac, String namedInnerAction) {
-		this(ac);
-		this.namedInnerAction = namedInnerAction;
 	}
 
 	@Override
@@ -94,11 +83,9 @@ public class Chain implements Consequence {
 		StringBuilder returnedResult = new StringBuilder(32);
 
 		try {
-			String inner;
+			String inner = null;
 			if (this.innerAction != null) {
 				inner = this.innerAction;
-			} else {
-				inner = ac.getNamedInnerAction();
 			}
 			c = Controller.getInstance().invokeAction(ac, newAction, inner, filters, returnedResult);
 			actionExecuted = true;
@@ -133,9 +120,6 @@ public class Chain implements Consequence {
 	public String toString() {
 		StringBuffer sb = new StringBuffer(128);
 		sb.append("Chain to ").append(ac);
-		if (namedInnerAction != null) {
-			sb.append(" (innerAction = ").append(namedInnerAction).append(")");
-		}
 		return sb.toString();
 	}
 
@@ -205,9 +189,5 @@ public class Chain implements Consequence {
 	private Input chainedInput(HttpServletRequest req) {
 		//o input de acordo com a situação
 		return new RequestInput(req);
-	}
-
-	public String getNamedInnerAction() {
-		return this.namedInnerAction;
 	}
 }
