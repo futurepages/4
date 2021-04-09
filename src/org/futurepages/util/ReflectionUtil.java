@@ -1,5 +1,6 @@
 package org.futurepages.util;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -648,5 +649,28 @@ public final class ReflectionUtil {
 			throw new NoSuchMethodException("No maximally specific method.");
 		}
 		return applicableMethods.get(maximallySpecific);
+	}
+
+	public static boolean annotationIsPresentIn(Field field, Class... annotations) {
+		for (Class anot : annotations) {
+			for (Annotation annotation : field.getDeclaredAnnotations()) {
+				if (anot.equals(annotation.annotationType())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean annotationIsPresentIn(Class clss, Class... annotations) {
+		for (Class anot : annotations) {
+			Field[] fields = clss.getDeclaredFields();
+			for (Field field : fields) {
+				if (field.isAnnotationPresent(anot)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
