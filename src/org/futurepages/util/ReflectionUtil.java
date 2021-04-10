@@ -650,27 +650,4 @@ public final class ReflectionUtil {
 		}
 		return applicableMethods.get(maximallySpecific);
 	}
-
-	public static boolean annotationIsPresentIn(Field field, Class... annotations) {
-		for (Class anot : annotations) {
-			for (Annotation annotation : field.getDeclaredAnnotations()) {
-				if (anot.equals(annotation.annotationType())) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public static boolean annotationIsPresentIn(Class clss, Class... annotations) {
-		for (Class anot : annotations) {
-			Field[] fields = clss.getDeclaredFields();
-			for (Field field : fields) {
-				if (field.isAnnotationPresent(anot)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 }
