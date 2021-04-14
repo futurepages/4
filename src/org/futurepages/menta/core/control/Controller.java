@@ -1,7 +1,6 @@
 package org.futurepages.menta.core.control;
 
 import org.futurepages.core.config.Apps;
-import org.futurepages.core.exception.AppLogger;
 import org.futurepages.core.path.Paths;
 import org.futurepages.core.path.StaticPaths;
 import org.futurepages.menta.actions.DontTrackURL;
@@ -30,7 +29,6 @@ import org.futurepages.menta.exceptions.ServletUserException;
 import org.futurepages.menta.filters.ConsequenceCallbackFilter;
 import org.futurepages.menta.filters.ExceptionFilter;
 import org.futurepages.menta.filters.GlobalFilterFreeFilter;
-import org.futurepages.util.CalendarUtil;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
 
@@ -40,11 +38,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,8 +60,6 @@ import java.util.regex.Pattern;
  * @author Danilo Batista
  */
 public class Controller extends HttpServlet {
-
-	public static final String URL_HISTORY_SESSION_KEY = "_fpg__track-url-history_";
 
 	private char innerActionSeparator = '.';
 	private Set<String> moduleIDs;
@@ -455,10 +451,7 @@ public class Controller extends HttpServlet {
 		return c;
 	}
 
-	public void trackURL(HttpServletRequest req) {
-		try{
-			int LOG_SIZE = 75;
-			String requestURL = String.valueOf(req.getRequestURL().append((req.getQueryString()!=null?"?"+req.getQueryString():"")));
+	public void trackURL(final HttpServletRequest req) {
 			if(req.getSession() != null &&
 				(
 						getChain()==null || getChain().getAction()==null ||
@@ -468,39 +461,14 @@ public class Controller extends HttpServlet {
 						    (!getChain().getMethod().isAnnotationPresent(UntrackableURL.class))
 
 						)
-				)){
-				List<String> urlHistory;
-
-				if(req.getSession().getAttribute(URL_HISTORY_SESSION_KEY) != null){
-					//noinspection unchecked
-					urlHistory = (List<String>) req.getSession().getAttribute(URL_HISTORY_SESSION_KEY);
-				}else{
-					urlHistory = new ArrayList<>();
-				}
-				urlHistory.add("["+ CalendarUtil.viewDateTime(CalendarUtil.now(),"dd/MM/yyyy HH:mm:ss") + "] " + requestURL);
-				if(urlHistory.size() > LOG_SIZE){
-					urlHistory = urlHistory.subList(urlHistory.size() - LOG_SIZE , urlHistory.size());
-				}
-				req.getSession().setAttribute(URL_HISTORY_SESSION_KEY, urlHistory);
+				)
+			){
+				final String requestURL = String.valueOf(req.getRequestURL().append((req.getQueryString()!=null?"?"+req.getQueryString():"")));
+				final String referer = req.getHeader("referer");
+				final HttpSession session = req.getSession();
+				new Thread(() -> URLTracker.getInstance().register(session, requestURL, referer)).start();
 			}
-		}catch (Exception e){
-			AppLogger.getInstance().execute(e);
-		}
-	}
 
-	public List<String> getTrackUrlHistory(HttpServletRequest req){
-		if(req.getSession() != null && req.getSession().getAttribute(URL_HISTORY_SESSION_KEY) != null){
-			//noinspection unchecked
-			return (List<String>) req.getSession().getAttribute(URL_HISTORY_SESSION_KEY);
-        }
-		return new ArrayList<>();
-	}
-
-
-	public String printTrackUrlHistory(HttpServletRequest req){
-		List<String> listToPrint = new ArrayList<>(getTrackUrlHistory(req));
-		Collections.reverse(listToPrint);
-		return String.join("<br/>", listToPrint);
 	}
 
 	public static void setThredLocalChain(InvocationChain chain) {

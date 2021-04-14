@@ -7,6 +7,7 @@ import org.futurepages.menta.consequences.Forward;
 import org.futurepages.menta.core.action.AbstractAction;
 import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.control.Controller;
+import org.futurepages.menta.core.control.URLTracker;
 import org.futurepages.menta.exceptions.NotFoundServletException;
 import org.futurepages.util.DateUtil;
 import org.futurepages.util.EncodingUtil;
@@ -156,7 +157,7 @@ public class AppLogger implements ExceptionLogger{
 					while (ralist.hasMoreElements()) {
 						String name = (String) ralist.nextElement();
 						String toStringValue = req.getSession().getAttribute(name).toString();
-						if(!name.equals(Controller.URL_HISTORY_SESSION_KEY)){
+						if(!name.equals(URLTracker.URL_HISTORY_SESSION_KEY)){
 							if(toStringValue.length()>200){
 								toStringValue = toStringValue.substring(0,197)+" (...)";
 							}
@@ -193,8 +194,8 @@ public class AppLogger implements ExceptionLogger{
 			}
 		}
 
-        if(req != null && !Controller.getInstance().getTrackUrlHistory(req).isEmpty()){
-        	logSB.append(logln(  ">[urlHistory]<br/>", Controller.getInstance().printTrackUrlHistory(req)));
+        if(req != null && !URLTracker.getInstance().getTrackUrlHistory(req).isEmpty()){
+        	logSB.append(logln(  ">[urlHistory]<br/>", URLTracker.getInstance().printTrackUrlHistory(req)));
         }
 
 		if(!simple404){
