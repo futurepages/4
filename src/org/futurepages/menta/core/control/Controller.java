@@ -458,12 +458,12 @@ public class Controller extends HttpServlet {
 						(
 							(!(getChain().getAction() instanceof DontTrackURL))
 							&&
-						    (!getChain().getMethod().isAnnotationPresent(UntrackableURL.class))
+						    (getChain().getMethod() == null || !getChain().getMethod().isAnnotationPresent(UntrackableURL.class))
 
 						)
 				)
 			){
-				final String requestURL = String.valueOf(req.getRequestURL().append((req.getQueryString()!=null?"?"+req.getQueryString():"")));
+				final String requestURL = req.getRequestURI()+((req.getQueryString()!=null?"?"+req.getQueryString():""));
 				final String referer = req.getHeader("referer");
 				final HttpSession session = req.getSession();
 				new Thread(() -> URLTracker.getInstance().register(session, requestURL, referer)).start();
@@ -472,7 +472,9 @@ public class Controller extends HttpServlet {
 	}
 
 	public static void setThredLocalChain(InvocationChain chain) {
-		chainTL.set(chain);
+		if(chainTL.get()==null){
+			chainTL.set(chain);
+		}
 	}
 
 	private boolean hasGlobalFilterFreeMarkerFilter(List<Filter> filters, String innerAction) {

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * Action instanciada quando não há action no request.
  * @author leandro
  */
-public class NullAction extends FreeAction {
+public class NullAction extends FreeAction implements DontTrackURL {
 	
 	public NullAction(HttpServletRequest req , HttpServletResponse res){
 		this.setInput(new PrettyURLRequestInput(req));

@@ -89,7 +89,7 @@ public class TemplateServlet extends HttpServlet {
 				Controller.fixEncoding(request,response);
 				
 				//Creating Null Action - without breaking.
-				Action action = new NullAction(request,response);
+				new NullAction(request,response);
 			}
 			processTemplate(path, createTemplateManager(), request, response, getServletContext());
 		} catch (Exception ex) {
