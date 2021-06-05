@@ -48,7 +48,7 @@ public class NumberUtil {
 		centenas.put("3", "trezentos");
 		centenas.put("4", "quatrocentos");
 		centenas.put("5", "quinhentos");
-		centenas.put("6", "seissentos");
+		centenas.put("6", "seiscentos");
 		centenas.put("7", "setecentos");
 		centenas.put("8", "oitocentos");
 		centenas.put("9", "novecentos");
