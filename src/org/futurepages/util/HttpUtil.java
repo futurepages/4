@@ -21,6 +21,7 @@ public class HttpUtil {
 					.url(url)
 					.build();
 			Response response = client.newCall(request).execute();
+			assert response.body() != null;
 			String str = response.body().string();
 
 			// Close OkHttpClient according to:
