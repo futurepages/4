@@ -50,8 +50,8 @@ public class NaturalOrderComparator implements Comparator {
 	}
 
 	public int compare(Object o1, Object o2) {
-		String a = o1.toString();
-		String b = o2.toString();
+		String a = The.strWithoutAccentuation(o1.toString());
+		String b = The.strWithoutAccentuation(o2.toString());
 
 		int ia = 0, ib = 0;
 		int nza = 0, nzb = 0;
