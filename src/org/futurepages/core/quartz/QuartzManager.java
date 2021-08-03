@@ -55,22 +55,25 @@ public class QuartzManager {
 		if(anotherScheduleds!=null){
 			System.out.println("Killing Quartz's Another schedule Executors ...");
 			for(ScheduledExecutorService another : anotherScheduleds){
-				another.shutdown();
+				if(!another.isShutdown()){
+					another.shutdown();
+				}
 			}
 		}
 		System.out.println("Quartz's Jobs successful killed.");
 	}
 
-	public static void newDelayedJob(Object caller, int delayToRerun, TimeUnit timeUnit, Thread threadToExecute) {
-		newDelayedJob(1, caller!=null? caller.getClass().getName():null, 0, delayToRerun, timeUnit, threadToExecute);
+	public static ScheduledExecutorService newDelayedJob(Object caller, int delayToRerun, TimeUnit timeUnit, Thread threadToExecute) {
+		return newDelayedJob(1, caller!=null? caller.getClass().getName():null, 0, delayToRerun, timeUnit, threadToExecute);
 	}
 
-	public static void newDelayedJob(int numThreads, String threadName, int initialDelay, int delayToRerun, TimeUnit timeUnit, Thread threadToExecute) {
+	public static ScheduledExecutorService newDelayedJob(int numThreads, String threadName, int initialDelay, int delayToRerun, TimeUnit timeUnit, Thread threadToExecute) {
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(numThreads<1?1:numThreads);
 		addOther(scheduler);
 		if(threadName!=null){
 			threadToExecute.setName(threadName);
 		}
 		scheduler.scheduleWithFixedDelay(threadToExecute, initialDelay, delayToRerun, timeUnit);
+		return scheduler;
 	}
 }
