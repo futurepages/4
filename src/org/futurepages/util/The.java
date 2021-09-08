@@ -719,18 +719,18 @@ public class The {
 		}
 
 		for (String key : map.keySet()) {
-			strIn = org.apache.commons.lang.StringUtils.replace(strIn, key, map.get(key));
+			strIn = StringUtils.replace(strIn, key, map.get(key));
 		}
 
 		return strIn;
 	}
 
 	public static String leftPad(String value, int qt, String token) {
-		return org.apache.commons.lang.StringUtils.leftPad(value, qt, token);
+		return StringUtils.leftPad(value, qt, token);
 	}
 
 	public static String rightPad(String value, int qt, String token) {
-		return org.apache.commons.lang.StringUtils.rightPad(value, qt, token);
+		return StringUtils.rightPad(value, qt, token);
 	}
 
 	public static String camelCaseToLowerUnderscore(String from){
