@@ -12,19 +12,20 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class CustomFirefoxDriver extends FirefoxDriver {
 
-//	public CustomFirefoxDriver(FirefoxOptions options) {
-//		super(options);
-//	}
-//
-//	private Long sleepTime = null;
-//
-//	public CustomFirefoxDriver() {
-//		super();
-//		if(!Is.empty(DriverFactory.TESTING_DELAY_MS) && !DriverFactory.TESTING_DELAY_MS.equals("0")){
-//			sleepTime = Long.parseLong(DriverFactory.TESTING_DELAY_MS);
-//		}
-//	}
-//
+//	constructor for specify options
+	public CustomFirefoxDriver(FirefoxOptions options) {
+		super(options);
+	}
+
+	private Long sleepTime = null;
+
+	public CustomFirefoxDriver() {
+		super();
+		if(!Is.empty(DriverFactory.TESTING_DELAY_MS) && !DriverFactory.TESTING_DELAY_MS.equals("0")){
+			sleepTime = Long.parseLong(DriverFactory.TESTING_DELAY_MS);
+		}
+	}
+
 //	@Override
 //	public WebElement findElement(By by) {
 //		WebElement el = super.findElement(by);
