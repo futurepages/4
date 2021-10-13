@@ -1,26 +1,24 @@
-package org.test;
+package org.test.drivers;
 
-import org.futurepages.DriverFactory;
+import org.futurepages.test.drivers.DriverFactory;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
-public class CustomChromeDriver extends ChromeDriver {
+public class CustomFirefoxDriver extends FirefoxDriver {
 
-//	public CustomChromeDriver(ChromeOptions options) {
+//	public CustomFirefoxDriver(FirefoxOptions options) {
 //		super(options);
 //	}
 //
 //	private Long sleepTime = null;
 //
-//	/**
-//	 *
-//	 */
-//	public CustomChromeDriver() {
+//	public CustomFirefoxDriver() {
 //		super();
 //		if(!Is.empty(DriverFactory.TESTING_DELAY_MS) && !DriverFactory.TESTING_DELAY_MS.equals("0")){
 //			sleepTime = Long.parseLong(DriverFactory.TESTING_DELAY_MS);
@@ -33,7 +31,7 @@ public class CustomChromeDriver extends ChromeDriver {
 //		sleepSeNecessario(el);
 //		return el;
 //	}
-
+//
 //	private void sleepSeNecessario(WebElement el) {
 //		if(sleepTime!=null) {
 //			String st = el.getAttribute("style");

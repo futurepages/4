@@ -1,6 +1,6 @@
-package org.test;
+package org.test.drivers;
 
-import org.futurepages.DriverFactory;
+import org.futurepages.test.DriverFactory;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
 import org.openqa.selenium.By;
@@ -33,7 +33,7 @@ public class CustomChromeDriver extends ChromeDriver {
 //		sleepSeNecessario(el);
 //		return el;
 //	}
-
+//
 //	private void sleepSeNecessario(WebElement el) {
 //		if(sleepTime!=null) {
 //			String st = el.getAttribute("style");
