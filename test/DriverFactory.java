@@ -1,7 +1,7 @@
-package test;
+package org.futurepages.test;
 
-import org.futurepages.drivers.CustomChromeDriver;
-import org.futurepages.drivers.CustomFirefoxDriver;
+import org.futurepages.test.drivers.CustomChromeDriver;
+import org.futurepages.test.drivers.CustomFirefoxDriver;
 import org.apache.commons.lang.SystemUtils;
 import org.futurepages.core.config.Apps;
 import org.futurepages.util.FileUtil;

@@ -1,6 +1,6 @@
-package org.test;
+package org.futurepages.test;
 
-import org.futurepages.DriverFactory;
+import org.futurepages.test.DriverFactory;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
 import org.openqa.selenium.By;

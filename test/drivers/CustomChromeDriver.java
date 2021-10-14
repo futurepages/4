@@ -1,4 +1,4 @@
-package org.test.drivers;
+package org.futurepages.test.drivers;
 
 import org.futurepages.test.DriverFactory;
 import org.futurepages.util.Is;
