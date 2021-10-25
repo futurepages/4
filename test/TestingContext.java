@@ -1,4 +1,4 @@
-package framework;
+package org.futurepages.test;
 
 import org.futurepages.core.persistence.Dao;
 import org.futurepages.menta.core.i18n.LocaleManager;
@@ -33,5 +33,10 @@ public class TestingContext {
 			TestingContext.close();
 			INSTANCE = null;
 		}
+	}
+
+	static void close() {
+		DriverFactory.quitDrivers();
+		Dao.getInstance().close();
 	}
 }
