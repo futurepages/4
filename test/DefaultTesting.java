@@ -20,4 +20,10 @@ public class DefaultTesting extends AssertUtils {
 		}
 	}
 
+	@AfterClass
+	public static void _afterClass(){
+		if(TestingContext.getInstance()==null){
+			TestingContext.close();
+		}
+	}
 }
