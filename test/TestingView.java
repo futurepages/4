@@ -1,0 +1,43 @@
+package org.futurepages.test;
+
+import framework.util.AssertUtils;
+import org.futurepages.core.config.Apps;
+import org.futurepages.util.FileUtil;
+import org.futurepages.util.Is;
+import org.futurepages.util.The;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.*;
+
+public class TestingView extends AssertUtils {
+
+	public List<WebElement> getAll(String selector) {
+		return driver().findElements((bySelector(selector)));
+	}
+
+	public WebElement getLast(String selector) {
+		List<WebElement> result = driver().findElements((bySelector(selector)));
+		if (result.size() > 0){
+			return result.get(result.size() - 1) ;
+		}
+		throw new NoSuchElementException("Cannot locate an element using " + selector);
+	}
+}
