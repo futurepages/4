@@ -46,6 +46,17 @@ public class TestingView extends AssertUtils {
 		return driver();
 	}
 
+	private WebDriver driver(){
+		return DriverFactory.getDefaultWebDriver();
+	}
+
+	protected void call(){}
+
+	@Deprecated //Utilize somente como quebra galho - interessanste abstraí-lo ao máximo aqui nesta classe.
+	public WebDriver getDriver() {
+		return driver();
+	}
+
 	public WebElement getLast(String selector) {
 		List<WebElement> result = driver().findElements((bySelector(selector)));
 		if (result.size() > 0){
