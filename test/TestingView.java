@@ -89,4 +89,18 @@ public class TestingView extends AssertUtils {
 	public void callURL(String url) {
 		driver().get(url);
 	}
+
+	public void callURLAndWait(String url, int seconds) {
+		callURL(url);
+		waitSeconds(seconds);
+		waitToLoadAll();
+	}
+
+	public void callURLAndWait(String url) {
+		callURLAndWait(url, 0);
+	}
+
+	public void callESC() {
+		driver().switchTo().activeElement().sendKeys(Keys.ESCAPE);
+	}
 }
