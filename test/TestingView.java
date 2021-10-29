@@ -77,4 +77,16 @@ public class TestingView extends AssertUtils {
 		driver().get(path(path));
 	}
 
+	public void callPathAndWait(String path, int seconds) {
+		callPath(path);
+		waitToLoadAll();
+	}
+
+	public void callPathAndWait(String path) {
+		callPathAndWait(path, 0);
+	}
+
+	public void callURL(String url) {
+		driver().get(url);
+	}
 }
