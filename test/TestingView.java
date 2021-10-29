@@ -64,4 +64,17 @@ public class TestingView extends AssertUtils {
 		}
 		throw new NoSuchElementException("Cannot locate an element using " + selector);
 	}
+	public boolean has(String selector) {
+		try {
+			get(selector);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
+	public void callPath(String path) {
+		driver().get(path(path));
+	}
+
 }
