@@ -4,7 +4,6 @@ import org.futurepages.test.DriverFactory;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -17,9 +16,6 @@ public class CustomChromeDriver extends ChromeDriver {
 
 	private Long sleepTime = null;
 
-	/**
-	 *
-	 */
 	public CustomChromeDriver() {
 		super();
 		if(!Is.empty(DriverFactory.TESTING_DELAY_MS) && !DriverFactory.TESTING_DELAY_MS.equals("0")){

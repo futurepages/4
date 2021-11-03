@@ -5,14 +5,11 @@ import org.futurepages.util.Is;
 import org.futurepages.util.The;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class CustomFirefoxDriver extends FirefoxDriver {
 
-//	constructor for specify options
 	public CustomFirefoxDriver(FirefoxOptions options) {
 		super(options);
 	}

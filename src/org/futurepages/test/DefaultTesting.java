@@ -1,6 +1,5 @@
 package org.futurepages.test;
 
-
 import org.futurepages.test.util.AssertUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
