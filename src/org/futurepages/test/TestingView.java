@@ -28,16 +28,11 @@ import java.util.List;
 import static org.hamcrest.Matchers.*;
 
 public class TestingView extends AssertUtils {
-
-	public List<WebElement> getAll(String selector) {
-		return driver().findElements((bySelector(selector)));
-	}
-
 	private String path(String path) {
 		return DriverFactory.getPath(path);
 	}
 
-	public TestingView(){
+	public TestingView() {
 
 	}
 
@@ -46,11 +41,12 @@ public class TestingView extends AssertUtils {
 		return driver();
 	}
 
-	private WebDriver driver(){
+	private WebDriver driver() {
 		return DriverFactory.getDefaultWebDriver();
 	}
 
-	protected void call(){}
+	protected void call() {
+	}
 
 	public WebElement get(String selector) {
 		return driver().findElement((bySelector(selector)));
@@ -60,18 +56,15 @@ public class TestingView extends AssertUtils {
 		return driver().findElements((bySelector(selector)));
 	}
 
-	@Deprecated //Utilize somente como quebra galho - interessanste abstraí-lo ao máximo aqui nesta classe.
-	public WebDriver getDriver() {
-		return driver();
-	}
-
 	public WebElement getLast(String selector) {
 		List<WebElement> result = driver().findElements((bySelector(selector)));
-		if (result.size() > 0){
-			return result.get(result.size() - 1) ;
+		if (result.size() > 0) {
+			return result.get(result.size() - 1);
 		}
 		throw new NoSuchElementException("Cannot locate an element using " + selector);
 	}
+
+
 	public boolean has(String selector) {
 		try {
 			get(selector);
@@ -162,9 +155,9 @@ public class TestingView extends AssertUtils {
 
 	public void click(By by) {
 		WebElement element = driver().findElement(by);
-		try{
+		try {
 			element.click();
-		}catch (Exception ex){
+		} catch (Exception ex) {
 			getActions().moveToElement(element).click().perform();
 		}
 	}
@@ -257,21 +250,23 @@ public class TestingView extends AssertUtils {
 	}
 
 	private By bySelector(String selector) {
-		return selector.startsWith("xpath=")? By.xpath(selector.substring(6)) : By.cssSelector(selector);
+		return selector.startsWith("xpath=") ? By.xpath(selector.substring(6)) : By.cssSelector(selector);
 	}
 
 	public void alertAccept() {
-		try{
+		try {
 			Alert alert = driver().switchTo().alert();
 			alert.accept();
-		}catch (Exception ignored){}
+		} catch (Exception ignored) {
+		}
 	}
 
 	public void alertDismiss() {
-		try{
+		try {
 			Alert alert = driver().switchTo().alert();
 			alert.dismiss();
-		}catch (Exception ignored){}
+		} catch (Exception ignored) {
+		}
 	}
 
 	public void setAlertTextAndAccept(String valor) {
@@ -293,7 +288,7 @@ public class TestingView extends AssertUtils {
 	}
 
 	public void waitSeconds(int seconds) {
-		The.sleepOf(seconds*1000);
+		The.sleepOf(seconds * 1000);
 	}
 
 	public Object executeJS(String cmd, Object... params) {
@@ -303,11 +298,11 @@ public class TestingView extends AssertUtils {
 		return js.executeScript(cmd, params);
 	}
 
-	public WebDriverWait stayWaiting(){
+	public WebDriverWait stayWaiting() {
 		return new WebDriverWait(driver(), DriverFactory.getTimeoutWaitElement());
 	}
 
-	public WebDriverWait stayWaiting(long seconds){
+	public WebDriverWait stayWaiting(long seconds) {
 		return new WebDriverWait(driver(), seconds);
 	}
 
@@ -356,75 +351,75 @@ public class TestingView extends AssertUtils {
 		The.sleepOf(timeMillis);
 	}
 
-	public void assertTextEqualsInElement(String expectedTxt, String elementSelector){
-		assertTrue("'"+elementSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE",isPresentAndVisible(elementSelector));
+	public void assertTextEqualsInElement(String expectedTxt, String elementSelector) {
+		assertTrue("'" + elementSelector + "' with TEXT=\"" + expectedTxt + "\" NOT FOUND OR NOT VISIBLE", isPresentAndVisible(elementSelector));
 		assertEquals(expectedTxt, get(elementSelector).getText().trim());
 	}
 
-	public void assertTextEqualsInElement(String msg, String expectedTxt, String elementSelector){
-		assertTrue(msg+": '"+elementSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE",isPresentAndVisible(elementSelector));
+	public void assertTextEqualsInElement(String msg, String expectedTxt, String elementSelector) {
+		assertTrue(msg + ": '" + elementSelector + "' with TEXT=\"" + expectedTxt + "\" NOT FOUND OR NOT VISIBLE", isPresentAndVisible(elementSelector));
 		assertEquals(msg, expectedTxt, get(elementSelector).getText().trim());
 	}
 
 
-	public void assertTextNotEqualsInElement(String msg, String expectedTxt, String elementSelector){
-		assertTrue(msg+": '"+elementSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE",isPresentAndVisible(elementSelector));
+	public void assertTextNotEqualsInElement(String msg, String expectedTxt, String elementSelector) {
+		assertTrue(msg + ": '" + elementSelector + "' with TEXT=\"" + expectedTxt + "\" NOT FOUND OR NOT VISIBLE", isPresentAndVisible(elementSelector));
 		assertNotEquals(msg, expectedTxt, get(elementSelector).getText().trim());
 	}
 
-	public void assertPresentAndVisible(String elementSelector){
+	public void assertPresentAndVisible(String elementSelector) {
 		assertPresentAndVisible(null, elementSelector);
 	}
 
-	public void assertPresentAndVisible(String msg, String elementSelector){
-		assertTrue(msg==null?"'"+elementSelector+"' NOT FOUND OR NOT VISIBLE!": elementSelector+": "+msg, isPresentAndVisible(elementSelector));
+	public void assertPresentAndVisible(String msg, String elementSelector) {
+		assertTrue(msg == null ? "'" + elementSelector + "' NOT FOUND OR NOT VISIBLE!" : elementSelector + ": " + msg, isPresentAndVisible(elementSelector));
 	}
 
-	public void assertNotExistsOrHidden(String elementSelector){
+	public void assertNotExistsOrHidden(String elementSelector) {
 		assertNotExistsOrHidden(null, elementSelector);
 	}
 
-	public void assertNotExistsOrHidden(String msg, String elementSelector){
+	public void assertNotExistsOrHidden(String msg, String elementSelector) {
 		WebElement element = getIfPresentAndVisible(elementSelector);
 		String failMsg = null;
-		if(element!=null){
-			failMsg = "'"+elementSelector+"', class='"+element.getAttribute("class")+"', text=\""+element.getText().trim()+"\" FOUND AND VISIBLE!"+(msg!=null?": "+msg:"");
+		if (element != null) {
+			failMsg = "'" + elementSelector + "', class='" + element.getAttribute("class") + "', text=\"" + element.getText().trim() + "\" FOUND AND VISIBLE!" + (msg != null ? ": " + msg : "");
 		}
-		assertTrue(failMsg, element==null);
+		assertTrue(failMsg, element == null);
 	}
 
-	public void assertHasTextInElement(String expectedTxt, String elementSelector){
-		assertTrue("'"+elementSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE",isPresentAndVisible(elementSelector));
+	public void assertHasTextInElement(String expectedTxt, String elementSelector) {
+		assertTrue("'" + elementSelector + "' with TEXT=\"" + expectedTxt + "\" NOT FOUND OR NOT VISIBLE", isPresentAndVisible(elementSelector));
 		String textoDoElemento = get(elementSelector).getText();
-		assertThat(textoDoElemento,containsString(expectedTxt));
+		assertThat(textoDoElemento, containsString(expectedTxt));
 	}
 
-	public void assertPageHasText(String expectedTxt){
+	public void assertPageHasText(String expectedTxt) {
 		String textoDoElemento = get("body").getText();
-		assertThat(textoDoElemento,containsString(expectedTxt));
+		assertThat(textoDoElemento, containsString(expectedTxt));
 	}
 
-	public void assertHasTextInElement(String msg, String expectedTxt, String elementSelector){
-		assertTrue(msg+": '"+elementSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE",isPresentAndVisible(elementSelector));
+	public void assertHasTextInElement(String msg, String expectedTxt, String elementSelector) {
+		assertTrue(msg + ": '" + elementSelector + "' with TEXT=\"" + expectedTxt + "\" NOT FOUND OR NOT VISIBLE", isPresentAndVisible(elementSelector));
 		String textoDoElemento = get(elementSelector).getText();
-		assertThat(textoDoElemento,containsString(expectedTxt));
+		assertThat(textoDoElemento, containsString(expectedTxt));
 	}
 
-	public void assertNotHasTextInElement(String expectedTxt, String elementSelector){
-		assertTrue("'"+elementSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE",isPresentAndVisible(elementSelector));
+	public void assertNotHasTextInElement(String expectedTxt, String elementSelector) {
+		assertTrue("'" + elementSelector + "' with TEXT=\"" + expectedTxt + "\" NOT FOUND OR NOT VISIBLE", isPresentAndVisible(elementSelector));
 		String textoDoElemento = get(elementSelector).getText();
-		assertThat(textoDoElemento,not(containsString(expectedTxt)));
+		assertThat(textoDoElemento, not(containsString(expectedTxt)));
 	}
 
-	public void assertPatternInElement(String regex, String elementSelector){
-		assertTrue("'"+elementSelector+"' with REGEX=\""+regex+"\" NOT FOUND OR NOT VISIBLE",isPresentAndVisible(elementSelector));
+	public void assertPatternInElement(String regex, String elementSelector) {
+		assertTrue("'" + elementSelector + "' with REGEX=\"" + regex + "\" NOT FOUND OR NOT VISIBLE", isPresentAndVisible(elementSelector));
 		String textoDoElemento = get(elementSelector).getText();
-		assertThat(textoDoElemento,matchesPattern(regex));
+		assertThat(textoDoElemento, matchesPattern(regex));
 	}
 
 	public void assertCurrentPathEquals(String path) {
-		String currentPath = getCurrentUrl().replace( Apps.get("APP_HOST"), "").split("[?#]")[0];
-		assertTrue("Current path ("+currentPath+") does not match expected ("+path+")", currentPath.equals(path));
+		String currentPath = getCurrentUrl().replace(Apps.get("APP_HOST"), "").split("[?#]")[0];
+		assertTrue("Current path (" + currentPath + ") does not match expected (" + path + ")", currentPath.equals(path));
 	}
 
 	public void waitToClick(String selector) {
@@ -438,20 +433,20 @@ public class TestingView extends AssertUtils {
 	}
 
 	public void waitAndClickIfPresent(String selector) {
-		try{
+		try {
 			// nao usar aqui o waitToClick
 			waitForElement(selector);
 			click(selector);
-		}catch (Exception ignored){
+		} catch (Exception ignored) {
 		}
 	}
 
 	public void waitAndClickIfPresent(int seconds, String selector) {
-		try{
+		try {
 			// nao usar aqui o waitToClick
 			stayWaiting(seconds).until(ExpectedConditions.presenceOfElementLocated(bySelector(selector)));
 			click(selector);
-		}catch (Exception ignored){
+		} catch (Exception ignored) {
 		}
 	}
 
@@ -467,13 +462,13 @@ public class TestingView extends AssertUtils {
 	public Long size$(String selector) {
 		selector = selector.replaceAll("'", "\"");
 		try {
-			return (Long) executeJS("return $('"+selector+"').size()");
+			return (Long) executeJS("return $('" + selector + "').size()");
 		} catch (Exception ignored) {
 			return 0L;
 		}
 	}
 
-	public void waitFor$(String selector){
+	public void waitFor$(String selector) {
 		stayWaiting().until((ExpectedCondition<Boolean>) d -> has$(selector));
 	}
 
@@ -484,7 +479,7 @@ public class TestingView extends AssertUtils {
 
 	public void click$(String selector) {
 		selector = selector.replaceAll("'", "\"");
-		executeJS("$('"+selector+"').click()");
+		executeJS("$('" + selector + "').click()");
 	}
 
 	public void clickAndHold(String selector) {
@@ -517,19 +512,19 @@ public class TestingView extends AssertUtils {
 	}
 
 	public void moveToElementX_js(String selector) {
-		moveToElementX_js(selector,0);
+		moveToElementX_js(selector, 0);
 	}
 
 	public void moveToElementX_js(String selector, int offset) {
-		executeJS("window.scrollTo(arguments[0], 0)", driver().findElement(bySelector(selector)).getLocation().y+offset);
+		executeJS("window.scrollTo(arguments[0], 0)", driver().findElement(bySelector(selector)).getLocation().y + offset);
 	}
 
 	public void moveToElementY_js(String selector) {
-		moveToElementY_js(selector,0);
+		moveToElementY_js(selector, 0);
 	}
 
 	public void moveToElementY_js(String selector, int offset) {
-		executeJS("window.scrollTo(0, arguments[0])", driver().findElement(bySelector(selector)).getLocation().y+offset);
+		executeJS("window.scrollTo(0, arguments[0])", driver().findElement(bySelector(selector)).getLocation().y + offset);
 //      //OUTRA OPÇÃO:
 //		executeJS("arguments[0].scrollIntoView(true)", get(selector));
 //		if(offset!=0){
@@ -539,22 +534,23 @@ public class TestingView extends AssertUtils {
 
 	public boolean isPresentAndVisible(String selector) {
 		WebElement element;
-		try{
+		try {
 			element = get(selector);
 			return element.isDisplayed();
-		}catch (NoSuchElementException ex){
+		} catch (NoSuchElementException ex) {
 			return false;
 		}
 	}
 
+
 	public WebElement getIfPresentAndVisible(String selector) {
 		WebElement element;
-		try{
+		try {
 			element = get(selector);
-			if(element.isDisplayed()){
+			if (element.isDisplayed()) {
 				return element;
 			}
-		}catch (NoSuchElementException ignored){
+		} catch (NoSuchElementException ignored) {
 		}
 		return null;
 	}
@@ -586,28 +582,28 @@ public class TestingView extends AssertUtils {
 		return getText(selector);
 	}
 
-	public boolean hasText(String text, String selector){
+	public boolean hasText(String text, String selector) {
 		try {
 			String bodyText = driver().findElement(bySelector(selector)).getText();
 			return bodyText.contains(text);
-		} catch (Exception e){
+		} catch (Exception e) {
 			return false;
 		}
 	}
 
-	public boolean hasText(String text){
+	public boolean hasText(String text) {
 		return hasText(text, "body");
 	}
 
-	public void waitForText(String text){
+	public void waitForText(String text) {
 		stayWaiting().until((ExpectedCondition<Boolean>) d -> hasText(text));
 	}
 
-	public String getAttr(String selector, String attr){
+	public String getAttr(String selector, String attr) {
 		return driver().findElement(bySelector(selector)).getAttribute(attr);
 	}
 
-	public String getHref(String selector){
+	public String getHref(String selector) {
 		return getAttr(selector, "href");
 	}
 
@@ -620,7 +616,7 @@ public class TestingView extends AssertUtils {
 		}
 	}
 
-	public void waitForPageLoad(){
+	public void waitForPageLoad() {
 		stayWaiting().until((ExpectedCondition<Boolean>) d -> isPageLoadComplete());
 	}
 
@@ -632,7 +628,7 @@ public class TestingView extends AssertUtils {
 		}
 	}
 
-	public void waitForAjaxLoad(){
+	public void waitForAjaxLoad() {
 		stayWaiting().until((ExpectedCondition<Boolean>) d -> isAjaxLoadComplete());
 	}
 
@@ -647,17 +643,18 @@ public class TestingView extends AssertUtils {
 		}
 	}
 
-	private String getResPath(TestingView tv, String imagePath)  {
+	private String getResPath(TestingView tv, String imagePath) {
 		try {
-			String filePath = FileUtil.classesPath(tv.getClass()) + "res/"+ imagePath;
-			return DriverFactory.SO_DRIVER.equals("windows")?filePath.substring(1):filePath;
+			String filePath = FileUtil.classesPath(tv.getClass()) + "res/" + imagePath;
+			return DriverFactory.SO_DRIVER.equals("windows") ? filePath.substring(1) : filePath;
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
+
 	public boolean ajaxUploadImageFromRes(String ajaxUploadFileContainerId, String imagePath) {
-		String xpath = "xpath=//input[@id='uploadImage_"+ajaxUploadFileContainerId+"']//..//input[@class='input_file']";
+		String xpath = "xpath=//input[@id='uploadImage_" + ajaxUploadFileContainerId + "']//..//input[@class='input_file']";
 		return ajaxUploadFileFromRes(xpath, imagePath);
 	}
 
@@ -692,7 +689,7 @@ public class TestingView extends AssertUtils {
 	public byte[] getImgBytes(String imgSelector) {
 		WebElement element = get(imgSelector);
 		try {
-			return FileUtil.getBytesFromUrl(element.getAttribute("src"),null);
+			return FileUtil.getBytesFromUrl(element.getAttribute("src"), null);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -700,7 +697,7 @@ public class TestingView extends AssertUtils {
 
 	public byte[] getBytesFromResImg(String filePath) {
 		try {
-			return FileUtil.getBytesFromUrl((new File(getResPath(this,filePath))).toURI().toURL().toString(),null);
+			return FileUtil.getBytesFromUrl((new File(getResPath(this, filePath))).toURI().toURL().toString(), null);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -728,19 +725,19 @@ public class TestingView extends AssertUtils {
 		long start = System.currentTimeMillis();
 
 		waitForPageLoad();
-		waitForStopJSChanges(5000,500);
+		waitForStopJSChanges(5000, 500);
 		waitForAjaxLoad();
 
 		long end = System.currentTimeMillis();
 		long diff = end - start;
 
 		// espera mínima ...
-		if(diff<MIN_LOAD_TIME){
-			The.sleepOf(MIN_LOAD_TIME-diff);
+		if (diff < MIN_LOAD_TIME) {
+			The.sleepOf(MIN_LOAD_TIME - diff);
 		}
 	}
 
-	public <Page extends TestingView>  Page waitToLoadAll(Class<Page> pageOfTemplateClass) {
+	public <Page extends TestingView> Page waitToLoadAll(Class<Page> pageOfTemplateClass) {
 		try {
 			Page pageOfTemplate = pageOfTemplateClass.newInstance();
 			pageOfTemplate.waitToLoadAll();
@@ -790,12 +787,12 @@ public class TestingView extends AssertUtils {
 		driver().manage().deleteAllCookies();
 	}
 
-	public void confirmAlert(boolean accept){
+	public void confirmAlert(boolean accept) {
 		WebDriver driver = driver();
 		Alert alert = driver.switchTo().alert();
-		if(accept){
+		if (accept) {
 			alert.accept();
-		}else{
+		} else {
 			alert.dismiss();
 		}
 		driver.switchTo().defaultContent();
@@ -816,6 +813,7 @@ public class TestingView extends AssertUtils {
 			((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 			waitToLoadAll();
 			//waitForStopJSChanges(1000,500);
-		}while (!prevState.equals(driver().getPageSource()));
+		} while (!prevState.equals(driver().getPageSource()));
 	}
+
 }

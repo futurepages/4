@@ -19,13 +19,10 @@ import org.junit.runners.model.Statement;
 
 public class ConditionalIgnoreRule implements MethodRule {
 
-	public interface IgnoreCondition extends framework.IgnoreCondition {
-	}
-
 	public Statement apply(Statement base, FrameworkMethod method, Object target) {
 		Statement result = base;
 		if (hasConditionalIgnoreAnnotation(method)) {
-			framework.IgnoreCondition condition = getIgnoreContition(method, target);
+			IgnoreCondition condition = getIgnoreContition(method, target);
 			if (condition.isSatisfied()) {
 				result = new IgnoreStatement(condition);
 			}
@@ -37,13 +34,13 @@ public class ConditionalIgnoreRule implements MethodRule {
 		return method.getAnnotation(ConditionalIgnore.class) != null;
 	}
 
-	private framework.IgnoreCondition getIgnoreContition(FrameworkMethod method, Object instance) {
+	private IgnoreCondition getIgnoreContition(FrameworkMethod method, Object instance) {
 		ConditionalIgnore annotation = method.getAnnotation(ConditionalIgnore.class);
 		return newCondition(annotation, instance);
 	}
 
-	private framework.IgnoreCondition newCondition(ConditionalIgnore annotation, Object instance) {
-		final Class<? extends framework.IgnoreCondition> cond = annotation.condition();
+	private IgnoreCondition newCondition(ConditionalIgnore annotation, Object instance) {
+		final Class<? extends IgnoreCondition> cond = annotation.condition();
 		try {
 			if (cond.isMemberClass()) {
 				if (Modifier.isStatic(cond.getModifiers())) {
@@ -64,9 +61,9 @@ public class ConditionalIgnoreRule implements MethodRule {
 	}
 
 	private static class IgnoreStatement extends Statement {
-		private framework.IgnoreCondition condition;
+		private IgnoreCondition condition;
 
-		IgnoreStatement(framework.IgnoreCondition condition) {
+		IgnoreStatement(IgnoreCondition condition) {
 			this.condition = condition;
 		}
 
