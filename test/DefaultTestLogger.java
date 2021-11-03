@@ -76,4 +76,42 @@ public class DefaultTestLogger extends TestWatcher {
 		}
 	}
 
+	private void clearOldSnapshots(String dir) {
+		File tempFolder = new File(dir);
+		List<File> files = FileUtil.listFilesFromDirectory(tempFolder, false);
+		long tempoDeInicio = System.currentTimeMillis();
+		int cont= 0;
+		if (!files.isEmpty()) {
+			for (File f : files) {
+				if (CalendarUtil.getDifferenceInDays(tempoDeInicio, f.lastModified()) >= 1) {
+					f.delete();
+					cont++;
+				}
+			}
+			System.out.println(">>> deleted old snapshots: " + cont);
+		}
+	}
+
+	private void logInputs(Description description) {
+		Field[] declaredFields = description.getTestClass().getDeclaredFields();
+		if(declaredFields.length>0){
+			System.out.println("STATICALLY DECLARED INPUTS.....................\n");
+			for (Field field : declaredFields) {
+				field.setAccessible(true);
+				if (java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+					try {
+						System.out.println(field.getName()+": "+(field.get(null)!=null? The.contentOf(field.get(null)) :"<null>"));
+					} catch (IllegalAccessException ignore) {
+					}
+				}
+			}
+			System.out.println("\n...............................................");
+		}
+	}
+
+	@Override
+	protected void finished(Description description) {
+		System.out.println();
+	}
+
 }

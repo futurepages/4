@@ -1,6 +1,6 @@
 package org.futurepages.test.drivers;
 
-import org.futurepages.test.drivers.DriverFactory;
+import org.futurepages.test.DriverFactory;
 import org.futurepages.util.Is;
 import org.futurepages.util.The;
 import org.openqa.selenium.By;
@@ -26,19 +26,19 @@ public class CustomFirefoxDriver extends FirefoxDriver {
 		}
 	}
 
-//	@Override
-//	public WebElement findElement(By by) {
-//		WebElement el = super.findElement(by);
-//		sleepSeNecessario(el);
-//		return el;
-//	}
-//
-//	private void sleepSeNecessario(WebElement el) {
-//		if(sleepTime!=null) {
-//			String st = el.getAttribute("style");
-//			this.executeScript("arguments[0].setAttribute('style', '" + st + "; background: yellow !important; background-image: none !important;');", el);
-//			The.sleepOf(sleepTime);
-//			this.executeScript("arguments[0].setAttribute('style', '" + st + "');", el);
-//		}
-//	}
+	@Override
+	public WebElement findElement(By by) {
+		WebElement el = super.findElement(by);
+		sleepSeNecessario(el);
+		return el;
+	}
+
+	private void sleepSeNecessario(WebElement el) {
+		if(sleepTime!=null) {
+			String st = el.getAttribute("style");
+			this.executeScript("arguments[0].setAttribute('style', '" + st + "; background: yellow !important; background-image: none !important;');", el);
+			The.sleepOf(sleepTime);
+			this.executeScript("arguments[0].setAttribute('style', '" + st + "');", el);
+		}
+	}
 }
