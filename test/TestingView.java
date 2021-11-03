@@ -436,4 +436,386 @@ public class TestingView extends AssertUtils {
 		stayWaiting().until(ExpectedConditions.elementToBeClickable(bySelector(selector)));
 		write(selector, msg);
 	}
+
+	public void waitAndClickIfPresent(String selector) {
+		try{
+			// nao usar aqui o waitToClick
+			waitForElement(selector);
+			click(selector);
+		}catch (Exception ignored){
+		}
+	}
+
+	public void waitAndClickIfPresent(int seconds, String selector) {
+		try{
+			// nao usar aqui o waitToClick
+			stayWaiting(seconds).until(ExpectedConditions.presenceOfElementLocated(bySelector(selector)));
+			click(selector);
+		}catch (Exception ignored){
+		}
+	}
+
+	public void waitToClick(By by) {
+		stayWaiting().until(ExpectedConditions.elementToBeClickable(by));
+		click(by);
+	}
+
+	public boolean has$(String selector) {
+		return !size$(selector).equals(0);
+	}
+
+	public Long size$(String selector) {
+		selector = selector.replaceAll("'", "\"");
+		try {
+			return (Long) executeJS("return $('"+selector+"').size()");
+		} catch (Exception ignored) {
+			return 0L;
+		}
+	}
+
+	public void waitFor$(String selector){
+		stayWaiting().until((ExpectedCondition<Boolean>) d -> has$(selector));
+	}
+
+	public void waitToClick$(String selector) {
+		waitFor$(selector);
+		click$(selector);
+	}
+
+	public void click$(String selector) {
+		selector = selector.replaceAll("'", "\"");
+		executeJS("$('"+selector+"').click()");
+	}
+
+	public void clickAndHold(String selector) {
+		clickAndHold(bySelector(selector));
+	}
+
+	public void clickAndHold(By by) {
+		WebElement element = driver().findElement(by);
+		getActions().clickAndHold(element);
+	}
+
+	public void clickHoldAndMoveToX(String selector, int offSet) {
+		clickHoldAndMoveToX(bySelector(selector), offSet);
+	}
+
+	public void clickHoldAndMoveToX(By by, int offSet) {
+		WebElement element = driver().findElement(by);
+		getActions().clickAndHold(element);
+		getActions().moveToElement(element, offSet, 0);
+	}
+
+	public void clickHoldAndMoveToY(String selector, int offSet) {
+		clickHoldAndMoveToY(bySelector(selector), offSet);
+	}
+
+	public void clickHoldAndMoveToY(By by, int offSet) {
+		WebElement element = driver().findElement(by);
+		getActions().clickAndHold(element);
+		getActions().moveToElement(element, 0, offSet);
+	}
+
+	public void moveToElementX_js(String selector) {
+		moveToElementX_js(selector,0);
+	}
+
+	public void moveToElementX_js(String selector, int offset) {
+		executeJS("window.scrollTo(arguments[0], 0)", driver().findElement(bySelector(selector)).getLocation().y+offset);
+	}
+
+	public void moveToElementY_js(String selector) {
+		moveToElementY_js(selector,0);
+	}
+
+	public void moveToElementY_js(String selector, int offset) {
+		executeJS("window.scrollTo(0, arguments[0])", driver().findElement(bySelector(selector)).getLocation().y+offset);
+//      //OUTRA OPÇÃO:
+//		executeJS("arguments[0].scrollIntoView(true)", get(selector));
+//		if(offset!=0){
+//			executeJS("window.scrollBy(0, arguments[0])", offset);
+//		}
+	}
+
+	public boolean isPresentAndVisible(String selector) {
+		WebElement element;
+		try{
+			element = get(selector);
+			return element.isDisplayed();
+		}catch (NoSuchElementException ex){
+			return false;
+		}
+	}
+
+	public WebElement getIfPresentAndVisible(String selector) {
+		WebElement element;
+		try{
+			element = get(selector);
+			if(element.isDisplayed()){
+				return element;
+			}
+		}catch (NoSuchElementException ignored){
+		}
+		return null;
+	}
+
+	public void waitToBeClickable(String selector) {
+		stayWaiting().until(ExpectedConditions.elementToBeClickable(bySelector(selector)));
+	}
+
+	public void waitVisibilityToClick(String selector) {
+		waitForElementVisible(selector);
+		waitToBeClickable(selector);
+		click(selector);
+	}
+
+	public void waitAllToClick(String selector) {
+		waitForElementVisible(selector);
+		waitToBeClickable(selector);
+		waitForStopJSChanges(5000, 500);
+		click(selector);
+	}
+
+	public void waitEnabledToClick(String selector) {
+		waitForEnabled(selector);
+		click(selector);
+	}
+
+	public String waitToGetTextOf(String selector) {
+		waitForElement(selector);
+		return getText(selector);
+	}
+
+	public boolean hasText(String text, String selector){
+		try {
+			String bodyText = driver().findElement(bySelector(selector)).getText();
+			return bodyText.contains(text);
+		} catch (Exception e){
+			return false;
+		}
+	}
+
+	public boolean hasText(String text){
+		return hasText(text, "body");
+	}
+
+	public void waitForText(String text){
+		stayWaiting().until((ExpectedCondition<Boolean>) d -> hasText(text));
+	}
+
+	public String getAttr(String selector, String attr){
+		return driver().findElement(bySelector(selector)).getAttribute(attr);
+	}
+
+	public String getHref(String selector){
+		return getAttr(selector, "href");
+	}
+
+	private boolean isPageLoadComplete() {
+		try {
+			return executeJS("return document.readyState").equals("complete");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return true;
+		}
+	}
+
+	public void waitForPageLoad(){
+		stayWaiting().until((ExpectedCondition<Boolean>) d -> isPageLoadComplete());
+	}
+
+	private boolean isAjaxLoadComplete() {
+		try {
+			return executeJS("return jQuery.active").equals(0L);
+		} catch (Exception ignored) {
+			return true;
+		}
+	}
+
+	public void waitForAjaxLoad(){
+		stayWaiting().until((ExpectedCondition<Boolean>) d -> isAjaxLoadComplete());
+	}
+
+	public void waitForStopJSChanges(int maxWaitMillis, int pollDelimiter) {
+		double startTime = System.currentTimeMillis();
+		while (System.currentTimeMillis() < startTime + maxWaitMillis) {
+			String prevState = driver().getPageSource();
+			The.sleepOf(pollDelimiter);
+			if (prevState.equals(driver().getPageSource())) {
+				return;
+			}
+		}
+	}
+
+	private String getResPath(TestingView tv, String imagePath)  {
+		try {
+			String filePath = FileUtil.classesPath(tv.getClass()) + "res/"+ imagePath;
+			return DriverFactory.SO_DRIVER.equals("windows")?filePath.substring(1):filePath;
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public boolean ajaxUploadImageFromRes(String ajaxUploadFileContainerId, String imagePath) {
+		String xpath = "xpath=//input[@id='uploadImage_"+ajaxUploadFileContainerId+"']//..//input[@class='input_file']";
+		return ajaxUploadFileFromRes(xpath, imagePath);
+	}
+
+	public boolean ajaxUploadFileFromRes(String ajaxUploadSelector, String filePath) {
+		WebElement element = get(ajaxUploadSelector);
+		try {
+			element.sendKeys(getResPath(this, filePath));
+			return true;
+		} catch (Exception ex) {
+			getActions().moveToElement(element).sendKeys(filePath);
+			return true;
+		}
+
+	}
+
+	public URL getImgSrcAsURL(String imgSelector) {
+		try {
+			return new URL(get(imgSelector).getAttribute("src"));
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public URL getAHrefAsURL(String imgSelector) {
+		try {
+			return new URL(get(imgSelector).getAttribute("href"));
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public byte[] getImgBytes(String imgSelector) {
+		WebElement element = get(imgSelector);
+		try {
+			return FileUtil.getBytesFromUrl(element.getAttribute("src"),null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public byte[] getBytesFromResImg(String filePath) {
+		try {
+			return FileUtil.getBytesFromUrl((new File(getResPath(this,filePath))).toURI().toURL().toString(),null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void waitForInvisibilityOf(String selector) {
+		stayWaiting().until(ExpectedConditions.invisibilityOf(get(selector)));
+	}
+
+	public String so() {
+		return DriverFactory.SO_DRIVER;
+	}
+
+	public void quit() {
+		driver().quit();
+	}
+
+	public void callAndWait() {
+		call();
+		waitToLoadAll();
+	}
+
+	public void waitToLoadAll() {
+		final long MIN_LOAD_TIME = 1000;
+		long start = System.currentTimeMillis();
+
+		waitForPageLoad();
+		waitForStopJSChanges(5000,500);
+		waitForAjaxLoad();
+
+		long end = System.currentTimeMillis();
+		long diff = end - start;
+
+		// espera mínima ...
+		if(diff<MIN_LOAD_TIME){
+			The.sleepOf(MIN_LOAD_TIME-diff);
+		}
+	}
+
+	public <Page extends TestingView>  Page waitToLoadAll(Class<Page> pageOfTemplateClass) {
+		try {
+			Page pageOfTemplate = pageOfTemplateClass.newInstance();
+			pageOfTemplate.waitToLoadAll();
+			return pageOfTemplate;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public <T extends TestingView> T callAndWait(Class<T> pageClass) {
+		try {
+			T page = pageClass.newInstance();
+			page.callAndWait();
+			return page;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	// recarrega e joga pro topo.
+	public void reloadPage() {
+		callURLAndWait(driver().getCurrentUrl());
+		executeJS("window.scrollTo(0, 0)");
+	}
+
+	// atenção, pode não subir a página para o topo.
+	public void refreshPage() {
+		driver().navigate().refresh();
+	}
+
+	public void reloadPageAndWait() {
+		callURLAndWait(driver().getCurrentUrl());
+	}
+
+	public String getCurrentUrl() {
+		return driver().getCurrentUrl();
+	}
+
+	// demora muito fechar e abrir o browser. Só se o teste for realmente necessário o fechamento.
+	// Na maioria das vezes, o reloadSession() resolverá sua vida.
+	@Deprecated
+	public void reloadBrowser() {
+		DriverFactory.reloadDefaultWebDriver();
+	}
+
+	public void reloadSession() {
+		driver().manage().deleteAllCookies();
+	}
+
+	public void confirmAlert(boolean accept){
+		WebDriver driver = driver();
+		Alert alert = driver.switchTo().alert();
+		if(accept){
+			alert.accept();
+		}else{
+			alert.dismiss();
+		}
+		driver.switchTo().defaultContent();
+	}
+
+	public void writeIfPresent(String selector, String msg) {
+		try {
+			write(selector, msg);
+		} catch (Exception ignored) {
+		}
+	}
+
+	public void scrollToPageBottom() {
+		WebDriver driver = driver();
+		String prevState;
+		do {
+			prevState = driver().getPageSource();
+			((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+			waitToLoadAll();
+			//waitForStopJSChanges(1000,500);
+		}while (!prevState.equals(driver().getPageSource()));
+	}
 }
