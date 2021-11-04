@@ -47,11 +47,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
 
 /**
  * <p><code>GraphicsUtilities</code> contains a set of tools to perform

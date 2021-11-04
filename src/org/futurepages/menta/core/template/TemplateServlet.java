@@ -2,7 +2,6 @@ package org.futurepages.menta.core.template;
 
 import org.futurepages.menta.actions.NullAction;
 import org.futurepages.menta.consequences.Forward;
-import org.futurepages.menta.core.action.Action;
 import org.futurepages.menta.core.control.Controller;
 import org.futurepages.menta.exceptions.TemplateException;
 import org.futurepages.menta.filters.ExceptionFilter;

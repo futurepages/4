@@ -1,6 +1,5 @@
 package org.futurepages.core.persistence;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.FileUtil;

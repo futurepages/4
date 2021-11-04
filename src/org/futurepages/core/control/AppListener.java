@@ -2,12 +2,9 @@ package org.futurepages.core.control;
 
 import org.futurepages.core.config.Apps;
 import org.futurepages.core.exception.AppLogger;
-import org.futurepages.core.install.InstallersManager;
 import org.futurepages.core.locale.Txt;
 import org.futurepages.core.mail.MailConfig;
-import org.futurepages.core.path.Paths;
 import org.futurepages.core.persistence.HibernateManager;
-import org.futurepages.core.persistence.SchemaGeneration;
 import org.futurepages.core.quartz.QuartzManager;
 import org.futurepages.exceptions.NotModuleException;
 import org.futurepages.util.Is;

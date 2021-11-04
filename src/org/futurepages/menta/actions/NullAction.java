@@ -1,6 +1,5 @@
 package org.futurepages.menta.actions;
 
-import org.futurepages.core.exception.AppLogger;
 import org.futurepages.menta.consequences.Forward;
 import org.futurepages.menta.core.context.ApplicationContext;
 import org.futurepages.menta.core.context.CookieContext;

@@ -4,13 +4,9 @@ import org.futurepages.menta.core.control.InvocationChain;
 import org.futurepages.menta.core.filter.Filter;
 import org.futurepages.menta.core.input.Input;
 import org.futurepages.util.CalendarUtil;
-import org.futurepages.util.DateUtil;
 import org.futurepages.util.The;
-import org.futurepages.util.brazil.BrazilDateUtil;
-import org.futurepages.util.brazil.enums.DateFormatEnum;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class CalendarInjectionFilter implements Filter {
 

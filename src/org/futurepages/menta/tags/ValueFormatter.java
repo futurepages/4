@@ -15,7 +15,6 @@ import org.futurepages.util.iterator.string.MatchedToken;
 import javax.servlet.jsp.JspException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**

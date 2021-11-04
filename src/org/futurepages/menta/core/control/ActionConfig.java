@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * An ActionConfig links together an action implementation, an action name or alias, action results and action consequences.

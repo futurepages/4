@@ -2,7 +2,6 @@ package org.futurepages.formatters;
 
 import org.futurepages.core.formatter.AbstractFormatter;
 import org.futurepages.util.PhoneUtil;
-import org.futurepages.util.The;
 import org.futurepages.util.brazil.BrazilPhoneUtil;
 
 import java.util.Locale;

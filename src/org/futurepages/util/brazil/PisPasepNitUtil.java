@@ -1,7 +1,5 @@
 package org.futurepages.util.brazil;
 
-import org.futurepages.util.*;
-
 public class PisPasepNitUtil {
 
     public static int QUANTIDADE_DIGITOS_PISPASEPNIT = 11;

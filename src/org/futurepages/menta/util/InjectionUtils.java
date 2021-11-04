@@ -9,7 +9,6 @@ import org.futurepages.util.Is;
 import org.futurepages.util.ReflectionUtil;
 import org.futurepages.util.The;
 import org.futurepages.util.brazil.BrazilDateUtil;
-import org.futurepages.util.brazil.NumberUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
