@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 
 /**
  * Brazilian format Dates, Use new jdk8 api for Dates and Time
@@ -43,7 +44,7 @@ public class BrazilDateUtil {
 	 */
 	public static String literal(Date date) {
 		try {
-			return literal(viewDate(date));
+			return literal(Objects.requireNonNull(viewDate(date)));
 		} catch (Exception ex) {
 			return null;
 		}
