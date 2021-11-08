@@ -97,38 +97,37 @@ public class BrazilCalendarUtil extends CalendarUtil {
 
 			if (!isIntervalEqualsDay) {//apesar de o intervalo ser do mesmo ano ele engloba dias diferentes
 
-				if (isIntervalEqualsYear && isIntervalEqualsMonth && isYearCurrentResult) {
+				if (isIntervalEqualsMonth && isYearCurrentResult) {
 					return diaInicio + " a " + diaFim + " de " + mesInicio;
 
-				} else if (isIntervalEqualsYear && !isIntervalEqualsMonth && isYearCurrentResult) {
+				} else if (!isIntervalEqualsMonth && isYearCurrentResult) {
 					return diaInicio + " de " + mesInicio + " a " + diaFim + " de " + mesFim;
 
-				} else if (isIntervalEqualsYear && isIntervalEqualsMonth && !isYearCurrentResult) {
+				} else if (isIntervalEqualsMonth) {
 					return diaInicio + " a " + diaFim + " de " + mesFim + " de " + anoFim;
 
-				} else if (isIntervalEqualsYear && !isIntervalEqualsMonth && !isYearCurrentResult) {
+				} else {
 					return diaInicio + " de " + mesInicio + " a " + diaFim + " de " + mesFim + " de " + anoFim;
 				}
 
 			} else { //o intervalo além de estar no mesmo ano também é do mesmo dia
 
-				if (isIntervalEqualsYear && isIntervalEqualsMonth && isYearCurrentResult) {
+				if (isIntervalEqualsMonth && isYearCurrentResult) {
 					return (diaInicio + " de " + mesInicio + " " + faixaDeTempo).trim();
 
-				} else if (isIntervalEqualsYear && isIntervalEqualsMonth && !isYearCurrentResult) {
+				} else if (isIntervalEqualsMonth) {
 					return (diaInicio + " de " + mesInicio + " de " + anoInicio + " " + faixaDeTempo).trim();
 
-				} else if (isIntervalEqualsYear && !isIntervalEqualsMonth && isYearCurrentResult) {
+				} else if (isYearCurrentResult) {
 					return diaInicio + " de " + mesInicio + " a " + diaFim + " de " + mesFim;
 
-				} else if (isIntervalEqualsYear && !isIntervalEqualsMonth && !isYearCurrentResult) {
+				} else {
 					return diaInicio + " de " + mesInicio + " a " + diaFim + " de " + mesFim + " de " + anoInicio;
 				}
 
 			}
 		}
 
-		return "";
 	}
 
 	/**
