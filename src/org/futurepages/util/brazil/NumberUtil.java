@@ -91,7 +91,7 @@ public class NumberUtil {
 		String sndPart = number.substring(2, 4);
 
 		if (sndPart.equals("00")) {
-			return (String) milhar.get(number);
+			return milhar.get(number);
 		}
 		return milhar.get(fstPart) + " e " + dezenaPorExtenso(sndPart);
 	}
@@ -112,14 +112,14 @@ public class NumberUtil {
 
 		//zero a nove
 		if (fstPart.equals("0")) {
-			return (String) unidades.get(sndPart);
+			return unidades.get(sndPart);
 		} //dez a dezenove
 		else if (fstPart.equals("1")) {
-			return (String) unidades.get(number);
+			return unidades.get(number);
 		}
 		//vinte a noventa e nove
 		if (sndPart.equals("0")) {
-			return (String) dezenas.get(fstPart);
+			return dezenas.get(fstPart);
 		}
 		return dezenas.get(fstPart) + " e " + unidades.get(sndPart);
 	}
@@ -133,9 +133,9 @@ public class NumberUtil {
 
 		//so dezena
 		if (fstPart.equals("0")) {
-			return (String) dezenaPorExtenso(sndPart);
+			return dezenaPorExtenso(sndPart);
 		} else if (fstPart.equals("1") && dezenaPorExtenso(sndPart).equals("zero")) {
-			return (String) centenas.get(number);
+			return centenas.get(number);
 		}
 		return centenas.get(fstPart) +
 				(dezenaPorExtenso(sndPart).equals("zero") ? "" : " e " + dezenaPorExtenso(sndPart));
@@ -149,13 +149,13 @@ public class NumberUtil {
 			if (grupo.equals("1")) {
 				return "mil";
 			} else if (!grupo.equals("0")) {
-				return number + " " + (String) nomeUnidade.get(grupo) + "ão";
+				return number + " " + nomeUnidade.get(grupo) + "ão";
 			}
 		} else if (!grupo.equals("0")) {
 			if (grupo.equals("1")) {
 				return number + " mil";
 			} else {
-				return number + " " + (String) nomeUnidade.get(grupo) + "ões";
+				return number + " " + nomeUnidade.get(grupo) + "ões";
 			}
 		}
 		return number;
@@ -191,7 +191,7 @@ public class NumberUtil {
 			if (i == 0 && i == ret.size() - 1) {
 				retorno = new StringBuilder(ret.get(i));
 			} else if (i == 0) {
-				if (ret.size() > 1 && ret.get(i + 1).endsWith("mil")) {
+				if (ret.get(i + 1).endsWith("mil")) {
 					int n = Integer.parseInt(ultimo);
 					if (n <= 99 || n % 100 == 0) {
 						retorno.insert(0, " e " + ret.get(i));
@@ -202,7 +202,7 @@ public class NumberUtil {
 					retorno.insert(0, " e " + ret.get(i));
 				}
 			} else if (i == ret.size() - 1) {
-				retorno = " " + ret.get(i) + retorno;
+				retorno.insert(0, " " + ret.get(i));
 			} else {
 				retorno.insert(0, ", " + ret.get(i));
 			}
@@ -220,6 +220,6 @@ public class NumberUtil {
 	}
 
 	public static int onlyPositivesOrZero(int number){
-		return number>0?number:0;
+		return Math.max(number, 0);
 	}
 }

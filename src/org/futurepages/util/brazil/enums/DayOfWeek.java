@@ -18,7 +18,7 @@ public enum DayOfWeek implements Serializable{
 	private String completeDescription;
 	private String smallDescription;
 
-	private DayOfWeek(int key,String completDescription, String smallDescription){
+	DayOfWeek(int key, String completDescription, String smallDescription){
 		this.key = key;
 		this.completeDescription= completDescription;
 		this.smallDescription= smallDescription;

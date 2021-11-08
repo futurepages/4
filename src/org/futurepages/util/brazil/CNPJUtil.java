@@ -21,10 +21,10 @@ public class CNPJUtil {
 	 * @param cnpj
 	 */
 	public static String somenteNumeros(String cnpj) {
-		cnpj = cnpj.replace(".", "").toString();
-		cnpj = cnpj.replace("-", "").toString();
-		cnpj = cnpj.replace("/", "").toString();
-		return cnpj.toString();
+		cnpj = cnpj.replace(".", "");
+		cnpj = cnpj.replace("-", "");
+		cnpj = cnpj.replace("/", "");
+		return cnpj;
 	}
     /**
      * Valida o CNPJ - Cadastro Nacional de Pessoa Jurídica

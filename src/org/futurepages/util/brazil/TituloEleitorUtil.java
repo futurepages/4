@@ -1,5 +1,7 @@
 package org.futurepages.util.brazil;
 
+import org.futurepages.util.The;
+
 /**
  *
  * @author celso/fred
@@ -58,7 +60,7 @@ public class TituloEleitorUtil {
 				// Muda o valor de intLimite para o cáculo do segundo dígito
 				limite = 3;
 				// O cálculo do segundo dígito será sobre o código da UF + primeiro dígito verificador
-				strSequencial = strUF + String.valueOf(digito);
+				strSequencial = The.concat(strUF, digito);
 			}
 		}
 		return ((strDV1 + strDV2).equals(strDVc.toString()));

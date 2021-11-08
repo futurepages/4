@@ -21,7 +21,7 @@ public enum MonthEnum implements Serializable {
 	private int id;
 	private final String name;
 
-	private MonthEnum(int id, String name) {
+	MonthEnum(int id, String name) {
 
 		this.id = id;
 		this.name = name;

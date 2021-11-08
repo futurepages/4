@@ -29,7 +29,7 @@ public enum UnitTimeEnum implements Serializable {
 		this.calendarConstant = constt;
 	}
 	
-	private UnitTimeEnum(String singular, String plural,String abrev,int constt, int ord){
+	UnitTimeEnum(String singular, String plural, String abrev, int constt, int ord){
 		this(singular, plural, abrev, singular, constt, ord);
 	}
 

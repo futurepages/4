@@ -25,9 +25,9 @@ public abstract class CPFUtil {
 	 */
 	public static String somenteNumeros(String cpf) {
 		if(cpf!=null){
-			cpf = cpf.replace(".", "").toString();
-			cpf = cpf.replace("-", "").toString();
-			return cpf.toString();
+			cpf = cpf.replace(".", "");
+			cpf = cpf.replace("-", "");
+			return cpf;
 		}else{
 			return null;
 		}
@@ -37,16 +37,16 @@ public abstract class CPFUtil {
 	 * Calcula o dígito verificador a partir do número de entrada
 	 */
 	public static String calcDigVerif(String num) {
-		Integer primDig, segDig;
+		int primDig, segDig;
 		int soma = 0, peso = 10;
 		for (int i = 0; i < num.length(); i++) {
 			soma += Integer.parseInt(num.substring(i, i + 1)) * peso--;
 		}
 
 		if (soma % 11 == 0 | soma % 11 == 1) {
-			primDig = new Integer(0);
+			primDig = 0;
 		} else {
-			primDig = new Integer(11 - (soma % 11));
+			primDig = 11 - (soma % 11);
 		}
 
 		soma = 0;
@@ -55,14 +55,14 @@ public abstract class CPFUtil {
 			soma += Integer.parseInt(num.substring(i, i + 1)) * peso--;
 		}
 
-		soma += primDig.intValue() * 2;
+		soma += primDig * 2;
 		if (soma % 11 == 0 | soma % 11 == 1) {
-			segDig = new Integer(0);
+			segDig = 0;
 		} else {
-			segDig = new Integer(11 - (soma % 11));
+			segDig = 11 - (soma % 11);
 		}
 
-		return primDig.toString() + segDig.toString();
+		return The.concat(primDig, segDig);
 	}
 
 	/**
@@ -74,8 +74,8 @@ public abstract class CPFUtil {
 		String cpf;
 		do {
 			for (int i = 0; i < 9; i++) {
-				numero = new Integer((int) (Math.random() * 10));
-				iniciais.append(numero.toString());
+				numero = (int) (Math.random() * 10);
+				iniciais.append(numero);
 			}
 			cpf = iniciais + calcDigVerif(iniciais.toString());
 		} while (!validaCPF(cpf));
