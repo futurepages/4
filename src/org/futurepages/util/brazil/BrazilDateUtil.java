@@ -130,7 +130,7 @@ public class BrazilDateUtil {
 				GregorianCalendar date = (GregorianCalendar) in;
 				return new SimpleDateFormat("dd/MM/yyyy", NewLocaleManager.getDefaultLocale()).format(date.getTime());
 			}
-		} catch (Exception ex) {
+		} catch (Exception ignored) {
 		}
 		return null;
 	}
