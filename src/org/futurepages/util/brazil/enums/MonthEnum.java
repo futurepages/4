@@ -19,7 +19,7 @@ public enum MonthEnum implements Serializable {
 	DECEMBER  (12, "dezembro" );
 
 	private int id;
-	private String name;
+	private final String name;
 
 	private MonthEnum(int id, String name) {
 

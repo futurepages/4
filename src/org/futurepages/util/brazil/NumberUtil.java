@@ -5,11 +5,11 @@ import java.util.HashMap;
 
 public class NumberUtil {
 
-	private static HashMap unidades = new HashMap();
-	private static HashMap centenas = new HashMap();
-	private static HashMap dezenas = new HashMap();
-	private static HashMap milhar = new HashMap();
-	private static HashMap nomeUnidade = new HashMap();
+	private static final HashMap<String, String> unidades = new HashMap<>();
+	private static final HashMap<String, String> centenas = new HashMap<>();
+	private static final HashMap<String, String> dezenas = new HashMap<>();
+	private static final HashMap<String, String> milhar = new HashMap<>();
+	private static final HashMap<String, String> nomeUnidade = new HashMap<>();
 
 
 	static {

@@ -4,7 +4,7 @@ import org.futurepages.util.PhoneUtil;
 
 public class BrazilPhoneUtil {
 
-	private static String DEFAULT_REGION = "BR";
+	private static final String DEFAULT_REGION = "BR";
 
 	public static String normalize(String number) {
 		return PhoneUtil.normalize(number, DEFAULT_REGION, null);

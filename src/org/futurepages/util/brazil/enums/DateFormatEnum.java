@@ -15,7 +15,7 @@ public enum DateFormatEnum {
 	DATE_REVERSE("yyyy/MM/dd")
     ;
 	
-	private String mask;
+	private final String mask;
 	private static final String DEFAULT_SEPARATOR = "-";
 	
 	DateFormatEnum(String mask){

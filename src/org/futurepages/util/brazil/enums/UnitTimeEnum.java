@@ -13,20 +13,20 @@ public enum UnitTimeEnum implements Serializable {
 	SECOND("segundo", "segundos", "seg",            Calendar.SECOND       ,5),
 	WEEK  ("semana" , "semanas" , "semana",         Calendar.WEEK_OF_YEAR ,6);
 
-	private String singularName;
-	private String pluralName;
-	private String abbreviation;
-	private String simpleName;
-	private int order;
-	private int calendarConstant;
+	private final String singularName;
+	private final String pluralName;
+	private final String abbreviation;
+	private final String simpleName;
+	private final int order;
+	private final int calendarConstant;
 	
-	private UnitTimeEnum(String singular, String plural,String abrev,String simpleName, int constt, int ord){
-		abbreviation = abrev;
-		singularName = singular;
-		pluralName = plural;
+	UnitTimeEnum(String singular, String plural, String abrev, String simpleName, int constt, int ord){
+		this.abbreviation = abrev;
+		this.singularName = singular;
+		this.pluralName = plural;
 		this.simpleName = simpleName;
-		order = ord;
-		calendarConstant = constt;
+		this.order = ord;
+		this.calendarConstant = constt;
 	}
 	
 	private UnitTimeEnum(String singular, String plural,String abrev,int constt, int ord){

@@ -6,7 +6,7 @@ public class SemanaUtil {
 
     private int id;
     private String nome;
-    private static ArrayList<String> diasSemana = new ArrayList<String>();
+    private static final ArrayList<String> diasSemana = new ArrayList<String>();
     
     static{
         diasSemana.add("domingo");
