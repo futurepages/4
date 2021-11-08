@@ -204,6 +204,7 @@ public class BrazilCalendarUtil extends CalendarUtil {
 			int valor = time[i];
 			if (valor > 0) {
 				unit = UnitTimeEnum.getByOrder(i);
+				assert unit != null;
 				String segUnitName = unit.apropriateUnitDescription(valor, !withAbbrs);
 				String separador2 = " ";
 				if (unit.getOrder() > 2) {
