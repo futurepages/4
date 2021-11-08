@@ -12,7 +12,7 @@ public abstract class CPFUtil {
 	 * @param cpfCnpj entrada bruta
 	 */
 	public static String formata(String cpfCnpj) {
-		StringBuffer sb = new StringBuffer(cpfCnpj);
+		StringBuilder sb = new StringBuilder(cpfCnpj);
 		sb.insert(3, '.');
 		sb.insert(7, '.');
 		sb.insert(11, '-');
@@ -69,9 +69,9 @@ public abstract class CPFUtil {
 	 * Gera um CPF aleatório
 	 */
 	public static String geraCPF() {
-		StringBuffer iniciais = new StringBuffer("");
-		Integer numero;
-		String cpf = null;
+		StringBuilder iniciais = new StringBuilder();
+		int numero;
+		String cpf;
 		do {
 			for (int i = 0; i < 9; i++) {
 				numero = new Integer((int) (Math.random() * 10));
@@ -87,8 +87,8 @@ public abstract class CPFUtil {
 	 * ex.: 1 , retornaria 000000001DF onde DF é o dígito verificador gerado.
 	 */
 	public static String geraCPF(long value) {
-		StringBuffer iniciais = new StringBuffer("");
-		String cpf = null;
+		StringBuilder iniciais = new StringBuilder();
+		String cpf;
 		do {
 			iniciais.append(The.strWithLeftZeros(value + "", 9));
 			cpf = iniciais + calcDigVerif(iniciais.toString());

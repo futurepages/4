@@ -84,7 +84,7 @@ public class PisPasepNitUtil {
 	 * @return pispasepNit formatado na máscara correta.
 	 */
 	public static String formata(String pisPasepNit) {
-		StringBuffer sb = new StringBuffer(pisPasepNit);
+		StringBuilder sb = new StringBuilder(pisPasepNit);
 		sb.insert(1, '.');
 		sb.insert(5, '.');
 		sb.insert(9, '.');

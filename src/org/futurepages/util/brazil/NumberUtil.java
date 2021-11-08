@@ -169,12 +169,14 @@ public class NumberUtil {
 		}
 	}
 	public static String numeroPorExteso(String number) throws Exception {
-		String retorno = "";
+		StringBuilder retorno = new StringBuilder();
 		String ultimo = "";
 		ArrayList<String> ret = new ArrayList<String>();
-		while (number.length() % 3 != 0) {
-			number = "0" + number;
+		StringBuilder numberBuilder = new StringBuilder(number);
+		while (numberBuilder.length() % 3 != 0) {
+			numberBuilder.insert(0, "0");
 		}
+		number = numberBuilder.toString();
 		for (int i = 0; i < number.length() / 3; i++) {
 			String parte = number.substring(number.length() - ((i + 1) * 3), number.length() - ((i + 1) * 3 - 3));
 			if (i == 0) {
@@ -187,25 +189,25 @@ public class NumberUtil {
 		}
 		for (int i = 0; i < ret.size(); i++) {
 			if (i == 0 && i == ret.size() - 1) {
-				retorno = ret.get(i);
+				retorno = new StringBuilder(ret.get(i));
 			} else if (i == 0) {
 				if (ret.size() > 1 && ret.get(i + 1).endsWith("mil")) {
 					int n = Integer.parseInt(ultimo);
 					if (n <= 99 || n % 100 == 0) {
-						retorno = " e " + ret.get(i) + retorno;
+						retorno.insert(0, " e " + ret.get(i));
 					} else {
-						retorno = " " + ret.get(i) + retorno;
+						retorno.insert(0, " " + ret.get(i));
 					}
 				} else {
-					retorno = " e " + ret.get(i) + retorno;
+					retorno.insert(0, " e " + ret.get(i));
 				}
 			} else if (i == ret.size() - 1) {
 				retorno = " " + ret.get(i) + retorno;
 			} else {
-				retorno = ", " + ret.get(i) + retorno;
+				retorno.insert(0, ", " + ret.get(i));
 			}
 		}
-		return retorno.trim();
+		return retorno.toString().trim();
 	}
 
 

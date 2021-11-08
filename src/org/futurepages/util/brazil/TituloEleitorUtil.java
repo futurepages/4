@@ -8,16 +8,18 @@ public class TituloEleitorUtil {
 
 	public static boolean validarNumero(String numero) {
 		int ind1, ind2, limite, soma, digito;
-		String strDVc = "";
+		StringBuilder strDVc = new StringBuilder();
 		numero = numero.trim();
 		try {
 			Long.parseLong(numero);
 		} catch (NumberFormatException nfe) {
 			return false;
 		}
-		while (numero.length() < 13) {
-			numero = '0' + numero;
+		StringBuilder numeroBuilder = new StringBuilder(numero);
+		while (numeroBuilder.length() < 13) {
+			numeroBuilder.insert(0, '0');
 		}
+		numero = numeroBuilder.toString();
 		String strSequencial = numero.substring(0, 9);
 		String strUF = numero.substring(9, 11);
 		String strDV1 = numero.substring(11, 12);
@@ -52,13 +54,13 @@ public class TituloEleitorUtil {
 					}
 				}
 				// Atribui à variável strDVc o dígito calculado
-				strDVc = strDVc + String.valueOf(digito);
+				strDVc.append(digito);
 				// Muda o valor de intLimite para o cáculo do segundo dígito
 				limite = 3;
 				// O cálculo do segundo dígito será sobre o código da UF + primeiro dígito verificador
 				strSequencial = strUF + String.valueOf(digito);
 			}
 		}
-		return ((strDV1 + strDV2).equals(strDVc));
+		return ((strDV1 + strDV2).equals(strDVc.toString()));
 	}
 }

@@ -9,7 +9,7 @@ public class CNPJUtil {
 	 * @return
 	 */
 	public static String formata(String cpfCnpj) {
-		StringBuffer sb = new StringBuffer(cpfCnpj);
+		StringBuilder sb = new StringBuilder(cpfCnpj);
 		sb.insert(2, '.');
 		sb.insert(6, '.');
 		sb.insert(10,'/');
