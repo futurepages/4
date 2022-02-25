@@ -8,6 +8,7 @@ import org.futurepages.core.exception.AppLogger;
 import org.futurepages.util.EncodingUtil;
 import org.futurepages.util.ReflectionUtil;
 import org.futurepages.util.rest.auth.HttpAuthentication;
+import org.futurepages.util.rest.exceptions.HttpRestClientException;
 import org.hibernate.cfg.NotYetImplementedException;
 
 import java.io.BufferedReader;
@@ -258,6 +259,15 @@ public abstract class HttpRestClient {
 
 
     public String postWithFormURLEncoded(String path, String formUrlEncoded) {
+        try {
+            return postWithFormURLEncoded(path, formUrlEncoded, false);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String postWithFormURLEncoded(String path, String formUrlEncoded, boolean throwErrorWhenNot200)
+            throws Exception {
         StringBuilder responseBody = new StringBuilder();
         int responseCode = 0;
         try {
@@ -282,17 +292,23 @@ public abstract class HttpRestClient {
             wr.flush();
             wr.close();
             responseCode = conn.getResponseCode();
-
+            if(throwErrorWhenNot200 && responseCode != 200){
+                throw new HttpRestClientException(responseCode, "Error "+responseCode);
+            }
             responseBody = readBody(conn.getResponseCode()==200? conn.getInputStream():conn.getErrorStream());
             return responseBody.toString();
         }catch (Exception ex){
-            if(responseCode!=502 && responseCode!=503){
-                AppLogger.getInstance().execute(ex,
-                        (getEndpoint()+path),
-                        String.valueOf(responseCode),
-                        responseBody.toString(),
-                        authentication!=null?authentication.getToken():"[null]"
-                );
+            if(!throwErrorWhenNot200){
+                if(responseCode!=502 && responseCode!=503){
+                    AppLogger.getInstance().execute(ex,
+                            (getEndpoint()+path),
+                            String.valueOf(responseCode),
+                            responseBody.toString(),
+                            authentication!=null?authentication.getToken():"[null]"
+                    );
+                }
+            } else {
+                throw ex;
             }
         }
         return null;
