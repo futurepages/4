@@ -60,7 +60,7 @@ public class MoneyUtil {
 
 
 	public static int intFormat(BigDecimal value){
-		return  Integer.valueOf(moneyFormat(value.setScale(2,BigDecimal.ROUND_HALF_UP)).replaceAll("\\.","").replaceFirst(",",""));
+		return  Integer.parseInt(moneyFormat(value.setScale(2, RoundingMode.HALF_UP)).replaceAll("\\.","").replaceFirst(",",""));
 	}
 
 
