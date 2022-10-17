@@ -85,6 +85,10 @@ public class Controller extends HttpServlet {
 		up = true;
 	}
 
+	public boolean isUp() {
+		return up;
+	}
+
 	static  {
 		boolean isDebugging = false;
 		Pattern debugPattern = Pattern.compile("-Xdebubg|jdwp");
