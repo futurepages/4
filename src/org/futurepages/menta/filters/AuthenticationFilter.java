@@ -144,7 +144,7 @@ public class AuthenticationFilter implements Filter {
 
 	/**
 	 * Sets a callback url for a redirection after the login.
-	 * This method is called by the authentication tag to set a url for the redirection.
+	 * This method is called by the authentication tag to set an url for the redirection.
 	 * You should not call this method.
 	 *
 	 * @param session The HttpSession where to put the URL.

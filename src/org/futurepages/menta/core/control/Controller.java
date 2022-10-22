@@ -205,7 +205,7 @@ public class Controller extends HttpServlet {
 	}
 
 	/**
-	 * Destroy all filters defined in the ApplicationManager, call the destroy()
+	 * Destroy all filters defined in the ApplicationManager, call the 'destroy()'
 	 * method of ApplicationManager, then call super.destroy() to destroy this
 	 * servlet (the Controller).
 	 */
@@ -406,7 +406,7 @@ public class Controller extends HttpServlet {
 			chainTL.set(chain); //setado para gerenciar o log das exceptions
 		}
 
-		// copy all filters executed together with that action to the filters parameter...
+		// copy all filters executed together with that action to the 'filters' parameter...
 
 		if (filters == null || !filters.isEmpty()) {
 
@@ -685,7 +685,7 @@ public class Controller extends HttpServlet {
 	 * Returns the URI from this request. URI = URI - context - extension. This
 	 * method is used by getActionName and getInnerActionName. You may call this
 	 * method in your own controller subclass. Ex: /myapp/UserAction.add.fpg
-	 * will return UserAction.add
+	 * will return 'UserAction.add'
 	 */
 	protected String getURI(HttpServletRequest req) {
 		String context = req.getContextPath();

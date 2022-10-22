@@ -124,7 +124,7 @@ public class ActionConfig {
 	 * @param innerAction The inner action that can return this result.
 	 * @param c The consequence for this result
 	 * @return this action config for method chaining Ex: addConsequence().addConsequence();
-	 * @throws IllegalStateException If this method is called for a action config specific to an inner action
+	 * @throws IllegalStateException If this method is called for an action config specific to an inner action
 	 */
 	public ActionConfig addConsequence(String result, String innerAction, Consequence c) {
 		Map<String, Consequence> map = innerConsequences.get(innerAction);

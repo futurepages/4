@@ -106,7 +106,7 @@ public abstract class AbstractApplicationManager  implements Manipulable{
     }
 
     /**
-     * Reset this application manager. All configuration (actions, filters, etc) is discarded.
+     * Reset this application manager. All configuration (actions, filters, etc.) is discarded.
      */
     public void reset() {
         actions.clear();

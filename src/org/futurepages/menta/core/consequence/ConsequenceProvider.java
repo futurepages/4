@@ -18,9 +18,9 @@ public interface ConsequenceProvider {
 	 * @param actionClass
 	 * 			  the class representing the action           
 	 * @param result
-	 *            the result of the actions execution.
+	 *            the result of the action's execution.
 	 * @param innerAction
-	 *            the inner action called or null if the execute() method was
+	 *            the inner action called or null if the 'execute()' method was
 	 *            called.
 	 * @return the Consequence created by convention.
 	 */

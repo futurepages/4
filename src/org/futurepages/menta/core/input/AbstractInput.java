@@ -88,7 +88,7 @@ public abstract class AbstractInput implements Input {
 	
 	private Date getDate(String name, String pattern, int style) {
 		
-		// first check whether we already have an Date...
+		// first check whether we already have a Date...
 		
 		Object obj = getValue(name);
 		

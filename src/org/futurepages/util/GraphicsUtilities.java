@@ -149,7 +149,6 @@ public class GraphicsUtilities {
      * @see #createCompatibleImage(int, int)
      * @see #createCompatibleImage(java.awt.image.BufferedImage, int, int)
      * @see #createCompatibleTranslucentImage(int, int)
-     * @see #loadCompatibleImage(java.net.URL)
      * @see #toCompatibleImage(java.awt.image.BufferedImage)
      * @param image the reference image from which the dimension and the
      *   transparency of the new image are obtained
@@ -172,7 +171,6 @@ public class GraphicsUtilities {
      * @see #createCompatibleImage(java.awt.image.BufferedImage)
      * @see #createCompatibleImage(int, int)
      * @see #createCompatibleTranslucentImage(int, int)
-     * @see #loadCompatibleImage(java.net.URL)
      * @see #toCompatibleImage(java.awt.image.BufferedImage)
      * @param width the width of the new image
      * @param height the height of the new image
@@ -204,7 +202,6 @@ public class GraphicsUtilities {
      * @see #createCompatibleImage(java.awt.image.BufferedImage)
      * @see #createCompatibleImage(java.awt.image.BufferedImage, int, int)
      * @see #createCompatibleTranslucentImage(int, int)
-     * @see #loadCompatibleImage(java.net.URL)
      * @see #toCompatibleImage(java.awt.image.BufferedImage)
      * @param width the width of the new image
      * @param height the height of the new image
@@ -227,7 +224,6 @@ public class GraphicsUtilities {
      * @see #createCompatibleImage(java.awt.image.BufferedImage)
      * @see #createCompatibleImage(java.awt.image.BufferedImage, int, int)
      * @see #createCompatibleImage(int, int)
-     * @see #loadCompatibleImage(java.net.URL)
      * @see #toCompatibleImage(java.awt.image.BufferedImage)
      * @param width the width of the new image
      * @param height the height of the new image
@@ -254,7 +250,6 @@ public class GraphicsUtilities {
      * @see #createCompatibleImage(java.awt.image.BufferedImage, int, int)
      * @see #createCompatibleImage(int, int)
      * @see #createCompatibleTranslucentImage(int, int)
-     * @see #loadCompatibleImage(java.net.URL)
      * @param image the image to copy into a new compatible image
      * @return a new compatible copy, with the
      *   same width and height and transparency and content, of <code>image</code>

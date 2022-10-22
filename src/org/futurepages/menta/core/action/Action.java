@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Describes a action, the central idea of the framework architecture.
+ * Describes an action, the central idea of the framework architecture.
  *
  * An action has an input and an output .
  *

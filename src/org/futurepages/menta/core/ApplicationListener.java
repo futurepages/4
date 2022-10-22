@@ -162,7 +162,7 @@ public class ApplicationListener implements ServletContextListener {
 			new Thread(() -> {
 				int secs = 5;
 				System.out.println("Wainting for "+secs+" secs to force Controller to init calling the start page, if not initialized.");
-					The.sleepOf(secs*1000); // for some reason, if you not wait, it will not works.
+					The.sleepOf(secs*1000); // for some reason, if you not wait, it will not work.
 					String indexURL = The.concat(Apps.get("APP_LOCAL_HOST") ,  evt.getServletContext().getContextPath(), "/", Apps.get("START_PAGE_NAME"));
 
 					if(!Controller.isInitialized()){
