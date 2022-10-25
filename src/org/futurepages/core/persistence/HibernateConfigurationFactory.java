@@ -55,10 +55,8 @@ public class HibernateConfigurationFactory {
 
 		Map<String, Schema> schemasMap = new HashMap<String, Schema>();
 		File[] modulesDirs = ModuleUtil.listModulesAndApps(); //TODO modules and apps
-		if (modulesDirs != null) {
-			for (File module : modulesDirs) {
-				mapModule(module, schemasMap);
-			}
+		for (File module : modulesDirs) {
+			mapModule(module, schemasMap);
 		}
 		return generateConfigurationsMap(schemasMap); //createMappings & insertProperties
 
