@@ -157,7 +157,6 @@ public abstract class AbstractApplicationManager  implements Manipulable{
     /**
      * Shorter version of addActionConfig.
      *
-     * @param ac
      * @return The ActionConfig it receives
      */
     public ActionConfig add(ActionConfig ac) {
@@ -274,7 +273,6 @@ public abstract class AbstractApplicationManager  implements Manipulable{
     /**
      * Shorter version of addGlobalFilter.
      *
-     * @param filter
      * @since 1.2
      */
     public void filter(Filter filter) {
@@ -295,7 +293,6 @@ public abstract class AbstractApplicationManager  implements Manipulable{
     /**
      * Shorter version of addGlobalFilter.
      *
-     * @param filters
      * @since 1.2
      */
     public void filter(List filters) {
@@ -360,7 +357,6 @@ public abstract class AbstractApplicationManager  implements Manipulable{
     /**
      * Shorter version of addGlobalFilter.
      *
-     * @param filters
      * @since 1.3
      */
     public void filterLast(List filters) {
@@ -388,8 +384,6 @@ public abstract class AbstractApplicationManager  implements Manipulable{
     /**
      * Shorter verions of addGlobalConsequence that will assume a forward.
      *
-     * @param result
-     * @param jsp
      * @since 1.9
      */
     public void on(String result, String jsp) {
@@ -513,7 +507,6 @@ public abstract class AbstractApplicationManager  implements Manipulable{
 	/**
      * This method override the ApplicationManager attributes.
 	 * @param parent The parent ApplicationManager
-	 * @return
 	 */
 	public AbstractApplicationManager setParent(AbstractApplicationManager parent) {
     	this.actions = parent.actions;

@@ -56,9 +56,6 @@ public abstract class AbstractReport<T>  implements Serializable {
 
 	/**
 	 *
-	 * @param response
-	 * @throws IOException
-	 * @throws JRException
 	 */
 	public void createPDF(HttpServletResponse response) throws IOException, JRException {
 
@@ -80,8 +77,6 @@ public abstract class AbstractReport<T>  implements Serializable {
 	/**
 	 * Imprime em aplicação stand-alone.
 	 *
-	 * @throws IOException
-	 * @throws JRException
 	 */
 	public void jasperPrint() throws IOException, JRException {
 

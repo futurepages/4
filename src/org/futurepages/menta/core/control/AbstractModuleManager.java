@@ -197,10 +197,6 @@ public abstract class AbstractModuleManager extends AbstractApplicationManager {
 
 	/**
 	 *
-	 * @param moduleId
-	 * @param actionPath
-	 * @param prettyCorrect
-	 * @return
 	 */
 	private String withPath(String moduleId, String actionPath, Boolean prettyCorrect){
 		if(actionPath.contains(",")){

@@ -43,8 +43,6 @@ public class TagDeclarationBuilder {
 
     /**
      * Monta a declaracao para <attribute>
-     * @param attribute
-     * @return
      */
     private static String builderAttributeDeclaration(TagAttributeBean attribute) {
 

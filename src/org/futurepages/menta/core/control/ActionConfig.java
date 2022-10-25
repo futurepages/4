@@ -85,8 +85,6 @@ public class ActionConfig {
 	/**
 	 * Shorter version of addConsequence.
 	 *
-	 * @param result
-	 * @param c
 	 * @return this action config
 	 * @since 1.2
 	 */
@@ -97,8 +95,6 @@ public class ActionConfig {
 	/**
 	 * Shorter verions of addConsequence that will assume a forward.
 	 *
-	 * @param result
-	 * @param jsp
 	 * @return  this action config
 	 * @since 1.9
 	 */
@@ -154,9 +150,6 @@ public class ActionConfig {
 
 	/**
 	 * Shorter version of addConsequence.
-	 * @param result
-	 * @param innerAction
-	 * @param c
 	 * @return this action config
 	 * @since 1.2
 	 */
@@ -181,7 +174,6 @@ public class ActionConfig {
 	/**
 	 * Shorter version of addFilter.
 	 *
-	 * @param filter
 	 * @return this action config
 	 * @since 1.2
 	 */
@@ -208,7 +200,6 @@ public class ActionConfig {
 	/**
 	 * Add a list of filters that will be executed before the global filters.
 	 *
-	 * @param filters
 	 * @return this
 	 * @since 1.9
 	 */
@@ -220,8 +211,6 @@ public class ActionConfig {
 	/**
 	 * Add a list of filters that will be executed before the global filters.
 	 *
-	 * @param filters
-	 * @param innerAction
 	 * @return this
 	 * @since 1.9
 	 */
@@ -234,7 +223,6 @@ public class ActionConfig {
 	/**
 	 * Add a list of filters that will be executed before the global filters.
 	 *
-	 * @param filter
 	 * @return this
 	 * @since 1.9
 	 */
@@ -246,8 +234,6 @@ public class ActionConfig {
 	/**
 	 * Add a list of filters that will be executed before the global filters.
 	 *
-	 * @param filter
-	 * @param innerAction
 	 * @return this
 	 * @since 1.9
 	 */
@@ -259,7 +245,6 @@ public class ActionConfig {
 	/**
 	 * Add a list of filters that will be executed before the global filters.
 	 *
-	 * @param filters
 	 * @return this
 	 * @since 1.9
 	 */
@@ -271,8 +256,6 @@ public class ActionConfig {
 	/**
 	 * Adds a list of filters that will be executed before the global filters.
 	 *
-	 * @param filters
-	 * @param innerAction
 	 * @return this
 	 * @since 1.9
 	 */
@@ -288,7 +271,6 @@ public class ActionConfig {
 	/**
 	 * Adds a filter that will be executed before the global filters.
 	 *
-	 * @param filter
 	 * @return this
 	 * @since 1.9
 	 */
@@ -300,8 +282,6 @@ public class ActionConfig {
 	/**
 	 * Adds a filter that will be executed before the global filters.
 	 *
-	 * @param filter
-	 * @param innerAction
 	 * @return this
 	 * @since 1.9
 	 */
@@ -326,8 +306,6 @@ public class ActionConfig {
 	/**
 	 * Shorter version of addFilter.
 	 *
-	 * @param filter
-	 * @param innerAction
 	 * @return this action config
 	 * @since 1.2
 	 */
@@ -348,7 +326,6 @@ public class ActionConfig {
 	/**
 	 * Shorter version of addFilter.
 	 *
-	 * @param filters
 	 * @return this action config
 	 * @since 1.2
 	 */
@@ -397,8 +374,6 @@ public class ActionConfig {
 	/**
 	 * Shorter version.
 	 *
-	 * @param filter
-	 * @param innerActions
 	 * @return this action config
 	 * @since 1.11
 	 */
@@ -410,8 +385,6 @@ public class ActionConfig {
 	/**
 	 * Shorter version of addFilter.
 	 *
-	 * @param filters
-	 * @param innerAction
 	 * @return this action config
 	 * @since 1.2
 	 */
@@ -579,8 +552,6 @@ public class ActionConfig {
 	/**
 	 *
 	 *
-	 * @param filters
-	 * @param innerActions
 	 * @return this action config
 	 * @since 1.2
 	 */

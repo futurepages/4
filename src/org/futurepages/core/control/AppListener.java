@@ -140,22 +140,6 @@ public class AppListener implements ServletContextListener {
 		log("Properties OK");
 	}
 
-//	private void initAutoRedirectionEngine(String context) {
-//			if(!Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))
-////					&& Apps.get("AUTO_REDIRECT_DOMAIN").contains("://")
-//			){
-//				log("Auto Redirect Domain ON. Starting 'Static Paths'...");
-//				Paths.initialize(context); //only if the AUTO_REDIRECT_DOMAIN is complete with protocol.
-//			}else{
-//				if(Apps.get("DEPLOY_MODE").equals("production")){
-//					if(Is.empty(Apps.get("AUTO_REDIRECT_DOMAIN"))){
-//						log("Auto Redirect Domain OFF. Consider the usage of the param AUTO_REDIRECT_DOMAIN in production environments.");
-//					}
-//				}
-//				Paths.initialize();
-//			}
-//	}
-
 	//Start Quartz Manager (Task Scheduler) if QUARTZ_MODE = on
 	private void initQuartzManager(File[] modules) throws ClassNotFoundException, NotModuleException, ParseException, SchedulerException {
 		if (Apps.get("QUARTZ_MODE").equals("on")) {
@@ -173,53 +157,6 @@ public class AppListener implements ServletContextListener {
 				log("Email Config OK");
 			}
 	}
-
-//	private void initHibernateAndConsequences(File[] modules) throws Exception {
-//			if (HibernateManager.isRunning()) {
-//				log("Hibernate OK");
-//
-//				// Update/generate database scheme as params configuration file.
-//				// only if it's not DEPLOY_MODE=production, it will try to generate and install database.
-//				log("Deploy Mode: "+ Apps.get("DEPLOY_MODE"));
-//				if (!Apps.get("DEPLOY_MODE").equals("production")) {
-//					if (Apps.get("SCHEMA_GENERATION_TYPE").startsWith("update")) {
-//						if (Apps.get("SCHEMA_GENERATION_TYPE").equals("update")) {
-//							log("SCHEMA UPDATE - Begin");
-//							SchemaGeneration.update(false);
-//							log("SCHEMA UPDATE - End");
-//						} else if (Apps.get("SCHEMA_GENERATION_TYPE").equals("update_beans")) {
-//							log("SCHEMA UPDATE JUST BEANS - Begin");
-//							SchemaGeneration.update(true);
-//							log("SCHEMA UPDATE JUST BEANS - End");
-//						}
-//					} else if (Apps.get("SCHEMA_GENERATION_TYPE").equals("export")) {
-//						log("SCHEMA EXPORT - Begin");
-//						SchemaGeneration.export();
-//						log("SCHEMA EXPORT - End");
-//					}
-//
-//					//If INSTALL_MODE=on, install-modules will start.
-//					String installMode = Apps.get("INSTALL_MODE");
-//					if (!installMode.equals("off") && !installMode.equals("none") && !Is.empty(installMode)) {
-//						log("Install Mode: " + installMode);
-//						InstallersManager.initialize(modules, installMode);
-//						log("Install - End");
-//					}
-//				}else{
-//					//Micro-migration. Instantiate the class where we put migration executions.
-//					if(!Is.empty(Apps.get("MIGRATION_CLASSPATH"))){
-//						try{
-//							log("Migration Class: "+ Apps.get("MIGRATION_CLASSPATH"));
-//							Class.forName(Apps.get("MIGRATION_CLASSPATH")).newInstance();
-//						}catch(Exception ex){
-//							log("Migration ERROR... "+ex.getMessage());
-//						}
-//					}
-//				}
-//			} else {
-//				log("WARNING: HIBERNATE is not running!");
-//			}
-//	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent evt) {
