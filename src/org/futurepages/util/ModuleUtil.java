@@ -207,12 +207,12 @@ public class ModuleUtil {
 		modules = modules==null? new File[0] : modules;
 
 		File[] modulesAndApps = new File[modules.length+apps.length];
-		for(int i = 0; i<modules.length ; i++){
+		for(int i = 0; i < modules.length ; i++){
 			modulesAndApps[i] = modules[i];
 		}
-		for(int i = modulesAndApps.length-1; i>=modules.length; i--){
-			modulesAndApps[i] = apps[modulesAndApps.length-i-1];
-		}
+//		for(int i = modulesAndApps.length-1; i >= modules.length; i--){
+//			modulesAndApps[i] = apps[modulesAndApps.length-i-1];
+//		}
 		return modulesAndApps;
 	}
 }
