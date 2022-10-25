@@ -22,8 +22,8 @@ import java.util.Set;
  */
 public class CookieContext implements Context, Map<String, Object> {
     
-    private HttpServletRequest req;
-    private HttpServletResponse res;
+    private final HttpServletRequest req;
+    private final HttpServletResponse res;
     
     /**
      * Creates a new CookieContext for this request and response.
@@ -46,23 +46,23 @@ public class CookieContext implements Context, Map<String, Object> {
     public Object getAttribute(String name) {
         Cookie[] cookies = req.getCookies();
         if (cookies != null) {
-            for (int i = 0; i < cookies.length; i++) {
-                if (cookies[i].getName().equals(name)) {
-                    return cookies[i].getValue();
-                }
-            }
+	        for (Cookie cookie : cookies) {
+		        if (cookie.getName().equals(name)) {
+			        return cookie.getValue();
+		        }
+	        }
         }        
         return null;
     }
     
 	@Override
     public Iterator<String> keys() {
-    	List<String> list = new ArrayList<String>();
+    	List<String> list = new ArrayList<>();
     	Cookie[] cookies = req.getCookies();
     	if (cookies != null) {
-            for (int i = 0; i < cookies.length; i++) {
-            	list.add(cookies[i].getName());   
-            }
+		    for (Cookie cookie : cookies) {
+			    list.add(cookie.getName());
+		    }
     	}
     	return list.iterator();
     }
@@ -74,7 +74,7 @@ public class CookieContext implements Context, Map<String, Object> {
      * 
      * If you pass a String, a Cookie object is created with default values for path and max age.
      * 
-     * If you pass a Object other than a Cookie or a String, its toString() method its called and
+     * If you pass an Object other than a Cookie or a String, its toString() method its called and
      * taken as the cookie value.
      * 
      * @param name The name of this cookie
@@ -102,12 +102,12 @@ public class CookieContext implements Context, Map<String, Object> {
 		Cookie c=null;
 		Cookie[] cookies = req.getCookies();
         if (cookies != null) {
-            for (int i = 0; i < cookies.length; i++) {
-                if (cookies[i].getName().equals(name)) {
-                    c = cookies[i];
-					break;
-                }
-            }
+	        for (Cookie cookie : cookies) {
+		        if (cookie.getName().equals(name)) {
+			        c = cookie;
+			        break;
+		        }
+	        }
         }
 		if(c!=null){
 			c.setMaxAge(0);
@@ -147,12 +147,12 @@ public class CookieContext implements Context, Map<String, Object> {
     	String v = value.toString();
         Cookie[] cookies = req.getCookies();
         if (cookies != null) {
-            for (int i = 0; i < cookies.length; i++) {
-            	String cookie = cookies[i].getValue();
-            	if (cookie != null && cookie.equals(v)) {
-            		return true;
-            	}
-            }
+	        for (Cookie item : cookies) {
+		        String cookie = item.getValue();
+		        if (cookie != null && cookie.equals(v)) {
+			        return true;
+		        }
+	        }
         }
         return false;
     }
@@ -178,7 +178,7 @@ public class CookieContext implements Context, Map<String, Object> {
     
 	@Override
     public Set<String> keySet() {
-    	Set<String> keys = new HashSet<String>();
+    	Set<String> keys = new HashSet<>();
     	Iterator<String> iter = keys();
     	while(iter.hasNext()) {
     		keys.add(iter.next());
@@ -193,7 +193,8 @@ public class CookieContext implements Context, Map<String, Object> {
     }
     
 	@Override
-    public void putAll(Map<? extends String,? extends Object> t) {
+	@SuppressWarnings("NullableProblems")
+    public void putAll(Map<? extends String,?> t) {
     	throw new UnsupportedOperationException();
     }
     
@@ -214,12 +215,12 @@ public class CookieContext implements Context, Map<String, Object> {
     public Collection<Object> values() {
     	Cookie[] cookies = req.getCookies();
     	if (cookies == null || cookies.length == 0) {
-    		return new ArrayList<Object>(0);
+    		return new ArrayList<>(0);
     	}
-    	List<Object> list = new ArrayList<Object>(cookies.length);
-    	for(int i=0;i<cookies.length;i++) {
-    		list.add(cookies[i].getValue());
-    	}
+    	List<Object> list = new ArrayList<>();
+		for (Cookie cookie : cookies) {
+			list.add(cookie.getValue());
+		}
     	return list;
     }
 }
