@@ -143,7 +143,7 @@ public class Pagination extends PrintTag implements Pageable {
 					if (pageNum != i) {
 						sb.append(pageLink(i));
 					} else {
-						sb.append("<span class=\"current\">" + pageNum + "</span>");
+						sb.append("<span class=\"current\">").append(pageNum).append("</span>");
 					}
 				}
 			} else {
@@ -162,7 +162,7 @@ public class Pagination extends PrintTag implements Pageable {
 					}
 				}
 
-				sb.append("<strong class=\"current\">" + pageNum + "</strong>");
+				sb.append("<strong class=\"current\">").append(pageNum).append("</strong>");
 
 				if (pageNum < totalPages - 6) {
 					for (int i = pageNum + 1; i <= pageNum + 3; i++) {
@@ -189,7 +189,7 @@ public class Pagination extends PrintTag implements Pageable {
 					sb.append("<span class=\"disabled\"> ... </span>");
 					nextOK = true;
 				} else if(pageNum == i){
-					sb.append("<span class=\"current\">" + pageNum + "</span>");
+					sb.append("<span class=\"current\">").append(pageNum).append("</span>");
 				}
 			}
 		}

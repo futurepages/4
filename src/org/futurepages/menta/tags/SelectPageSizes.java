@@ -31,8 +31,8 @@ public class SelectPageSizes extends HTMLTag implements Pageable {
     private String sizes = "";
 
     public String getStringToPrint() throws JspException {
-        StringBuffer sb = new StringBuffer();
-        sb.append("<select " + klass + " " + id + " name=\"" + _PAGE_SIZE + "\"" + onchange + " " + style + " " + onblur + " " + extra + ">");
+        StringBuilder sb = new StringBuilder();
+        sb.append("<select ").append(klass).append(" ").append(id).append(" name=\"").append(_PAGE_SIZE).append("\"").append(onchange).append(" ").append(style).append(" ").append(onblur).append(" ").append(extra).append(">");
 
         String[] pageSizes = The.explodedToArray(sizes, ",");
         for (String pageSize : pageSizes) {
@@ -43,7 +43,7 @@ public class SelectPageSizes extends HTMLTag implements Pageable {
                     selected = true;
                 }
             }
-            sb.append("<option " + (selected ? "selected=\"selected\"" : "") + " value=\"" + pageSize + "\">" + pageSize + "</option>");
+            sb.append("<option ").append(selected ? "selected=\"selected\"" : "").append(" value=\"").append(pageSize).append("\">").append(pageSize).append("</option>");
         }
 
         sb.append("</select>");
