@@ -92,7 +92,7 @@ public class AppListener implements ServletContextListener {
 				if(appsMapping.get(appPackage)!=null){
 					throw new ServletException("Unable to load servlets. Define only one application package per path. ");
 				}
-				if(appsMapping.values().contains(appPath)){
+				if(appsMapping.containsValue(appPath)){
 					throw new ServletException("Unable to load servlets. Duplicatated path: \""+appPath+"\"");
 				}
 				appsMapping.put(appPackage, appPath);
