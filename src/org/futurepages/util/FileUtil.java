@@ -16,12 +16,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -139,12 +134,12 @@ public class FileUtil {
 	}
 
 
-	public static String[] getStringLines(String path) throws FileNotFoundException, IOException {
+	public static String[] getStringLines(String path) throws IOException {
 		return getStringLines(new File(path));
 	}
 
-	public static String[] getStringLines(File file) throws FileNotFoundException, IOException {
-		return getStringContent(file).split("[\r\n|\n]");
+	public static String[] getStringLines(File file) throws IOException {
+		return Objects.requireNonNull(getStringContent(file)).split("\r?\n");
 	}
 
 	public static void putKeyValue(Map<String, String> map, URL srcURL, String targetPath) throws Exception {
