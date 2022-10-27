@@ -183,6 +183,7 @@ public class AlternativeHtmlTagReplacer extends HtmlTagReplacer {
 			for (MatchedToken token : iter) {
 				String foundURL = token.getMatched();
 				if(!foundURL.contains("://")){
+					//noinspection HttpUrlsUsage
 					foundURL = "http://"+foundURL;
 				}
 				String treatedAnchor = treatedAnchor(The.concat("<a href=\"",foundURL,"\">",foundURL,"</a>"));
