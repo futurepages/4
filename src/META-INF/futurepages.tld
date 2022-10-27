@@ -204,24 +204,6 @@
 		</attribute>
 	</tag>
 	<tag>
-		<name>googleAnalytics</name>
-		<tag-class>org.futurepages.menta.tags.GoogleAnalytics</tag-class>
-		<body-content>JSP</body-content>
-		<display-name>GoogleAnalytics</display-name>
-		<attribute>
-			<name>account_id</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<name>max</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-			<type>int</type>
-		</attribute>
-	</tag>
-	<tag>
 		<name>hasError</name>
 		<tag-class>org.futurepages.menta.tags.core.conditional.HasError</tag-class>
 		<body-content>JSP</body-content>
