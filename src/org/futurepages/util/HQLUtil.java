@@ -21,9 +21,9 @@ public class HQLUtil {
 	public static String fieldHasAllWordsInSameSequence(String field, String... words) {
 		StringBuffer sb = new StringBuffer();
 		if (words != null && words.length != 0) {
-			sb.append(field + " LIKE '");
+			sb.append(field).append(" LIKE '");
 			for (int i = 0; i < words.length; i++) {
-				sb.append("%" + escLike(words[i]));
+				sb.append("%").append(escLike(words[i]));
 			}
 			sb.append("%'");
 		}
@@ -48,16 +48,17 @@ public class HQLUtil {
 	 */
 	public static String fieldHasAllWordsInSameSequence(String field, String value) {
 		StringTokenizer in = new StringTokenizer(value, " ");
-		StringBuffer out = new StringBuffer();
-		out.append(field + " LIKE '");
+		StringBuilder out = new StringBuilder();
+		out.append(field).append(" LIKE '");
 		while (in.hasMoreTokens()) {
-			out.append("%" + escLike(in.nextToken()));
+			out.append("%").append(escLike(in.nextToken()));
 		}
 		out.append("%'");
 
 		return out.toString();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static String imploded(Collection elements) {
 		StringBuilder out = new StringBuilder("");
 		String virgula = "";
@@ -128,7 +129,7 @@ public class HQLUtil {
 			if (i != 0) {
 				out.append(",");
 			}
-			out.append("'" + escQuotesAndSlashes(array[i]) + "'");
+			out.append("'").append(escQuotesAndSlashes(array[i])).append("'");
 		}
 		return out.toString();
 	}

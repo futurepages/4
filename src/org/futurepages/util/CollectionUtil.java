@@ -4,6 +4,7 @@ import org.futurepages.exceptions.EmptyCollectionException;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -93,21 +94,18 @@ public class CollectionUtil {
 		throw new EmptyCollectionException();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static boolean empty(Collection colecao) {
 		if (colecao == null) {
 			return true;
-		} else if (colecao.size() <= 0) {
-			return true;
-		}
-		return false;
+		} else return colecao.size() <= 0;
 	}
 
+	@SafeVarargs
 	public static <T> ArrayList<T> getListToElements(T... elementsList) {
 		ArrayList<T> list = new ArrayList<T>();
 		if (elementsList != null) {
-			for (int i = 0; i < elementsList.length; i++) {
-				list.add(elementsList[i]);
-			}
+			list.addAll(Arrays.asList(elementsList));
 		}
 		return list;
 	}

@@ -772,7 +772,7 @@ public class GenericDao extends HQLProvider {
 							executeSQL(sql);
 							sqlToExecute.delete(0, sqlToExecute.length());
 						} else {
-							sqlToExecute.append(trimmedSql + " ");
+							sqlToExecute.append(trimmedSql).append(" ");
 						}
 					}
 				}

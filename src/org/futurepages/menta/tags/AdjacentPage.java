@@ -47,7 +47,7 @@ public class AdjacentPage extends PrintTag implements Pageable {
 
 				html.append(">").append(getBodyContent().getString()).append("</a> ");
 			}else{
-				html.append("<span class=\"disabled\">"+getBodyContent().getString()+" </span>");
+				html.append("<span class=\"disabled\">").append(getBodyContent().getString()).append(" </span>");
 			}
 		}
 		return html.toString();

@@ -50,8 +50,8 @@ public class Apps {
 	private boolean connectExternalModules = false;
 
 
-	private Apps() throws UnsupportedEncodingException {
-		paramsMap = new HashMap<String, String>();
+	private Apps() {
+		paramsMap = new HashMap<>();
 	}
 
 	public static Apps getInstance(){
@@ -296,7 +296,7 @@ public class Apps {
 	 * @throws Exception
 	 */
 	public void removeFileAutomations() throws Exception {
-		HashMap<String, String> map = new HashMap();
+		HashMap<String, String> map = new HashMap<>();
 		map.put(regexParam("MINIFY_RESOURCE_MODE"),"");
 		map.put(regexParam("SCHEMA_GENERATION_TYPE"),"");
 		map.put(regexParam("INSTALL_MODE"),"");

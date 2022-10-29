@@ -703,14 +703,14 @@ public abstract class AbstractAction implements Pageable, Action {
 		}
 	}
 
-	protected class DispatcherNotPresentException extends RuntimeException {
+	protected static class DispatcherNotPresentException extends RuntimeException {
 	}
 
 	protected void log(Level level, String txt, String... values) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(txt);
 		for (String s : values) {
-			sb.append(s + ", ");
+			sb.append(s).append(", ");
 		}
 		log(sb.toString(), level);
 	}
