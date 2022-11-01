@@ -23,15 +23,15 @@ public class TagDeclarationBuilder {
 
     public static String build(TagBean tag) {
         StringBuilder builder = new StringBuilder();
-        builder.append("    <"+ TAG + ">\n");
-        builder.append("        "+buildTagElement(NAME,         tag.getName())+"\n");
-        builder.append("        "+buildTagElement(TAG_CLASS,    tag.getTagClass().getName())+"\n");
-        builder.append("        "+buildTagElement(BODY_CONTENT, tag.getContentType().descricao)+"\n");
-        builder.append("        "+buildTagElement(DISPLAY_NAME, tag.getDisplayName())+"\n");
+        builder.append("    <")   .append( TAG ).append(">\n");
+        builder.append("        ").append(buildTagElement(NAME, tag.getName())).append("\n");
+        builder.append("        ").append(buildTagElement(TAG_CLASS, tag.getTagClass().getName())).append("\n");
+        builder.append("        ").append(buildTagElement(BODY_CONTENT, tag.getContentType().descricao)).append("\n");
+        builder.append("        ").append(buildTagElement(DISPLAY_NAME, tag.getDisplayName())).append("\n");
         for (TagAttributeBean att : tag.getSortedAttributes()) {
             builder.append(builderAttributeDeclaration(att));
         }
-        builder.append("    </"+TAG+">\n");
+        builder.append("    </").append(TAG).append(">\n");
         return builder.toString();
     }
 
@@ -45,15 +45,12 @@ public class TagDeclarationBuilder {
      * Monta a declaracao para <attribute>
      */
     private static String builderAttributeDeclaration(TagAttributeBean attribute) {
-
-        StringBuilder builder = new StringBuilder();
-        builder.append("        <" + ATTRIBUTE + ">\n");
-        builder.append("            " +buildTagElement(NAME, attribute.getName())+"\n");
-        builder.append("            " +buildTagElement(REQUIRED, booleanToString(attribute.isRequired()))+"\n");
-        builder.append("            " +buildTagElement(RTEXPRVALUE, booleanToString(attribute.isRtexprvalue()))+"\n");
-        builder.append("            " +buildTagElement(TYPE, attribute.getType().getName())+"\n");
-        builder.append("        </" + ATTRIBUTE + ">\n");
-        return builder.toString();
+        return "        <" + ATTRIBUTE + ">\n" +
+                "            " + buildTagElement(NAME, attribute.getName()) + "\n" +
+                "            " + buildTagElement(REQUIRED, booleanToString(attribute.isRequired())) + "\n" +
+                "            " + buildTagElement(RTEXPRVALUE, booleanToString(attribute.isRtexprvalue())) + "\n" +
+                "            " + buildTagElement(TYPE, attribute.getType().getName()) + "\n" +
+                "        </" + ATTRIBUTE + ">\n";
     }
 
     private static String booleanToString(boolean bol) {
