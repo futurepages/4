@@ -56,7 +56,6 @@ public class RemainingTimeFormatter extends AbstractFormatter<Calendar> {
 					return The.concat("",qtdDias," days left");
 				}
 			}else{
-				int mesAtual = agora.get(Calendar.MONTH)+1;
 				int anoAtual = agora.get(Calendar.YEAR);
 				int diaFuturo = momentoNoFuturo.get(Calendar.DAY_OF_MONTH);
 				int mesFuturo = momentoNoFuturo.get(Calendar.MONTH)+1;
@@ -65,9 +64,8 @@ public class RemainingTimeFormatter extends AbstractFormatter<Calendar> {
 					String dia = (diaFuturo==1? "1º": String.valueOf(diaFuturo));
 					String mes = MonthEnum.get(mesFuturo);
 					String ano;
-					if((anoFuturo>anoAtual) &&
-							((mesFuturo>=mesAtual) || (mesAtual-mesFuturo<=4) || (anoFuturo-anoAtual > 1))){
-						ano = " de "+anoFuturo;
+					if(anoFuturo != anoAtual){
+						ano = " de "+ anoFuturo;
 					}else{
 						ano = "";
 					}
@@ -76,8 +74,7 @@ public class RemainingTimeFormatter extends AbstractFormatter<Calendar> {
 					String mes = The.capitalizedWord(MonthEnum.values()[mesFuturo - 1].name().toLowerCase());
 					String dia = String.valueOf(diaFuturo);
 					String ano;
-					if((anoFuturo>anoAtual) &&
-							((mesFuturo>=mesAtual) || (mesAtual-mesFuturo<=4) || (anoFuturo-anoAtual > 1))){
+					if(anoFuturo != anoAtual){
 						ano = ", "+anoFuturo;
 					}else{
 						ano = "";
