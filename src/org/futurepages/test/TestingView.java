@@ -349,8 +349,18 @@ public class TestingView extends AssertUtils {
 		The.sleepOf(timeMillis);
 	}
 
+	/**
+	 * Pega o último elemento de uma lista de elementos obtidos pela seleção do Selenium e faz uma comparação entre o valor esperado e o elemento.
+	 * @param expectedTxt O valor esperado a ser encontrado.
+	 * @param elementsSelector A seleção do elemento, exemplo: .element, #element ou xpath=//element.
+	 */
+	public void assertTextEqualsInLastElementForElements(String expectedTxt, String elementsSelector){
+		assertTrue("'"+elementsSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE", isPresentAndVisible(elementsSelector));
+		assertEquals(expectedTxt, getLast(elementsSelector).getText().trim()); // .replace(",", ".")
+	}
+
 	public void assertTextEqualsInElement(String expectedTxt, String elementSelector){
-		assertTrue("'"+elementSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE",isPresentAndVisible(elementSelector));
+		assertTrue("'"+elementSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE", isPresentAndVisible(elementSelector));
 		assertEquals(expectedTxt, get(elementSelector).getText().trim());
 	}
 
@@ -358,7 +368,6 @@ public class TestingView extends AssertUtils {
 		assertTrue(msg+": '"+elementSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE",isPresentAndVisible(elementSelector));
 		assertEquals(msg, expectedTxt, get(elementSelector).getText().trim());
 	}
-
 
 	public void assertTextNotEqualsInElement(String msg, String expectedTxt, String elementSelector){
 		assertTrue(msg+": '"+elementSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE",isPresentAndVisible(elementSelector));
@@ -478,6 +487,17 @@ public class TestingView extends AssertUtils {
 	public void click$(String selector) {
 		selector = selector.replaceAll("'", "\"");
 		executeJS("$('"+selector+"').click()");
+	}
+
+	/**
+	 * Clicar em todos os elementos encontrados pela seleção do Selenium
+	 * @param selector A seleção do Selenium, exemplo: .element, #element ou xpath=//element.
+	 * */
+	public void clickInAllElementBy(String selector) {
+		List<WebElement> elements = getAll(selector);
+		for (WebElement element: elements) {
+			element.click();
+		}
 	}
 
 	public void clickAndHold(String selector) {
