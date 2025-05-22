@@ -281,8 +281,19 @@ public class TestingView extends AssertUtils {
 		driver().switchTo().defaultContent();
 	}
 
-	public void switchToWindow(String id) {
-		driver().switchTo().window(id);
+	public void switchToWindow(Integer window) {
+		List<String> windowHandles = new ArrayList<>(driver().getWindowHandles());
+		try {
+			driver().switchTo().window(windowHandles.get((window != null ? window : 1) - 1));
+		} catch (NoSuchElementException ex) {}
+	}
+
+	public void closeWindow() {
+		driver().close();
+	}
+
+	public ArrayList<String> getAllWindowsId() {
+		return new ArrayList<>(driver().getWindowHandles());
 	}
 
 	public void waitSeconds(int seconds) {
