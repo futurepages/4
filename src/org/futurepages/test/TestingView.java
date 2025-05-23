@@ -361,9 +361,9 @@ public class TestingView extends AssertUtils {
 	}
 
 	/**
-	 * Pega o último elemento de uma lista de elementos obtidos pela seleção do Selenium e faz uma comparação entre o valor esperado e o elemento.
-	 * @param expectedTxt O valor esperado a ser encontrado.
-	 * @param elementsSelector A seleção do elemento, exemplo: .element, #element ou xpath=//element.
+	 * Pick the last element of a selenium list and make a comparison between the text expected and the text of element.
+	 * @param expectedTxt The text that expect.
+	 * @param elementsSelector The selector of element, example: .element, #element or xpath=//element.
 	 */
 	public void assertTextEqualsInLastElementForElements(String expectedTxt, String elementsSelector){
 		assertTrue("'"+elementsSelector+"' with TEXT=\""+expectedTxt+"\" NOT FOUND OR NOT VISIBLE", isPresentAndVisible(elementsSelector));
@@ -501,8 +501,8 @@ public class TestingView extends AssertUtils {
 	}
 
 	/**
-	 * Clicar em todos os elementos encontrados pela seleção do Selenium
-	 * @param selector A seleção do Selenium, exemplo: .element, #element ou xpath=//element.
+	 * Click in all elements what is find in selenium
+	 * @param selector The selector of element, example: .element, #element or xpath=//element.
 	 * */
 	public void clickInAllElementBy(String selector) {
 		List<WebElement> elements = getAll(selector);
