@@ -2,4 +2,5 @@
 old/**
 out/**
 *.iml
+target/**
 
