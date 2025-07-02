@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.futurepages'
+version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+        resources {
+            srcDir 'src'
+            exclude '**/*.java'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(
+            dir: "lib",
+            include: [
+                    '*.jar',
+                    'jai-1_1_3/*.jar',
+                    'jee/*.jar',
+                    'jasper_reports/*.jar',
+                    'jersey/*.jar',
+                    'hibernate-4.1.7.Final/required/*.jar',
+                    'okhttp/*.jar',
+                    'pdfbox-lib/*.jar',
+                    'test/*.jar',
+                    'jpegcodec/*.jar'
+            ]
+    )
+}
+
