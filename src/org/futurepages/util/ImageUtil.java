@@ -73,18 +73,33 @@ public class ImageUtil {
 	 * @throws java.net.MalformedURLException
 	 */
 	public static int getWidth(File file) throws MalformedURLException {
-		Image image = new ImageIcon(file.toURI().toURL()).getImage();
-		image.flush();
-		return image.getWidth(null);
+		if(FileUtil.extensionFormat(file.getAbsolutePath()).equals("webp")){
+			try {
+				Image image = ImageIO.read(file);
+				return image.getWidth(null);
+			} catch (IOException | NullPointerException e) {
+				throw new RuntimeException(e);
+			}
+		}else{
+			Image image = new ImageIcon(file.toURI().toURL()).getImage();
+			image.flush();
+			return image.getWidth(null);
+		}
 	}
 
-	/**
-	 * Retorna a largura em pixels da imagem.
-	 */
 	public static int getHeight(File file) throws MalformedURLException {
-		Image image = new ImageIcon(file.toURI().toURL()).getImage();
-		image.flush();
-		return image.getHeight(null);
+		if(FileUtil.extensionFormat(file.getAbsolutePath()).equals("webp")){
+			try {
+				Image image = ImageIO.read(file);
+				return image.getHeight(null);
+			} catch (IOException | NullPointerException e) {
+				throw new RuntimeException(e);
+			}
+		}else{
+			Image image = new ImageIcon(file.toURI().toURL()).getImage();
+			image.flush();
+			return image.getHeight(null);
+		}
 	}
 
 	public static int[] getWidthAndHeight(File file) throws MalformedURLException {
