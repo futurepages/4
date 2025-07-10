@@ -22,6 +22,11 @@ sourceSets {
     }
 }
 
+repositories {
+    mavenCentral()  // Use Maven Central for dependency resolution
+    // You can add other repositories if needed, e.g., JCenter, custom Maven repos, etc.
+}
+
 dependencies {
     implementation fileTree(
             dir: "lib",
@@ -35,8 +40,13 @@ dependencies {
                     'okhttp/*.jar',
                     'pdfbox-lib/*.jar',
                     'test/*.jar',
-                    'jpegcodec/*.jar'
+                    'jpegcodec/*.jar',
+
             ]
     )
+
+    // new ones imported from central:
+    implementation 'com.twelvemonkeys.imageio:imageio-webp:3.8.1'
+    // end of imported from central.
 }
 
