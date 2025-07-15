@@ -100,8 +100,13 @@ public class AppLogger implements ExceptionLogger{
         if(simple404){
 	        logSB.append(logln(throwable.getMessage()));
         } else{
-			throwable.printStackTrace(new PrintWriter(errors));
-			logSB.append(logln(errors.toString()));
+			try{
+				throwable.printStackTrace(new PrintWriter(errors));
+				logSB.append(logln(errors.toString()));
+			}catch (Exception ex){
+				logSB.append(logln("Error trying to print stack trace: ", ex.getMessage()));
+				ex.printStackTrace();
+			}
 	        stackHash = Security.md5(errors.toString());
         }
 
