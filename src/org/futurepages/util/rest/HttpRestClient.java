@@ -190,7 +190,9 @@ public abstract class HttpRestClient {
 	            return (T) responseBody.toString();
             }
         }catch (Exception ex){
-            if(responseCode!=502 && responseCode!=503 && responseCode!=204){
+            if(
+//                    responseCode!=502 && responseCode!=503 &&
+                    responseCode!=204){
                 AppLogger.getInstance().execute(ex,
                                                 (getEndpoint()+path),
                                                 String.valueOf(responseCode),
