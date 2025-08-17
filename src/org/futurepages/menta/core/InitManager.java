@@ -17,6 +17,7 @@ import org.futurepages.menta.filters.HibernateFilter;
 import org.futurepages.menta.filters.InjectionFilter;
 import org.futurepages.menta.json.JSONGenericRenderer;
 import org.futurepages.util.Is;
+import org.futurepages.util.SSLUtil;
 
 /**
  * ApplicationManager que gerencia a Ação Inicial e os filtros Globais
@@ -82,5 +83,8 @@ public class InitManager extends AbstractApplicationManager{
 	@Override
 	public void init(Context application) {
     	application.setAttribute("params", Apps.getInstance().getParamsMap());
+        if(Apps.devLocalMode() && Apps.get("DEFAULT_SCHEME").equals("https")){
+            SSLUtil.disableCertificateValidation();
+        }
 	}
 }

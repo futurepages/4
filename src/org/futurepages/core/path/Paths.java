@@ -72,6 +72,12 @@ public class Paths {
     }
 
     public String getContext(HttpServletRequest req){
+        if(Apps.devLocalMode()){
+            String contextPath = req.getContextPath();
+            if(!contextPath.startsWith("http://") && !contextPath.startsWith("https://")){
+                return Apps.get("APP_HOST")+contextPath;
+            }
+        }
         return req.getContextPath();
     }
 

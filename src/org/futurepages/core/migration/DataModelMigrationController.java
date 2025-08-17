@@ -24,7 +24,7 @@ public class DataModelMigrationController {
 	public static void execute() throws Exception {
 
 		String dataModelClassName = Apps.get("APP_DATA_MODEL_CLASS");
-		boolean avoidExecutions = !Apps.get("SCHEMA_GENERATION_TYPE").equals("none");
+		boolean avoidExecutions = !Apps.get("SCHEMA_GENERATION_TYPE").equals("none") || !Apps.get("INSTALL_MODE").equals("off");
 		if(Is.empty(dataModelClassName)){
 			System.out.println("[fpg] Data Model Migration Control is OFF. To turn on, tell us the class path of yout VersionedDataModel instance on the parameter APP_DATA_MODEL_CLASS on app-params.xml");
 			return;
@@ -83,7 +83,10 @@ public class DataModelMigrationController {
 			String newVersion = null;
 
 			if(avoidExecutions){
-				String infoLog = "SCHEMA_GENERATION_TYPE="+Apps.get("SCHEMA_GENERATION_TYPE")+", migrations skipped. To run you need to set to 'none'!";
+				String infoLog =
+						"SCHEMA_GENERATION_TYPE="+Apps.get("SCHEMA_GENERATION_TYPE")+", "+
+						"INSTALL_MODE="+Apps.get("INSTALL_MODE")+
+						", migrations skipped. To run you need to set them to 'none' and 'off' or comment/delete both!";
 				System.out.println("[fpg] DMMC: "+infoLog);
 				logTxt.append(infoLog).append("\n");
 			}
