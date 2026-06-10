@@ -13,11 +13,15 @@ Leitura recomendada para manutencao legada:
 3. [Fluxo de Requisição](architecture/REQUEST_FLOW.md) — MVC classico via `Controller`
 4. [Padrões de Actions](guides/ACTION_PATTERNS.md) — conventions reais de `Action`, `CrudActions`, `AjaxAction` e `DynAction`
 5. [Persistência](guides/PERSISTENCE.md) — DAO, HQL e transacoes
-6. [REST API](guides/REST.md) — camada Jersey usada por projetos do ecossistema
+6. [Views e Templates](guides/VIEWS.md) — JSP, TemplateServlet, `app-template.xml` com exemplos práticos
+7. [Tag Files](guides/TAG_FILES.md) — componentes reutilizáveis, namespace, padrões de design
+8. [Assets e Cache](guides/ASSETS.md) — CSS/JS, cache-busting, minificação, estratégias CDN vs local
+9. [Padrões AJAX](guides/AJAX_PATTERNS.md) — encapsulamento de AJAX em tag files, exemplos práticos
+10. [REST API](guides/REST.md) — camada Jersey usada por projetos do ecossistema
 
 ## Como Ler esta Documentacao
 
-- A documentacao descreve o **framework** e tambem aponta excecoes observadas no projeto real `convite_in_web`.
+- A documentacao descreve o **framework** e tambem aponta excecoes observadas nos projetos reais `convite_in_web` (complexo) e `alunoonline` (simples).
 - Quando houver diferenca entre a forma "ideal" e a forma usada em producao, a documentacao deve deixar isso explicito.
 - O objetivo principal e **manutencao segura**, nao modernizacao.
 
@@ -27,7 +31,7 @@ Existe uma skill local do OpenCode para manutencao deste framework em:
 
 - `.opencode/skills/futurepages4-framework/SKILL.md`
 
-Ela foi alinhada a esta documentacao do `futurepages4` e ao projeto exemplo `convite_in_web`.
+Ela foi alinhada a esta documentacao do `futurepages4` e aos projetos exemplo `convite_in_web` e `alunoonline`.
 
 ## Índice da Documentação
 
@@ -40,7 +44,10 @@ Ela foi alinhada a esta documentacao do `futurepages4` e ao projeto exemplo `con
 - [Criação de Módulo](guides/MODULE_CREATION.md) — passo a passo para criar um novo módulo
 - [Padrões de Actions](guides/ACTION_PATTERNS.md) — actions, inner actions, interfaces marcadoras
 - [Persistência](guides/PERSISTENCE.md) — DAOs, HQLProvider, GenericDao, paginação
-- [Views e TagLib](guides/VIEWS.md) — JSPs, TemplateServlet (.page), taglib fpg:
+- [Views e Templates](guides/VIEWS.md) — JSPs, TemplateServlet (.page), taglib fpg: core, exemplos alunoonline vs convite_in_web
+- [Tag Files](guides/TAG_FILES.md) — componentes reutilizáveis em `WEB-INF/tags/`, namespace, padrões, ciclo de vida
+- [Assets e Cache](guides/ASSETS.md) — CSS/JS, cache-busting, minificação, estratégias local vs CDN
+- [Padrões AJAX](guides/AJAX_PATTERNS.md) — encapsulamento AJAX em tag files, ajaxSelect, upload, autocomplete, paginação
 - [Validação](guides/VALIDATION.md) — Validator, UserException, boas práticas
 - [Migrações](guides/MIGRATIONS.md) — DataModelMigrationController, SQL e Java
 - [Jobs Agendados](guides/QUARTZ.md) — QuartzManager, @CronTrigger, LoggableJob
@@ -56,5 +63,32 @@ Ela foi alinhada a esta documentacao do `futurepages4` e ao projeto exemplo `con
 
 ## Pontos de Atenção
 
+- **Views e Tag Files** — A documentação em `guides/VIEWS.md` agora diferencia claramente entre:
+  - Tags core do framework (Java)
+  - Tag files de aplicação (JSP em `WEB-INF/tags/`)
+  - Exemplos práticos de `alunoonline` (simples) vs `convite_in_web` (complexo)
+  
+- **Tag Files** — Novo guia completo em `guides/TAG_FILES.md` cobre:
+  - Organização por namespace (core, modules, resource)
+  - Anatomia de uma tag file (atributos, variáveis implícitas)
+  - Injeção de CSS/JS via `<fpg:head>` e `<fpg:footer>`
+  - Padrões de reutilização e composição
+  - Debugging e ciclo de vida
+
+- **Assets e Cache-Busting** — Novo guia em `guides/ASSETS.md` cobre:
+  - Estratégia CDN vs local (comparação alunoonline vs convite_in_web)
+  - Cache-busting com `${params.RELEASE_QUERY}`
+  - Minificação automática via `ResourceMinifier`
+  - Organização de assets (CSS, JS, imagens)
+  - Quando usar cada estratégia
+
+- **Padrões AJAX** — Novo guia em `guides/AJAX_PATTERNS.md` cobre:
+  - Encapsulamento de AJAX em tag files (não usar inline)
+  - Padrões práticos: ajaxSelect, uploadImage, autoComplete, paginação
+  - Response padrão em endpoints (BaseResponse)
+  - Boas práticas (timeout, validação, error handling)
+  - Debugging com DevTools
+
 - `guides/REST.md` cobre a camada Jersey em nivel operacional. Ela existe no framework, mas depende de wiring do projeto consumidor.
+
 - Transacoes anotadas e transacoes manuais convivem no ecossistema. Consulte tambem `guides/PERSISTENCE.md` antes de alterar fluxo transacional.
